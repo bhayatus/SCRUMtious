@@ -28,11 +28,11 @@ Git issues:
 - Whenever there is a bug that needs to be resolved, the team member will create an issue for the others to help resolve. 
 - When the issue has been resolved, the users will close the issue and merge that branch with the master. 
 
-Branching naming convention
-impl_name_of_story, the working feature branch
-test_name_of_story, the testing branch for a user story
-fail_test_issuenum_name_of_bug, the branch for a failing test and its fix
-This branch must have an issue associated with it on GitHub
+Branching naming convention: 
+- impl_name_of_story, the working feature branch
+- test_name_of_story, the testing branch for a user story
+- fail_test_issuenum_name_of_bug, the branch for a failing test and its fix(This branch must have an issue associated with it on GitHub).
+
 
 ### Communication
 The communication between team member will primarily be done through the following technologies:
