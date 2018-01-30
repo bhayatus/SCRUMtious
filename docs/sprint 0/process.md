@@ -14,10 +14,11 @@ Task assignment between group members will be discussed during our daily meeting
 - Review tasks from previous day and determine if they need to be adjusted or the current state of the project needs to be delayed/altered
 
 ### Git
-The following is a breakdown of how we will utilize Git
+The following is a breakdown of how we will utilize Git.
 Git branches: 
 - Git branches will allow the developers to work on different features and tasks without interfering with the main branch
-- When the task/feature is upto standard and the group decides it is satisfactory, they can merge the branch changes to the main one. - - With git branches the team members will also keep track of what tasks are in progress and the time frame to completion. 
+- When the task/feature is upto standard and the group decides it is satisfactory, they can merge the branch changes to the main one.
+- With git branches the team members will also keep track of what tasks are in progress and the time frame to completion. 
 
 Git commit messages: 
 - Detailed commit messages will be written to speed up the review process and help the team members understand what/why a change was added or made to the feature and provide quick feedback. 
