@@ -15,11 +15,17 @@ Task assignment between group members will be discussed during our daily meeting
 
 ### Git
 The following is a breakdown of how we will utilize Git
-Git branches: Git branches will allow the developers to work on different features and tasks without interfering with the main branch. When the task/feature is upto standard and the group decides it is satisfactory, they can merge the branch changes to the main one. With git branches the team members will also keep track of what tasks are in progress and the time frame to completion. 
+Git branches: 
+- Git branches will allow the developers to work on different features and tasks without interfering with the main branch
+- When the task/feature is upto standard and the group decides it is satisfactory, they can merge the branch changes to the main one. - - With git branches the team members will also keep track of what tasks are in progress and the time frame to completion. 
 
-Git commit messages: Detailed commit messages will be written to speed up the review process and help the team members understand what/why a change was added or made to the feature and provide quick feedback. 
+Git commit messages: 
+- Detailed commit messages will be written to speed up the review process and help the team members understand what/why a change was added or made to the feature and provide quick feedback. 
 
-Git issues: Team members will create issues as a way to keep track of tasks and bugs. Whenever there is a bug that needs to be resolved, the team member will create an issue for the others to help resolve. When the issue has been resolved, the users will close the issue and merge that branch with the master. 
+Git issues: 
+- Team members will create issues as a way to keep track of tasks and bugs. 
+- Whenever there is a bug that needs to be resolved, the team member will create an issue for the others to help resolve. 
+- When the issue has been resolved, the users will close the issue and merge that branch with the master. 
 
 Branching naming convention
 impl_name_of_story, the working feature branch
