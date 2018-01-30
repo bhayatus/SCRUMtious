@@ -1,0 +1,41 @@
+# Process
+### Introduction
+The team was responsible for certain tasks to accomplish within a deadline. Due to other commitments for other coursework, a strict process and schedule must be followed to deliver an Minimum Viable Product (MVP). This document describes those requirements.
+
+### Task Management and Prioritizing
+Task assignment between group members will be discussed during our daily meetings where each task will be assigned in the following manner:
+- Declare all tasks for that day
+
+- Assign tasks according to the following criteria:
+   - Team member can pick a task that they want to implement
+   - The priorities of each user story will be assigned via the Fibonacci number selector (as done in tutorial) for initially created stories.
+   -  If a team member has completed a feature for a previous task that is a dependency for a new task, they will be assigned the new task
+
+- Review tasks from previous day and determine if they need to be adjusted or the current state of the project needs to be delayed/altered
+
+### Git
+- Branching naming convention
+   - impl_name_of_story, the working feature branch
+   - test_name_of_story, the testing branch for a user story
+   - fail_test_issuenum_name_of_bug, the branch for a failing test and its fix
+      - This branch must have an issue associated with it on GitHub
+
+### Communication
+The communication between team member will primarily be done through the following technologies:
+- Facebook Messenger: for quick status updates and communication
+- Discord: for remote voice chat meetings
+- Teamviewer: for remote control access and collaboration
+- Google Docs: for real time text editing and presentation creation
+
+In addition there will be 2 weekly meetings; one on Thursdays from 4-10PM and the other on Saturdays all-day. Furthermore, there will be daily meetings through one of the technologies mentioned in the list above. Thursdays will primarily be used for bug-fixing and code reviews. Saturdays will be used as a in-person development session.
+
+### Decision Based Conflict Resolution
+Decision based conflicts will be handled in meetings where the team will decide on a resolution that compromises between what the individual who raised the issue wants, and what the team wants. The resolution in the end should be one where both parties agree to its terms.
+
+### Code Reviews
+Code reviews will be held during our weekly meetings. During code reviews all other team members will criticize the following aspects of the code for 5 minutes (minimum):
+- Code Performance. Reducing the runtime and space complexity of algorithms since computing resources are limited on mobile devices
+
+- Error Detection,  give code with random test cases from team members who have not worked on the code being reviewed
+
+- The goal of the code reviews are to get the rest of the team familiar with the current stage of the application so everyone has a good understanding of how the application works at least at a high level.
