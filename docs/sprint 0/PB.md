@@ -1,8 +1,10 @@
+Cost for each user story is determined using a number for a linear sequence (1,2,3,4,..)
+
 Priorities (Lower is more important, using a linear sequence)
 
 As a general user I want to make an account and log into it so that I can use the functionalities and tools provided from the app 
 Priority: 1 
-Points: 3
+Points: 4
 Criteria of Satisfaction:
 * Signing up:
   * I need to choose my username
@@ -56,7 +58,7 @@ Criteria of Satisfaction:
 ---
 As a team leader I want to create and delete user stories for my projects, so I can manage my product backlog and sprint backlogs
 Priority: 7 
-Points: 10
+Points: 8
 Criteria of Satisfaction:
 * Create user story:
   * Requires name of story, cost, and priority
@@ -105,7 +107,7 @@ Criteria of Satisfaction:
 ---
 As a general user I want to view my sprint backlog so that I can see what is left to do and assign team members with tasks
 Priority: 10
-Points: 5
+Points: 4
 Criteria of Satisfaction:
 * Sort by date
 * Sort by cost
@@ -124,7 +126,7 @@ Criteria of Satisfaction:
 ---
 As a team member I want to switch the task states of the tasks that are assigned to me so that progress can be easy to identify
 Priority: 13
-Points: 5
+Points: 2
 Criteria of Satisfaction:
 * Should be able to switch between ‘Not started’, ‘In progress’, and ‘Completed’
 ---
