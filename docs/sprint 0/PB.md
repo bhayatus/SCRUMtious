@@ -1,5 +1,8 @@
-As a general user I want to make an account and log into it so that I can use the functionalities and tools provided from the app 
+Priorities (Lower is more important, using a linear sequence)
 
+As a general user I want to make an account and log into it so that I can use the functionalities and tools provided from the app 
+Priority: 1 
+Points: 3
 Criteria of Satisfaction:
 * Signing up:
   * I need to choose my username
@@ -17,7 +20,8 @@ Criteria of Satisfaction:
   * Timeout if too many password guesses 
 ---
 As a team leader I want to create and delete projects so that I can manage the projects I am responsible for
-
+Priority: 3
+Points: 5
 Criteria of Satisfaction:
 * Create projects: 
   * Requires a name, description
@@ -27,13 +31,15 @@ Criteria of Satisfaction:
   * Notify all the members of the project, that it has been deleted
 ---
 As a general user I want to view the projects I am involved in, so that I know of projects I am participating in
-
+Priority: 2 
+Points: 2
 Criteria of Satisfaction:
 * Ability to sort by creation date
 * Sort by name
 ---
 As a team leader I want to invite and remove members from a project so that I can manage my team structure
-
+Priority: 4 
+Points: 6
 Criteria of Satisfaction:
 * Inviting members:
   * Must invite members through their email addresses
@@ -42,13 +48,15 @@ Criteria of Satisfaction:
   * Update any parts of the project that the team member is involved in
 ---
 As a general user I want to view and accept invites for the project, so that I can know and join projects I have been invited to join
-
+Priority: 5 
+Points: 4
 Criteria of Satisfaction:
 * View the project name and the email address of the person who invited
 * Confirm that user want to join a project
 ---
 As a team leader I want to create and delete user stories for my projects, so I can manage my product backlog and sprint backlogs
-
+Priority: 7 
+Points: 10
 Criteria of Satisfaction:
 * Create user story:
   * Requires name of story, cost, and priority
@@ -58,7 +66,8 @@ Criteria of Satisfaction:
   * Notify team members of deletion
 ---
 As a team member I want to view product backlog so that I can view what user stories need to be assigned to specific sprints
-
+Priority: 6
+Points: 3
 Criteria of Satisfaction:
 * Look at all the user stories that need to be completed
 * Sort the product backlog by priority
@@ -66,13 +75,15 @@ Criteria of Satisfaction:
 * Click on a user story to view the user story screen
 ---
 As a team leader I want to create sprints, so I can distribute the workload in a project, and plan deadlines
-
+Priority: 8
+Points: 6
 Criteria of Satisfaction:
 * Be able to set start and end date
 * Choose which user stories that this sprint will contain
 ---
 As a team leader I want to delete/update sprints, so that I can make changes to current sprints, or scrap them entirely
-
+Priority: 9
+Points: 7
 Criteria of Satisfaction:
 * Deleting sprint:
   * Confirm removal before deleting
@@ -83,7 +94,8 @@ Criteria of Satisfaction:
   * Add or remove user stories from the sprint backlog
 ---
 As a general user I want to view my task board so that I can view the tasks that are specific to a user story
-
+Priority: 11
+Points: 6
 Criteria of Satisfaction:
 * Task board is split into three sections
   * Not started
@@ -92,7 +104,8 @@ Criteria of Satisfaction:
   * Clicking on task should open up screen with more information
 ---
 As a general user I want to view my sprint backlog so that I can see what is left to do and assign team members with tasks
-
+Priority: 10
+Points: 5
 Criteria of Satisfaction:
 * Sort by date
 * Sort by cost
@@ -100,7 +113,8 @@ Criteria of Satisfaction:
 * Able to click and view each user story in more detail
 ---
 As a team leader I want to add or delete tasks so that the breakdown of user stories can be easily managed by several group members
-
+Priority: 12
+Points: 6
 Criteria of Satisfaction:
 * Adding tasks:
   * Should require a name and short description
@@ -109,12 +123,14 @@ Criteria of Satisfaction:
   * Confirm removal before deletion
 ---
 As a team member I want to switch the task states of the tasks that are assigned to me so that progress can be easy to identify
-
+Priority: 13
+Points: 5
 Criteria of Satisfaction:
 * Should be able to switch between ‘Not started’, ‘In progress’, and ‘Completed’
 ---
 As a general user I want to chat with my project members in our group project, so that I have an easy way to communicate
-
+Priority: 14
+Points: 8
 Criteria of Satisfaction:
 * Chat should contain all previous messages sent beforehand
 * Should identify sender of each message
