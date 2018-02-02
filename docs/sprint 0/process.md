@@ -8,7 +8,7 @@ Task assignment between group members will be discussed during our daily meeting
 
 - Assign tasks according to the following criteria:
    - Team member can pick a task that they want to implement
-   - The priorities of each user story will be assigned via the Fibonacci number selector (as done in tutorial) for initially created stories.
+   - The costs of each user story will be assigned via numbers from a linear sequence.
    -  If a team member has completed a feature for a previous task that is a dependency for a new task, they will be assigned the new task
 
 - Review tasks from previous day and determine if they need to be adjusted or the current state of the project needs to be delayed/altered
