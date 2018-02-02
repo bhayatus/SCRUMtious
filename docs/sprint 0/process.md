@@ -3,11 +3,11 @@
 The team was responsible for certain tasks to accomplish within a deadline. Due to other commitments for other coursework, a strict process and schedule must be followed to deliver an Minimum Viable Product (MVP). This document describes those requirements.
 
 ### Roles
-Lead Developer - Shabaz Badshah
+Food Provider/Lead Developer - Shabaz Badshah
 Meeting Organizer/Developer - Usaim Bhayat
-Developer - Nensi Deliana
-Developer - Muhammad Waleed
-Developer - Swetha Maramganty
+Motivator/Developer - Nensi Deliana
+Comedic Relief/Developer - Muhammad Waleed
+Motivator/Developer - Swetha Maramganty
 
 ### Next Phase
 Our code reviews are essential to the next phase process. During each code review we will be taking into account the current stage of the application and improvements/changes we need to make. Our weekly reviews should help us stay on track of the development process and what to change for the next phase. See 'Code Reviews' below for more info about what we will take into account when moving between phases.
