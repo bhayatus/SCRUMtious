@@ -147,7 +147,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
     }
 
     // If user clicks sign up, take them to the sign up screen
-    public void onClickSignUp(View view) {
+    public void goToSignUpScreen(View view) {
         Intent intent = new Intent(this, SignupScreenActivity.class);
         startActivity(intent);
     }
