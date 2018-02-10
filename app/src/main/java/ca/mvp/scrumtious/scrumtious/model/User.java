@@ -15,6 +15,8 @@ public class User {
 
         if (userId == null || userEmailAddress == null) return;
 
+        userEmailAddress = userEmailAddress.trim();
+
         if (UserInputValidator.isValidEmail(userEmailAddress) == 0) {
             this.userId = userId;
             this.userEmailAddress = userEmailAddress;
@@ -22,7 +24,6 @@ public class User {
     }
 
     public String getUserEmailAddress() { return this.userEmailAddress; }
-
     public String getUserId() { return this.userId; }
 
     /**
