@@ -10,13 +10,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.LoginScreenPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginScreenViewInt;
 
 public class LoginScreenPresenter implements LoginScreenPresenterInt{
 
     private FirebaseAuth firebaseAuth;
-    private LoginScreenView loginScreenView;
+    private LoginScreenViewInt loginScreenView;
 
-    public LoginScreenPresenter(LoginScreenView loginScreenView) {
+    public LoginScreenPresenter(LoginScreenViewInt loginScreenView) {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.loginScreenView = loginScreenView;
     }
