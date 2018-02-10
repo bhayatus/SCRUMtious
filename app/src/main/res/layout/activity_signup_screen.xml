@@ -1,9 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.SignupScreenActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        >
+
+
+
+        <TextView
+            android:id="@+id/signupScreenMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/open_sans"
+            android:text="SCRUMtious"
+            android:textSize="22sp"
+            android:layout_gravity="center">
+
+        </TextView>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/signupScreenEmailFieldLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            app:errorEnabled="true">
+
+            <EditText
+                android:id="@+id/signupScreenEmailField"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:ems="10"
+                android:fontFamily="@font/open_sans"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/signupScreenPasswordFieldLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true"
+            android:layout_gravity="center"
+            >
+            <EditText
+                android:id="@+id/signupScreenPasswordField"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:ems="10"
+                android:fontFamily="@font/open_sans"
+                android:hint="Password"
+                android:inputType="textPassword"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/signupScreenRetypePasswordFieldLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true"
+            android:layout_gravity="center"
+            >
+            <EditText
+                android:id="@+id/signupScreenRetypePasswordField"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:ems="10"
+                android:fontFamily="@font/open_sans"
+                android:hint="Re-type Password"
+                android:inputType="textPassword"
+
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/signupScreenSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#1A237E"
+            android:text="Sign Up"
+            android:textSize="25dp">
+        </Button>
+        <TextView
+            android:text="Already have an account? Login here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:padding="5dp"
+            android:textColor="#1A237E"
+            android:textSize="20sp"
+            android:onClick=""
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
