@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "522178774022",
+    "firebase_url": "https://scrumtious-77bce.firebaseio.com",
+    "project_id": "scrumtious-77bce",
+    "storage_bucket": "scrumtious-77bce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522178774022:android:7ad5dec9e299d2b6",
+        "android_client_info": {
+          "package_name": "ca.mvp.scrumtious.scrumtious"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522178774022-r1jdi3od67svmolaqdh7h5vrnpvqfj86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.mvp.scrumtious.scrumtious",
+            "certificate_hash": "0ca4432a05be9c3ee11165d3fed3207f6f2bcab3"
+          }
+        },
+        {
+          "client_id": "522178774022-va0p1ph6ta02l6kseq06e796o21kvnae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFwIfJcV0rtHw7OjrlbHU-uSCTA1eXe2c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522178774022-va0p1ph6ta02l6kseq06e796o21kvnae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
