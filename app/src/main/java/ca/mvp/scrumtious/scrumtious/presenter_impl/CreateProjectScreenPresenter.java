@@ -32,8 +32,8 @@ public class CreateProjectScreenPresenter implements CreateProjectScreenPresente
     @Override
     public void setupAuthenticationListener() {
 
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        if (firebaseAuth.getCurrentUser() == null) createProjectScreenView.goToLogin();
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null) createProjectScreenView.goToLogin();
 
     }
 
