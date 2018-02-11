@@ -23,7 +23,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt
  */
 public class ProjectListScreenFragment extends Fragment implements ProjectListScreenViewInt {
 
-    private ViewProjectsScreenPresenterInt viewProjectsScreenPresenter;
+    private ProjectListScreenPresenterInt projectListScreenPresenterInt;
     private RecyclerView projectList;
     private ProgressDialog loadingProjectsDialog;
 
@@ -34,7 +34,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewProjectsScreenPresenter = new ViewProjectsScreenPresenter(this);
+        projectListScreenPresenterInt = new ProjectListScreenPresenter(this);
 
     }
 
@@ -50,7 +50,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     }
 
     private void setupRecyclerView(){
-        viewProjectsScreenPresenter.setupAuthenticationListener();
+        projectListScreenPresenterInt.setupAuthenticationListener();
         // Creates a dialog that appears to tell the user that the sign in is occurring
         loadingProjectsDialog = new ProgressDialog(getActivity());
         loadingProjectsDialog.setTitle("Loading Projects");
@@ -60,7 +60,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         loadingProjectsDialog.show();
 
         projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        projectList.setAdapter(viewProjectsScreenPresenter.setupAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog));
+        projectList.setAdapter(projectListScreenPresenterInt.setupAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog));
 
     }
 
@@ -99,7 +99,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     }
 
     public void onClickAddNewProject(View view){
-        Intent intent = new Intent(getActivity(), CreateProjectScreenActivity.class);
-        startActivity(intent);
+      //  Intent intent = new Intent(getActivity(), CreateProjectScreenActivity.class);
+        // startActivity(intent);
     }
 }
