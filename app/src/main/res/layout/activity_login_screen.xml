@@ -78,6 +78,8 @@
             android:textColor="#1A237E"
             android:textSize="25dp"
             android:text="Login"
+            android:onClick="onSubmitLogin"
+
             />
         <TextView
             android:text="Don't have an account? Sign up"
