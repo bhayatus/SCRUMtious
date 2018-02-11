@@ -82,7 +82,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
 
         myProjectsAdapter = projectListScreenPresenterInt.setupMyProjectsAdapter(projectList, loadingProjectsDialog);
         allProjectsAdapter = projectListScreenPresenterInt.setupGeneralProjectsAdapter(projectList, loadingProjectsDialog);
-        projectList.setAdapter(myProjectsAdapter);
+        projectList.setAdapter(allProjectsAdapter);
         showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -125,9 +125,9 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
 
         // Populates each row of the recycler view with the project details
         public void setDetails(String title, String ownerEmailAddress, String description){
-            titleView.setText(title);
-            ownerEmailAddressView.setText(ownerEmailAddress);
-            descriptionView.setText(description);
+            titleView.setText("Project: " + title);
+            ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
+            descriptionView.setText("Description: " + description);
         }
     }
 

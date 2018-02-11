@@ -52,6 +52,7 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
         rootRef = FirebaseDatabase.getInstance().getReference();
         String userID = mAuth.getCurrentUser().getUid();
         mQuery = rootRef.child("projects").orderByChild(userID).equalTo("true");
+
         FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> projectListAdapter
                 = new FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder>(
                 Project.class,
@@ -59,6 +60,7 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
                 ProjectListScreenFragment.ProjectsViewHolder.class,
                 mQuery
         ) {
+
             @Override
             protected void populateViewHolder(ProjectListScreenFragment.ProjectsViewHolder viewHolder, Project model, final int position) {
                 viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc());
