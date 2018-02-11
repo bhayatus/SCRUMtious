@@ -25,6 +25,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
     private SignupScreenPresenter signUpScreenPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Sign Up");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_screen);
         signUpScreenPresenter = new SignupScreenPresenter(this);
@@ -98,16 +99,16 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                 //-1 on null password, -2 on invalid password length, -3 for invalid password (including* length), 0 for valid password
                 if(isValidPassword == -1){
                     passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("please enter a password");
+                    passwordFieldLayout.setError("Please enter a password.");
 
                 }
                 else if(isValidPassword == -2){
                     passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("password has to be between 8-254 characters");
+                    passwordFieldLayout.setError("Password has to be at least 8 characters.");
                 }
                 else if(isValidPassword == -3){
                     passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("must contain atleast 1 letter, 1 digit, and 1 special character");
+                    passwordFieldLayout.setError("Password must contain atleast 1 letter and 1 digit.");
                 }
                 else{
                     passwordFieldLayout.setError(null);
