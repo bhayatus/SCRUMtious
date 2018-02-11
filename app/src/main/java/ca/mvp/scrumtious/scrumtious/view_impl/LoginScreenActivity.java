@@ -160,7 +160,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
     @Override
     public void onSuccessfulLogin() {
         signingInProgressDialog.dismiss();
-        Intent intent = new Intent(LoginScreenActivity.this, ProjectListScreenActivity.class);
+        Intent intent = new Intent(LoginScreenActivity.this, ProjectTabsScreenActivity.class);
         startActivity(intent);
         finish();
     }
