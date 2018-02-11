@@ -4,6 +4,25 @@
     android:layout_height="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show only projects I own"
+        android:paddingRight="20dp"/>
+
+        <Switch
+            android:id="@+id/projectListScreenSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:checked="false"/>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/projectListScreenRecyclerView"
         android:layout_width="match_parent"

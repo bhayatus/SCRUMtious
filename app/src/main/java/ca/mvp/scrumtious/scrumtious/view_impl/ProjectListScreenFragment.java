@@ -13,11 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListScreenPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt;
+import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectListScreenPresenter;
 
 /**
@@ -28,6 +33,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     private ProjectListScreenPresenterInt projectListScreenPresenterInt;
 
     private RecyclerView projectList;
+    private Switch showOnlyMyProjects;
     private ProgressDialog loadingProjectsDialog;
 
     public ProjectListScreenFragment() {
@@ -46,12 +52,16 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_project_list_screen, container, false);
         projectList = (RecyclerView) v.findViewById(R.id.projectListScreenRecyclerView);
+        showOnlyMyProjects = (Switch) v.findViewById(R.id.projectListScreenSwitch);
         setupRecyclerView();
         return inflater.inflate(R.layout.fragment_project_list_screen, container, false);
 
     }
 
     private void setupRecyclerView(){
+
+
+
         projectListScreenPresenterInt.setupAuthenticationListener();
         // Creates a dialog that appears to tell the user that the sign in is occurring
         loadingProjectsDialog = new ProgressDialog(getActivity());
@@ -62,8 +72,25 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         loadingProjectsDialog.show();
 
         projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        projectList.setAdapter(projectListScreenPresenterInt.setupAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog));
+        final FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> myProjectsAdapter;
+        final FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> allProjectsAdapter;
 
+        myProjectsAdapter = projectListScreenPresenterInt.setupMyProjectsAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog);
+        allProjectsAdapter = projectListScreenPresenterInt.setupGeneralProjectsAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog);
+        projectList.setAdapter(myProjectsAdapter);
+        showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                // User only wants to see the projects that they own
+                if (isChecked){
+                    projectList.setAdapter(myProjectsAdapter);
+                }
+                else{
+                    projectList.setAdapter(allProjectsAdapter);
+                }
+            }
+        });
     }
 
     @Override
