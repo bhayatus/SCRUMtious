@@ -11,4 +11,10 @@
         Agile Scrum environments. We keep track of their user stories, tasks, sprint backlog, product backlog, amongst
         many other things.
     </string>
+    <string name="title_activity_project_tabs_screen">ProjectTabsScreenActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
