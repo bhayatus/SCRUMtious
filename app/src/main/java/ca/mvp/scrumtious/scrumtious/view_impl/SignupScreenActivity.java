@@ -148,8 +148,6 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
     }
 
     public void onClickSignUpSubmit(View view){
-        emailField = (EditText) findViewById(R.id.signupScreenEmailField);
-        passwordField = (EditText) findViewById(R.id.signupScreenPasswordField);
 
         String emailAddress = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
@@ -188,18 +186,15 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
 
     @Override
     public void onBackPressed(){
-        emailField = (EditText) findViewById(R.id.signupScreenEmailField);
-        passwordField = (EditText) findViewById(R.id.signupScreenPasswordField);
-        retypePasswordField = (EditText) findViewById(R.id.signupScreenRetypePasswordField);
 
         // Make sure user doesn't accidentally leave the screen with text filled in
         if(emailField.getText().toString().trim().length() > 0 ||
                 passwordField.getText().toString().trim().length() > 0 ||
                 retypePasswordField.getText().toString().trim().length() > 0){
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Leave the screen?")
-                    .setMessage("Are you sure you want to go back? You will lose anything" +
+            new AlertDialog.Builder(this)
+                    .setTitle("Leave the screen?")
+                    .setMessage("Are you sure you want to go back? You will lose anything " +
                             "you have typed in on this page.")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
@@ -209,16 +204,13 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                             finish();
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Remain in app
-                        }
-                    })
-                    .create().show();
+                    .setNegativeButton("No", null)
+                    .show();
+        }
+        else{
+            super.onBackPressed();
         }
 
-        super.onBackPressed();
     }
 
 }

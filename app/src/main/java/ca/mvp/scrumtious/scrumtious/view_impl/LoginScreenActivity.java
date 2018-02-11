@@ -121,9 +121,6 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
     // When user clicks login button
     public void onSubmitLogin(View view) {
 
-        emailField = (EditText) findViewById(R.id.loginScreenEmailField);
-        passwordField = (EditText) findViewById(R.id.loginScreenPasswordField);
-
         String emailAddress = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
 
