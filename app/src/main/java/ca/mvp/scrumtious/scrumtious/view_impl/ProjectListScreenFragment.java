@@ -1,10 +1,13 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,8 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt
 public class ProjectListScreenFragment extends Fragment implements ProjectListScreenViewInt {
 
     private ViewProjectsScreenPresenterInt viewProjectsScreenPresenter;
+    private RecyclerView projectList;
+    private ProgressDialog loadingProjectsDialog;
 
     public ProjectListScreenFragment() {
         // Required empty public constructor
@@ -29,7 +34,6 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         viewProjectsScreenPresenter = new ViewProjectsScreenPresenter(this);
 
     }
@@ -38,11 +42,36 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_projects_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_project_list_screen, container, false);
+        projectList = (RecyclerView) v.findViewById(R.id.projectListScreenRecyclerView);
+        setupRecyclerView();
+        return inflater.inflate(R.layout.fragment_project_list_screen, container, false);
+
+    }
+
+    private void setupRecyclerView(){
+        viewProjectsScreenPresenter.setupAuthenticationListener();
+        // Creates a dialog that appears to tell the user that the sign in is occurring
+        loadingProjectsDialog = new ProgressDialog(getActivity());
+        loadingProjectsDialog.setTitle("Loading Projects");
+        loadingProjectsDialog.setCancelable(false);
+        loadingProjectsDialog.setMessage("Now loading your projects...");
+        loadingProjectsDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loadingProjectsDialog.show();
+
+        projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        projectList.setAdapter(viewProjectsScreenPresenter.setupAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog));
+
     }
 
     @Override
     public void goToProjectScreen(String pid) {
+    }
+
+    public void returnToLoginScreen(){
+        Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
+        startActivity(intent);
+        getActivity().finish();
 
     }
 
@@ -55,15 +84,11 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
             super(itemView);
             this.mView = itemView;
 
-            titleView = (TextView) mView.findViewById(R.id.projectListTitle);
-            ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectListOwner);
-            descriptionView = (TextView) mView.findViewById(R.id.projectListDesc);
-            projectRowButton = (Button) mView.findViewById(R.id.projectListButton);
+            titleView = (TextView) mView.findViewById(R.id.projectRowTitle);
+            ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddress);
+            descriptionView = (TextView) mView.findViewById(R.id.projectRowDescription);
         }
 
-        public Button getButtonInProjectRow(){
-            return projectRowButton;
-        }
 
         // Populates each row of the recycler view with the project details
         public void setDetails(Context context, String title, String ownerEmailAddress, String description){
@@ -71,5 +96,10 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
             ownerEmailAddressView.setText(ownerEmailAddress);
             descriptionView.setText(description);
         }
+    }
+
+    public void onClickAddNewProject(View view){
+        Intent intent = new Intent(getActivity(), CreateProjectScreenActivity.class);
+        startActivity(intent);
     }
 }

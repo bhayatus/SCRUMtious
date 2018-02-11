@@ -30,7 +30,10 @@
         <activity
             android:name=".view_impl.ProjectTabsScreenActivity"
             android:label="@string/title_activity_project_tabs_screen"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>
