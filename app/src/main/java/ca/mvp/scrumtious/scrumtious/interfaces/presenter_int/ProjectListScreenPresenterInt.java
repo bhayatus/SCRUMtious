@@ -15,6 +15,10 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment;
 
 public interface ProjectListScreenPresenterInt {
     void setupAuthenticationListener();
-    FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupAdapter(Context appContext, RecyclerView projectList, ProgressDialog loadingProjectsDialog);
+    FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupGeneralProjectsAdapter
+            (Context appContext, RecyclerView projectList, ProgressDialog loadingProjectsDialog);
+    FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupMyProjectsAdapter
+            (Context appContext, RecyclerView projectList, ProgressDialog loadingProjectsDialog);
+
     void signOut();
 }

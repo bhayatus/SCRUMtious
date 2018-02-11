@@ -40,13 +40,49 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupAdapter(final Context appContext, RecyclerView projectList, ProgressDialog loadingProjectsDialog) {
+    public FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupGeneralProjectsAdapter(final Context appContext, RecyclerView projectList, ProgressDialog loadingProjectsDialog) {
         final ProgressDialog dialog = loadingProjectsDialog;
         //just to be safe if constructor wasn't called before
         mAuth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         String userID = mAuth.getCurrentUser().getUid();
         mQuery = rootRef.child("projects").orderByChild(userID).equalTo("true");
+        FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> projectListAdapter
+                = new FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder>(
+                Project.class,
+                R.layout.project_row,
+                ProjectListScreenFragment.ProjectsViewHolder.class,
+                mQuery
+        ) {
+            protected void populateViewHolder(ProjectListScreenFragment.ProjectsViewHolder viewHolder, Project model, final int position) {
+                viewHolder.setDetails(appContext, model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc());
+                final String pid = getRef(position).getKey();
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewProjectsScreenView.goToProjectScreen(pid);
+                    }
+                });
+            }
+            @Override
+            public void onDataChanged() {
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        };
+        return projectListAdapter;
+    }
+
+    @Override
+    public FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupMyProjectsAdapter(final Context appContext, RecyclerView projectList, ProgressDialog loadingProjectsDialog) {
+        final ProgressDialog dialog = loadingProjectsDialog;
+        //just to be safe if constructor wasn't called before
+        mAuth = FirebaseAuth.getInstance();
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        String userID = mAuth.getCurrentUser().getUid();
+        mQuery = rootRef.child("projects").orderByChild("projectOwnerUid").equalTo(userID);
         FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> projectListAdapter
                 = new FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder>(
                 Project.class,
