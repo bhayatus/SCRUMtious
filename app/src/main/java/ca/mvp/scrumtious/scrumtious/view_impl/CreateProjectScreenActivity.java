@@ -47,6 +47,8 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
 
         titleFieldLayout.setError(null);
         descriptionFieldLayout.setError(null);
+        titleFieldLayout.setErrorEnabled(true);
+        descriptionFieldLayout.setErrorEnabled(true);
 
         //Create a watcher for titleField
         //Create a listener for titleField and validate it
