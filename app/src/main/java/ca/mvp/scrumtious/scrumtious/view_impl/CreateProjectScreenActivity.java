@@ -65,7 +65,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
                 String titleText = titleField.getText().toString();
 
                 if(titleText == null || (titleText.trim().length() <= 0
-                        && titleText.trim().length() > 254)) {
+                        ||  titleText.trim().length() > 254)) {
                     titleFieldLayout.setErrorEnabled(true);
                     titleFieldLayout.setError("Please enter a project title");
                 }
@@ -87,7 +87,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
             public void afterTextChanged(Editable editable) {
                 String descText = descriptionField.getText().toString();
                 if(descText == null || (descText.trim().length() <= 0
-                        && descText.trim().length()> 512)){
+                        || descText.trim().length()> 512)){
                     descriptionFieldLayout.setErrorEnabled(true);
                     descriptionFieldLayout.setError("Please enter a project description.");
                 }
