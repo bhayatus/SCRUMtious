@@ -1,6 +1,8 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -183,4 +185,38 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void onBackPressed(){
+        emailField = (EditText) findViewById(R.id.signupScreenEmailField);
+        passwordField = (EditText) findViewById(R.id.signupScreenPasswordField);
+        retypePasswordField = (EditText) findViewById(R.id.signupScreenRetypePasswordField);
+
+        // Make sure user doesn't accidentally leave the screen with text filled in
+        if(emailField.getText().toString().trim().length() > 0 ||
+                passwordField.getText().toString().trim().length() > 0 ||
+                retypePasswordField.getText().toString().trim().length() > 0){
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Leave the screen?")
+                    .setMessage("Are you sure you want to go back? You will lose anything" +
+                            "you have typed in on this page.")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(SignupScreenActivity.this, LoginScreenActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Remain in app
+                        }
+                    })
+                    .create().show();
+        }
+    }
+
 }
