@@ -65,8 +65,14 @@ public class projectListScreenPresenter implements projectListScreenPresenterInt
                     }
                 });
             }
+            @Override
+            public void onDataChanged() {
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
         };
-        return null;
+        return projectListAdapter;
     }
 
     @Override
