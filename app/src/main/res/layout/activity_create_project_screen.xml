@@ -62,7 +62,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:onClick="onSubmitLogin"
+        android:onClick="onClickCreateProjectSubmit"
         android:shape="oval"
         android:text="@string/create_project_create"
         android:textColor="#1A237E"
