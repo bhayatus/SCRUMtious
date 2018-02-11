@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +38,7 @@ public class SignupScreenPresenter implements SignupScreenPresenterInt {
                 }
                 else{
                     // Sign up failed, tell user
+                    Log.e("Hello", "Test");
                     signupScreenView.signUpExceptionMessage(task.getException().getLocalizedMessage());
                 }
             }

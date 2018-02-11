@@ -32,17 +32,11 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
     }
 
     private void setupFormWatcher() {
-        //replace thing with emailField name
         emailField = (EditText) findViewById(R.id.signupScreenEmailField);
-        //replace thing2 with passwordField name
         passwordField = (EditText) findViewById(R.id.signupScreenPasswordField);
-        //replace thing3 with retypePasswordField name
         retypePasswordField = (EditText) findViewById(R.id.signupScreenRetypePasswordField);
-        //replace thingLayout with emailFieldLayout name
         emailFieldLayout = (TextInputLayout) findViewById(R.id.signupScreenEmailFieldLayout);
-        //replace thing2Layout with passwordFieldLayout name
         passwordFieldLayout = (TextInputLayout) findViewById(R.id.signupScreenPasswordFieldLayout);
-        //replace thing3Layout with retypePasswordFieldLayout name
         retypePasswordFieldLayout = (TextInputLayout)
                 findViewById(R.id.signupScreenRetypePasswordFieldLayout);
 
@@ -136,7 +130,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (passwordField.getText().toString().trim().equals
+                if (!passwordField.getText().toString().trim().equals
                         (retypePasswordField.getText().toString().trim())){
                     retypePasswordFieldLayout.setErrorEnabled(true);
                     retypePasswordFieldLayout.setError("This does not match the password above");
@@ -158,9 +152,10 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
         String password = passwordField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled() || retypePasswordFieldLayout.isErrorEnabled()) {
-            signUpExceptionMessage("Cannot submit until the fields are filled out properly");
+            Toast.makeText(this, "Cannot submit until the fields are filled out properly", Toast.LENGTH_SHORT).show();
             return;
         }
+
         // Creates a dialog that appears to tell the user that the sign up is occurring
         signingInProgressDialog = new ProgressDialog(this);
         signingInProgressDialog.setTitle("Sign up");
