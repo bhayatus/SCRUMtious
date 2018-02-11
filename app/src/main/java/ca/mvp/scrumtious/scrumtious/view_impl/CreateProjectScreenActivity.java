@@ -161,8 +161,11 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
     }
 
 
-
-
+    public void goToLogin(){
+        Intent intent = new Intent(CreateProjectScreenActivity.this, LoginScreenActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 
 }
