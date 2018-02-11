@@ -39,6 +39,7 @@ public class CreateProjectScreenPresenter implements CreateProjectScreenPresente
 
     @Override
     public void addProjectToDatabase(String projectTitle, String projectDesc) {
+        firebaseAuth = FirebaseAuth.getInstance();
 
         final String projectOwnerUid = firebaseAuth.getCurrentUser().getUid();
         String projectOwnerEmail = firebaseAuth.getCurrentUser().getEmail();
