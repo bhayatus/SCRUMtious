@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ca.mvp.scrumtious.scrumtious">
+    package="ca.mvp.scrumtious.scrumtious">
 
     <application
         android:allowBackup="true"
@@ -10,13 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".view_impl.LoginScreenActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
+            >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>/>
         </activity>
-        
+
+        <activity android:name=".view_impl.SignupScreenActivity"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view_impl.ProjectListScreenActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>

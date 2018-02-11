@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_centerHorizontal="true"
+              android:layout_centerVertical="true"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:descendantFocusability="beforeDescendants"
+              android:focusableInTouchMode="false"
+              android:gravity="center_vertical|center_horizontal"
+              android:orientation="vertical"
+              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.SignupScreenActivity">
+
+    <TextView
+        android:id="@+id/signupScreenMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="SCRUMtious"
+        android:textSize="22sp">
+
+    </TextView>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/signupScreenEmailFieldLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        app:errorEnabled="true">
+
+        <EditText
+            android:id="@+id/signupScreenEmailField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/open_sans"
+            android:hint="@string/signup_email"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="textEmailAddress"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/signupScreenPasswordFieldLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        app:errorEnabled="true"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/signupScreenPasswordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/open_sans"
+            android:hint="@string/signup_password"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="textPassword"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/signupScreenRetypePasswordFieldLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        app:errorEnabled="true"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/signupScreenRetypePasswordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="@font/open_sans"
+            android:hint="@string/signup_retype_password"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="textPassword"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/signupScreenSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:onClick="onClickSignUpSubmit"
+        android:text="@string/signup_btn"
+        android:textColor="#1A237E"
+        android:textSize="18sp">
+    </Button>
+
+</LinearLayout>
