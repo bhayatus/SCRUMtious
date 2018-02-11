@@ -70,6 +70,8 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
                         ||  titleText.trim().length() > 254)) {
                     titleFieldLayout.setErrorEnabled(true);
                     titleFieldLayout.setError("Please enter a project title");
+                }else{
+                    titleFieldLayout.setErrorEnabled(false);
                 }
             }
         });
@@ -92,6 +94,8 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
                         || descText.trim().length()> 512)){
                     descriptionFieldLayout.setErrorEnabled(true);
                     descriptionFieldLayout.setError("Please enter a project description.");
+                }else{
+                    descriptionFieldLayout.setErrorEnabled(false);
                 }
 
             }
