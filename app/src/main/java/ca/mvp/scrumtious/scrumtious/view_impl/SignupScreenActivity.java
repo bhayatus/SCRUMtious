@@ -10,6 +10,8 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import javax.swing.text.View;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupScreenViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.SignupScreenPresenter;
@@ -135,7 +137,8 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (passwordField.getText().toString().trim()!=retypePasswordField.getText().toString().trim()){
+                if (passwordField.getText().toString().trim().equals
+                        (retypePasswordField.getText().toString().trim())){
                     retypePasswordFieldLayout.setErrorEnabled(true);
                     retypePasswordFieldLayout.setError("This does not match the password");
                 }
@@ -148,7 +151,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
 
     }
 
-    public void onClickSignUpSubmit(){
+    public void onClickSignUpSubmit(View view){
         emailField = (EditText) findViewById(R.id.signupScreenEmailField);
         passwordField = (EditText) findViewById(R.id.signupScreenPasswordField);
 
