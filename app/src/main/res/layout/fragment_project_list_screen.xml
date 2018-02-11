@@ -9,17 +9,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show only projects I own"
-        android:paddingRight="20dp"/>
+        android:text="Only show projects I own:"
+        android:paddingRight="20dp"
+        android:textSize="20sp"/>
 
         <Switch
             android:id="@+id/projectListScreenSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
             android:checked="false"/>
+        </LinearLayout>
+        
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/projectListScreenRecyclerView"
