@@ -95,7 +95,7 @@ public class ProjectTabsScreenActivity extends AppCompatActivity {
 
             switch(position){
                 case 0:
-                    ProjectListFragment projectListFragment = new ProjectListFragment();
+                    ProjectListScreenFragment projectListFragment = new ProjectListScreenFragment();
                     return projectListFragment;
 
                 case 1:

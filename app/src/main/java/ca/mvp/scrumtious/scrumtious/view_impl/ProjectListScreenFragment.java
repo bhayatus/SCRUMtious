@@ -13,16 +13,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListViewInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProjectListFragment extends Fragment implements ProjectListViewInt{
+public class ProjectListScreenFragment extends Fragment implements ProjectListScreenViewInt {
 
     private ViewProjectsScreenPresenterInt viewProjectsScreenPresenter;
 
-    public ProjectListFragment() {
+    public ProjectListScreenFragment() {
         // Required empty public constructor
     }
 
