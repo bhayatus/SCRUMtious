@@ -6,4 +6,9 @@
     <string name="signup_btn">Sign Up</string>
     <string name="login_btn">Login</string>
     <string name="login_signup_prompt">Don\'t have an account? Sign up</string>
+    <string name="app_summary">
+        An Android app that helps manage the logistics of remote teams working on projects in a
+        Agile Scrum environments. We keep track of their user stories, tasks, sprint backlog, product backlog, amongst
+        many other things.
+    </string>
 </resources>
