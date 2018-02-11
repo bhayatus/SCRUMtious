@@ -217,6 +217,8 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                     })
                     .create().show();
         }
+
+        super.onBackPressed();
     }
 
 }
