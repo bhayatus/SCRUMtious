@@ -13,7 +13,7 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment;
  * Created by muham on 2018-02-11.
  */
 
-public interface projectListScreenPresenterInt {
+public interface ProjectListScreenPresenterInt {
     void setupAuthenticationListener();
     FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupAdapter(Context appContext, RecyclerView projectList, ProgressDialog loadingProjectsDialog);
     void signOut();

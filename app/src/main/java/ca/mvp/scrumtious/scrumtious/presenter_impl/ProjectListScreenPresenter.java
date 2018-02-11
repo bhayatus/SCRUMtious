@@ -12,7 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.projectListScreenPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListScreenPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment;
@@ -21,12 +21,12 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment;
  * Created by muham on 2018-02-11.
  */
 
-public class projectListScreenPresenter implements projectListScreenPresenterInt {
+public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt {
     private ProjectListScreenViewInt viewProjectsScreenView;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
     private Query mQuery;
-    public projectListScreenPresenter (ProjectListScreenViewInt viewProjectsScreenView){
+    public ProjectListScreenPresenter(ProjectListScreenViewInt viewProjectsScreenView){
         this.viewProjectsScreenView = viewProjectsScreenView;
         this.mAuth = FirebaseAuth.getInstance();
     }
