@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateProjectScreenPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectScreenViewInt;
 
 /**
  * Created by Nensi on 2018-02-11.
