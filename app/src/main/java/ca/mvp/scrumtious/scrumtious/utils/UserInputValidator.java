@@ -19,7 +19,7 @@ public class UserInputValidator {
 
     // https://stackoverflow.com/questions/11780022/regex-in-java-for-password-validation
     private static final Pattern PASSWORD_CRITERIA_REGEX =
-            Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9\\s]).{8,}");
+            Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}");
 
     /**
      * Checks if the email is valid
