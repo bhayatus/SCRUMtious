@@ -7,10 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import javax.swing.text.View;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupScreenViewInt;
@@ -74,11 +73,11 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                 if (isValidEmail < 0) {
                     emailFieldLayout.setErrorEnabled(true);
                     if (isValidEmail == -1)
-                        emailFieldLayout.setError("Please enter an email address.");
+                        emailFieldLayout.setError("Please enter an e-mail address.");
                     else if (isValidEmail == -2)
-                        emailFieldLayout.setError("Please enter a valid length email address.");
+                        emailFieldLayout.setError("Please enter a valid length e-mail address");
                     else if (isValidEmail == -3)
-                        emailFieldLayout.setError("Must provide a valid email address.");
+                        emailFieldLayout.setError("Must provide a valid e-mail address.");
                 } else {
                     emailFieldLayout.setError(null);
                     emailFieldLayout.setErrorEnabled(false);
@@ -114,7 +113,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                 }
                 else if(isValidPassword == -3){
                     passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("atleast 1 character, 1 digit, and 1 special character");
+                    passwordFieldLayout.setError("must contain atleast 1 letter, 1 digit, and 1 special character");
                 }
                 else{
                     passwordFieldLayout.setError(null);
@@ -140,7 +139,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                 if (passwordField.getText().toString().trim().equals
                         (retypePasswordField.getText().toString().trim())){
                     retypePasswordFieldLayout.setErrorEnabled(true);
-                    retypePasswordFieldLayout.setError("This does not match the password");
+                    retypePasswordFieldLayout.setError("This does not match the password above");
                 }
                 else{
                     retypePasswordFieldLayout.setError(null);

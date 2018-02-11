@@ -75,15 +75,15 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
 
                     // Email field not set
                     if (isValidEmail == -1)
-                        emailFieldLayout.setError("Please enter an email address.");
+                        emailFieldLayout.setError("Please enter an e-mail address");
 
                         // Email length is 0 or more than max email length
                     else if (isValidEmail == -2)
-                        emailFieldLayout.setError("Please enter a valid length email address.");
+                        emailFieldLayout.setError("Please enter a valid length e-mail address, under 254 characters");
 
                         // Email does not match regex
                     else if (isValidEmail == -3)
-                        emailFieldLayout.setError("Must provide a valid email address.");
+                        emailFieldLayout.setError("Must provide a valid e-mail address");
 
                 } else {
                     emailFieldLayout.setError(null);
@@ -107,7 +107,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
                 // Cannot have an empty password
                 if (TextUtils.isEmpty(passwordField.getText())) {
                     passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("Must enter a password");
+                    passwordFieldLayout.setError("must enter a password");
 
                 } else {
                     passwordFieldLayout.setError(null);
