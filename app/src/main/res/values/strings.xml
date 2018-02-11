@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SCRUMtious</string>
+    <string name="signup_retype_password">Re-type password</string>
+    <string name="signup_password">Password</string>
+    <string name="signup_email">E-mail</string>
+    <string name="signup_btn">Sign Up</string>
 </resources>
