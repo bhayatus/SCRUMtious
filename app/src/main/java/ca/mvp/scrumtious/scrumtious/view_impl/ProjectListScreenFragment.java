@@ -16,7 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListScreenPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectListScreenPresenter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt
 public class ProjectListScreenFragment extends Fragment implements ProjectListScreenViewInt {
 
     private ProjectListScreenPresenterInt projectListScreenPresenterInt;
+
     private RecyclerView projectList;
     private ProgressDialog loadingProjectsDialog;
 
@@ -35,7 +38,6 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         projectListScreenPresenterInt = new ProjectListScreenPresenter(this);
-
     }
 
     @Override
