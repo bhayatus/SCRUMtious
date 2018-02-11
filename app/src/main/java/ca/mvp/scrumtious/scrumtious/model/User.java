@@ -11,6 +11,11 @@ public class User {
     private String userId;
     private String userEmailAddress;
 
+    // empty constructor is needed for firebase
+    public User() {
+
+    }
+
     public User(String userId, String userEmailAddress) {
 
         if (userId == null || userEmailAddress == null) return;

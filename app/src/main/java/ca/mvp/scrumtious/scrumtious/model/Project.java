@@ -12,6 +12,11 @@ public class Project {
 
     private final int MAX_DESC_SIZE = 254;
 
+    // empty constructor is needed for firebase
+    public Project() {
+
+    }
+
     public Project(String projectTitle, String projectOwnerEmail, String projectDesc) {
 
         if (projectTitle == null || projectOwnerEmail == null || projectDesc == null) return;
