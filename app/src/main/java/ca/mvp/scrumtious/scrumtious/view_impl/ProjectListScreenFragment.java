@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListScreenPresenterInt;
@@ -33,8 +40,8 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     private ProjectListScreenPresenterInt projectListScreenPresenterInt;
 
     private RecyclerView projectList;
-    private Switch showOnlyMyProjects;
     private ProgressDialog loadingProjectsDialog;
+    private Switch showOnlyMyProjects;
 
     public ProjectListScreenFragment() {
         // Required empty public constructor
@@ -50,17 +57,15 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_project_list_screen, container, false);
-        projectList = (RecyclerView) v.findViewById(R.id.projectListScreenRecyclerView);
-        showOnlyMyProjects = (Switch) v.findViewById(R.id.projectListScreenSwitch);
+        View view = inflater.inflate(R.layout.fragment_project_list_screen, container, false);
+        projectList = (RecyclerView) view.findViewById(R.id.projectListScreenRecyclerView);
+        showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListScreenSwitch);
         setupRecyclerView();
-        return inflater.inflate(R.layout.fragment_project_list_screen, container, false);
+        return view;
 
     }
 
     private void setupRecyclerView(){
-
-
 
         projectListScreenPresenterInt.setupAuthenticationListener();
         // Creates a dialog that appears to tell the user that the sign in is occurring
@@ -75,8 +80,8 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         final FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> myProjectsAdapter;
         final FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> allProjectsAdapter;
 
-        myProjectsAdapter = projectListScreenPresenterInt.setupMyProjectsAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog);
-        allProjectsAdapter = projectListScreenPresenterInt.setupGeneralProjectsAdapter(getActivity().getApplicationContext(), projectList, loadingProjectsDialog);
+        myProjectsAdapter = projectListScreenPresenterInt.setupMyProjectsAdapter(projectList, loadingProjectsDialog);
+        allProjectsAdapter = projectListScreenPresenterInt.setupGeneralProjectsAdapter(projectList, loadingProjectsDialog);
         projectList.setAdapter(myProjectsAdapter);
         showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -107,7 +112,6 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView titleView, ownerEmailAddressView, descriptionView;
-        Button projectRowButton;
 
         public ProjectsViewHolder(View itemView) {
             super(itemView);
@@ -120,7 +124,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
 
 
         // Populates each row of the recycler view with the project details
-        public void setDetails(Context context, String title, String ownerEmailAddress, String description){
+        public void setDetails(String title, String ownerEmailAddress, String description){
             titleView.setText(title);
             ownerEmailAddressView.setText(ownerEmailAddress);
             descriptionView.setText(description);
