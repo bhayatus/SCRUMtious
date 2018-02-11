@@ -110,8 +110,8 @@ public class ProjectTabsScreenActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Nullable
@@ -122,7 +122,7 @@ public class ProjectTabsScreenActivity extends AppCompatActivity {
                     return "MY PROJECTS";
 
                 case 1:
-                    return "INVITATIONS TO PROJECTS";
+                    return "INVITATIONS";
 
                 default:
                     return null;
