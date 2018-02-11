@@ -35,7 +35,7 @@ public class LoginScreenPresenter implements LoginScreenPresenterInt{
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(!user.isEmailVerified()){
                                 loginScreenView.loginExceptionMessage("Your e-mail address isn't verified yet");
-                            }else {
+                            } else {
                                 loginScreenView.onSuccessfulLogin();
                             }
                         }
