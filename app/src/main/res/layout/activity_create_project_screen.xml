@@ -12,7 +12,7 @@
               android:focusableInTouchMode="false"
               android:gravity="center_vertical"
               android:orientation="vertical"
-              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.LoginScreenActivity">
+              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateProjectScreenActivity">
 
 
     <android.support.design.widget.TextInputLayout
