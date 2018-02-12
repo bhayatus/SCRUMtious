@@ -6,6 +6,7 @@
               android:layout_height="match_parent"
               android:layout_centerHorizontal="true"
               android:layout_centerVertical="true"
+              android:background="@color/login_screen_bg_color"
               android:descendantFocusability="beforeDescendants"
               android:focusableInTouchMode="false"
               android:gravity="center_vertical"
@@ -23,8 +24,8 @@
         android:gravity="center"
         android:paddingBottom="@dimen/login_signup_center_logo_padding_bottom"
         android:text="@string/app_name"
-        android:textColor="@color/colorPrimary"
-        android:textSize="56sp"/>
+        android:textColor="@color/app_typo_logo_white"
+        android:textSize="64sp"/>
 
 
     <android.support.design.widget.TextInputLayout
@@ -33,17 +34,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        app:errorEnabled="true">
+        android:textColorHint="@color/white"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/SignupErrorText">
 
         <EditText
             android:id="@+id/loginScreenEmailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:ems="10"
             android:hint="@string/signup_email"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="textEmailAddress"
-            />
+            android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -52,7 +56,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="30dp"
+        android:textColorHint="@color/white"
         app:errorEnabled="true"
+        app:errorTextAppearance="@style/SignupErrorText"
         app:passwordToggleEnabled="true">
 
 
@@ -60,11 +66,12 @@
             android:id="@+id/loginScreenPasswordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:ems="10"
             android:hint="@string/signup_password"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="textPassword"
-            />
+            android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -87,8 +94,9 @@
         android:layout_margin="15dp"
         android:onClick="goToSignUpScreen"
         android:padding="5dp"
+
         android:text="@string/login_signup_prompt"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
         android:textSize="14sp"
         />
 </LinearLayout>

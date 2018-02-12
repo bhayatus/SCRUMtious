@@ -13,7 +13,7 @@
             android:configChanges="orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Signup">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -168,7 +169,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
     // Leave the app if back button is pressed
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog));
         builder.setTitle("Leave the app?")
                 .setMessage("Are you sure you want to exit the app?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
