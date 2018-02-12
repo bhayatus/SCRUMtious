@@ -34,8 +34,16 @@
             android:configChanges="orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
-
         </activity>
+
+        <activity
+            android:name=".view_impl.CreateProjectScreenActivity"
+            android:label="@string/title_activity_create_project"
+            android:configChanges="orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>

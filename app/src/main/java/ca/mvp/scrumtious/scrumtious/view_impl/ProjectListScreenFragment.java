@@ -2,29 +2,21 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListScreenPresenterInt;
@@ -42,10 +34,12 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     private RecyclerView projectList;
     private ProgressDialog loadingProjectsDialog;
     private Switch showOnlyMyProjects;
+    private FloatingActionButton fab;
 
     public ProjectListScreenFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +54,17 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         View view = inflater.inflate(R.layout.fragment_project_list_screen, container, false);
         projectList = (RecyclerView) view.findViewById(R.id.projectListScreenRecyclerView);
         showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListScreenSwitch);
+
+        fab = (FloatingActionButton) view.findViewById(R.id.projectListScreenFAB);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), CreateProjectScreenActivity.class);
+//                getActivity().startActivity(intent);
+                onClickAddNewProject(view);
+            }
+        });
+
         setupRecyclerView();
         return view;
 
@@ -106,7 +111,11 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
 
+    public void onClickAddNewProject(View view){
+        Intent intent = new Intent(this.getActivity(), CreateProjectScreenActivity.class);
+        this.getActivity().startActivity(intent);
     }
 
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
@@ -129,10 +138,5 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
             ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
             descriptionView.setText("Description: " + description);
         }
-    }
-
-    public void onClickAddNewProject(View view){
-      //  Intent intent = new Intent(getActivity(), CreateProjectScreenActivity.class);
-        // startActivity(intent);
     }
 }
