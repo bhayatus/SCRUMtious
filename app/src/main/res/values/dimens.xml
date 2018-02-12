@@ -7,4 +7,6 @@
     <dimen name="login_signup_padding">5dp</dimen>
     <dimen name="login_signup_center_logo_padding_bottom">50dp</dimen>
     <dimen name="login_signup_btn_margin">50dp</dimen>
+    <dimen name="project_list_padding">10dp</dimen>
+    <dimen name="project_list_top_padding">20dp</dimen>
 </resources>

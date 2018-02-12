@@ -134,9 +134,9 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
 
         // Populates each row of the recycler view with the project details
         public void setDetails(String title, String ownerEmailAddress, String description){
-            titleView.setText("Project: " + title);
+            titleView.setText(title);
             ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
-            descriptionView.setText("Description: " + description);
+            descriptionView.setText(description);
         }
     }
 }

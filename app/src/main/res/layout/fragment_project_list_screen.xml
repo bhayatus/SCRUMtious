@@ -4,33 +4,39 @@
     android:layout_height="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment"
     >
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingLeft="@dimen/project_list_padding"
+        android:paddingRight="@dimen/project_list_padding"
+        android:paddingTop="@dimen/project_list_top_padding">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Only show projects I own:"
-        android:paddingRight="20dp"
-        android:textSize="20sp"/>
 
-        <Switch
-            android:id="@+id/projectListScreenSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:checked="false"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:text="Only show projects I own:"
+                android:textSize="20sp"/>
+
+            <Switch
+                android:id="@+id/projectListScreenSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"/>
         </LinearLayout>
-        
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/projectListScreenRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -45,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="20dp"
-            android:src="@drawable/ic_add_black_24dp" />
+            android:src="@drawable/ic_add_white_24dp" />
 
 
 </android.support.design.widget.CoordinatorLayout>
