@@ -10,8 +10,8 @@
               android:focusableInTouchMode="false"
               android:gravity="center_vertical"
               android:orientation="vertical"
-              android:paddingLeft="5dp"
-              android:paddingRight="5dp"
+              android:paddingLeft="@dimen/login_signup_padding"
+              android:paddingRight="@dimen/login_signup_padding"
               tools:context="ca.mvp.scrumtious.scrumtious.view_impl.LoginScreenActivity">
 
     <TextView
@@ -19,9 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
         android:fontFamily="@font/harley_script_regular"
         android:gravity="center"
+        android:paddingBottom="@dimen/login_signup_center_logo_padding_bottom"
         android:text="@string/app_name"
         android:textColor="@color/colorPrimary"
         android:textSize="56sp"/>
@@ -71,8 +71,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginLeft="@dimen/login_signup_btn_margin"
+        android:layout_marginRight="@dimen/login_signup_btn_margin"
         android:background="@drawable/login_signup_btn"
         android:onClick="onSubmitLogin"
         android:shape="oval"

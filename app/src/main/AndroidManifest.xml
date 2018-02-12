@@ -25,7 +25,8 @@
             android:name=".view_impl.SignupScreenActivity"
             android:configChanges="orientation"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".view_impl.ProjectTabsScreenActivity"
