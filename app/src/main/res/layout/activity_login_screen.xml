@@ -6,23 +6,25 @@
               android:layout_height="match_parent"
               android:layout_centerHorizontal="true"
               android:layout_centerVertical="true"
-              android:layout_marginLeft="10dp"
-              android:layout_marginRight="10dp"
               android:descendantFocusability="beforeDescendants"
               android:focusableInTouchMode="false"
               android:gravity="center_vertical"
               android:orientation="vertical"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp"
               tools:context="ca.mvp.scrumtious.scrumtious.view_impl.LoginScreenActivity">
 
     <TextView
         android:id="@+id/loginScreenMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:fontFamily="@font/open_sans"
-        android:text="SCRUMtious"
-        android:textSize="22sp"/>
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/harley_script_regular"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary"
+        android:textSize="56sp"/>
 
 
     <android.support.design.widget.TextInputLayout
@@ -71,13 +73,12 @@
         android:layout_gravity="center"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+        android:background="@drawable/login_signup_btn"
         android:onClick="onSubmitLogin"
         android:shape="oval"
         android:text="@string/login_btn"
-        android:textColor="#1A237E"
-        android:textSize="18sp"
-
-        />
+        android:textColor="@color/login_email_text_field_color"
+        android:textSize="18sp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -87,7 +88,7 @@
         android:onClick="goToSignUpScreen"
         android:padding="5dp"
         android:text="@string/login_signup_prompt"
-        android:textColor="#1A237E"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
         />
 </LinearLayout>

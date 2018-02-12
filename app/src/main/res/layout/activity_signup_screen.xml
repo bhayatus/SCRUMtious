@@ -45,7 +45,7 @@
             android:hint="@string/signup_email"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="textEmailAddress"
-            />
+            android:textColorLink="@color/sign_up_screen_text_fileld"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
