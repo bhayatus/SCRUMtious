@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -192,7 +193,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                 passwordField.getText().toString().trim().length() > 0 ||
                 retypePasswordField.getText().toString().trim().length() > 0){
 
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
                     .setTitle("Leave the screen?")
                     .setMessage("Are you sure you want to go back? You will lose anything " +
                             "you have typed in on this page.")
