@@ -102,7 +102,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
 
 
     public void onSuccessfulCreateProject(){
-        Toast.makeText(this, "Created Project"+titleField.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, " Created Project"+titleField.getText().toString().trim(), Toast.LENGTH_SHORT).show();
         createProjectProgressDialog.dismiss();
         Intent intent = new Intent(CreateProjectScreenActivity.this, ProjectTabsScreenActivity.class);
         startActivity(intent);
@@ -141,8 +141,8 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
 
         if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0){
             new AlertDialog.Builder(this)
-                    .setTitle("Delete Project?")
-                    .setMessage("Are you sure you want to delete the project?")
+                    .setTitle("Discard Project?")
+                    .setMessage("Are you sure you to discard this new project?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
