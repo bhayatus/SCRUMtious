@@ -57,7 +57,7 @@ public class CreateProjectScreenPresenter implements CreateProjectScreenPresente
         mRef.child(projectId).setValue(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                mRef.child(projectId).child(projectOwnerUid).setValue("true").addOnCompleteListener(new OnCompleteListener<Void>() {
+                mRef.child(projectId).child(projectOwnerUid).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         createProjectScreenView.onSuccessfulCreateProject();

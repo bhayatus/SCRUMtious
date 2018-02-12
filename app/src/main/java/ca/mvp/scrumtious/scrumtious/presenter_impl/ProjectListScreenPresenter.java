@@ -51,7 +51,7 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
         mAuth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         String userID = mAuth.getCurrentUser().getUid();
-        mQuery = rootRef.child("projects").orderByChild(userID).equalTo("true");
+        mQuery = rootRef.child("projects").orderByChild(userID).equalTo("member");
 
         FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> projectListAdapter
                 = new FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder>(

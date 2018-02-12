@@ -102,7 +102,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
 
 
     public void onSuccessfulCreateProject(){
-        Toast.makeText(this, " Created Project"+titleField.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, " Created Project "+titleField.getText().toString().trim(), Toast.LENGTH_SHORT).show();
         createProjectProgressDialog.dismiss();
         Intent intent = new Intent(CreateProjectScreenActivity.this, ProjectTabsScreenActivity.class);
         startActivity(intent);
