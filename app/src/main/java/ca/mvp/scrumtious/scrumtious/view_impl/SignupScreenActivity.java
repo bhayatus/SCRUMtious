@@ -73,7 +73,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                     if (isValidEmail == -1)
                         emailFieldLayout.setError("Please enter an e-mail address.");
                     else if (isValidEmail == -2)
-                        emailFieldLayout.setError("Please enter a valid length e-mail address");
+                        emailFieldLayout.setError("Please enter a valid length e-mail address.");
                     else if (isValidEmail == -3)
                         emailFieldLayout.setError("Must provide a valid e-mail address.");
                 } else {
@@ -137,7 +137,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                 if (!passwordField.getText().toString().trim().equals
                         (retypePasswordField.getText().toString().trim())){
                     retypePasswordFieldLayout.setErrorEnabled(true);
-                    retypePasswordFieldLayout.setError("This does not match the password above");
+                    retypePasswordFieldLayout.setError("This does not match the password above.");
                 }
                 else{
                     retypePasswordFieldLayout.setError(null);
@@ -154,7 +154,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
         String password = passwordField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled() || retypePasswordFieldLayout.isErrorEnabled()) {
-            Toast.makeText(this, "Cannot submit until the fields are filled out properly", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot submit until the fields are filled out properly.", Toast.LENGTH_SHORT).show();
             return;
         }
 
