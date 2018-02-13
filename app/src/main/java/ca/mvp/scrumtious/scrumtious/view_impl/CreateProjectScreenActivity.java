@@ -120,7 +120,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
         String description = descriptionField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() ) {
-            Toast.makeText(this, "Cannot create projects until fields are filled out properly.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot create project until fields are filled out properly.", Toast.LENGTH_SHORT).show();
             return;
         }
 
