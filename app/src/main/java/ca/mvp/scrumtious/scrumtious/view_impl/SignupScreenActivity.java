@@ -159,7 +159,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
         }
 
         // Creates a dialog that appears to tell the user that the sign up is occurring
-        signingInProgressDialog = new ProgressDialog(this);
+        signingInProgressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
         signingInProgressDialog.setTitle("Sign up");
         signingInProgressDialog.setCancelable(false);
         signingInProgressDialog.setMessage("Attempting to sign you up...");
