@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
@@ -108,13 +107,9 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password and delete project
-                        String password = ((EditText)findViewById(R.id.alert_dialogue_delete_password_text_field)).toString();
-                        if (password != null) {
-                            individualProjectScreenPresenter.validatePassword(password);
-                        }
-                        else  {
-                            Toast.makeText(getApplicationContext(), "Please enter a password.", Toast.LENGTH_SHORT).show();
-                        }
+                        String password = ((EditText)findViewById(R.id.alert_dialogue_delete_password_text_field)).getText().toString();
+                        individualProjectScreenPresenter.validatePassword(password);
+
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
