@@ -110,7 +110,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         startActivity(intent);
         getActivity().finish();
     }
- 
+
     public void returnToLoginScreen(){
         Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
         startActivity(intent);

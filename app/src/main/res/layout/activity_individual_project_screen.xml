@@ -34,7 +34,7 @@
                 android:layout_gravity="right"
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
-                android:onClick="onClickDelete"
+                android:onClick="onClickDelete" 
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_delete_forever_white_24dp"/>
 
