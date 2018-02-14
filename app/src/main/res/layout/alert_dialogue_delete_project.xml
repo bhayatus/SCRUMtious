@@ -24,6 +24,6 @@
         android:backgroundTint="@color/colorPrimary"
         android:inputType="textPassword"
         android:selectAllOnFocus="false"
-        android:singleLine="true">
+        android:singleLine="true"> 
     </EditText>
 </LinearLayout>
