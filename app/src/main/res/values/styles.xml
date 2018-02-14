@@ -38,5 +38,10 @@
         <item name="android:textColorPrimary">@color/black</item>
     </style>
 
+    <style name="IndividualProjectToolbar" parent="AppTheme.NoActionBar">
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
 </resources>
 
