@@ -80,7 +80,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
 
                         // Email length is 0 or more than max email length
                     else if (isValidEmail == -2)
-                        emailFieldLayout.setError("Please enter a valid length e-mail address, under 254 characters.");
+                        emailFieldLayout.setError("Please enter a valid length e-mail address.");
 
                         // Email does not match regex
                     else if (isValidEmail == -3)
@@ -133,7 +133,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
         }
 
         // Creates a dialog that appears to tell the user that the sign in is occurring
-        signingInProgressDialog = new ProgressDialog(this);
+        signingInProgressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
         signingInProgressDialog.setTitle("Sign in");
         signingInProgressDialog.setCancelable(false);
         signingInProgressDialog.setMessage("Attempting to sign you in...");

@@ -67,7 +67,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
                 if(titleText == null || (titleText.trim().length() <= 0
                         ||  titleText.trim().length() > 254)) {
                     titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Please enter a project title");
+                    titleFieldLayout.setError("Please enter a project title.");
                 }else{
                     titleFieldLayout.setErrorEnabled(false);
                 }
@@ -102,7 +102,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
 
 
     public void onSuccessfulCreateProject(){
-        Toast.makeText(this, " Created Project "+titleField.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, " Created Project "+titleField.getText().toString().trim() + ".", Toast.LENGTH_SHORT).show();
         createProjectProgressDialog.dismiss();
         Intent intent = new Intent(CreateProjectScreenActivity.this, ProjectTabsScreenActivity.class);
         startActivity(intent);
@@ -120,7 +120,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
         String description = descriptionField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() ) {
-            Toast.makeText(this, "Cannot create projects until fields are filled out properly", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot create project until fields are filled out properly.", Toast.LENGTH_SHORT).show();
             return;
         }
 
