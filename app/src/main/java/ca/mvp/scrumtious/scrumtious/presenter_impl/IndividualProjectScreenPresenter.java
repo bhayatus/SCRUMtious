@@ -36,27 +36,12 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
     public void setupProjectDeleteListener(){
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).addChildEventListener(new ChildEventListener() {
+        mRef.child(pid).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()){
                     individualProjectScreenView.onSuccessfulDeletion();
                 }
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -97,6 +82,10 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     deleteProject();
+                }
+
+                else{
+                    individualProjectScreenView.deleteProjectExceptionMessage("Password incorrect, could not delete project.");
                 }
             }
         });
