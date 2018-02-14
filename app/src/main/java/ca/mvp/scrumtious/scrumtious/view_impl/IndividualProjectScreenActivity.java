@@ -1,5 +1,8 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,10 +12,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualProjectScreenPresenter;
 
 public class IndividualProjectScreenActivity extends AppCompatActivity {
 
@@ -32,10 +40,21 @@ public class IndividualProjectScreenActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ImageButton deleteBtn;
 
+    private IndividualProjectScreenPresenter individualProjectScreenPresenter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Project");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_project_screen);
+
+        Bundle data = getIntent().getExtras();
+        String pid = data.getString("projectId");
+
+        individualProjectScreenPresenter = new IndividualProjectScreenPresenter(this, pid);
+        individualProjectScreenPresenter.deleteProjectListener();
+        individualProjectScreenPresenter.checkIfOwner();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.hideOverflowMenu();
@@ -45,6 +64,8 @@ public class IndividualProjectScreenActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -61,6 +82,47 @@ public class IndividualProjectScreenActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_individual_project_screen, menu);
         return true;
+    }
+
+    public void onSuccessfulDeletion() {
+        Intent intent = new Intent(this, ProjectTabsScreenActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void setDeleteInvisible(){
+        deleteBtn.setVisibility(View.GONE);
+    }
+
+
+    public void onClickDelete(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (this).getLayoutInflater();
+        builder.setTitle("Delete?")
+                .setView(inflater.inflate(R.layout.alert_dialogue_delete_project, null))
+                .setMessage("Are you sure you want to delete this project?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Validate password and delete project
+                        String password = ((EditText)findViewById(R.id.alert_dialogue_delete_password_text_field)).toString();
+                        if (password != null) {
+                            individualProjectScreenPresenter.validatePassword(password);
+                        }
+                        else  {
+                            Toast.makeText(getApplicationContext(), "Please enter a password.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                    }
+                })
+                .create().show();
+
     }
 
     /**
