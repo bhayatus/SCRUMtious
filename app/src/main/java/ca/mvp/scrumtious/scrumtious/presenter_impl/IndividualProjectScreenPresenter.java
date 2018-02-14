@@ -73,8 +73,9 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         mRef.child("projects").child(pid).child("projectOwnerUid").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue().toString().equals(mUser.getUid().toString())){
-                    individualProjectScreenView.setDeleteVisible();
+                // current user is not group owner, set delete option to invisible
+                if(!dataSnapshot.getValue().toString().equals(mUser.getUid().toString())){
+                    individualProjectScreenView.setDeleteInvisible();
                 }
             }
 
