@@ -106,7 +106,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete?")
                 .setView(alertView)
-                .setMessage("Are you sure you want to delete this project?")
+                .setMessage("Are you sure you want to delete this project? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
