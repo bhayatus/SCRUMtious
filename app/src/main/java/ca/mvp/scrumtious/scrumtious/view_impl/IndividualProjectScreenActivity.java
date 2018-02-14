@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
@@ -95,6 +96,9 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         deleteBtn.setVisibility(View.GONE);
     }
 
+    public void deleteProjectExceptionMessage(String error) {
+        Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
+    }
 
     public void onClickDelete(View view) {
         LayoutInflater inflater = (this).getLayoutInflater();
@@ -110,13 +114,12 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
                         String password = passwordET.getText().toString().trim();
                         individualProjectScreenPresenter.validatePassword(password);
-
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing
+                        dialog.dismiss();
                     }
                 })
                 .create().show();
