@@ -53,7 +53,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity {
         String pid = data.getString("projectId");
 
         individualProjectScreenPresenter = new IndividualProjectScreenPresenter(this, pid);
-        individualProjectScreenPresenter.deleteProjectListener();
+        individualProjectScreenPresenter.setupProjectDeleteListener();
         individualProjectScreenPresenter.checkIfOwner();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
