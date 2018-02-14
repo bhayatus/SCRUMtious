@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
@@ -72,10 +73,9 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabs = (TabLayout) findViewById(R.id.projectOverviewTabs);
+        tabs.setupWithViewPager(mViewPager);
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
     @Override
@@ -86,6 +86,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
     }
 
     public void onSuccessfulDeletion() {
+        Toast.makeText(this,"Project successfully deleted.",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ProjectTabsScreenActivity.class);
         startActivity(intent);
         finish();
@@ -95,6 +96,9 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         deleteBtn.setVisibility(View.GONE);
     }
 
+    public void deleteProjectExceptionMessage(String error) {
+        Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
+    }
 
     public void onClickDelete(View view) {
         LayoutInflater inflater = (this).getLayoutInflater();
@@ -110,13 +114,12 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
                         String password = passwordET.getText().toString().trim();
                         individualProjectScreenPresenter.validatePassword(password);
-
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing
+                        dialog.dismiss();
                     }
                 })
                 .create().show();
@@ -137,11 +140,12 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return new ProjectOverviewFragment();
+                    ProjectOverviewFragment projectOverviewFragment = new ProjectOverviewFragment();
+                    return projectOverviewFragment;
 
                 case 1:
-                    return new ProjectMembersFragment();
-
+                    ProjectMembersFragment projectMembersFragment = new ProjectMembersFragment();
+                    return projectMembersFragment;
                 default:
                     return null;
             }
