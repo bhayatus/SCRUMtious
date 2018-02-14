@@ -20,9 +20,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectScreenViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualProjectScreenPresenter;
 
-public class IndividualProjectScreenActivity extends AppCompatActivity {
+public class IndividualProjectScreenActivity extends AppCompatActivity implements IndividualProjectScreenViewInt{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -40,7 +42,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ImageButton deleteBtn;
 
-    private IndividualProjectScreenPresenter individualProjectScreenPresenter;
+    private IndividualProjectScreenPresenterInt individualProjectScreenPresenter;
 
 
     @Override
@@ -50,7 +52,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_individual_project_screen);
 
         Bundle data = getIntent().getExtras();
-        String pid = data.getString("projectId");
+        final String pid = data.getString("projectId");
 
         individualProjectScreenPresenter = new IndividualProjectScreenPresenter(this, pid);
         individualProjectScreenPresenter.setupProjectDeleteListener();
