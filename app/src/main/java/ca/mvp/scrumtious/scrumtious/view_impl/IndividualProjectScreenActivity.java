@@ -101,17 +101,18 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
     }
 
     public void onClickDelete(View view) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = (this).getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete?")
-                .setView(inflater.inflate(R.layout.alert_dialogue_delete_project, null))
+                .setView(alertView)
                 .setMessage("Are you sure you want to delete this project?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password and delete project
-                        String password = ((EditText)findViewById(R.id.alert_dialogue_delete_password_text_field)).getText().toString();
+                        EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
+                        String password = passwordET.getText().toString().trim();
                         individualProjectScreenPresenter.validatePassword(password);
                     }
                 })

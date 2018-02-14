@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -70,10 +71,9 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         mRef = mDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser mUser = mAuth.getCurrentUser();
-        mRef.child("projects").child(pid).child("projectOwnerUid").addValueEventListener(new ValueEventListener() {
+        mRef.child("projects").child(pid).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // current user is not group owner, set delete option to invisible
                 if(!dataSnapshot.getValue().toString().equals(mUser.getUid().toString())){
                     individualProjectScreenView.setDeleteInvisible();
                 }
@@ -84,6 +84,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
 
             }
         });
+
     }
 
     @Override
