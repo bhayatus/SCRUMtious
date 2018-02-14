@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualProjectScreenPresenter;
 
 public class IndividualProjectScreenActivity extends AppCompatActivity {
@@ -40,7 +41,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ImageButton deleteBtn;
 
-    private IndividualProjectScreenPresenter individualProjectScreenPresenter;
+    private IndividualProjectScreenPresenterInt individualProjectScreenPresenter;
 
 
     @Override
