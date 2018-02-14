@@ -73,10 +73,9 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabs = (TabLayout) findViewById(R.id.projectOverviewTabs);
+        tabs.setupWithViewPager(mViewPager);
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
     @Override
@@ -141,11 +140,12 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return new ProjectOverviewFragment();
+                    ProjectOverviewFragment projectOverviewFragment = new ProjectOverviewFragment();
+                    return projectOverviewFragment;
 
                 case 1:
-                    return new ProjectMembersFragment();
-
+                    ProjectMembersFragment projectMembersFragment = new ProjectMembersFragment();
+                    return projectMembersFragment;
                 default:
                     return null;
             }
