@@ -22,4 +22,8 @@
     <string name="create_project_desc">Project Description</string>
     <string name="title_activity_create_project">Create Project</string>
     <string name="filter_owned_projects_only">Owned Projects Only</string>
+    <string name="title_activity_individual_project_screen">IndividualProjectScreenActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
 </resources>
