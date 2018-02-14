@@ -39,6 +39,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         mRef.child(pid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // If project no longer exists, exit this screen and go back
                 if (!dataSnapshot.exists()){
                     individualProjectScreenView.onSuccessfulDeletion();
                 }
@@ -80,10 +81,13 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+
+                // If password entered matched the password of the group owner, then delete
                 if (task.isSuccessful()){
                     deleteProject();
                 }
 
+                // Password didn't match, tell user
                 else{
                     individualProjectScreenView.deleteProjectExceptionMessage("Password incorrect, could not delete project.");
                 }
