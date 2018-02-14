@@ -106,6 +106,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     @Override
     public void goToProjectScreen(String pid) {
         Intent intent = new Intent(getActivity(), IndividualProjectScreenActivity.class);
+        intent.putExtra("projectId", pid);
         startActivity(intent);
         getActivity().finish();
     }
