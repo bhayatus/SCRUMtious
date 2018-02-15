@@ -181,6 +181,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 if (!dataSnapshot.exists()){
                     projectMembersView.inviteMemberExceptionMessage("Cannot invite user with that e-mail address " +
                             "as they do not exist.");
+                    return;
                 }
 
                 // Proceed with checking if user is already in the project
@@ -200,8 +201,16 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             // User already in project, don't invite again
                             if (dataSnapshot.exists()){
-                                projectMembersView.inviteMemberExceptionMessage("Cannot invite member as they are already" +
-                                        " part of this project.");
+
+                                for(DataSnapshot d: dataSnapshot.getChildren()){
+                                    // Project id matches
+                                    if (d.child(pid).getKey().equals(pid)){
+                                        projectMembersView.inviteMemberExceptionMessage("Cannot invite member as they are already" +
+                                                " part of this project.");
+                                        return;
+                                    }
+                                }
+
                             }
 
                             else{
