@@ -38,7 +38,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // If project no longer exists, exit this screen and go back
-                if (dataSnapshot.exists()){
+                if (!dataSnapshot.exists()){
                     individualProjectScreenView.onSuccessfulDeletion();
                 }
 
