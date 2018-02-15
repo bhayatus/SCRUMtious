@@ -32,7 +32,8 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.projectMembersPresenter = new ProjectMembersPresenter(this);
+        String pid = getArguments().getString("projectId");
+        this.projectMembersPresenter = new ProjectMembersPresenter(this, pid);
     }
 
     @Override

@@ -41,13 +41,13 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Project, ProjectMembersFragment.MembersViewHolder> setupMembersAdapter(RecyclerView memberList) {
+    public FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMembersAdapter(RecyclerView memberList) {
             mDatabase = FirebaseDatabase.getInstance();
             mAuth = FirebaseAuth.getInstance();
             DatabaseReference rootRef = mDatabase.getReference();
             mQuery = rootRef.child("users").orderByChild(pid).equalTo("member");
 
-            FirebaseRecyclerAdapter<Project, ProjectMembersFragment.MembersViewHolder> membersListAdapter
+            FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> membersListAdapter
                     = new FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder>(
                     User.class,
                     R.layout.member_row,

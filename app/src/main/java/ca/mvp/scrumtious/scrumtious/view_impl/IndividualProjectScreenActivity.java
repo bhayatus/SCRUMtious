@@ -41,6 +41,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
      */
     private ViewPager mViewPager;
     private ImageButton deleteBtn;
+    private String pid;
 
     private IndividualProjectScreenPresenterInt individualProjectScreenPresenter;
 
@@ -52,7 +53,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_individual_project_screen);
 
         Bundle data = getIntent().getExtras();
-        final String pid = data.getString("projectId");
+        pid = data.getString("projectId");
 
         individualProjectScreenPresenter = new IndividualProjectScreenPresenter(this, pid);
         individualProjectScreenPresenter.setupProjectDeleteListener();
@@ -144,7 +145,10 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
                     return projectOverviewFragment;
 
                 case 1:
+                    Bundle data = new Bundle();
+                    data.putString("projectId", pid);
                     ProjectMembersFragment projectMembersFragment = new ProjectMembersFragment();
+                    projectMembersFragment.setArguments(data);
                     return projectMembersFragment;
                 default:
                     return null;
