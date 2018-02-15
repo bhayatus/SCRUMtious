@@ -11,7 +11,10 @@ import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +45,26 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     }
 
     @Override
+    public void setupProjectDeleteListener(){
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects");
+        mRef.child(pid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // If project no longer exists, exit this screen and go back
+                if (!dataSnapshot.exists()){
+                    projectMembersView.onSuccessfulDeletion();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
     public FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMembersAdapter(RecyclerView memberList) {
             mDatabase = FirebaseDatabase.getInstance();
             mAuth = FirebaseAuth.getInstance();
@@ -57,19 +80,26 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
             ) {
 
                 @Override
-                protected void populateViewHolder(ProjectMembersFragment.MembersViewHolder viewHolder, final User model, final int position) {
+                protected void populateViewHolder(ProjectMembersFragment.MembersViewHolder viewHolder, User model, int position) {
                     viewHolder.setDetails(model.getEmailAddress());
-
+                    final User userModel = model;
+                    final int currentPosition = position;
                     final ImageButton delete = viewHolder.getDeleteView();
 
                     mRef  = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
                             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+
                             // Only owner can delete members
-                            if ((dataSnapshot.getValue().toString().trim()).equals(mAuth.getCurrentUser().getUid().toString()) == false){
+                            if ((dataSnapshot.getValue().toString().trim()).equals(mAuth.getCurrentUser().getUid()) == false){
                                 delete.setVisibility(View.GONE);
                             }
+
+                            if(userModel.getUserID().equals(dataSnapshot.getValue().toString().trim())){
+                                delete.setVisibility(View.GONE);
+                            }
+
                         }
 
                         @Override
@@ -82,8 +112,8 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         @Override
                         public void onClick(View v) {
                             // If user chooses to remove member, do so
-                            String uid = getRef(position).getKey();
-                            deleteMember(uid);
+                            String uid = getRef(currentPosition).getKey();
+                            projectMembersView.onClickDelete(uid);
                         }
                     });
 
@@ -99,10 +129,34 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     private void deleteMember(final String uid){
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
+
+
         mRef.child("users").child(uid).child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 mRef.child("projects").child(pid).child(uid).removeValue();
+            }
+        });
+    }
+
+    @Override
+    public void validatePassword(String password, final String uid){
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
+        mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                // If password entered matched the password of the group owner, then delete
+                if (task.isSuccessful()){
+                    deleteMember(uid);
+                }
+
+                // Password didn't match, tell user
+                else{
+                    projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
+                }
             }
         });
     }

@@ -1,6 +1,9 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
@@ -53,8 +58,45 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     }
 
+    public void onSuccessfulDeletion() {
+        Intent intent = new Intent(getContext(), ProjectTabsScreenActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
     public void onClickAddMember(View view){
 
+    }
+
+    public void onClickDelete(final String uid){
+        LayoutInflater inflater = (this).getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete?")
+                .setView(alertView)
+                .setMessage("Are you sure you want to delete this member? Enter your password below to confirm.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Validate password and delete project
+                        EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
+                        String password = passwordET.getText().toString().trim();
+                        projectMembersPresenter.validatePassword(password, uid);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+
+    }
+
+    @Override
+    public void deleteMemberExceptionMessage(String error) {
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 
     public static class MembersViewHolder extends RecyclerView.ViewHolder{

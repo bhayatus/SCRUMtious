@@ -76,24 +76,34 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
 
     @Override
     public void validatePassword(String password){
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser mUser = mAuth.getCurrentUser();
-        AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
-        mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
 
-                // If password entered matched the password of the group owner, then delete
-                if (task.isSuccessful()){
-                    deleteProject();
-                }
+        if (password == null){
+            individualProjectScreenView.deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+        }
+        else {
+            if (password.length() == 0) {
+                individualProjectScreenView.deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+            } else {
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser mUser = mAuth.getCurrentUser();
+                AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
+                mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                // Password didn't match, tell user
-                else{
-                    individualProjectScreenView.deleteProjectExceptionMessage("Password incorrect, could not delete project.");
-                }
+                        // If password entered matched the password of the group owner, then delete
+                        if (task.isSuccessful()) {
+                            deleteProject();
+                        }
+
+                        // Password didn't match, tell user
+                        else {
+                            individualProjectScreenView.deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+                        }
+                    }
+                });
             }
-        });
+        }
     }
 
     private void deleteProject() {

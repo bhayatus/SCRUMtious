@@ -5,7 +5,7 @@ import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
 public class User {
 
-    private String userId;
+    private String userID;
     private String emailAddress;
 
     // empty constructor is needed for firebase
@@ -13,20 +13,20 @@ public class User {
 
     }
 
-    public User(String userId, String emailAddress) {
+    public User(String userID, String emailAddress) {
 
-        if (userId == null || emailAddress == null) return;
+        if (userID == null || emailAddress == null) return;
 
         emailAddress = emailAddress.trim();
 
         if (UserInputValidator.isValidEmail(emailAddress) == 0) {
-            this.userId = userId;
+            this.userID = userID;
             this.emailAddress = emailAddress;
         } else return;
     }
 
     public String getEmailAddress() { return this.emailAddress; }
-    public String getUserId() { return this.userId; }
+    public String getUserID() { return this.userID; }
 
     /**
      * Checks if the email is valid

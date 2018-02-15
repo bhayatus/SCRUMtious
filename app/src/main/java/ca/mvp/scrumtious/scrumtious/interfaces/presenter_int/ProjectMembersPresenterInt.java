@@ -10,4 +10,8 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment;
 public interface ProjectMembersPresenterInt {
     FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMembersAdapter
             (RecyclerView memberList);
+
+    void validatePassword(String password, final String uid);
+
+    void setupProjectDeleteListener();
 }

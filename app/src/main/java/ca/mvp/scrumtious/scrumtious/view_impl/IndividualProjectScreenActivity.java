@@ -87,7 +87,6 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
     }
 
     public void onSuccessfulDeletion() {
-        Toast.makeText(this,"Project successfully deleted.",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ProjectTabsScreenActivity.class);
         startActivity(intent);
         finish();
