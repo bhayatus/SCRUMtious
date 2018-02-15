@@ -204,7 +204,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                                 for(DataSnapshot d: dataSnapshot.getChildren()){
                                     // Project id matches
-                                    if (d.child(pid).getKey().equals(pid)){
+                                    if (d.getKey().equals(pid)){
                                         projectMembersView.inviteMemberExceptionMessage("Cannot invite member as they are already" +
                                                 " part of this project.");
                                         return;
