@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                             xmlns:tools="http://schemas.android.com/tools"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1"
+                             android:baselineAligned="false"
+                             android:orientation="vertical"
+                             android:padding="5dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:text="@string/user_invite_row_title"/>
+
+    <android.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/user_invite_row_project"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans"
+            android:text="SCRUMtious"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"/>
+
+
+        <ImageButton
+            android:id="@+id/user_invite_accept_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:cropToPadding="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_check_white_24dp"/>
+
+        <ImageButton
+            android:id="@+id/user_invite_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:cropToPadding="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_close_white_24dp"/>
+
+    </android.widget.LinearLayout>
+
+    <TextView
+        android:id="@+id/user_invite_row_invitee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:text="by usaimbhayat@gmail.com"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:background="#f1f1f1f1"/>
+
+
+</android.widget.LinearLayout>

@@ -4,10 +4,14 @@
     android:layout_height="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.InvitationsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/userInviteScreenRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Invitations" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout"
+        android:paddingTop="@dimen/project_list_top_padding">
+
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>
