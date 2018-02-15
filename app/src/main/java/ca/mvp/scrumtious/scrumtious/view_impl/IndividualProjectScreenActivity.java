@@ -190,4 +190,11 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(IndividualProjectScreenActivity.this, ProjectTabsScreenActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
