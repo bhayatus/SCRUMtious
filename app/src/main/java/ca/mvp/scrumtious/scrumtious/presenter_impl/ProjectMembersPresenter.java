@@ -44,6 +44,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         this.pid = pid;
     }
 
+    // In case the project no longer exists
     @Override
     public void setupProjectDeleteListener(){
         mDatabase = FirebaseDatabase.getInstance();
@@ -126,6 +127,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
             return membersListAdapter;
     }
 
+    // Delete the member from the project
     private void deleteMember(final String uid){
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
@@ -139,26 +141,38 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         });
     }
 
+    // Check the group owner's password before deleting member from project
     @Override
-    public void validatePassword(String password, final String uid){
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser mUser = mAuth.getCurrentUser();
-        AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
-        mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
+    public void validatePassword(String password, final String uid) {
 
-                // If password entered matched the password of the group owner, then delete
-                if (task.isSuccessful()){
-                    deleteMember(uid);
-                }
+        if (password == null) {
+            projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
+        } else {
 
-                // Password didn't match, tell user
-                else{
-                    projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
-                }
+            if(password.length() == 0) {
+                projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
             }
-        });
+            else{
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser mUser = mAuth.getCurrentUser();
+            AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
+            mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    // If password entered matched the password of the group owner, then delete
+                    if (task.isSuccessful()) {
+                        deleteMember(uid);
+                    }
+
+                    // Password didn't match, tell user
+                    else {
+                        projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
+                    }
+                }
+            });
+        }
+        }
     }
 
 
