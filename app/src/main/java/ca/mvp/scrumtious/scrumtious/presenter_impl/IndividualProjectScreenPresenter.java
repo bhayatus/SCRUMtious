@@ -37,15 +37,18 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         mRef.child(pid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // If I'm no longer part of project
+                // If project no longer exists, exit this screen and go back
                 if (dataSnapshot.exists()){
+                    individualProjectScreenView.onSuccessfulDeletion();
+                }
+
+                else{
                     // Check if I'm no longer a member through my uid
                     mAuth = FirebaseAuth.getInstance();
                     if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
                         individualProjectScreenView.onSuccessfulDeletion();
                     }
                 }
-
             }
 
             @Override
