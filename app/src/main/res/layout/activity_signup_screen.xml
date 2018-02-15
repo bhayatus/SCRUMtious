@@ -6,7 +6,7 @@
               android:layout_height="match_parent"
               android:layout_centerHorizontal="true"
               android:layout_centerVertical="true"
-              android:background="@color/colorPrimary"
+              android:background="@color/login_screen_bg_color"
               android:descendantFocusability="beforeDescendants"
               android:focusableInTouchMode="false"
               android:gravity="center_vertical|center_horizontal"
@@ -36,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        app:errorEnabled="true"
         android:textColorHint="@color/white"
+        app:errorEnabled="true"
         app:errorTextAppearance="@style/SignupErrorText">
 
         <EditText
@@ -60,10 +60,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        app:errorEnabled="true"
-        app:passwordToggleEnabled="true"
         android:textColorHint="@color/white"
+        app:errorEnabled="true"
         app:errorTextAppearance="@style/SignupErrorText"
+        app:passwordToggleEnabled="true"
         >
 
         <EditText
@@ -86,10 +86,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="30dp"
-        app:errorEnabled="true"
-        app:passwordToggleEnabled="true"
         android:textColorHint="@color/white"
+        app:errorEnabled="true"
         app:errorTextAppearance="@style/SignupErrorText"
+        app:passwordToggleEnabled="true"
         >
 
         <EditText
