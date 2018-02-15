@@ -72,8 +72,8 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
 
         // Populates each row of the recycler view with the project details
-        public void setDetails(String emailAddrress){
-            emailView.setText(emailAddrress);
+        public void setDetails(String emailAddress){
+            emailView.setText(emailAddress);
         }
 
         public ImageButton getDeleteView(){

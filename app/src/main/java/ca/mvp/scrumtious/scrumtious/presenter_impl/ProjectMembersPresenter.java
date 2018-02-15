@@ -4,6 +4,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -57,21 +58,16 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                 @Override
                 protected void populateViewHolder(ProjectMembersFragment.MembersViewHolder viewHolder, final User model, final int position) {
-                    viewHolder.setDetails(model.getUserEmailAddress());
+                    viewHolder.setDetails(model.getEmailAddress());
 
                     final ImageButton delete = viewHolder.getDeleteView();
-
 
                     mRef  = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
                             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            // Owner cannot delete self
-                            if (dataSnapshot.getValue() == model.getUserId()){
-                                delete.setVisibility(View.GONE);
-                            }
                             // Only owner can delete members
-                            if (dataSnapshot.getValue() != mAuth.getCurrentUser().getUid()){
+                            if ((dataSnapshot.getValue().toString().trim()).equals(mAuth.getCurrentUser().getUid().toString()) == false){
                                 delete.setVisibility(View.GONE);
                             }
                         }
