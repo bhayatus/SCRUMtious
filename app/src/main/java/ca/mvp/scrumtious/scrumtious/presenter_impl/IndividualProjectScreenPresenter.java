@@ -113,7 +113,31 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
                             // Remove projectid:member from each part of the users tree
                             for(DataSnapshot d: dataSnapshot.getChildren()){
                                DatabaseReference ref = d.child(pid).getRef();
-                               ref.removeValue();
+                               ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                   @Override
+                                   public void onComplete(@NonNull Task<Void> task) {
+                                       if (task.isSuccessful()){
+                                           mDatabase = FirebaseDatabase.getInstance();
+                                           mRef = mDatabase.getReference();
+                                           mRef.child("invites").orderByChild("projectId").equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                               @Override
+                                               public void onDataChange(DataSnapshot dataSnapshot) {
+                                                   // Remove every invite associated with this project we are deleting
+                                                   for (DataSnapshot d: dataSnapshot.getChildren()){
+                                                       DatabaseReference ref = d.getRef();
+                                                       ref.removeValue();
+                                                   }
+                                               }
+
+                                               @Override
+                                               public void onCancelled(DatabaseError databaseError) {
+
+                                               }
+                                           });
+
+                                       }
+                                   }
+                               });
                             }
                         }
 
