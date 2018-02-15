@@ -28,14 +28,6 @@ public class CreateProjectScreenPresenter implements CreateProjectScreenPresente
         this.createProjectScreenView = createProjectScreenView;
     }
 
-    // In case for whatever reason the user is logged out.
-    @Override
-    public void setupAuthenticationListener() {
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null) createProjectScreenView.goToLogin();
-
-    }
 
     @Override
     public void addProjectToDatabase(String projectTitle, String projectDesc) {
@@ -51,16 +43,24 @@ public class CreateProjectScreenPresenter implements CreateProjectScreenPresente
         projectMap.put("projectOwnerEmail", projectOwnerEmail);
 
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference("projects");
+        mRef = mDatabase.getReference();
         final String projectId = mRef.push().getKey();
 
-        mRef.child(projectId).setValue(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mRef.child("projects").child(projectId).setValue(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                mRef.child(projectId).child(projectOwnerUid).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                mRef.child("projects").child(projectId).child(projectOwnerUid).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        createProjectScreenView.onSuccessfulCreateProject();
+
+                        mRef.child("users").child(projectOwnerUid).child(projectId).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                createProjectScreenView.onSuccessfulCreateProject();
+                            }
+                        });
+
                     }
                 });
             }

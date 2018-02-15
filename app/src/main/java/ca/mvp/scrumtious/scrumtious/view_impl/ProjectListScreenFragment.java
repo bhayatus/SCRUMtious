@@ -72,10 +72,9 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
 
     private void setupRecyclerView(){
 
-        projectListScreenPresenterInt.setupAuthenticationListener();
         // Creates a dialog that appears to tell the user that the sign in is occurring
         loadingProjectsDialog = new ProgressDialog(getActivity());
-        loadingProjectsDialog.setTitle("Loading Projects");
+        loadingProjectsDialog.setTitle("Load Projects");
         loadingProjectsDialog.setCancelable(false);
         loadingProjectsDialog.setMessage("Now loading your projects...");
         loadingProjectsDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -110,11 +109,6 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         startActivity(intent);
     }
 
-    public void returnToLoginScreen(){
-        Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
 
     public void onClickAddNewProject(View view){
         Intent intent = new Intent(this.getActivity(), CreateProjectScreenActivity.class);

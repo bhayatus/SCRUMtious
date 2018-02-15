@@ -1,30 +1,240 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectMembersPresenter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProjectMembersFragment extends Fragment {
+public class ProjectMembersFragment extends Fragment implements ProjectMembersViewInt {
 
+    private ProjectMembersPresenterInt projectMembersPresenter;
+    private RecyclerView membersList;
+    private FloatingActionButton addMemberFAB;
 
+    private ProgressDialog invitingProgressDialog, deletingMemberProgressDialog;
     public ProjectMembersFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String pid = getArguments().getString("projectId");
+        this.projectMembersPresenter = new ProjectMembersPresenter(this, pid);
+        projectMembersPresenter.checkIfOwner();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_project_members, container, false);
+        View view = inflater.inflate(R.layout.fragment_project_members, container, false);
+        membersList = view.findViewById(R.id.membersListScreenRecyclerView);
+        addMemberFAB = (FloatingActionButton) view.findViewById(R.id.memberListScreenFAB);
+
+        // When user clicks on the fab, open dialog to invite member
+        addMemberFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                final View alertView = inflater.inflate(R.layout.alert_dialogue_add_member, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Invite new member")
+                        .setView(alertView)
+                        .setMessage("Enter the e-mail address of the user you want to invite.")
+                        .setPositiveButton("Invite", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Validate password and delete project
+                                EditText emailET = (EditText) alertView.findViewById(R.id.alert_dialogue_add_member_email_text_field);
+                                String emailAddress = emailET.getText().toString().trim();
+
+                                // Cannot send null email address
+                                if(emailAddress == null){
+                                    deleteMemberExceptionMessage("Please enter the e-mail address of the user to invite.");
+                                }
+
+                                else {
+                                    // Cannot send empty string
+                                    if(emailAddress.length() == 0) {
+                                        deleteMemberExceptionMessage("Please enter the e-mail address of the user to invite.");
+                                    }
+                                    else {
+
+                                        // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                        invitingProgressDialog = new ProgressDialog(getContext());
+                                        invitingProgressDialog.setTitle("Invite User");
+                                        invitingProgressDialog.setCancelable(false);
+                                        invitingProgressDialog.setMessage("Inviting user to project...");
+                                        invitingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                        invitingProgressDialog.show();
+
+                                        // Password is of valid type, send it
+                                        projectMembersPresenter.checkBeforeInvite(emailAddress);
+                                    }
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+
+
+
+            }
+        });
+        setupRecyclerView();
+        return view;
+    }
+
+    // When an invite request by the group owner has ended, end the progress dialog
+    private void inviteEnded(){
+        if(invitingProgressDialog != null && invitingProgressDialog.isShowing()){
+            invitingProgressDialog.dismiss();
+        }
+
+    }
+
+    // When a delete member request by the group owner has ended, end the progress dialog
+    private void deleteMemberEnded() {
+        if(deletingMemberProgressDialog != null && deletingMemberProgressDialog.isShowing()){
+            deletingMemberProgressDialog.dismiss();
+        }
+    }
+
+    // Only owner of the project can view and click the add member fab
+    @Override
+    public void setAddMemberInvisible() {
+        addMemberFAB.setVisibility(View.GONE);
+    }
+
+
+    // Sets up the recycler view to display info about members
+    private void setupRecyclerView(){
+
+        membersList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        membersList.setAdapter(projectMembersPresenter.setupMembersAdapter(membersList));
+
+    }
+
+
+    // When the delete member button is clicked for an individual member
+    public void onClickDelete(final String uid){
+        LayoutInflater inflater = (this).getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete member?")
+                .setView(alertView)
+                .setMessage("Are you sure you want to delete this member? Enter your password below to confirm.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Validate password and delete project
+                        EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
+                        String password = passwordET.getText().toString().trim();
+
+                        // Cannot send null password
+                        if(password == null){
+                            deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                        }
+
+                        else {
+                            // Cannot send empty string
+                            if(password.length() == 0) {
+                                deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                            }
+                            else {
+
+                                // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                deletingMemberProgressDialog = new ProgressDialog(getContext());
+                                deletingMemberProgressDialog.setTitle("Delete Member");
+                                deletingMemberProgressDialog.setCancelable(false);
+                                deletingMemberProgressDialog.setMessage("Attempting to delete member...");
+                                deletingMemberProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                deletingMemberProgressDialog.show();
+
+                                // Password is of valid type, send it
+                                projectMembersPresenter.validatePassword(password, uid);
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+
+    }
+
+    // Exception messages for when deleting members
+    @Override
+    public void deleteMemberExceptionMessage(String error) {
+        deleteMemberEnded();
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    // Exception messages for when inviting users
+    @Override
+    public void inviteMemberExceptionMessage(String error) {
+        inviteEnded();
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    // Viewholder class to display members of a project
+    public static class MembersViewHolder extends RecyclerView.ViewHolder{
+        View mView;
+        TextView emailView;
+        ImageButton deleteView;
+
+        public MembersViewHolder(View itemView) {
+            super(itemView);
+            this.mView = itemView;
+
+            emailView = (TextView) mView.findViewById(R.id.member_row_email);
+            deleteView = (ImageButton) mView.findViewById(R.id.member_delete_btn);
+        }
+
+
+        // Populates each row of the recycler view with the project details
+        public void setDetails(String emailAddress){
+            emailView.setText(emailAddress);
+        }
+
+        // Gets the delete button
+        public ImageButton getDeleteView(){
+            return deleteView;
+        }
     }
 
 }

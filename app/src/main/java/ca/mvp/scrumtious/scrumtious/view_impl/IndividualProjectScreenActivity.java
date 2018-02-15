@@ -41,6 +41,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
      */
     private ViewPager mViewPager;
     private ImageButton deleteBtn;
+    private String pid;
 
     private IndividualProjectScreenPresenterInt individualProjectScreenPresenter;
 
@@ -52,7 +53,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_individual_project_screen);
 
         Bundle data = getIntent().getExtras();
-        final String pid = data.getString("projectId");
+        pid = data.getString("projectId");
 
         individualProjectScreenPresenter = new IndividualProjectScreenPresenter(this, pid);
         individualProjectScreenPresenter.setupProjectDeleteListener();
@@ -86,7 +87,6 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
     }
 
     public void onSuccessfulDeletion() {
-        Toast.makeText(this,"Project successfully deleted.",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ProjectTabsScreenActivity.class);
         startActivity(intent);
         finish();
@@ -100,11 +100,12 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
     }
 
+    // Delete button on top right is clicked
     public void onClickDelete(View view) {
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete?")
+        builder.setTitle("Delete project?")
                 .setView(alertView)
                 .setMessage("Are you sure you want to delete this project? Enter your password below to confirm.") 
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -113,7 +114,21 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
                         // Validate password and delete project
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
                         String password = passwordET.getText().toString().trim();
-                        individualProjectScreenPresenter.validatePassword(password);
+
+                        // Cannot send null password
+                        if(password == null){
+                            deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+                        }
+                        else {
+                            // Cannot send empty string
+                            if(password.length() == 0){
+                                deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+                            }
+                            else {
+                                // Password is of valid type, send it
+                                individualProjectScreenPresenter.validatePassword(password);
+                            }
+                        }
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -144,7 +159,10 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
                     return projectOverviewFragment;
 
                 case 1:
+                    Bundle data = new Bundle();
+                    data.putString("projectId", pid);
                     ProjectMembersFragment projectMembersFragment = new ProjectMembersFragment();
+                    projectMembersFragment.setArguments(data);
                     return projectMembersFragment;
                 default:
                     return null;
@@ -171,5 +189,12 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
                     return null;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(IndividualProjectScreenActivity.this, ProjectTabsScreenActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

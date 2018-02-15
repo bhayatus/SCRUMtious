@@ -20,10 +20,9 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:theme="@style/IndividualProjectToolbar"
-            app:title="@string/app_name">
+            app:title="Project Screen">
 
             <ImageButton
                 android:id="@+id/delete_project_img_btn"

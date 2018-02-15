@@ -1,15 +1,12 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +29,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         this.pid = pid;
     }
 
+    // In case the project no longer exists, user must be returned to project list screen
     @Override
     public void setupProjectDeleteListener(){
         mDatabase = FirebaseDatabase.getInstance();
@@ -52,6 +50,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         });
     }
 
+    // Need to verify if the owner if delete project button is to show
     public void checkIfOwner(){
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
@@ -60,7 +59,8 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         mRef.child("projects").child(pid).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.getValue().toString().equals(mUser.getUid().toString())){
+                // Only owner should see delete button, should be invisible otherwise
+                if(!dataSnapshot.getValue().toString().equals(mUser.getUid())){
                     individualProjectScreenView.setDeleteInvisible();
                 }
             }
@@ -73,8 +73,10 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
 
     }
 
+    // Checks to see if group owner entered password correctly before going through with delete
     @Override
     public void validatePassword(String password){
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
         AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
@@ -82,26 +84,45 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                // If password entered matched the password of the group owner, then delete
-                if (task.isSuccessful()){
+                // If password entered matched the password of the group owner, then proceed to deletion
+                if (task.isSuccessful()) {
                     deleteProject();
                 }
 
                 // Password didn't match, tell user
-                else{
-                    individualProjectScreenView.deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+                else {
+                    individualProjectScreenView.deleteProjectExceptionMessage("Incorrect password, could not delete project.");
                 }
             }
         });
+
     }
 
     private void deleteProject() {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects");
+        // Remove project from projects tree
         mRef.child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
+                    mRef = mDatabase.getReference().child("users");
+                    mRef.orderByChild(pid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // Remove projectid:member from each part of the users tree
+                            for(DataSnapshot d: dataSnapshot.getChildren()){
+                               DatabaseReference ref = d.child(pid).getRef();
+                               ref.removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     // Project was successfully deleted
                     individualProjectScreenView.onSuccessfulDeletion();
                 }

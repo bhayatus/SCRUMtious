@@ -35,14 +35,6 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
         this.viewProjectsScreenView = viewProjectsScreenView;
         this.mAuth = FirebaseAuth.getInstance();
     }
-    @Override
-    public void setupAuthenticationListener() {
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() == null){
-            //replace that with the method
-            viewProjectsScreenView.returnToLoginScreen();
-        }
-    }
 
     @Override
     public FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupGeneralProjectsAdapter(RecyclerView projectList, ProgressDialog loadingProjectsDialog) {
@@ -122,12 +114,5 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
         return projectListAdapter;
     }
 
-    @Override
-    public void signOut() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().signOut();
-            viewProjectsScreenView.returnToLoginScreen();
-        }
-    }
 }
 

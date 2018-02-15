@@ -2,34 +2,31 @@ package ca.mvp.scrumtious.scrumtious.model;
 
 import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
-/**
- * Created by badsh on 2/10/2018.
- */
 
 public class User {
 
-    private String userId;
-    private String userEmailAddress;
+    private String userID;
+    private String emailAddress;
 
     // empty constructor is needed for firebase
     public User() {
 
     }
 
-    public User(String userId, String userEmailAddress) {
+    public User(String userID, String emailAddress) {
 
-        if (userId == null || userEmailAddress == null) return;
+        if (userID == null || emailAddress == null) return;
 
-        userEmailAddress = userEmailAddress.trim();
+        emailAddress = emailAddress.trim();
 
-        if (UserInputValidator.isValidEmail(userEmailAddress) == 0) {
-            this.userId = userId;
-            this.userEmailAddress = userEmailAddress;
+        if (UserInputValidator.isValidEmail(emailAddress) == 0) {
+            this.userID = userID;
+            this.emailAddress = emailAddress;
         } else return;
     }
 
-    public String getUserEmailAddress() { return this.userEmailAddress; }
-    public String getUserId() { return this.userId; }
+    public String getEmailAddress() { return this.emailAddress; }
+    public String getUserID() { return this.userID; }
 
     /**
      * Checks if the email is valid
@@ -41,7 +38,7 @@ public class User {
         int isValidStatus = UserInputValidator.isValidEmail(newEmailAddressToSet);
 
         if (isValidStatus == 0) {
-            this.userEmailAddress = newEmailAddressToSet;
+            this.emailAddress = newEmailAddressToSet;
             return 0;
         }
 
