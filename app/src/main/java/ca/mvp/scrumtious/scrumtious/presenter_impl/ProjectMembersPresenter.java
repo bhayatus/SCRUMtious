@@ -196,24 +196,28 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     // Check if user is already in project
                     mDatabase = FirebaseDatabase.getInstance();
                     mRef = mDatabase.getReference().child("projects");
-                    mRef.orderByChild(invitedUid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
+                    mRef.child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            boolean checkMore = true; // flag to ensure the rest of the checks happen
+                            // if necessary
+
                             // User already in project, don't invite again
                             if (dataSnapshot.exists()){
+                                    String id = dataSnapshot.getKey().toString();
 
-                                for(DataSnapshot d: dataSnapshot.getChildren()){
-                                    // Project id matches
-                                    if (d.getKey().equals(pid)){
+                                    if(id.equals(pid) && dataSnapshot.hasChild(invitedUid)){
                                         projectMembersView.inviteMemberExceptionMessage("Cannot invite member as they are already" +
                                                 " part of this project.");
+                                        checkMore = false;
                                         return;
                                     }
-                                }
 
                             }
 
-                            else{
+
+                            if (checkMore){
+
                                 // Proceed with checking if user has already been invited
 
                                 mDatabase = FirebaseDatabase.getInstance();
@@ -223,11 +227,13 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()){
                                             for (DataSnapshot d: dataSnapshot.getChildren()){
+                                                // If invitedUid matches, meaning the user has already been invited
                                                 if (d.child("invitedUid").getValue().toString().equals(invitedUid)){
                                                     projectMembersView.inviteMemberExceptionMessage("This user has already been invited to this project.");
                                                     return;
                                                 }
                                             }
+                                            // This is a case where we can actually invite the user
                                             inviteMember(invitedUid);
                                         }
 
@@ -251,6 +257,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                         }
                     });
+
                 }
             }
 
@@ -265,8 +272,8 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
     }
 
+    // Actually send the invite to the user at this point
     private void inviteMember(final String invitedUid){
-
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects");
         mRef.child(pid).child("projectTitle").addListenerForSingleValueEvent(new ValueEventListener() {

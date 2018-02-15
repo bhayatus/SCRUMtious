@@ -85,13 +85,13 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                                     }
                                     else {
 
-                                        // Creates a dialog that appears to tell the user that inviting a user is still occurring
-                                        invitingProgressDialog = new ProgressDialog(getContext());
-                                        invitingProgressDialog.setTitle("Invite User");
-                                        invitingProgressDialog.setCancelable(false);
-                                        invitingProgressDialog.setMessage("Inviting user to project...");
-                                        invitingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                        invitingProgressDialog.show();
+//                                        // Creates a dialog that appears to tell the user that inviting a user is still occurring
+//                                        invitingProgressDialog = new ProgressDialog(getContext());
+//                                        invitingProgressDialog.setTitle("Invite User");
+//                                        invitingProgressDialog.setCancelable(false);
+//                                        invitingProgressDialog.setMessage("Inviting user to project...");
+//                                        invitingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                                        invitingProgressDialog.show();
 
                                         // Password is of valid type, send it
                                         projectMembersPresenter.checkBeforeInvite(emailAddress);
@@ -207,7 +207,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     // Exception messages for when inviting users
     @Override
     public void inviteMemberExceptionMessage(String error) {
-        inviteEnded();
+        //inviteEnded();
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 
