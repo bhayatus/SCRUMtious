@@ -63,7 +63,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 final View alertView = inflater.inflate(R.layout.alert_dialogue_add_member, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Invite new member")
+                builder.setTitle("Invite New Member")
                         .setView(alertView)
                         .setMessage("Enter the e-mail address of the user you want to invite.")
                         .setPositiveButton("Invite", new DialogInterface.OnClickListener() {
@@ -151,7 +151,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Delete member?")
+        builder.setTitle("Delete Member?")
                 .setView(alertView)
                 .setMessage("Are you sure you want to delete this member? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
