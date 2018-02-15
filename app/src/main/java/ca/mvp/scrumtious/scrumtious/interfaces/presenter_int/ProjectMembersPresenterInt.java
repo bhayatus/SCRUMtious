@@ -12,5 +12,7 @@ public interface ProjectMembersPresenterInt {
             (RecyclerView memberList);
 
     void validatePassword(String password, final String uid);
+    void checkBeforeInvite(String emailAddress);
+    void checkIfOwner();
 
 }

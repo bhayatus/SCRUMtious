@@ -84,7 +84,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                // If password entered matched the password of the group owner, then delete
+                // If password entered matched the password of the group owner, then proceed to deletion
                 if (task.isSuccessful()) {
                     deleteProject();
                 }
@@ -101,15 +101,16 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
     private void deleteProject() {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects");
+        // Remove project from projects tree
         mRef.child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-
                     mRef = mDatabase.getReference().child("users");
                     mRef.orderByChild(pid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            // Remove projectid:member from each part of the users tree
                             for(DataSnapshot d: dataSnapshot.getChildren()){
                                DatabaseReference ref = d.child(pid).getRef();
                                ref.removeValue();

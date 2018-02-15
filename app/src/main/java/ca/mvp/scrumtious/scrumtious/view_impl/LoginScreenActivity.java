@@ -134,7 +134,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
 
         // Creates a dialog that appears to tell the user that the sign in is occurring
         signingInProgressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
-        signingInProgressDialog.setTitle("Sign in");
+        signingInProgressDialog.setTitle("Sign In");
         signingInProgressDialog.setCancelable(false);
         signingInProgressDialog.setMessage("Attempting to sign you in...");
         signingInProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

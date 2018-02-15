@@ -2,10 +2,12 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,9 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     private ProjectMembersPresenterInt projectMembersPresenter;
     private RecyclerView membersList;
+    private FloatingActionButton addMemberFAB;
+
+    private ProgressDialog invitingProgressDialog, deletingMemberProgressDialog;
     public ProjectMembersFragment() {
         // Required empty public constructor
     }
@@ -39,6 +44,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         super.onCreate(savedInstanceState);
         String pid = getArguments().getString("projectId");
         this.projectMembersPresenter = new ProjectMembersPresenter(this, pid);
+        projectMembersPresenter.checkIfOwner();
     }
 
     @Override
@@ -47,10 +53,91 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
         membersList = view.findViewById(R.id.membersListScreenRecyclerView);
+        addMemberFAB = (FloatingActionButton) view.findViewById(R.id.memberListScreenFAB);
+
+        // When user clicks on the fab, open dialog to invite member
+        addMemberFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                final View alertView = inflater.inflate(R.layout.alert_dialogue_add_member, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Invite new member")
+                        .setView(alertView)
+                        .setMessage("Enter the e-mail address of the user you want to invite.")
+                        .setPositiveButton("Invite", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Validate password and delete project
+                                EditText emailET = (EditText) alertView.findViewById(R.id.alert_dialogue_add_member_email_text_field);
+                                String emailAddress = emailET.getText().toString().trim();
+
+                                // Cannot send null email address
+                                if(emailAddress == null){
+                                    deleteMemberExceptionMessage("Please enter the e-mail address of the user to invite.");
+                                }
+
+                                else {
+                                    // Cannot send empty string
+                                    if(emailAddress.length() == 0) {
+                                        deleteMemberExceptionMessage("Please enter the e-mail address of the user to invite.");
+                                    }
+                                    else {
+
+                                        // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                        invitingProgressDialog = new ProgressDialog(getContext());
+                                        invitingProgressDialog.setTitle("Invite User");
+                                        invitingProgressDialog.setCancelable(false);
+                                        invitingProgressDialog.setMessage("Inviting user to project...");
+                                        invitingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                        invitingProgressDialog.show();
+
+                                        // Password is of valid type, send it
+                                        projectMembersPresenter.checkBeforeInvite(emailAddress);
+                                    }
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+
+
+
+            }
+        });
         setupRecyclerView();
         return view;
     }
 
+    // When an invite request by the group owner has ended, end the progress dialog
+    private void inviteEnded(){
+        if(invitingProgressDialog != null && invitingProgressDialog.isShowing()){
+            invitingProgressDialog.dismiss();
+        }
+
+    }
+
+    // When a delete member request by the group owner has ended, end the progress dialog
+    private void deleteMemberEnded() {
+        if(deletingMemberProgressDialog != null && deletingMemberProgressDialog.isShowing()){
+            deletingMemberProgressDialog.dismiss();
+        }
+    }
+
+    // Only owner of the project can view and click the add member fab
+    @Override
+    public void setAddMemberInvisible() {
+        addMemberFAB.setVisibility(View.GONE);
+    }
+
+
+    // Sets up the recycler view to display info about members
     private void setupRecyclerView(){
 
         membersList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -58,10 +145,8 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     }
 
-    public void onClickAddMember(View view){
-        Toast.makeText(getContext(), "Adding Member Placeholder", Toast.LENGTH_SHORT).show();
-    }
 
+    // When the delete member button is clicked for an individual member
     public void onClickDelete(final String uid){
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
@@ -87,6 +172,15 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                                 deleteMemberExceptionMessage("Incorrect password, could not delete member.");
                             }
                             else {
+
+                                // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                deletingMemberProgressDialog = new ProgressDialog(getContext());
+                                deletingMemberProgressDialog.setTitle("Delete Member");
+                                deletingMemberProgressDialog.setCancelable(false);
+                                deletingMemberProgressDialog.setMessage("Attempting to delete member...");
+                                deletingMemberProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                deletingMemberProgressDialog.show();
+
                                 // Password is of valid type, send it
                                 projectMembersPresenter.validatePassword(password, uid);
                             }
@@ -103,8 +197,17 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     }
 
+    // Exception messages for when deleting members
     @Override
     public void deleteMemberExceptionMessage(String error) {
+        deleteMemberEnded();
+        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    // Exception messages for when inviting users
+    @Override
+    public void inviteMemberExceptionMessage(String error) {
+        inviteEnded();
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 

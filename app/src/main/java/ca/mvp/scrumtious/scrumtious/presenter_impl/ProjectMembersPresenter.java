@@ -2,6 +2,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -18,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
@@ -138,6 +141,163 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 }
             }
         });
+
+
+    }
+
+    // Need to verify if the owner if add member button is to show
+    public void checkIfOwner(){
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser mUser = mAuth.getCurrentUser();
+        mRef.child("projects").child(pid).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Only owner should see add member fab, should be invisible otherwise
+                if(!dataSnapshot.getValue().toString().equals(mUser.getUid())){
+                    projectMembersView.setAddMemberInvisible();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void checkBeforeInvite(String emailAddress) {
+
+        // First check if user even exists
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("users");
+        mRef.orderByChild("emailAddress").equalTo(emailAddress).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (!dataSnapshot.exists()){
+                    projectMembersView.inviteMemberExceptionMessage("Cannot invite user with that e-mail address " +
+                            "as they do not exist.");
+                }
+
+                // Proceed with checking if user is already in the project
+                else{
+                        String id = "";
+                        for(DataSnapshot d: dataSnapshot.getChildren()){
+                           id = d.child("userID").getValue(String.class);
+                        }
+
+                        final String invitedUid = id;
+
+                    // Check if user is already in project
+                    mDatabase = FirebaseDatabase.getInstance();
+                    mRef = mDatabase.getReference().child("projects");
+                    mRef.orderByChild(invitedUid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // User already in project, don't invite again
+                            if (dataSnapshot.exists()){
+                                projectMembersView.inviteMemberExceptionMessage("Cannot invite member as they are already" +
+                                        " part of this project.");
+                            }
+
+                            else{
+                                // Proceed with checking if user has already been invited
+
+                                mDatabase = FirebaseDatabase.getInstance();
+                                mRef = mDatabase.getReference().child("invites");
+                                mRef.orderByChild("projectId").equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            for (DataSnapshot d: dataSnapshot.getChildren()){
+                                                if (d.child("invitedUid").getValue().toString().equals(invitedUid)){
+                                                    projectMembersView.inviteMemberExceptionMessage("This user has already been invited to this project.");
+                                                    return;
+                                                }
+                                            }
+                                            inviteMember(invitedUid);
+                                        }
+
+                                        else{
+                                            // This is a case where we can actually invite the user
+                                            inviteMember(invitedUid);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+    }
+
+    private void inviteMember(final String invitedUid){
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects");
+        mRef.child(pid).child("projectTitle").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String projectTitle = dataSnapshot.getValue().toString();
+                HashMap<String, String> inviteMap = new HashMap<>();
+
+                // Get uid and password of me, the person inviting
+                String invitingUid;
+                String invitingEmail;
+                mAuth = FirebaseAuth.getInstance();
+                invitingUid = mAuth.getCurrentUser().getUid();
+                invitingEmail = mAuth.getCurrentUser().getEmail();
+
+                // Store the info
+                inviteMap.put("projectId", pid);
+                inviteMap.put("projectTitle", projectTitle);
+                inviteMap.put("invitingUid", invitingUid);
+                inviteMap.put("invitingEmail", invitingEmail);
+                inviteMap.put("invitedUid", invitedUid);
+
+                // Generating a unique push id and adding the invite to it
+                mDatabase = FirebaseDatabase.getInstance();
+                mRef = mDatabase.getReference().child("invites");
+                final String inviteId = mRef.push().getKey();
+                mRef.child(inviteId).setValue(inviteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        projectMembersView.inviteMemberExceptionMessage("Sent an invite.");
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
     }

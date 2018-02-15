@@ -74,7 +74,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
 
         // Creates a dialog that appears to tell the user that the sign in is occurring
         loadingProjectsDialog = new ProgressDialog(getActivity());
-        loadingProjectsDialog.setTitle("Loading Projects");
+        loadingProjectsDialog.setTitle("Load Projects");
         loadingProjectsDialog.setCancelable(false);
         loadingProjectsDialog.setMessage("Now loading your projects...");
         loadingProjectsDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
