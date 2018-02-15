@@ -29,7 +29,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
         this.pid = pid;
     }
 
-    // In case the project no longer exists, user must be returned to project list screen
+    // In case the project no longer exists or user was removed, user must be returned to project list screen
     @Override
     public void setupProjectDeleteListener(){
         mDatabase = FirebaseDatabase.getInstance();
@@ -40,6 +40,14 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
                 // If project no longer exists, exit this screen and go back
                 if (!dataSnapshot.exists()){
                     individualProjectScreenView.onSuccessfulDeletion();
+                }
+
+                else{
+                    // Check if I'm no longer a member through my uid
+                    mAuth = FirebaseAuth.getInstance();
+                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                        individualProjectScreenView.onSuccessfulDeletion();
+                    }
                 }
             }
 

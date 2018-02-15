@@ -113,8 +113,16 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         mRef.child("users").child(uid).child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                mRef.child("projects").child(pid).child(uid).removeValue();
-                projectMembersView.deleteMemberExceptionMessage("Deleted member from project.");
+                if (task.isSuccessful()) {
+                    mRef.child("projects").child(pid).child(uid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                projectMembersView.deleteMemberExceptionMessage("Deleted member from project.");
+                            }
+                        }
+                    });
+                }
             }
         });
     }
