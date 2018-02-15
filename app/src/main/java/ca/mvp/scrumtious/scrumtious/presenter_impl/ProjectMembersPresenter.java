@@ -1,10 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-
-import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -25,9 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
-import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.model.User;
-import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment;
 
 public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
@@ -43,33 +38,14 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         this.projectMembersView = projectMembersView;
         this.pid = pid;
     }
- 
-    // In case the project no longer exists
-    @Override
-    public void setupProjectDeleteListener(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // If project no longer exists, exit this screen and go back
-                if (!dataSnapshot.exists()){
-                    projectMembersView.onSuccessfulDeletion();
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     @Override
     public FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMembersAdapter(RecyclerView memberList) {
             mDatabase = FirebaseDatabase.getInstance();
             mAuth = FirebaseAuth.getInstance();
             DatabaseReference rootRef = mDatabase.getReference();
+            // Only query users who are in the project
             mQuery = rootRef.child("users").orderByChild(pid).equalTo("member");
 
             FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> membersListAdapter
@@ -112,7 +88,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // If user chooses to remove member, do so
+                            // If user chooses to remove member, do so after confirming
                             String uid = getRef(currentPosition).getKey();
                             projectMembersView.onClickDelete(uid);
                         }
@@ -132,7 +108,6 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
 
-
         mRef.child("users").child(uid).child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -145,34 +120,26 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     @Override
     public void validatePassword(String password, final String uid) {
 
-        if (password == null) {
-            projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
-        } else {
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
+        mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
 
-            if(password.length() == 0) {
-                projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
-            }
-            else{
-            mAuth = FirebaseAuth.getInstance();
-            FirebaseUser mUser = mAuth.getCurrentUser();
-            AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
-            mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-
-                    // If password entered matched the password of the group owner, then delete
-                    if (task.isSuccessful()) {
-                        deleteMember(uid);
-                    }
-
-                    // Password didn't match, tell user
-                    else {
-                        projectMembersView.deleteMemberExceptionMessage("Password incorrect, could not delete member.");
-                    }
+                // If password entered matched the password of the group owner, then delete
+                if (task.isSuccessful()) {
+                    deleteMember(uid);
                 }
-            });
-        }
-        }
+
+                // Password didn't match, tell user
+                else {
+                    projectMembersView.deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                }
+            }
+        });
+
+
     }
 
 

@@ -58,21 +58,15 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     }
 
-    public void onSuccessfulDeletion() {
-        Intent intent = new Intent(getContext(), ProjectTabsScreenActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
     public void onClickAddMember(View view){
-
+        Toast.makeText(getContext(), "Adding Member Placeholder", Toast.LENGTH_SHORT).show();
     }
 
     public void onClickDelete(final String uid){
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Delete?")
+        builder.setTitle("Delete member?")
                 .setView(alertView)
                 .setMessage("Are you sure you want to delete this member? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -81,7 +75,22 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                         // Validate password and delete project
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
                         String password = passwordET.getText().toString().trim();
-                        projectMembersPresenter.validatePassword(password, uid);
+
+                        // Cannot send null password
+                        if(password == null){
+                            deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                        }
+
+                        else {
+                            // Cannot send empty string
+                            if(password.length() == 0) {
+                                deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                            }
+                            else {
+                                // Password is of valid type, send it
+                                projectMembersPresenter.validatePassword(password, uid);
+                            }
+                        }
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -99,6 +108,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 
+    // Viewholder class to display members of a project
     public static class MembersViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView emailView;
@@ -118,6 +128,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             emailView.setText(emailAddress);
         }
 
+        // Gets the delete button
         public ImageButton getDeleteView(){
             return deleteView;
         }

@@ -22,7 +22,7 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:theme="@style/IndividualProjectToolbar"
-            app:title="@string/app_name">
+            app:title="Project Screen">
 
             <ImageButton
                 android:id="@+id/delete_project_img_btn"

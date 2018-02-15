@@ -13,5 +13,4 @@ public interface ProjectMembersPresenterInt {
 
     void validatePassword(String password, final String uid);
 
-    void setupProjectDeleteListener();
 }

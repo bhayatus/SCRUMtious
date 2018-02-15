@@ -4,5 +4,4 @@ public interface SignupScreenPresenterInt {
 
     void attemptSignUp(String emailAddress, String password);
 
-
 }

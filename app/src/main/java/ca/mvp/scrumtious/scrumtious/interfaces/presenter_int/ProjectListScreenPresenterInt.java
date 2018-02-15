@@ -9,16 +9,10 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment;
 
-/**
- * Created by muham on 2018-02-11.
- */
-
 public interface ProjectListScreenPresenterInt {
-    void setupAuthenticationListener();
     FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupGeneralProjectsAdapter
             (RecyclerView projectList, ProgressDialog loadingProjectsDialog);
     FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupMyProjectsAdapter
             (RecyclerView projectList, ProgressDialog loadingProjectsDialog);
 
-    void signOut();
 }

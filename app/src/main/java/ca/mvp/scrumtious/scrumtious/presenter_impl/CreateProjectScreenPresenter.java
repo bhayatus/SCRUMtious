@@ -28,14 +28,6 @@ public class CreateProjectScreenPresenter implements CreateProjectScreenPresente
         this.createProjectScreenView = createProjectScreenView;
     }
 
-    // In case for whatever reason the user is logged out.
-    @Override
-    public void setupAuthenticationListener() {
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null) createProjectScreenView.goToLogin();
-
-    }
 
     @Override
     public void addProjectToDatabase(String projectTitle, String projectDesc) {
