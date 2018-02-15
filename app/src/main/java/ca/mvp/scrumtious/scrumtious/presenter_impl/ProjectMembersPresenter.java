@@ -114,6 +114,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 mRef.child("projects").child(pid).child(uid).removeValue();
+                projectMembersView.deleteMemberExceptionMessage("Deleted member from project.");
             }
         });
     }
