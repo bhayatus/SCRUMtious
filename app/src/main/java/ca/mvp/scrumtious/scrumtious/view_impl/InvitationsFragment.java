@@ -1,15 +1,20 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -49,6 +54,50 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
         invitationsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         invitationsList.setAdapter(invitationsPresenter.setupInvitationsAdapter(invitationsList));
+
+    }
+
+    // When user clicks on the accept button for an invite
+    @Override
+    public void onClickAccept(final String projectId, final String inviteId) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Accept Invite?")
+                .setMessage("Are you sure you want to accept this invite?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        invitationsPresenter.acceptInvite(projectId, inviteId);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                    }
+                })
+                .create().show();
+    }
+
+    // When user clicks on the decline button for an invite
+    @Override
+    public void onClickDecline(final String inviteId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Decline Invite?")
+                .setMessage("Are you sure you want to decline this invite?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        invitationsPresenter.removeInvite(inviteId);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                    }
+                })
+                .create().show();
 
     }
 

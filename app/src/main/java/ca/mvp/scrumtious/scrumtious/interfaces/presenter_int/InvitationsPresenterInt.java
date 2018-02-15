@@ -11,4 +11,8 @@ public interface InvitationsPresenterInt {
 
     FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> setupInvitationsAdapter
             (RecyclerView invitationsList);
+
+    void acceptInvite(String projectId, String inviteId);
+    void removeInvite(String inviteId);
+
 }
