@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
@@ -102,6 +103,23 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
+
+                    mRef = mDatabase.getReference().child("users");
+                    mRef.orderByChild(pid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot d: dataSnapshot.getChildren()){
+                               DatabaseReference ref = d.child(pid).getRef();
+                               ref.removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     // Project was successfully deleted
                     individualProjectScreenView.onSuccessfulDeletion();
                 }

@@ -2,9 +2,6 @@ package ca.mvp.scrumtious.scrumtious.model;
 
 import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
-/**
- * Created by badsh on 2/10/2018.
- */
 
 public class User {
 
