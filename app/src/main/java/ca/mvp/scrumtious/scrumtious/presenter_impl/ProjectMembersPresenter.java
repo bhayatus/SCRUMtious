@@ -61,9 +61,10 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 @Override
                 protected void populateViewHolder(ProjectMembersFragment.MembersViewHolder viewHolder, User model, int position) {
                     viewHolder.setDetails(model.getEmailAddress());
+                    ImageButton delete = viewHolder.getDeleteView();
+                    final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
                     final int currentPosition = position;
-                    final ImageButton delete = viewHolder.getDeleteView();
 
                     mRef  = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
                             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -72,11 +73,12 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                             // Only owner can delete members
                             if ((dataSnapshot.getValue().toString().trim()).equals(mAuth.getCurrentUser().getUid()) == false){
-                                delete.setVisibility(View.GONE);
+                                mViewHolder.setDeleteInvisible();
                             }
 
+                            // Owner should not be able to remove themself from the project
                             if(userModel.getUserID().equals(dataSnapshot.getValue().toString().trim())){
-                                delete.setVisibility(View.GONE);
+                                mViewHolder.setDeleteInvisible();
                             }
 
                         }
@@ -110,6 +112,8 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
 
+        // First remove the project id reference in the user tree, then remove the user id from the
+        // project tree
         mRef.child("users").child(uid).child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
