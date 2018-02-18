@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.interfaces.presenter_int;
 
-
 import android.app.Activity;
 
 public interface LoginScreenPresenterInt {

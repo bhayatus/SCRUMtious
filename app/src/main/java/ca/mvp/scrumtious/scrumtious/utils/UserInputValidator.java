@@ -3,10 +3,6 @@ package ca.mvp.scrumtious.scrumtious.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by badsh on 2/10/2018.
- */
-
 public class UserInputValidator {
 
     private static final int MAX_EMAIL_LENGTH = 254;

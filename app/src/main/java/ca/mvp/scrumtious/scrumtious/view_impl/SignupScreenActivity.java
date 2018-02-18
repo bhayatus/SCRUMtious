@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -111,7 +112,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                 }
                 else if(isValidPassword == -3){
                     passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("Password must contain atleast 1 letter and 1 digit.");
+                    passwordFieldLayout.setError("Password must contain at least 1 letter and 1 digit.");
                 }
                 else{
                     passwordFieldLayout.setError(null);
@@ -154,7 +155,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
         String password = passwordField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled() || retypePasswordFieldLayout.isErrorEnabled()) {
-            Toast.makeText(this, "Cannot submit until the fields are filled out properly.", Toast.LENGTH_SHORT).show();
+            showMessage("Cannot submit until the fields are filled out properly.");
             return;
         }
 
@@ -171,18 +172,23 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
     }
 
     @Override
-    public void signUpExceptionMessage(String error) {
-        signingInProgressDialog.dismiss();
-        Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
+    public void showMessage(String message) {
+        if (signingInProgressDialog != null && signingInProgressDialog.isShowing()) {
+            signingInProgressDialog.dismiss();
+        }
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+
     }
 
     @Override
     public void onSuccessfulSignUp() {
-        Toast.makeText(this,"Verification e-mail sent!",Toast.LENGTH_SHORT).show();
-        signingInProgressDialog.dismiss();
+        Toast.makeText(this, "Verification e-mail sent.", Toast.LENGTH_SHORT).show();
+
+        // Return to login screen
         Intent intent = new Intent(SignupScreenActivity.this, LoginScreenActivity.class);
         startActivity(intent);
         finish();
+
     }
 
     @Override

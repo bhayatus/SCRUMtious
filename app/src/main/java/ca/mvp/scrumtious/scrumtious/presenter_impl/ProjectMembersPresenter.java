@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,9 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.HashMap;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
@@ -122,7 +119,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
-                                projectMembersView.deleteMemberExceptionMessage("Deleted member from project.");
+                                projectMembersView.showMessage("Deleted member from project.");
                             }
                         }
                     });
@@ -149,7 +146,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                 // Password didn't match, tell user
                 else {
-                    projectMembersView.deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                    projectMembersView.showMessage("Incorrect password, could not delete member.");
                 }
             }
         });
@@ -191,7 +188,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (!dataSnapshot.exists()){
-                    projectMembersView.inviteMemberExceptionMessage("Cannot invite user with that e-mail address " +
+                    projectMembersView.showMessage("Cannot invite user with that e-mail address " +
                             "as they do not exist.");
                     return;
                 }
@@ -219,7 +216,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                     String id = dataSnapshot.getKey().toString();
 
                                     if(id.equals(pid) && dataSnapshot.hasChild(invitedUid)){
-                                        projectMembersView.inviteMemberExceptionMessage("Cannot invite member as they are already" +
+                                        projectMembersView.showMessage("Cannot invite member as they are already" +
                                                 " part of this project.");
                                         checkMore = false;
                                         return;
@@ -241,7 +238,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                             for (DataSnapshot d: dataSnapshot.getChildren()){
                                                 // If invitedUid matches, meaning the user has already been invited
                                                 if (d.child("invitedUid").getValue().toString().equals(invitedUid)){
-                                                    projectMembersView.inviteMemberExceptionMessage("This user has already been invited to this project.");
+                                                    projectMembersView.showMessage("This user has already been invited to this project.");
                                                     return;
                                                 }
                                             }
@@ -315,7 +312,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 mRef.child(inviteId).setValue(inviteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        projectMembersView.inviteMemberExceptionMessage("Sent an invite.");
+                        projectMembersView.showMessage("Sent an invite.");
                     }
                 });
             }

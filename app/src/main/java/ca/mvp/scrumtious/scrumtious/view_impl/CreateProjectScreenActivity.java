@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -102,17 +103,20 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
 
 
     public void onSuccessfulCreateProject(){
-        Toast.makeText(this, " Created Project "+titleField.getText().toString().trim() + ".", Toast.LENGTH_SHORT).show();
-        createProjectProgressDialog.dismiss();
+        Toast.makeText(this, "Created project " + titleField.getText().toString().trim() + ".", Toast.LENGTH_SHORT).show();
+
+        // Return to project list screen
         Intent intent = new Intent(CreateProjectScreenActivity.this, ProjectTabsScreenActivity.class);
         startActivity(intent);
         finish();
 
     }
 
-    public void createProjectExceptionMessage(String error) {
-        createProjectProgressDialog.dismiss();
-        Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
+    public void showMessage(String message) {
+        if (createProjectProgressDialog != null && createProjectProgressDialog.isShowing()) {
+            createProjectProgressDialog.dismiss();
+        }
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
     public void onClickCreateProjectSubmit(View view){
@@ -120,7 +124,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
         String description = descriptionField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() ) {
-            Toast.makeText(this, "Cannot create project until fields are filled out properly.", Toast.LENGTH_SHORT).show();
+            showMessage("Cannot create project until fields are filled out properly.");
             return;
         }
 

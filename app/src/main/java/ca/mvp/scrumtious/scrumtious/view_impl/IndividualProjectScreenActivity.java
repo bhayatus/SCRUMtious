@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -87,7 +88,9 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
     }
 
     public void onSuccessfulDeletion() {
-        Intent intent = new Intent(this, ProjectTabsScreenActivity.class);
+        Toast.makeText(this, "Project was deleted.", Toast.LENGTH_SHORT).show();
+        // Return to project list screen
+        Intent intent = new Intent(IndividualProjectScreenActivity.this, ProjectTabsScreenActivity.class);
         startActivity(intent);
         finish();
     }
@@ -96,8 +99,8 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         deleteBtn.setVisibility(View.GONE);
     }
 
-    public void deleteProjectExceptionMessage(String error) {
-        Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
+    public void showMessage(String message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
     // Delete button on top right is clicked
@@ -117,12 +120,12 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
 
                         // Cannot send null password
                         if(password == null){
-                            deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+                            showMessage("Password incorrect, could not delete project.");
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                deleteProjectExceptionMessage("Password incorrect, could not delete project.");
+                                showMessage("Password incorrect, could not delete project.");
                             }
                             else {
                                 // Password is of valid type, send it

@@ -1,25 +1,21 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
@@ -75,13 +71,13 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
                                 // Cannot send null email address
                                 if(emailAddress == null){
-                                    deleteMemberExceptionMessage("Please enter the e-mail address of the user to invite.");
+                                    showMessage("Please enter the e-mail address of the user to invite.");
                                 }
 
                                 else {
                                     // Cannot send empty string
                                     if(emailAddress.length() == 0) {
-                                        deleteMemberExceptionMessage("Please enter the e-mail address of the user to invite.");
+                                        showMessage("Please enter the e-mail address of the user to invite.");
                                     }
                                     else {
 
@@ -113,21 +109,6 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         });
         setupRecyclerView();
         return view;
-    }
-
-    // When an invite request by the group owner has ended, end the progress dialog
-    private void inviteEnded(){
-        if(invitingProgressDialog != null && invitingProgressDialog.isShowing()){
-            invitingProgressDialog.dismiss();
-        }
-
-    }
-
-    // When a delete member request by the group owner has ended, end the progress dialog
-    private void deleteMemberEnded() {
-        if(deletingMemberProgressDialog != null && deletingMemberProgressDialog.isShowing()){
-            deletingMemberProgressDialog.dismiss();
-        }
     }
 
     // Only owner of the project can view and click the add member fab
@@ -163,13 +144,13 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
                         // Cannot send null password
                         if(password == null){
-                            deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                            showMessage("Incorrect password, could not delete member.");
                         }
 
                         else {
                             // Cannot send empty string
                             if(password.length() == 0) {
-                                deleteMemberExceptionMessage("Incorrect password, could not delete member.");
+                                showMessage("Incorrect password, could not delete member.");
                             }
                             else {
 
@@ -199,16 +180,19 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     // Exception messages for when deleting members
     @Override
-    public void deleteMemberExceptionMessage(String error) {
-        deleteMemberEnded();
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-    }
+    public void showMessage(String message) {
 
-    // Exception messages for when inviting users
-    @Override
-    public void inviteMemberExceptionMessage(String error) {
-        inviteEnded();
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+        // Close dialogs if they are still running
+        if(invitingProgressDialog != null && invitingProgressDialog.isShowing()){
+            invitingProgressDialog.dismiss();
+        }
+
+        if(deletingMemberProgressDialog != null && deletingMemberProgressDialog.isShowing()){
+            deletingMemberProgressDialog.dismiss();
+        }
+
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+
     }
 
     // Viewholder class to display members of a project

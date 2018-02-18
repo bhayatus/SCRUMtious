@@ -12,7 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectScreenViewInt;
 
@@ -99,7 +98,7 @@ public class IndividualProjectScreenPresenter implements IndividualProjectScreen
 
                 // Password didn't match, tell user
                 else {
-                    individualProjectScreenView.deleteProjectExceptionMessage("Incorrect password, could not delete project.");
+                    individualProjectScreenView.showMessage("Incorrect password, could not delete project.");
                 }
             }
         });

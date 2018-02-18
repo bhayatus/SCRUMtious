@@ -1,8 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -10,9 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.HashMap;
-
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SignupScreenPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupScreenViewInt;
 
@@ -38,8 +34,7 @@ public class SignupScreenPresenter implements SignupScreenPresenterInt {
                 }
                 else{
                     // Sign up failed, tell user
-                    Log.e("Hello", "Test");
-                    signupScreenView.signUpExceptionMessage(task.getException().getLocalizedMessage());
+                    signupScreenView.showMessage(task.getException().getLocalizedMessage());
                 }
             }
         });

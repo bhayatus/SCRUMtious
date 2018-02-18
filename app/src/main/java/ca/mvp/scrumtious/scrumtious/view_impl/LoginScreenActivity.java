@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -13,8 +14,6 @@ import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginScreenViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.LoginScreenPresenter;
@@ -127,8 +126,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
 
         // If either field has an error, cannot submit the form
         if (passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled()) {
-            Toast.makeText(this, "Cannot submit until the fields are filled out properly.", Toast.LENGTH_SHORT)
-                    .show();
+            showMessage("Cannot submit until the fields are filled out properly.");
             return;
         }
 
@@ -150,11 +148,13 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
         startActivity(intent);
     }
 
-    // On failed login with authentication
+    // Display message to user
     @Override
-    public void loginExceptionMessage(String error) {
+    public void showMessage(String message) {
+        if (signingInProgressDialog != null && signingInProgressDialog.isShowing()){
         signingInProgressDialog.dismiss();
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        }
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
     // On successful login, go to the app's main activity

@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import ca.mvp.scrumtious.scrumtious.R;
 
 public class ProjectTabsScreenActivity extends AppCompatActivity {
