@@ -36,10 +36,10 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
         userStoryMap.put("assignedTo_completed", "false_null");
 
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        mRef = mDatabase.getReference().child("projects").child(this.pid).child("user_stories");
         final String userStoryID = mRef.push().getKey();
 
-        mRef.child("projects").child(this.pid).child("user_stories").child(userStoryID).setValue(userStoryMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mRef.child(userStoryID).setValue(userStoryMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
