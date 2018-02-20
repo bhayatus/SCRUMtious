@@ -46,6 +46,8 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     createUserStoryView.onSuccessfulCreateUserStory();
+                }else{
+                    createUserStoryView.showMessage("Could not create user story.");
                 }
             }
         });
