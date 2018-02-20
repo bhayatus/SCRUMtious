@@ -33,4 +33,5 @@
     <string name="invite_member_btn_text">Invite Member</string>
     <string name="title_activity_product_backlog">ProductBacklogActivity</string>
     <string name="btn_product_backlog_text">Product Backlog</string>
+    <string name="title_activity_create_user_story">CreateUserStoryActivity</string>
 </resources>

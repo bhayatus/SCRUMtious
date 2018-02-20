@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.mvp.scrumtious.scrumtious">
+          package="ca.mvp.scrumtious.scrumtious">
 
     <application
         android:allowBackup="true"
@@ -15,9 +15,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Signup">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -25,32 +25,37 @@
             android:configChanges="orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Signup" />
+            android:theme="@style/AppTheme.Signup"/>
         <activity
             android:name=".view_impl.ProjectTabsScreenActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_project_tabs_screen"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view_impl.CreateProjectScreenActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_create_project"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".view_impl.IndividualProjectScreenActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_individual_project_screen"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view_impl.ProductBacklogActivity"
             android:label="@string/title_activity_product_backlog"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".view_impl.CreateUserStoryActivity"
+            android:label="@string/title_activity_create_user_story"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
