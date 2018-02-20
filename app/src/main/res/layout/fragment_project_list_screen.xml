@@ -23,7 +23,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
                 android:paddingRight="5dp"
                 android:text="@string/filter_owned_projects_only"
                 android:textAlignment="textStart"
@@ -44,7 +43,10 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/linearLayout"
-            android:paddingTop="@dimen/project_list_top_padding">
+            android:paddingTop="@dimen/project_list_top_padding"
+            android:layout_marginBottom="80dp"
+            android:scrollbars="vertical"
+            >
 
         </android.support.v7.widget.RecyclerView>
 
