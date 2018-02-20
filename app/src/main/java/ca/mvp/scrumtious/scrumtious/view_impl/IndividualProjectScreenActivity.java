@@ -158,11 +158,13 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
+                    Bundle data = new Bundle();
+                    data.putString("projectId", pid);
                     ProjectOverviewFragment projectOverviewFragment = new ProjectOverviewFragment();
                     return projectOverviewFragment;
 
                 case 1:
-                    Bundle data = new Bundle();
+                    data = new Bundle();
                     data.putString("projectId", pid);
                     ProjectMembersFragment projectMembersFragment = new ProjectMembersFragment();
                     projectMembersFragment.setArguments(data);

@@ -33,7 +33,7 @@ public class ProductBacklogActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    private String pid;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -43,6 +43,8 @@ public class ProductBacklogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_backlog);
+        Bundle data = getIntent().getExtras();
+        pid = data.getString("projectId");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,9 +100,13 @@ public class ProductBacklogActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
+                    Bundle data = new Bundle();
+                    data.putString("projectId", pid);
                     PBInProgressFragment pbInProgressFragment = new PBInProgressFragment();
                     return pbInProgressFragment;
                 case 1:
+                    data = new Bundle();
+                    data.putString("projectId", pid);
                     PBCompletedFragment pbCompletedFragment = new PBCompletedFragment();
                     return pbCompletedFragment;
                 default:
