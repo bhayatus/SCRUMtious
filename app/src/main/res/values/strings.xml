@@ -31,4 +31,5 @@
     <string name="add_project_btn_text">Add Project</string>
     <string name="add_member_btn_text">Add Member</string>
     <string name="invite_member_btn_text">Invite Member</string>
+    <string name="title_activity_product_backlog">ProductBacklogActivity</string>
 </resources>

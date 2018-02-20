@@ -42,11 +42,15 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view_impl.IndividualProjectScreenActivity"
-            android:label="@string/title_activity_individual_project_screen"
-            android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation"
+            android:label="@string/title_activity_individual_project_screen"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view_impl.ProductBacklogActivity"
+            android:label="@string/title_activity_product_backlog"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
