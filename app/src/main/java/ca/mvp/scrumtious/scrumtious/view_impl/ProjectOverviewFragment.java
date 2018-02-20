@@ -34,8 +34,7 @@ public class ProjectOverviewFragment extends Fragment {
 
     public void onClickProductBacklogBtn(View view) {
         Intent intent = new Intent(getActivity(), ProductBacklogActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("projectId", pid);
+        intent.putExtra("projectId", pid);
         startActivity(intent);
     }
 

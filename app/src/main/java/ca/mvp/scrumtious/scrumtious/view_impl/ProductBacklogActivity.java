@@ -103,11 +103,13 @@ public class ProductBacklogActivity extends AppCompatActivity {
                     Bundle data = new Bundle();
                     data.putString("projectId", pid);
                     PBInProgressFragment pbInProgressFragment = new PBInProgressFragment();
+                    pbInProgressFragment.setArguments(data);
                     return pbInProgressFragment;
                 case 1:
                     data = new Bundle();
                     data.putString("projectId", pid);
                     PBCompletedFragment pbCompletedFragment = new PBCompletedFragment();
+                    pbCompletedFragment.setArguments(data);
                     return pbCompletedFragment;
                 default:
                     return null;
