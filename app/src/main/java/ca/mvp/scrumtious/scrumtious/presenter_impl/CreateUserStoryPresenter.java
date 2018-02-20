@@ -14,7 +14,6 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPres
 
 public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private CreateUserStoryViewInt createUserStoryView;
@@ -26,7 +25,6 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
     }
 
     public void addUserStoryToDatabase(String name, int points, String details){
-        firebaseAuth = FirebaseAuth.getInstance();
 
         HashMap<String, String> userStoryMap = new HashMap<>();
         String stringPoints = Integer.toString(points);
