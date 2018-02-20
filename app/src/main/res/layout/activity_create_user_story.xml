@@ -81,6 +81,7 @@
             android:layout_height="wrap_content"
             android:ems="4"
             android:hint="@string/create_user_story_points"
+            android:maxLength="4"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="number"
             android:maxEms="4"
@@ -88,6 +89,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
+        android:id="@+id/btn_create_user_story_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -95,9 +97,10 @@
         android:layout_marginRight="50dp"
         android:background="@drawable/login_signup_btn"
         android:shape="oval"
-        android:text="@string/create_user_story_create"
 
+        android:text="@string/create_user_story_create"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:onClick="onClickCreateUserStory"/>
 
 </LinearLayout>

@@ -1,16 +1,23 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateUserStoryViewInt;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateUserStoryPresenter;
 
 public class CreateUserStoryActivity extends AppCompatActivity implements CreateUserStoryViewInt {
 
@@ -19,6 +26,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
     private CreateUserStoryPresenterInt createUserStoryPresenter;
     private String pid;
+    private ProgressDialog createUserStoryProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +36,31 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         createUserStoryPresenter = new CreateUserStoryPresenter(this, pid);
         setupFormWatcher();
     }
 
     @Override
     public void onBackPressed() {
-
+        if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0 ||
+                pointField.getText().toString().trim().length() > 0){
+            new AlertDialog.Builder(this)
+                    .setTitle("Discard User Story?")
+                    .setMessage("Are you sure you to discard this new user story?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(CreateUserStoryActivity.this, ProductBacklogActivity.class);
+                            intent.putExtra("projectId", pid);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }else {
+            super.onBackPressed();
+        }
     }
 
     public void setupFormWatcher() {
@@ -118,38 +142,55 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String descText = pointField.getText().toString();
-                boolean isDigit = android.text.TextUtils.isDigitsOnly(descText);
-                if(descText == null || (descText.trim().length() <= 0) || isDigit == false){
-                    descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a user story description.");
-                } else {
+                String pointsText = pointField.getText().toString().trim();
 
-                    int pointsVal = Integer.valueOf(descText);
-                    if (0 <= pointsVal || pointsVal > 9999) {
-                        descriptionFieldLayout.setErrorEnabled(true);
-                        descriptionFieldLayout.setError("Please enter a priority between 0 and 9999");
-                    } else {
-                        descriptionFieldLayout.setErrorEnabled(false);
-                    }
+                if (pointsText == null || (pointsText.trim().length() <= 0)) {
+                    pointFieldLayout.setErrorEnabled(true);
+                    pointFieldLayout.setError("Please enter a user story priority.");
+                    Toast.makeText(getApplicationContext(), "A", Toast.LENGTH_SHORT).show();
                 }
 
+                int pointsVal = Integer.valueOf(pointsText);
+                if (pointsVal <= 0 || pointsVal > 9999) {
+                    pointFieldLayout.setErrorEnabled(true);
+                    pointFieldLayout.setError("Please enter a priority between 0 and 9999");
+                    Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
+                } else {
+                    pointFieldLayout.setErrorEnabled(false);
+                    Toast.makeText(getApplicationContext(), "C", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     @Override
     public void showMessage(String message) {
+        if (createUserStoryProgressDialog != null && createUserStoryProgressDialog.isShowing()) {
+            createUserStoryProgressDialog.dismiss();
+        }
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onClickCreateUserStory() {
-
+    public void onClickCreateUserStory(View view) {
+        if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()
+                || pointFieldLayout.isErrorEnabled()) {
+            showMessage("Cannot create story until fields are filled out properly.");
+            return;
+        } else {
+            // Creates a dialog that appears to tell the user that creating the project is occurring
+            createUserStoryProgressDialog = new ProgressDialog(this);
+            createUserStoryProgressDialog.setTitle("Create User Story");
+            createUserStoryProgressDialog.setCancelable(false);
+            createUserStoryProgressDialog.setMessage("Creating user story...");
+            createUserStoryProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            createUserStoryProgressDialog.show();
+        }
     }
 
     @Override
     public void onSuccessfulCreateUserStory() {
-        
+        if (createUserStoryProgressDialog != null && createUserStoryProgressDialog.isShowing()) {
+            createUserStoryProgressDialog.dismiss();
+        }
     }
 }
