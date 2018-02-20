@@ -50,7 +50,6 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Project");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_project_screen);
 
@@ -109,7 +108,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete project?")
+        builder.setTitle("Delete Project?")
                 .setView(alertView)
                 .setMessage("Are you sure you want to delete this project? Enter your password below to confirm.") 
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
