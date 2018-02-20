@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPresenterInt;
@@ -147,17 +146,14 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                 if (pointsText == null || (pointsText.trim().length() <= 0)) {
                     pointFieldLayout.setErrorEnabled(true);
                     pointFieldLayout.setError("Please enter a user story priority.");
-                    Toast.makeText(getApplicationContext(), "A", Toast.LENGTH_SHORT).show();
                 }
 
                 int pointsVal = Integer.valueOf(pointsText);
                 if (pointsVal <= 0 || pointsVal > 9999) {
                     pointFieldLayout.setErrorEnabled(true);
                     pointFieldLayout.setError("Please enter a priority between 0 and 9999");
-                    Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
                 } else {
                     pointFieldLayout.setErrorEnabled(false);
-                    Toast.makeText(getApplicationContext(), "C", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -172,6 +168,11 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     }
 
     public void onClickCreateUserStory(View view) {
+
+        String title = titleField.getText().toString().trim();
+        String desc = descriptionField.getText().toString().trim();
+        int points = Integer.valueOf(pointField.getText().toString().trim());
+
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()
                 || pointFieldLayout.isErrorEnabled()) {
             showMessage("Cannot create story until fields are filled out properly.");
@@ -184,6 +185,8 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
             createUserStoryProgressDialog.setMessage("Creating user story...");
             createUserStoryProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             createUserStoryProgressDialog.show();
+
+            createUserStoryPresenter.addUserStoryToDatabase(title, points, desc);
         }
     }
 
@@ -192,5 +195,9 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         if (createUserStoryProgressDialog != null && createUserStoryProgressDialog.isShowing()) {
             createUserStoryProgressDialog.dismiss();
         }
+        Intent intent = new Intent(CreateUserStoryActivity.this, ProductBacklogActivity.class);
+        intent.putExtra("projectId", pid);
+        startActivity(intent);
+        finish();
     }
 }
