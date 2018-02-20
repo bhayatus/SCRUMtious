@@ -1,17 +1,12 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:tools="http://schemas.android.com/tools"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:orientation="vertical"
+                                                    android:paddingTop="@dimen/project_list_top_padding"
                                                  android:background="@color/project_list_screen_bg_color"
                                                  tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/project_list_padding"
-        android:paddingRight="@dimen/project_list_padding"
-        android:paddingTop="@dimen/project_list_top_padding">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -41,25 +36,22 @@
             android:id="@+id/projectListScreenRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/btn_add_project"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/linearLayout"
             android:paddingTop="@dimen/project_list_top_padding"
-            android:layout_marginBottom="80dp"
-            android:scrollbars="vertical"
             >
 
         </android.support.v7.widget.RecyclerView>
 
-    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_add_project"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/add_project_btn_text"
+        android:textColor="@color/white"/>
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/projectListScreenFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_add_white_24dp"/>
-
-
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

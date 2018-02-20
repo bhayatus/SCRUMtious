@@ -18,9 +18,6 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.InvitationsPresente
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.InvitationsViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.InvitationsPresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
     private RecyclerView invitationsList;
@@ -47,9 +44,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
     private void setupRecyclerView(){
         invitationsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         invitationsList.setAdapter(invitationsPresenter.setupInvitationsAdapter(invitationsList));
-
     }
 
     // When user clicks on the accept button for an invite

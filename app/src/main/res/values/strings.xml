@@ -28,4 +28,7 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="alert_dialogue_delete_project_password_prompt">Your Password</string>
     <string name="user_invite_row_title">Accept/decline invite to project:</string>
+    <string name="add_project_btn_text">Add Project</string>
+    <string name="add_member_btn_text">Add Member</string>
+    <string name="invite_member_btn_text">Invite Member</string>
 </resources>

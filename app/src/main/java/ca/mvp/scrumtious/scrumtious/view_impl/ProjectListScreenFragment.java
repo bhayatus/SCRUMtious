@@ -5,17 +5,19 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListScreenPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt;
@@ -32,7 +34,7 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     private RecyclerView projectList;
     private ProgressDialog loadingProjectsDialog;
     private Switch showOnlyMyProjects;
-    private FloatingActionButton fab;
+    private Button addProjectBtn;
 
     public ProjectListScreenFragment() {
         // Required empty public constructor
@@ -52,18 +54,16 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         View view = inflater.inflate(R.layout.fragment_project_list_screen, container, false);
         projectList = (RecyclerView) view.findViewById(R.id.projectListScreenRecyclerView);
         showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListScreenSwitch);
+        setupRecyclerView();
+        addProjectBtn = (Button) view.findViewById(R.id.btn_add_project);
 
-        fab = (FloatingActionButton) view.findViewById(R.id.projectListScreenFAB);
-        fab.setOnClickListener(new View.OnClickListener() {
+        addProjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), CreateProjectScreenActivity.class);
-//                getActivity().startActivity(intent);
                 onClickAddNewProject(view);
             }
         });
 
-        setupRecyclerView();
         return view;
 
     }

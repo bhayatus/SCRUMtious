@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
@@ -28,7 +29,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     private ProjectMembersPresenterInt projectMembersPresenter;
     private RecyclerView membersList;
-    private FloatingActionButton addMemberFAB;
+    private Button addMemberBtn;
 
     private ProgressDialog invitingProgressDialog, deletingMemberProgressDialog;
     public ProjectMembersFragment() {
@@ -49,72 +50,23 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
         membersList = view.findViewById(R.id.membersListScreenRecyclerView);
-        addMemberFAB = (FloatingActionButton) view.findViewById(R.id.memberListScreenFAB);
+        setupRecyclerView();
+        addMemberBtn = view.findViewById(R.id.btn_add_member);
 
-        // When user clicks on the fab, open dialog to invite member
-        addMemberFAB.setOnClickListener(new View.OnClickListener() {
+        addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                final View alertView = inflater.inflate(R.layout.alert_dialogue_add_member, null);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Invite New Member")
-                        .setView(alertView)
-                        .setMessage("Enter the e-mail address of the user you want to invite.")
-                        .setPositiveButton("Invite", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Validate password and delete project
-                                EditText emailET = (EditText) alertView.findViewById(R.id.alert_dialogue_add_member_email_text_field);
-                                String emailAddress = emailET.getText().toString().trim();
-
-                                // Cannot send null email address
-                                if(emailAddress == null){
-                                    showMessage("Please enter the e-mail address of the user to invite.");
-                                }
-
-                                else {
-                                    // Cannot send empty string
-                                    if(emailAddress.length() == 0) {
-                                        showMessage("Please enter the e-mail address of the user to invite.");
-                                    }
-                                    else {
-
-                                        // Creates a dialog that appears to tell the user that inviting a user is still occurring
-                                        invitingProgressDialog = new ProgressDialog(getContext());
-                                        invitingProgressDialog.setTitle("Invite User");
-                                        invitingProgressDialog.setCancelable(false);
-                                        invitingProgressDialog.setMessage("Inviting user to project...");
-                                        invitingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                        invitingProgressDialog.show();
-
-                                        // Password is of valid type, send it
-                                        projectMembersPresenter.checkBeforeInvite(emailAddress);
-                                    }
-                                }
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
-
-
-
+            public void onClick(View view) {
+                onClickInviteMember(view);
             }
         });
-        setupRecyclerView();
+
         return view;
     }
 
     // Only owner of the project can view and click the add member fab
     @Override
     public void setAddMemberInvisible() {
-        addMemberFAB.setVisibility(View.GONE);
+        addMemberBtn.setVisibility(View.GONE);
     }
 
 
@@ -124,6 +76,55 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         membersList.setLayoutManager(new LinearLayoutManager(getActivity()));
         membersList.setAdapter(projectMembersPresenter.setupMembersAdapter(membersList));
 
+    }
+
+    public void onClickInviteMember(View view) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.alert_dialogue_add_member, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Invite New Member")
+                .setView(alertView)
+                .setMessage("Enter the e-mail address of the user you want to invite.")
+                .setPositiveButton("Invite", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Validate password and delete project
+                        EditText emailET = (EditText) alertView.findViewById(R.id.alert_dialogue_add_member_email_text_field);
+                        String emailAddress = emailET.getText().toString().trim();
+
+                        // Cannot send null email address
+                        if(emailAddress == null){
+                            showMessage("Please enter the e-mail address of the user to invite.");
+                        }
+
+                        else {
+                            // Cannot send empty string
+                            if(emailAddress.length() == 0) {
+                                showMessage("Please enter the e-mail address of the user to invite.");
+                            }
+                            else {
+
+                                // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                invitingProgressDialog = new ProgressDialog(getContext());
+                                invitingProgressDialog.setTitle("Invite User");
+                                invitingProgressDialog.setCancelable(false);
+                                invitingProgressDialog.setMessage("Inviting user to project...");
+                                invitingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                invitingProgressDialog.show();
+
+                                // Password is of valid type, send it
+                                projectMembersPresenter.checkBeforeInvite(emailAddress);
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 
 
