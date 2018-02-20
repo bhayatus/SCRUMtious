@@ -33,5 +33,9 @@
     <string name="invite_member_btn_text">Invite Member</string>
     <string name="title_activity_product_backlog">ProductBacklogActivity</string>
     <string name="btn_product_backlog_text">Product Backlog</string>
-    <string name="title_activity_create_user_story">CreateUserStoryActivity</string>
+    <string name="title_activity_create_user_story">Create User Story</string>
+    <string name="create_user_story_desc">Description</string>
+    <string name="create_user_story_name">Name</string>
+    <string name="create_user_story_create">Create</string>
+    <string name="create_user_story_points">Points</string>
 </resources>

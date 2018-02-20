@@ -1,24 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="false"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateUserStoryActivity">
 
-    <android.support.design.widget.AppBarLayout
+
+    <TextView
+        android:id="@+id/createUserStoryScreenLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_marginBottom="20dp"
+        android:text="@string/title_activity_create_user_story"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/createUserStoryScreenTitleFieldLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        app:errorEnabled="true">
+
+        <EditText
+            android:id="@+id/createUserStoryScreenNameField"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/create_user_story_name"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="text"
+            android:singleLine="true" />
+    </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/createUserStoryScreenDescFieldLayout"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        app:errorEnabled="true">
 
-</android.support.design.widget.CoordinatorLayout>
+        <EditText
+            android:id="@+id/createUserStoryScreenDescField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/create_user_story_desc"
+
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:scrollbars="vertical" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/createUserStoryScreenPointsFieldLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        app:errorEnabled="true">
+
+        <EditText
+            android:id="@+id/createUserStoryScreenPointsField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="4"
+            android:hint="@string/create_user_story_points"
+            android:importantForAutofill="noExcludeDescendants"
+            android:inputType="number"
+            android:maxEms="4"
+            android:singleLine="true" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/login_signup_btn"
+        android:shape="oval"
+        android:text="@string/create_user_story_create"
+
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>
