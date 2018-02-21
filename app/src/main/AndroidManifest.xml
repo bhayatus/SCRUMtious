@@ -50,10 +50,16 @@
         <activity
             android:name=".view_impl.ProductBacklogActivity"
             android:label="@string/title_activity_product_backlog"
+            android:configChanges="orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view_impl.CreateUserStoryActivity"
             android:label="@string/title_activity_create_user_story"
+            android:configChanges="orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
