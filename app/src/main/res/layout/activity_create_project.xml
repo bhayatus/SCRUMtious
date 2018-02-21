@@ -13,7 +13,8 @@
               android:focusable="true"
               android:gravity="center_vertical"
               android:orientation="vertical"
-              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateProjectActivity">
+              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateProjectActivity"
+    >
 
 
     <TextView

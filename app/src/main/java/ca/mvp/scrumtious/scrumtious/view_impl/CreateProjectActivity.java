@@ -30,7 +30,6 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        setTitle("Create Project");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
         createProjectPresenter = new CreateProjectPresenter(this);
