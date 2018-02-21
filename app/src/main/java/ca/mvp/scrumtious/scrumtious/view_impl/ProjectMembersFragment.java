@@ -155,7 +155,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                             }
                             else {
 
-                                // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                // Creates a dialog that appears to tell the user that deleting a user is still occurring
                                 deletingMemberProgressDialog = new ProgressDialog(getContext());
                                 deletingMemberProgressDialog.setTitle("Delete Member");
                                 deletingMemberProgressDialog.setCancelable(false);
@@ -179,7 +179,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     }
 
-    // Exception messages for when deleting members
+
     @Override
     public void showMessage(String message) {
 

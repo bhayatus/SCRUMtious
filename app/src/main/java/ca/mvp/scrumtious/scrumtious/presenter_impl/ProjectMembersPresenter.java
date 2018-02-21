@@ -58,10 +58,10 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 @Override
                 protected void populateViewHolder(ProjectMembersFragment.MembersViewHolder viewHolder, User model, int position) {
                     viewHolder.setDetails(model.getEmailAddress());
+                    final String uid = getRef(position).getKey();
                     ImageButton delete = viewHolder.getDeleteView();
                     final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
-                    final int currentPosition = position;
 
                     mRef  = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
                             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -90,7 +90,6 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         @Override
                         public void onClick(View v) {
                             // If user chooses to remove member, do so after confirming
-                            String uid = getRef(currentPosition).getKey();
                             projectMembersView.onClickDelete(uid);
                         }
                     });

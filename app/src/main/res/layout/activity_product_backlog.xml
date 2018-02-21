@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
@@ -9,17 +9,17 @@
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProductBacklogActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:paddingBottom="@dimen/appbar_padding_top"
+        android:paddingTop="8dp"
+        android:theme="@style/AppTheme.NoActionBar">
 
 
         <android.support.design.widget.TabLayout
             android:id="@+id/productBacklogTabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/project_tab_selected_color"
             app:tabTextColor="@color/colorPrimaryDark">
@@ -27,17 +27,21 @@
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.view.ViewPager
         android:id="@+id/productBacklogViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_above="@id/pb_linear"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+    </android.support.v4.view.ViewPager>
 
     <LinearLayout
-        android:id="@+id/add_member_btn_layout"
+        android:id="@+id/pb_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_gravity="bottom"
+        >
 
         <Button
             android:id="@+id/btn_add_user_story"
@@ -49,4 +53,6 @@
             android:onClick="onClickAddUserStory"
             />
     </LinearLayout>
-</RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

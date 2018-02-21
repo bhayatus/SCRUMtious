@@ -9,7 +9,6 @@
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectTabsScreenActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/appbar_padding_top"

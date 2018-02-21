@@ -42,7 +42,7 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
         ) {
 
             @Override
-            protected void populateViewHolder(ProjectListScreenFragment.ProjectsViewHolder viewHolder, Project model, final int position) {
+            protected void populateViewHolder(ProjectListScreenFragment.ProjectsViewHolder viewHolder, Project model, int position) {
                 viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc());
                 final String pid = getRef(position).getKey();
 
@@ -81,7 +81,7 @@ public class ProjectListScreenPresenter implements ProjectListScreenPresenterInt
         ) {
 
             @Override
-            protected void populateViewHolder(ProjectListScreenFragment.ProjectsViewHolder viewHolder, Project model, final int position) {
+            protected void populateViewHolder(ProjectListScreenFragment.ProjectsViewHolder viewHolder, Project model, int position) {
                 viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc());
                 final String pid = getRef(position).getKey();
 

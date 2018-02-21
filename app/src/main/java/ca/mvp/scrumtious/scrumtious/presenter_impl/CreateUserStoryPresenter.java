@@ -2,6 +2,8 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,8 +35,7 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
         userStoryMap.put("userStoryDetails", details);
         userStoryMap.put("completed", "false");
         userStoryMap.put("assignedTo", "null");
-        userStoryMap.put("assignedTo_completed", "false_null");
-
+        userStoryMap.put("assignedTo_completed", "null_false");
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects").child(this.pid).child("user_stories");
         final String userStoryID = mRef.push().getKey();

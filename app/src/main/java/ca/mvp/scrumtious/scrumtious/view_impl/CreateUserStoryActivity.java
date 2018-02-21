@@ -120,7 +120,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                 if(descText == null || (descText.trim().length() <= 0
                         || descText.trim().length() > 2048)){
                     descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a user story description/CoS.");
+                    descriptionFieldLayout.setError("Please enter a user story description.");
                 }else{
                     descriptionFieldLayout.setErrorEnabled(false);
                 }
@@ -147,14 +147,16 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                     pointFieldLayout.setErrorEnabled(true);
                     pointFieldLayout.setError("Please enter a user story priority.");
                 }
+                else{
 
                 int pointsVal = Integer.valueOf(pointsText);
                 if (pointsVal <= 0 || pointsVal > 9999) {
                     pointFieldLayout.setErrorEnabled(true);
-                    pointFieldLayout.setError("Please enter a priority between 0 and 9999");
+                    pointFieldLayout.setError("Please enter an amount of points between 0 and 9999.");
                 } else {
                     pointFieldLayout.setErrorEnabled(false);
                 }
+            }
             }
         });
     }
@@ -169,15 +171,15 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
     public void onClickCreateUserStory(View view) {
 
-        String title = titleField.getText().toString().trim();
-        String desc = descriptionField.getText().toString().trim();
-        int points = Integer.valueOf(pointField.getText().toString().trim());
-
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()
                 || pointFieldLayout.isErrorEnabled()) {
-            showMessage("Cannot create story until fields are filled out properly.");
-            return;
+            showMessage("Cannot create user story until fields are filled out properly.");
         } else {
+
+            String title = titleField.getText().toString().trim();
+            String desc = descriptionField.getText().toString().trim();
+            int points = Integer.valueOf(pointField.getText().toString().trim());
+
             // Creates a dialog that appears to tell the user that creating the project is occurring
             createUserStoryProgressDialog = new ProgressDialog(this);
             createUserStoryProgressDialog.setTitle("Create User Story");

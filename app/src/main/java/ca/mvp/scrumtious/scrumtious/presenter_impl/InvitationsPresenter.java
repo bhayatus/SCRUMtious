@@ -46,18 +46,20 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
         ) {
 
             @Override
-            protected void populateViewHolder(InvitationsFragment.InvitationsViewHolder viewHolder, UserInvite model, final int position) {
+            protected void populateViewHolder(InvitationsFragment.InvitationsViewHolder viewHolder, UserInvite model, int position) {
                 viewHolder.setDetails(model.getProjectTitle(), model.getInvitingEmail());
 
                 ImageButton accept = viewHolder.getAcceptButton();
                 ImageButton decline = viewHolder.getDeclineButton();
                 final UserInvite userModel = model;
 
+                final String inviteId = getRef(position).getKey();
+
+
                 // When user chooses to accept an invite
                 accept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String inviteId = getRef(position).getKey();
                         invitationsView.onClickAccept(userModel.getProjectId(), inviteId);
                     }
                 });
@@ -66,7 +68,6 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
                 decline.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String inviteId = getRef(position).getKey();
                         invitationsView.onClickDecline(inviteId);
                     }
                 });
