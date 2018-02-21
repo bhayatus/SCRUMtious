@@ -32,7 +32,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     private ImageButton deleteBtn;
     private String pid;
 
-    private IndividualProjectPresenterInt individualProjectScreenPresenter;
+    private IndividualProjectPresenterInt individualProjectPresenter;
 
 
     @Override
@@ -43,9 +43,9 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
 
-        individualProjectScreenPresenter = new IndividualProjectPresenter(this, pid);
-        individualProjectScreenPresenter.setupProjectDeleteListener();
-        individualProjectScreenPresenter.checkIfOwner();
+        individualProjectPresenter = new IndividualProjectPresenter(this, pid);
+        individualProjectPresenter.setupProjectDeletedListener();
+        individualProjectPresenter.checkIfOwner();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.hideOverflowMenu();
@@ -74,10 +74,11 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         return true;
     }
 
+    // Project no longer exists, go back
     public void onSuccessfulDeletion() {
-        Toast.makeText(this, "Project was deleted.", Toast.LENGTH_SHORT).show();
-        // Return to project list screen
+        // Return to project list screen and make sure we can't go back by clearing the task stack
         Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
@@ -116,7 +117,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                             }
                             else {
                                 // Password is of valid type, send it
-                                individualProjectScreenPresenter.validatePassword(password);
+                                individualProjectPresenter.validatePassword(password);
                             }
                         }
                     }
@@ -180,10 +181,10 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 }

@@ -91,6 +91,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
     }
 
+    // Viewholder class to display invitations
     public static class InvitationsViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView projectTitleView, emailView;
@@ -107,7 +108,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
         }
 
 
-        // Populates each row of the recycler view with the project details
+        // Populates each row of the recycler view with the invitation details
         public void setDetails(String projectTitle, String emailAddress){
             projectTitleView.setText(projectTitle);
             emailView.setText("by " + emailAddress);

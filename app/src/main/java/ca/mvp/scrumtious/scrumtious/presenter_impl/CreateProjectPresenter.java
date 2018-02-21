@@ -15,10 +15,10 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
-    private CreateProjectViewInt createProjectScreenView;
+    private CreateProjectViewInt createProjectView;
 
-    public CreateProjectPresenter(CreateProjectViewInt createProjectScreenView) {
-        this.createProjectScreenView = createProjectScreenView;
+    public CreateProjectPresenter(CreateProjectViewInt createProjectView) {
+        this.createProjectView = createProjectView;
     }
 
 
@@ -50,7 +50,7 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
                         mRef.child("users").child(projectOwnerUid).child(projectId).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                createProjectScreenView.onSuccessfulCreateProject();
+                                createProjectView.onSuccessfulCreateProject();
                             }
                         });
 

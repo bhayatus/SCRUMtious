@@ -21,7 +21,7 @@ import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
-    private LoginPresenter loginScreenPresenter;
+    private LoginPresenter loginPresenter;
     private EditText emailField, passwordField;
     private TextInputLayout emailFieldLayout, passwordFieldLayout;
     private ProgressDialog signingInProgressDialog;
@@ -31,10 +31,10 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         setTitle("Log In");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginScreenPresenter = new LoginPresenter(this);
+        loginPresenter = new LoginPresenter(this);
 
         //In case user was logged in previously
-        loginScreenPresenter.signOut();
+        loginPresenter.signOut();
 
         setupFormWatcher();
     }
@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         signingInProgressDialog.show();
 
         // Proceed to validate with backend authentication
-        loginScreenPresenter.attemptLogin(this, emailAddress, password);
+        loginPresenter.attemptLogin(this, emailAddress, password);
     }
 
     // If user clicks sign up, take them to the sign up screen

@@ -200,7 +200,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
                 retypePasswordField.getText().toString().trim().length() > 0){
 
             new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
-                    .setTitle("Leave the screen?")
+                    .setTitle("Leave The Screen?")
                     .setMessage("Are you sure you want to go back? You will lose anything " +
                             "you have typed in on this page.")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

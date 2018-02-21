@@ -15,12 +15,12 @@ import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment;
 
 public class ProjectListPresenter implements ProjectListPresenterInt {
-    private ProjectListViewInt viewProjectsScreenView;
+    private ProjectListViewInt projectListView;
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef;
     private Query mQuery;
-    public ProjectListPresenter(ProjectListViewInt viewProjectsScreenView){
-        this.viewProjectsScreenView = viewProjectsScreenView;
+    public ProjectListPresenter(ProjectListViewInt projectListView){
+        this.projectListView = projectListView;
         this.mAuth = FirebaseAuth.getInstance();
     }
 
@@ -49,7 +49,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        viewProjectsScreenView.goToProjectScreen(pid);
+                        projectListView.goToProjectScreen(pid);
                     }
                 });
             }
@@ -88,7 +88,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        viewProjectsScreenView.goToProjectScreen(pid);
+                        projectListView.goToProjectScreen(pid);
                     }
                 });
             }

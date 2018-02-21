@@ -26,9 +26,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/open_sans"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:text="Name of User Story"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
             android:padding="5dp"
             />
 
@@ -71,7 +71,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/open_sans"
-            android:text="Points"
+            android:text="Cost: 1 point"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:padding="5dp"

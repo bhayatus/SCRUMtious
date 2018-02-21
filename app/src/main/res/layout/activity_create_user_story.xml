@@ -9,7 +9,8 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="false"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:gravity="center_vertical"
     android:orientation="vertical"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateUserStoryActivity">
@@ -23,7 +24,8 @@
         android:text="@string/title_activity_create_user_story"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:fontFamily="@font/open_sans"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/createUserStoryScreenTitleFieldLayout"
@@ -97,9 +99,10 @@
         android:layout_marginRight="50dp"
         android:background="@drawable/login_signup_btn"
         android:shape="oval"
-
+        style="@style/Widget.AppCompat.Button"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/white"
         android:text="@string/create_user_story_create"
-        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:onClick="onClickCreateUserStory"/>
 

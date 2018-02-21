@@ -154,6 +154,7 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
     }
 
 
+    // Viewholder class to display in progress user stories in the product backlog
     public static class InProgressViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView nameView, pointsView;
@@ -171,10 +172,16 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
         }
 
 
-        // Populates each row of the recycler view with the project details
+        // Populates each row of the recycler view with the user story details
         public void setDetails(String name, String points){
             nameView.setText(name);
-            pointsView.setText("Points: "+ points);
+            // If only 1 point, don't display as plural
+            if (Integer.parseInt(points) == 1){
+                pointsView.setText("Cost: "+ points + " point");
+            }
+            else {
+                pointsView.setText("Cost: " + points + " points");
+            }
         }
 
         public ImageButton getCompleted(){

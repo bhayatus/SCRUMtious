@@ -14,11 +14,11 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupViewInt;
 
 public class SignupPresenter implements SignupPresenterInt {
 
-    private SignupViewInt signupScreenView;
+    private SignupViewInt signupView;
     private FirebaseAuth mAuth;
 
-    public SignupPresenter(SignupViewInt signupScreenView){
-        this.signupScreenView = signupScreenView;
+    public SignupPresenter(SignupViewInt signupView){
+        this.signupView = signupView;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SignupPresenter implements SignupPresenterInt {
                 }
                 else{
                     // Sign up failed, tell user
-                    signupScreenView.showMessage(task.getException().getLocalizedMessage());
+                    signupView.showMessage(task.getException().getLocalizedMessage());
                 }
             }
         });
@@ -77,7 +77,7 @@ public class SignupPresenter implements SignupPresenterInt {
         mRef.child("users").child(userID).setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                signupScreenView.onSuccessfulSignUp();
+                signupView.onSuccessfulSignUp();
             }
         });
 

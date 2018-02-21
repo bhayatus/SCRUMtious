@@ -17,20 +17,20 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt
 
 public class IndividualProjectPresenter implements IndividualProjectPresenterInt {
 
-    private IndividualProjectViewInt individualProjectScreenView;
+    private IndividualProjectViewInt individualProjectView;
     private final String pid;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
 
-    public IndividualProjectPresenter(IndividualProjectViewInt individualProjectScreenView, String pid){
-        this.individualProjectScreenView = individualProjectScreenView;
+    public IndividualProjectPresenter(IndividualProjectViewInt individualProjectView, String pid){
+        this.individualProjectView = individualProjectView;
         this.pid = pid;
     }
 
     // In case the project no longer exists or user was removed, user must be returned to project list screen
     @Override
-    public void setupProjectDeleteListener(){
+    public void setupProjectDeletedListener(){
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects");
         mRef.child(pid).addValueEventListener(new ValueEventListener() {
@@ -38,14 +38,14 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // If project no longer exists, exit this screen and go back
                 if (!dataSnapshot.exists()){
-                    individualProjectScreenView.onSuccessfulDeletion();
+                    individualProjectView.onSuccessfulDeletion();
                 }
 
                 else{
                     // Check if I'm no longer a member through my uid
                     mAuth = FirebaseAuth.getInstance();
                     if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
-                        individualProjectScreenView.onSuccessfulDeletion();
+                        individualProjectView.onSuccessfulDeletion();
                     }
                 }
             }
@@ -68,7 +68,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Only owner should see delete button, should be invisible otherwise
                 if(!dataSnapshot.getValue().toString().equals(mUser.getUid())){
-                    individualProjectScreenView.setDeleteInvisible();
+                    individualProjectView.setDeleteInvisible();
                 }
             }
 
@@ -98,7 +98,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
                 // Password didn't match, tell user
                 else {
-                    individualProjectScreenView.showMessage("Incorrect password, could not delete project.");
+                    individualProjectView.showMessage("Incorrect password, could not delete project.");
                 }
             }
         });
@@ -155,7 +155,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
                     });
 
                     // Project was successfully deleted
-                    individualProjectScreenView.onSuccessfulDeletion();
+                    individualProjectView.onSuccessfulDeletion();
                 }
             }
         });

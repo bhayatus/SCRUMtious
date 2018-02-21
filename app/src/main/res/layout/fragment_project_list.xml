@@ -12,15 +12,30 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             >
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Project List"
+                android:fontFamily="@font/open_sans"
+                android:layout_gravity="center_vertical"
+                android:textSize="24sp"
+                android:textColor="@color/colorPrimary"
+                android:paddingLeft="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingRight="5dp"
+                android:paddingRight="10dp"
                 android:text="@string/filter_owned_projects_only"
-                android:textAlignment="textStart"
+                android:fontFamily="@font/open_sans"
+                android:gravity="center_vertical"
                 android:textSize="14sp"
                 />
 
@@ -29,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="false"/>
+            </LinearLayout>
         </LinearLayout>
 
 
@@ -47,11 +63,12 @@
     <Button
         android:id="@+id/btn_add_project"
         style="@style/Widget.AppCompat.Button"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/colorPrimary"
         android:text="@string/add_project_btn_text"
-        android:textColor="@color/white"/>
+        />
 
 </RelativeLayout>

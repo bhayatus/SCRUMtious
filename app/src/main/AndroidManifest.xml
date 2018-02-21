@@ -25,6 +25,7 @@
             android:configChanges="orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.Signup"/>
         <activity
             android:name=".view_impl.ProjectTabsActivity"
@@ -50,11 +51,17 @@
         <activity
             android:name=".view_impl.ProductBacklogActivity"
             android:label="@string/title_activity_product_backlog"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".view_impl.CreateUserStoryActivity"
             android:label="@string/title_activity_create_user_story"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

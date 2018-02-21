@@ -202,4 +202,14 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         startActivity(intent);
         finish();
     }
+
+    // Project no longer exists to user, must go back to project list screen
+    @Override
+    public void onProjectDeleted() {
+        // Return to project list screen and make sure we can't go back by clearing the task stack
+        Intent intent = new Intent(CreateUserStoryActivity.this, ProjectTabsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
 }

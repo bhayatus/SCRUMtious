@@ -7,8 +7,12 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.HashMap;
 
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateUserStoryViewInt;
@@ -18,6 +22,7 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
+    private FirebaseAuth mAuth;
     private CreateUserStoryViewInt createUserStoryView;
     private String pid;
 
@@ -51,6 +56,35 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
             }
         });
 
+    }
+
+    // If project user is in no longer exists, must be taken to project list screen
+    @Override
+    public void setupProjectDeletedListener() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects");
+        mRef.child(pid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // If project no longer exists, exit this screen and go back
+                if (!dataSnapshot.exists()){
+                    createUserStoryView.onProjectDeleted();
+                }
+
+                else{
+                    // Check if I'm no longer a member through my uid
+                    mAuth = FirebaseAuth.getInstance();
+                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                        createUserStoryView.onProjectDeleted();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
