@@ -5,7 +5,7 @@
                                                     android:orientation="vertical"
                                                     android:paddingTop="@dimen/project_list_top_padding"
                                                  android:background="@color/project_list_screen_bg_color"
-                                                 tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment">
+                                                 tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment">
 
 
         <LinearLayout

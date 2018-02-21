@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -22,29 +21,29 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectScreenViewInt;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualProjectScreenPresenter;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualProjectPresenter;
 
-public class IndividualProjectScreenActivity extends AppCompatActivity implements IndividualProjectScreenViewInt{
+public class IndividualProjectActivity extends AppCompatActivity implements IndividualProjectViewInt {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private ImageButton deleteBtn;
     private String pid;
 
-    private IndividualProjectScreenPresenterInt individualProjectScreenPresenter;
+    private IndividualProjectPresenterInt individualProjectScreenPresenter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_individual_project_screen);
+        setContentView(R.layout.activity_individual_project);
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
 
-        individualProjectScreenPresenter = new IndividualProjectScreenPresenter(this, pid);
+        individualProjectScreenPresenter = new IndividualProjectPresenter(this, pid);
         individualProjectScreenPresenter.setupProjectDeleteListener();
         individualProjectScreenPresenter.checkIfOwner();
 
@@ -78,7 +77,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
     public void onSuccessfulDeletion() {
         Toast.makeText(this, "Project was deleted.", Toast.LENGTH_SHORT).show();
         // Return to project list screen
-        Intent intent = new Intent(IndividualProjectScreenActivity.this, ProjectTabsScreenActivity.class);
+        Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
         startActivity(intent);
         finish();
     }
@@ -183,7 +182,7 @@ public class IndividualProjectScreenActivity extends AppCompatActivity implement
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(IndividualProjectScreenActivity.this, ProjectTabsScreenActivity.class);
+        Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
         startActivity(intent);
         finish();
     }

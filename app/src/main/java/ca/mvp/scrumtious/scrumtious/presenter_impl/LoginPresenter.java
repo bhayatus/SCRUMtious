@@ -8,15 +8,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.LoginScreenPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginScreenViewInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.LoginPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginViewInt;
 
-public class LoginScreenPresenter implements LoginScreenPresenterInt{
+public class LoginPresenter implements LoginPresenterInt {
 
     private FirebaseAuth firebaseAuth;
-    private LoginScreenViewInt loginScreenView;
+    private LoginViewInt loginScreenView;
 
-    public LoginScreenPresenter(LoginScreenViewInt loginScreenView) {
+    public LoginPresenter(LoginViewInt loginScreenView) {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.loginScreenView = loginScreenView;
     }

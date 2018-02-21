@@ -4,7 +4,6 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -14,21 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-
-import java.util.List;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.PBInProgressPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.PBInProgressViewInt;
-import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.model.UserStory;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.PBInProgressPresenter;
 
@@ -75,7 +66,7 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
     // User clicks on a specific user story
     @Override
     public void goToUserStoryScreen(String usid) {
-
+        // TODO
     }
 
     // User wants to mark user story as completed
@@ -148,12 +139,6 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
                 })
                 .create().show();
 
-    }
-
-    // User story was deleted successfully
-    @Override
-    public void onSuccessfulUserStoryDeletion() {
-        showMessage("User story was deleted.");
     }
 
     @Override

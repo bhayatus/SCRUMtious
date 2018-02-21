@@ -15,13 +15,13 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginScreenViewInt;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.LoginScreenPresenter;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginViewInt;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.LoginPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
-public class LoginScreenActivity extends AppCompatActivity implements LoginScreenViewInt {
+public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
-    private LoginScreenPresenter loginScreenPresenter;
+    private LoginPresenter loginScreenPresenter;
     private EditText emailField, passwordField;
     private TextInputLayout emailFieldLayout, passwordFieldLayout;
     private ProgressDialog signingInProgressDialog;
@@ -30,8 +30,8 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Log In");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_screen);
-        loginScreenPresenter = new LoginScreenPresenter(this);
+        setContentView(R.layout.activity_login);
+        loginScreenPresenter = new LoginPresenter(this);
 
         //In case user was logged in previously
         loginScreenPresenter.signOut();
@@ -144,7 +144,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
 
     // If user clicks sign up, take them to the sign up screen
     public void goToSignUpScreen(View view) {
-        Intent intent = new Intent(this, SignupScreenActivity.class);
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
     }
 
@@ -161,7 +161,7 @@ public class LoginScreenActivity extends AppCompatActivity implements LoginScree
     @Override
     public void onSuccessfulLogin() {
         signingInProgressDialog.dismiss();
-        Intent intent = new Intent(LoginScreenActivity.this, ProjectTabsScreenActivity.class);
+        Intent intent = new Intent(LoginActivity.this, ProjectTabsActivity.class);
         startActivity(intent);
         finish();
     }

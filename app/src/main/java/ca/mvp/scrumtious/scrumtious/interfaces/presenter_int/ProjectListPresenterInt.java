@@ -4,12 +4,12 @@ import android.app.ProgressDialog;
 import android.support.v7.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import ca.mvp.scrumtious.scrumtious.model.Project;
-import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListScreenFragment;
+import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment;
 
-public interface ProjectListScreenPresenterInt {
-    FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupGeneralProjectsAdapter
+public interface ProjectListPresenterInt {
+    FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupGeneralProjectsAdapter
             (RecyclerView projectList, ProgressDialog loadingProjectsDialog);
-    FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> setupMyProjectsAdapter
+    FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupMyProjectsAdapter
             (RecyclerView projectList, ProgressDialog loadingProjectsDialog);
 
 }

@@ -1,6 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.interfaces.view_int;
 
-public interface LoginScreenViewInt {
+public interface LoginViewInt {
     void onSuccessfulLogin();
     void showMessage(String message);
 }

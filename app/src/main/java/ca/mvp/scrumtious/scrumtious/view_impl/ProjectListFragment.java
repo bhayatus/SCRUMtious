@@ -19,24 +19,24 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListScreenPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListScreenViewInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Project;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectListScreenPresenter;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectListPresenter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProjectListScreenFragment extends Fragment implements ProjectListScreenViewInt {
+public class ProjectListFragment extends Fragment implements ProjectListViewInt {
 
-    private ProjectListScreenPresenterInt projectListScreenPresenterInt;
+    private ProjectListPresenterInt projectListPresenterInt;
 
     private RecyclerView projectList;
     private ProgressDialog loadingProjectsDialog;
     private Switch showOnlyMyProjects;
     private Button addProjectBtn;
 
-    public ProjectListScreenFragment() {
+    public ProjectListFragment() {
         // Required empty public constructor
     }
 
@@ -44,14 +44,14 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        projectListScreenPresenterInt = new ProjectListScreenPresenter(this);
+        projectListPresenterInt = new ProjectListPresenter(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_project_list_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_project_list, container, false);
         projectList = (RecyclerView) view.findViewById(R.id.projectListScreenRecyclerView);
         showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListScreenSwitch);
         setupRecyclerView();
@@ -79,11 +79,11 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
         loadingProjectsDialog.show();
 
         projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        final FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> myProjectsAdapter;
-        final FirebaseRecyclerAdapter<Project, ProjectListScreenFragment.ProjectsViewHolder> allProjectsAdapter;
+        final FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> myProjectsAdapter;
+        final FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> allProjectsAdapter;
 
-        myProjectsAdapter = projectListScreenPresenterInt.setupMyProjectsAdapter(projectList, loadingProjectsDialog);
-        allProjectsAdapter = projectListScreenPresenterInt.setupGeneralProjectsAdapter(projectList, loadingProjectsDialog);
+        myProjectsAdapter = projectListPresenterInt.setupMyProjectsAdapter(projectList, loadingProjectsDialog);
+        allProjectsAdapter = projectListPresenterInt.setupGeneralProjectsAdapter(projectList, loadingProjectsDialog);
         projectList.setAdapter(allProjectsAdapter);
         showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -102,14 +102,14 @@ public class ProjectListScreenFragment extends Fragment implements ProjectListSc
 
     @Override
     public void goToProjectScreen(String pid) {
-        Intent intent = new Intent(getActivity(), IndividualProjectScreenActivity.class);
+        Intent intent = new Intent(getActivity(), IndividualProjectActivity.class);
         intent.putExtra("projectId", pid);
         startActivity(intent);
     }
 
 
     public void onClickAddNewProject(View view){
-        Intent intent = new Intent(this.getActivity(), CreateProjectScreenActivity.class);
+        Intent intent = new Intent(this.getActivity(), CreateProjectActivity.class);
         this.getActivity().startActivity(intent);
     }
 

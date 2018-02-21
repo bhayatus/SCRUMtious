@@ -12,18 +12,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectScreenPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectScreenViewInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt;
 
-public class IndividualProjectScreenPresenter implements IndividualProjectScreenPresenterInt{
+public class IndividualProjectPresenter implements IndividualProjectPresenterInt {
 
-    private IndividualProjectScreenViewInt individualProjectScreenView;
+    private IndividualProjectViewInt individualProjectScreenView;
     private final String pid;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
 
-    public IndividualProjectScreenPresenter(IndividualProjectScreenViewInt individualProjectScreenView, String pid){
+    public IndividualProjectPresenter(IndividualProjectViewInt individualProjectScreenView, String pid){
         this.individualProjectScreenView = individualProjectScreenView;
         this.pid = pid;
     }

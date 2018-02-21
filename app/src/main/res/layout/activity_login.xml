@@ -9,29 +9,27 @@
               android:background="@color/login_screen_bg_color"
               android:descendantFocusability="beforeDescendants"
               android:focusableInTouchMode="false"
-              android:gravity="center_vertical|center_horizontal"
+              android:gravity="center_vertical"
               android:orientation="vertical"
               android:paddingLeft="@dimen/login_signup_padding"
               android:paddingRight="@dimen/login_signup_padding"
-              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.SignupScreenActivity">
+              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.LoginActivity">
 
     <TextView
-        android:id="@+id/signupScreenMessage"
+        android:id="@+id/loginScreenMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/harley_script_regular"
         android:gravity="center"
         android:paddingBottom="@dimen/login_signup_center_logo_padding_bottom"
-        android:text="SCRUMtious"
-        android:textColor="@color/white"
-        android:textSize="64sp">
-
-    </TextView>
+        android:text="@string/app_name"
+        android:textColor="@color/app_typo_logo_white"
+        android:textSize="64sp"/>
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupScreenEmailFieldLayout"
+        android:id="@+id/loginScreenEmailFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -41,47 +39,19 @@
         app:errorTextAppearance="@style/SignupErrorText">
 
         <EditText
-            android:id="@+id/signupScreenEmailField"
+            android:id="@+id/loginScreenEmailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:ems="10"
-            android:fontFamily="@font/open_sans"
             android:hint="@string/signup_email"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="textEmailAddress"
-            android:textColor="@color/white"
-            android:textColorLink="@color/sign_up_screen_text_fileld"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupScreenPasswordFieldLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:textColorHint="@color/white"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/SignupErrorText"
-        app:passwordToggleEnabled="true"
-        >
-
-        <EditText
-            android:id="@+id/signupScreenPasswordField"
-            android:layout_width="match_parent" 
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:ems="10"
-            android:fontFamily="@font/open_sans"
-            android:hint="@string/signup_password"
-            android:importantForAutofill="noExcludeDescendants"
-            android:inputType="textPassword"
             android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
-
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupScreenRetypePasswordFieldLayout"
+        android:id="@+id/loginScreenPasswordFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -89,35 +59,44 @@
         android:textColorHint="@color/white"
         app:errorEnabled="true"
         app:errorTextAppearance="@style/SignupErrorText"
-        app:passwordToggleEnabled="true"
-        >
+        app:passwordToggleEnabled="true">
+
 
         <EditText
-            android:id="@+id/signupScreenRetypePasswordField"
+            android:id="@+id/loginScreenPasswordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:ems="10"
-            android:fontFamily="@font/open_sans"
-            android:hint="@string/signup_retype_password"
+            android:hint="@string/signup_password"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="textPassword"
             android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
-
     <Button
-        android:id="@+id/signupScreenSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/login_signup_btn_margin"
         android:layout_marginRight="@dimen/login_signup_btn_margin"
         android:background="@drawable/login_signup_btn"
-        android:onClick="onClickSignUpSubmit"
-        android:text="@string/signup_btn"
-        android:textColor="@android:color/white"
-        android:textSize="18sp">
-    </Button>
+        android:onClick="onSubmitLogin"
+        android:shape="oval"
+        android:text="@string/login_btn"
+        android:textColor="@color/login_email_text_field_color"
+        android:textSize="18sp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:onClick="goToSignUpScreen"
+        android:padding="5dp"
+
+        android:text="@string/login_signup_prompt"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        />
 </LinearLayout>

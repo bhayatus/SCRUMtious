@@ -3,9 +3,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,12 +17,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.PBInProgressPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.PBInProgressViewInt;
 import ca.mvp.scrumtious.scrumtious.model.UserStory;
-import ca.mvp.scrumtious.scrumtious.view_impl.PBCompletedFragment;
 import ca.mvp.scrumtious.scrumtious.view_impl.PBInProgressFragment;
 
 public class PBInProgressPresenter implements PBInProgressPresenterInt {
@@ -44,15 +40,17 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
     @Override
     public FirebaseRecyclerAdapter<UserStory, PBInProgressFragment.InProgressViewHolder> setupInProgressAdapter(RecyclerView inProgressList) {
         rootRef = FirebaseDatabase.getInstance().getReference();
+
         // The query below grabs all user stories that are not assigned to any sprints
         // and that are not complete, hence the "false"
+        // If I wanted to check for completed, the second part would be "true"
         mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
                 .equalTo("null_false");
 
         FirebaseRecyclerAdapter<UserStory, PBInProgressFragment.InProgressViewHolder> inProgressListAdapter
                 = new FirebaseRecyclerAdapter<UserStory, PBInProgressFragment.InProgressViewHolder>(
                 UserStory.class,
-                R.layout.user_story_row_in_progress,
+                R.layout.user_story_row,
                 PBInProgressFragment.InProgressViewHolder.class,
                 mQuery
         ) {
@@ -63,8 +61,12 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
                 final PBInProgressFragment.InProgressViewHolder mViewHolder = viewHolder;
                 ImageButton completed = viewHolder.getCompleted();
                 ImageButton delete = viewHolder.getDelete();
+
+                // The id of the user story
                 final String usid = getRef(position).getKey().toString();
+
                 // Right now we are looking at in progress user stories, so they should appear as unchecked
+                // The opposite of this would be setting to ic_checkbox_checked
                 completed.setImageResource(R.drawable.ic_checkbox_not_checked);
                 // If user clicks on the checkbox button, notify user first
                 completed.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +184,7 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully
                 if (task.isSuccessful()){
-                    pbInProgressView.onSuccessfulUserStoryDeletion();
+                    pbInProgressView.showMessage("User story was deleted.");
                 }
             }
         });

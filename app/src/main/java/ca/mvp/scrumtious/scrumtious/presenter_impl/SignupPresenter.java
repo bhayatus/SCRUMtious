@@ -9,15 +9,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SignupScreenPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupScreenViewInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SignupPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupViewInt;
 
-public class SignupScreenPresenter implements SignupScreenPresenterInt {
+public class SignupPresenter implements SignupPresenterInt {
 
-    private SignupScreenViewInt signupScreenView;
+    private SignupViewInt signupScreenView;
     private FirebaseAuth mAuth;
 
-    public SignupScreenPresenter(SignupScreenViewInt signupScreenView){
+    public SignupPresenter(SignupViewInt signupScreenView){
         this.signupScreenView = signupScreenView;
     }
 

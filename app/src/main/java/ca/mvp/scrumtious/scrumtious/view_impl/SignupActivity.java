@@ -16,23 +16,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupScreenViewInt;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.SignupScreenPresenter;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupViewInt;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.SignupPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
-public class SignupScreenActivity extends AppCompatActivity implements SignupScreenViewInt {
+public class SignupActivity extends AppCompatActivity implements SignupViewInt {
 
     private EditText emailField, passwordField, retypePasswordField;
     private TextInputLayout emailFieldLayout, passwordFieldLayout, retypePasswordFieldLayout;
 
     private ProgressDialog signingInProgressDialog;
-    private SignupScreenPresenter signUpScreenPresenter;
+    private SignupPresenter signUpPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Sign Up");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup_screen);
-        signUpScreenPresenter = new SignupScreenPresenter(this);
+        setContentView(R.layout.activity_signup);
+        signUpPresenter = new SignupPresenter(this);
         setupFormWatcher();
     }
 
@@ -168,7 +168,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
         signingInProgressDialog.show();
 
         // Proceed to sign up user with backend authentication
-        signUpScreenPresenter.attemptSignUp(emailAddress, password);
+        signUpPresenter.attemptSignUp(emailAddress, password);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
         Toast.makeText(this, "Verification e-mail sent.", Toast.LENGTH_SHORT).show();
 
         // Return to login screen
-        Intent intent = new Intent(SignupScreenActivity.this, LoginScreenActivity.class);
+        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
 
@@ -206,7 +206,7 @@ public class SignupScreenActivity extends AppCompatActivity implements SignupScr
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(SignupScreenActivity.this, LoginScreenActivity.class);
+                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         }

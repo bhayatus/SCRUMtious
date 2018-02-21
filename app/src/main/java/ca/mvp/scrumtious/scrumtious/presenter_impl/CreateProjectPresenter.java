@@ -7,17 +7,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateProjectScreenPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectScreenViewInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateProjectPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
 
-public class CreateProjectScreenPresenter implements CreateProjectScreenPresenterInt {
+public class CreateProjectPresenter implements CreateProjectPresenterInt {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
-    private CreateProjectScreenViewInt createProjectScreenView;
+    private CreateProjectViewInt createProjectScreenView;
 
-    public CreateProjectScreenPresenter(CreateProjectScreenViewInt createProjectScreenView) {
+    public CreateProjectPresenter(CreateProjectViewInt createProjectScreenView) {
         this.createProjectScreenView = createProjectScreenView;
     }
 

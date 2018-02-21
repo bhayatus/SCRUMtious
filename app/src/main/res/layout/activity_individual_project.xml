@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ca.mvp.scrumtious.scrumtious.view_impl.IndividualProjectScreenActivity">
+    tools:context="ca.mvp.scrumtious.scrumtious.view_impl.IndividualProjectActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

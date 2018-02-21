@@ -15,25 +15,25 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectScreenViewInt;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateProjectScreenPresenter;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateProjectPresenter;
 
 
-public class CreateProjectScreenActivity extends AppCompatActivity implements
-        CreateProjectScreenViewInt {
+public class CreateProjectActivity extends AppCompatActivity implements
+        CreateProjectViewInt {
 
     private EditText titleField, descriptionField;
     private TextInputLayout titleFieldLayout, descriptionFieldLayout;
 
     private ProgressDialog createProjectProgressDialog;
-    private CreateProjectScreenPresenter createProjectScreenPresenter;
+    private CreateProjectPresenter createProjectPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         setTitle("Create Project");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_project_screen);
-        createProjectScreenPresenter = new CreateProjectScreenPresenter(this);
+        setContentView(R.layout.activity_create_project);
+        createProjectPresenter = new CreateProjectPresenter(this);
         setupFormWatcher();
     }
 
@@ -106,7 +106,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
         Toast.makeText(this, "Created project " + titleField.getText().toString().trim() + ".", Toast.LENGTH_SHORT).show();
 
         // Return to project list screen
-        Intent intent = new Intent(CreateProjectScreenActivity.this, ProjectTabsScreenActivity.class);
+        Intent intent = new Intent(CreateProjectActivity.this, ProjectTabsActivity.class);
         startActivity(intent);
         finish();
 
@@ -137,7 +137,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
         createProjectProgressDialog.show();
 
         // Proceed to create project with backend authentication
-        createProjectScreenPresenter.addProjectToDatabase(title, description);
+        createProjectPresenter.addProjectToDatabase(title, description);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class CreateProjectScreenActivity extends AppCompatActivity implements
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(CreateProjectScreenActivity.this, ProjectTabsScreenActivity.class);
+                            Intent intent = new Intent(CreateProjectActivity.this, ProjectTabsActivity.class);
                             startActivity(intent);
                             finish();
                         }

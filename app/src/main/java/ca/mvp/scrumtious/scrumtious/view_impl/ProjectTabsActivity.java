@@ -15,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import ca.mvp.scrumtious.scrumtious.R;
 
-public class ProjectTabsScreenActivity extends AppCompatActivity {
+public class ProjectTabsActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -35,7 +35,7 @@ public class ProjectTabsScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_tabs_screen);
+        setContentView(R.layout.activity_project_tabs);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -91,7 +91,7 @@ public class ProjectTabsScreenActivity extends AppCompatActivity {
 
             switch(position){
                 case 0:
-                    ProjectListScreenFragment projectListFragment = new ProjectListScreenFragment();
+                    ProjectListFragment projectListFragment = new ProjectListFragment();
                     return projectListFragment;
 
                 case 1:
@@ -135,7 +135,7 @@ public class ProjectTabsScreenActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Go to log in screen
-                        Intent intent = new Intent(ProjectTabsScreenActivity.this, LoginScreenActivity.class);
+                        Intent intent = new Intent(ProjectTabsActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
