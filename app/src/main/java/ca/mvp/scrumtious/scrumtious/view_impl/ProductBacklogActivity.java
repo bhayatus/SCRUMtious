@@ -1,14 +1,20 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProductBacklogPresenterInt;
@@ -22,10 +28,14 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
     private String pid;
     private ViewPager mViewPager;
 
+    private DrawerLayout mDrawerLayout;
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_backlog);
+
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
         this.productBacklogPresenter = new ProductBacklogPresenter(this, pid);
@@ -46,6 +56,67 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        // The following sets up the navigation drawer
+        mDrawerLayout = findViewById(R.id.productBacklogNavDrawer);
+        navigationView = findViewById(R.id.productBacklogNavView);
+
+        // By default, should highlight product backlog option to indicate that is where the user is
+        navigationView.setCheckedItem(R.id.nav_product_backlog);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+                        int item = menuItem.getItemId();
+                        switch(item){
+                            // User chooses Project Overview in menu, go there
+                            case R.id.nav_overview:
+                                // Allow nav drawer to close smoothly before switching activities
+                                Handler handler = new Handler();
+                                int delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(ProductBacklogActivity.this, IndividualProjectActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
+                                break;
+                            // User chooses product backlog, do nothing as we are already there
+                            case R.id.nav_product_backlog:
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.productBacklogToolbar);
+        setSupportActionBar(toolbar);
+        // Sets icon for menu on top left
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    // Used when the menu icon is clicked to open the navigation drawer
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            // User clicks on the menu icon on the top left
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void onClickAddUserStory(View view){
@@ -110,5 +181,12 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                     return null;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

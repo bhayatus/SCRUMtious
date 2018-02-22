@@ -6,26 +6,8 @@
                                                     android:paddingTop="@dimen/project_list_top_padding"
                                                  android:background="@color/project_list_screen_bg_color"
                                                  tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment">
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Project List"
-                android:fontFamily="@font/open_sans"
-                android:layout_gravity="center_vertical"
-                android:textSize="24sp"
-                android:textColor="@color/colorPrimary"
-                android:paddingLeft="5dp"/>
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">
@@ -45,8 +27,6 @@
                 android:layout_height="match_parent"
                 android:checked="false"/>
             </LinearLayout>
-        </LinearLayout>
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/projectListScreenRecyclerView"

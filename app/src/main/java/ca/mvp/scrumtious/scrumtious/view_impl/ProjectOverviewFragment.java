@@ -19,7 +19,6 @@ public class ProjectOverviewFragment extends Fragment {
 
 
     private String pid;
-    private Button productBacklogBtn;
 
     public ProjectOverviewFragment() {
         // Required empty public constructor
@@ -32,26 +31,11 @@ public class ProjectOverviewFragment extends Fragment {
     }
 
 
-    public void onClickProductBacklogBtn(View view) {
-        Intent intent = new Intent(getActivity(), ProductBacklogActivity.class);
-        intent.putExtra("projectId", pid);
-        startActivity(intent);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_overview, container, false);
-
-        productBacklogBtn = view.findViewById(R.id.btn_product_backlog);
-
-        productBacklogBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickProductBacklogBtn(view);
-            }
-        });
 
         return view;
     }
