@@ -52,8 +52,6 @@ Priority: 10
 Points: 4
 Criteria of Satisfaction:
 * Sort by date
-* Sort by cost
-* Sort by priority
 * Able to click and view each user story in more detail
 ---
 As a team leader I want to add or delete tasks so that the breakdown of user stories can be easily managed by several group members
