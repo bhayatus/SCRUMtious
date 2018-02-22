@@ -49,9 +49,9 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
-        membersList = view.findViewById(R.id.membersListScreenRecyclerView);
+        membersList = view.findViewById(R.id.projectMembersRecyclerView);
         setupRecyclerView();
-        addMemberBtn = view.findViewById(R.id.btn_add_member);
+        addMemberBtn = view.findViewById(R.id.projectMembersInviteMemberBtn);
 
         addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,8 +206,8 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             super(itemView);
             this.mView = itemView;
 
-            emailView = (TextView) mView.findViewById(R.id.member_row_email);
-            deleteView = (ImageButton) mView.findViewById(R.id.member_delete_btn);
+            emailView = (TextView) mView.findViewById(R.id.memberRowEmail);
+            deleteView = (ImageButton) mView.findViewById(R.id.memberRowDeleteBtn);
         }
 
 

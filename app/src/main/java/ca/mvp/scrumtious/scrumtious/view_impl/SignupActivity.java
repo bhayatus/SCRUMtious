@@ -37,13 +37,13 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
     }
 
     private void setupFormWatcher() {
-        emailField = (EditText) findViewById(R.id.signupScreenEmailField);
-        passwordField = (EditText) findViewById(R.id.signupScreenPasswordField);
-        retypePasswordField = (EditText) findViewById(R.id.signupScreenRetypePasswordField);
-        emailFieldLayout = (TextInputLayout) findViewById(R.id.signupScreenEmailFieldLayout);
-        passwordFieldLayout = (TextInputLayout) findViewById(R.id.signupScreenPasswordFieldLayout);
+        emailField = (EditText) findViewById(R.id.signupEmailField);
+        passwordField = (EditText) findViewById(R.id.signupPasswordField);
+        retypePasswordField = (EditText) findViewById(R.id.signupRetypePasswordField);
+        emailFieldLayout = (TextInputLayout) findViewById(R.id.signupEmailFieldLayout);
+        passwordFieldLayout = (TextInputLayout) findViewById(R.id.signupPasswordFieldLayout);
         retypePasswordFieldLayout = (TextInputLayout)
-                findViewById(R.id.signupScreenRetypePasswordFieldLayout);
+                findViewById(R.id.signupRetypePasswordFieldLayout);
 
         emailFieldLayout.setError(null);
         passwordFieldLayout.setError(null);

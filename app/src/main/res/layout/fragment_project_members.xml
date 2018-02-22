@@ -6,21 +6,21 @@
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/membersListScreenRecyclerView"
+        android:id="@+id/projectMembersRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/add_member_btn_layout"
+        android:layout_above="@id/projectMembersLinearLayout"
         >
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
-        android:id="@+id/add_member_btn_layout"
+        android:id="@+id/projectMembersLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btn_add_member"
+            android:id="@+id/projectMembersInviteMemberBtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:backgroundTint="@color/colorPrimary"

@@ -52,10 +52,10 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
-        projectList = (RecyclerView) view.findViewById(R.id.projectListScreenRecyclerView);
-        showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListScreenSwitch);
+        projectList = (RecyclerView) view.findViewById(R.id.projectListRecyclerView);
+        showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListSwitch);
         setupRecyclerView();
-        addProjectBtn = (Button) view.findViewById(R.id.btn_add_project);
+        addProjectBtn = (Button) view.findViewById(R.id.projectListAddProjectBtn);
 
         addProjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override

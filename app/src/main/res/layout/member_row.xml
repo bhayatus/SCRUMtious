@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         android:padding="5dp">
         <TextView
-            android:id="@+id/member_row_email"
+            android:id="@+id/memberRowEmail"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -29,7 +29,7 @@
             tools:layout_editor_absoluteY="0dp"/>
 
         <ImageButton
-            android:id="@+id/member_delete_btn"
+            android:id="@+id/memberRowDeleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -41,12 +41,10 @@
     </android.widget.LinearLayout>
 
     <View
-        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
         android:layout_weight="1"
         android:background="#f1f1f1f1"/>
-
 
 </android.widget.LinearLayout>

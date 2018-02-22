@@ -31,10 +31,14 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
 
+    private boolean alreadyDeleted;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_backlog);
+
+        alreadyDeleted = false; // Project is not deleted at this point
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
@@ -128,11 +132,17 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
     // If project no longer exists while we are on this screen, must return to the project list screen
     @Override
     public void onProjectDeleted() {
-        // Return to project list screen, and clear the task stack so we can't go back
-        Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!alreadyDeleted) {
+            alreadyDeleted = true;
+
+            // Return to project list screen, and clear the task stack so we can't go back
+            Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

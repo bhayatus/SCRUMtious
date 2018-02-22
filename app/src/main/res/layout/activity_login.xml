@@ -17,7 +17,6 @@
               tools:context="ca.mvp.scrumtious.scrumtious.view_impl.LoginActivity">
 
     <TextView
-        android:id="@+id/loginScreenMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -30,7 +29,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/loginScreenEmailFieldLayout"
+        android:id="@+id/loginEmailFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -40,7 +39,7 @@
         app:errorTextAppearance="@style/SignupErrorText">
 
         <EditText
-            android:id="@+id/loginScreenEmailField"
+            android:id="@+id/loginEmailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -52,7 +51,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/loginScreenPasswordFieldLayout"
+        android:id="@+id/loginPasswordFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -64,7 +63,7 @@
 
 
         <EditText
-            android:id="@+id/loginScreenPasswordField"
+            android:id="@+id/loginPasswordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"

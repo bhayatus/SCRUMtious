@@ -1,14 +1,11 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-import android.provider.ContactsContract;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProductBacklogPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProductBacklogViewInt;
 

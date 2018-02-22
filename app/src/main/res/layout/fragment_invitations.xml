@@ -5,7 +5,7 @@
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.InvitationsFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/userInviteScreenRecyclerView"
+        android:id="@+id/invitationsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"

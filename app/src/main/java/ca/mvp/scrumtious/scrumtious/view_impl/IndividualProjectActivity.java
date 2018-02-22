@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,14 +19,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPresenterInt;
@@ -40,6 +35,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     private ViewPager mViewPager;
     private ImageButton deleteBtn;
     private String pid;
+    private boolean alreadyDeleted;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
@@ -53,6 +49,8 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_project);
 
+        alreadyDeleted = false; // Project hasn't been deleted yet
+
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
 
@@ -60,17 +58,17 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         individualProjectPresenter.setupProjectDeletedListener();
         individualProjectPresenter.checkIfOwner();
 
-        deleteBtn = findViewById(R.id.delete_project_img_btn);
+        deleteBtn = findViewById(R.id.individualProjectDeleteBtn);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.individualProjectViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.projectOverviewTabs);
+        TabLayout tabs = (TabLayout) findViewById(R.id.individualProjectTabs);
         tabs.setupWithViewPager(mViewPager);
 
         // The following sets up the navigation drawer
@@ -139,11 +137,16 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
     // Project no longer exists, go back
     public void onSuccessfulDeletion() {
-        // Return to project list screen and make sure we can't go back by clearing the task stack
-        Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!alreadyDeleted) {
+            alreadyDeleted = true;
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void setDeleteInvisible(){

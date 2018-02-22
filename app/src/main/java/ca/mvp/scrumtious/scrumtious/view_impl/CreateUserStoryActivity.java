@@ -27,18 +27,27 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     private String pid;
     private ProgressDialog createUserStoryProgressDialog;
 
+    private boolean alreadyDeleted;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_story);
 
+        alreadyDeleted = false; // Project isn't deleted at this point
+
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
 
         createUserStoryPresenter = new CreateUserStoryPresenter(this, pid);
+
+        // If project is deleted, we have to go back to project list screen
+        createUserStoryPresenter.setupProjectDeletedListener();
+
         setupFormWatcher();
     }
 
+    // Prevent user from accidentally leaving if form is filled in
     @Override
     public void onBackPressed() {
         if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0 ||
@@ -63,12 +72,12 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     }
 
     public void setupFormWatcher() {
-        titleField = (EditText) findViewById(R.id.createUserStoryScreenNameField);
-        pointField = (EditText) findViewById(R.id.createUserStoryScreenPointsField);
-        descriptionField = (EditText) findViewById(R.id.createUserStoryScreenDescField);
-        titleFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryScreenTitleFieldLayout);
-        descriptionFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryScreenDescFieldLayout);
-        pointFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryScreenPointsFieldLayout);
+        titleField = (EditText) findViewById(R.id.createUserStoryNameField);
+        pointField = (EditText) findViewById(R.id.createUserStoryPointsField);
+        descriptionField = (EditText) findViewById(R.id.createUserStoryDescField);
+        titleFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryTitleFieldLayout);
+        descriptionFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryDescFieldLayout);
+        pointFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryPointsFieldLayout);
 
         titleFieldLayout.setError(null);
         pointField.setError(null);
@@ -206,10 +215,16 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     // Project no longer exists to user, must go back to project list screen
     @Override
     public void onProjectDeleted() {
-        // Return to project list screen and make sure we can't go back by clearing the task stack
-        Intent intent = new Intent(CreateUserStoryActivity.this, ProjectTabsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!alreadyDeleted) {
+            alreadyDeleted = true;
+
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(CreateUserStoryActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 }

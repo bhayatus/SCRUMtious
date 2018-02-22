@@ -17,7 +17,7 @@
 
 
     <TextView
-        android:id="@+id/createUserStoryScreenLabel"
+        android:id="@+id/createUserStoryLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -28,7 +28,7 @@
         android:fontFamily="@font/open_sans"/>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createUserStoryScreenTitleFieldLayout"
+        android:id="@+id/createUserStoryTitleFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -37,7 +37,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createUserStoryScreenNameField"
+            android:id="@+id/createUserStoryNameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -48,7 +48,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createUserStoryScreenDescFieldLayout"
+        android:id="@+id/createUserStoryDescFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:layout_gravity="center"
@@ -56,7 +56,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createUserStoryScreenDescField"
+            android:id="@+id/createUserStoryDescField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -69,7 +69,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createUserStoryScreenPointsFieldLayout"
+        android:id="@+id/createUserStoryPointsFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -78,7 +78,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createUserStoryScreenPointsField"
+            android:id="@+id/createUserStoryPointsField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="4"
@@ -91,7 +91,6 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/btn_create_user_story_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

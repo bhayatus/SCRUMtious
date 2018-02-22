@@ -14,5 +14,4 @@ public interface InvitationsPresenterInt {
 
     void acceptInvite(String projectId, String inviteId);
     void removeInvite(String inviteId);
-
 }

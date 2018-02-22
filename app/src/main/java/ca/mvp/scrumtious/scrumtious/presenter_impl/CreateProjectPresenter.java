@@ -7,6 +7,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
+import java.util.Map;
+
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateProjectPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
 
@@ -21,7 +23,6 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         this.createProjectView = createProjectView;
     }
 
-
     @Override
     public void addProjectToDatabase(String projectTitle, String projectDesc) {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -29,35 +30,32 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         final String projectOwnerUid = firebaseAuth.getCurrentUser().getUid();
         String projectOwnerEmail = firebaseAuth.getCurrentUser().getEmail();
 
-        HashMap<String, String> projectMap = new HashMap<>();
-        projectMap.put("projectTitle", projectTitle);
-        projectMap.put("projectDesc", projectDesc);
-        projectMap.put("projectOwnerUid", projectOwnerUid);
-        projectMap.put("projectOwnerEmail", projectOwnerEmail);
-
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
         final String projectId = mRef.push().getKey();
 
-        mRef.child("projects").child(projectId).setValue(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        Map projectMap = new HashMap<>();
+
+        // All the changes that need to be made in one go, to ensure atomicity
+        projectMap.put("/projects/" + projectId + "/" + "projectTitle", projectTitle);
+        projectMap.put("/projects/" + projectId + "/" + "projectDesc", projectDesc);
+        projectMap.put("/projects/" + projectId + "/" + "projectOwnerUid", projectOwnerUid);
+        projectMap.put("/projects/" + projectId + "/" + "projectOwnerEmail", projectOwnerEmail);
+        projectMap.put("/projects/" + projectId + "/" + projectOwnerUid, "member");
+        projectMap.put("/users/" + projectOwnerUid + "/" + projectId, "member");
+
+        mRef.updateChildren(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
-                mRef.child("projects").child(projectId).child(projectOwnerUid).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        mRef.child("users").child(projectOwnerUid).child(projectId).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                createProjectView.onSuccessfulCreateProject();
-                            }
-                        });
-
-                    }
-                });
+                // All changes to database were successful, tell user
+                if (task.isSuccessful()){
+                     createProjectView.onSuccessfulCreateProject();
+                }
+                // Failed at some point, roll back changes and tell user
+                else{
+                    createProjectView.showMessage("An error occurred, failed to create project");
+                }
             }
         });
-
     }
 }

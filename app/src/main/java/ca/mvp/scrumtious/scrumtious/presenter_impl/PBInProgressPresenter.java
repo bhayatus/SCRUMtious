@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import java.util.HashMap;
+import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.PBInProgressPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.PBInProgressViewInt;
@@ -146,6 +148,7 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
     public void changeCompletedStatus(String usid, boolean newStatus){
         final String completed = Boolean.toString(newStatus);
         final String userStoryId = usid;
+
         mDatabase = FirebaseDatabase.getInstance();
         rootRef = mDatabase.getReference();
         // Gets the current user story
@@ -155,16 +158,25 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
                 // Get the assigned to variable, whether it be the product backlog or a specific sprint backlog
                 String assignedTo = dataSnapshot.child("assignedTo").getValue().toString();
                 final String assignedTo_completed = assignedTo + "_" + completed;
-                // Changes the completed status
-                rootRef.child("projects").child(pid).child("user_stories").child(userStoryId).child("completed").setValue(completed).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                Map statusMap = new HashMap();
+
+                // Both changes need to happen to ensure atomicity
+                statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completed", completed);
+                statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "assignedTo_completed", assignedTo_completed);
+
+                rootRef.updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // Changes this attribute for querying purposes
-                        rootRef.child("projects").child(pid).child("user_stories").child(userStoryId).child("assignedTo_completed")
-                                .setValue(assignedTo_completed);
+                    public void onComplete(@NonNull Task task) {
+
+                        if (task.isSuccessful()){
+                            pbInProgressView.showMessage("Marked the user story as completed.");
+                        }
+                        else{
+                            pbInProgressView.showMessage("An error occurred, failed to mark the user story as completed.");
+                        }
                     }
                 });
-
             }
 
             @Override
@@ -185,6 +197,9 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
                 // User story was deleted successfully
                 if (task.isSuccessful()){
                     pbInProgressView.showMessage("User story was deleted.");
+                }
+                else{
+                    pbInProgressView.showMessage("An error occurred, failed to delete the user story");
                 }
             }
         });

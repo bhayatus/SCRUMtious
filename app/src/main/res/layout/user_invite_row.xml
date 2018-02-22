@@ -26,7 +26,7 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/user_invite_row_project"
+            android:id="@+id/userInviteRowProject"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -39,7 +39,7 @@
 
 
         <ImageButton
-            android:id="@+id/user_invite_accept_btn"
+            android:id="@+id/userInviteRowAcceptBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
@@ -50,7 +50,7 @@
             app:srcCompat="@drawable/ic_check_white_24dp"/>
 
         <ImageButton
-            android:id="@+id/user_invite_delete_btn"
+            android:id="@+id/userInviteRowDeclineButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -62,7 +62,7 @@
     </android.widget.LinearLayout>
 
     <TextView
-        android:id="@+id/user_invite_row_invitee"
+        android:id="@+id/userInviteRowInvitee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -71,7 +71,6 @@
         android:text="by usaimbhayat@gmail.com"/>
 
     <View
-        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"

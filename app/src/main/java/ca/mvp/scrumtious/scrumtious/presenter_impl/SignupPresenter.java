@@ -9,6 +9,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
+import java.util.Map;
+
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SignupPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupViewInt;
 
@@ -52,32 +54,48 @@ public class SignupPresenter implements SignupPresenterInt {
                     // Sign up was successful, user should change activities
                     setupUserDatabase();
                 }
+                // Failed to send verification e-mail, remove user from authentication and let them know
+                else{
+                    mAuth = FirebaseAuth.getInstance();
+                    mAuth.getCurrentUser().delete();
+                    signupView.showMessage("An error occurred during the registration process, please try again.");
+                }
+
+
             }
         });
 
     }
 
-    // Add user to our Firebase database
+    // Add user to our Firebase database, outside of the authentication
     private void setupUserDatabase(){
-
         mAuth = FirebaseAuth.getInstance();
 
         // Create the user object to store in Firebase after creating an account
         String emailAddress = mAuth.getCurrentUser().getEmail();
         String userID = mAuth.getCurrentUser().getUid();
 
-        HashMap<String, String> userMap = new HashMap<>();
-        userMap.put("emailAddress", emailAddress);
-        userMap.put("userID", userID);
-
-        // Adds new user to database using their unique UID as the key (instead
+        // Adds new user to database using their unique UserID as the key (instead
         // of the usual push ID that Firebase uses)
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = mDatabase.getReference();
-        mRef.child("users").child(userID).setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        Map userMap = new HashMap<>();
+        userMap.put("/users/" + userID + "/" + "emailAddress", emailAddress);
+        userMap.put("/users/" + userID + "/" + "userID", userID);
+
+        mRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                signupView.onSuccessfulSignUp();
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    signupView.onSuccessfulSignUp();
+                }
+                else{
+                    // Failed to sign up user, remove them from authentication and tell them
+                    mAuth = FirebaseAuth.getInstance();
+                    mAuth.getCurrentUser().delete();
+                    signupView.showMessage("An error occurred during the registration process, please try again.");
+                }
             }
         });
 

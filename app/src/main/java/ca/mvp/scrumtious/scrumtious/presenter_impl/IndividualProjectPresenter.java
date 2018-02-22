@@ -1,6 +1,8 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -12,16 +14,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.util.HashMap;
+import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt;
 
 public class IndividualProjectPresenter implements IndividualProjectPresenterInt {
-
+    private boolean deletedNormally = false;
     private IndividualProjectViewInt individualProjectView;
     private final String pid;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
+
+    private Map removeProjectMap;
 
     public IndividualProjectPresenter(IndividualProjectViewInt individualProjectView, String pid){
         this.individualProjectView = individualProjectView;
@@ -36,9 +42,11 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
         mRef.child(pid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 // If project no longer exists, exit this screen and go back
                 if (!dataSnapshot.exists()){
-                    individualProjectView.onSuccessfulDeletion();
+                        individualProjectView.onSuccessfulDeletion();
+
                 }
 
                 else{
@@ -107,58 +115,62 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
     private void deleteProject() {
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        // Remove project from projects tree
-        mRef.child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        //mRef = mDatabase.getReference().child("projects");
+        mRef = mDatabase.getReference();
+
+        removeProjectMap = new HashMap();
+
+        // Remove the project itself
+        removeProjectMap.put("/projects/" + pid, null);
+
+        // Remove all users associated with this project
+        mRef.child("users").orderByChild(pid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    mRef = mDatabase.getReference().child("users");
-                    mRef.orderByChild(pid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            // Remove projectid:member from each part of the users tree
-                            for(DataSnapshot d: dataSnapshot.getChildren()){
-                               DatabaseReference ref = d.child(pid).getRef();
-                               ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                   @Override
-                                   public void onComplete(@NonNull Task<Void> task) {
-                                       if (task.isSuccessful()){
-                                           mDatabase = FirebaseDatabase.getInstance();
-                                           mRef = mDatabase.getReference();
-                                           mRef.child("invites").orderByChild("projectId").equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
-                                               @Override
-                                               public void onDataChange(DataSnapshot dataSnapshot) {
-                                                   // Remove every invite associated with this project we are deleting
-                                                   for (DataSnapshot d: dataSnapshot.getChildren()){
-                                                       DatabaseReference ref = d.getRef();
-                                                       ref.removeValue();
-                                                   }
-                                               }
-
-                                               @Override
-                                               public void onCancelled(DatabaseError databaseError) {
-
-                                               }
-                                           });
-
-                                       }
-                                   }
-                               });
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    // Project was successfully deleted
-                    individualProjectView.onSuccessfulDeletion();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get all the users that were in the project, and remove them
+                for(DataSnapshot d: dataSnapshot.getChildren()){
+                    removeProjectMap.put("/users/" + d.getKey() + "/" + pid, null);
                 }
+
+                // Remove all invites associated with this project
+                mRef.child("invites").orderByChild("projectId").equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get all the invites that were in the project, and remove them
+                        for(DataSnapshot d: dataSnapshot.getChildren()){
+                            removeProjectMap.put("/invites/" + d.getKey(), null);
+                        }
+
+                        // Remove all parts at the same time
+                        mRef.updateChildren(removeProjectMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                // Successfully deleted project
+                                if (task.isSuccessful()){
+                                    individualProjectView.onSuccessfulDeletion();
+                                }
+                                // Failed, tell user
+                                else{
+                                    individualProjectView.showMessage("An error occurred, failed to delete project.");
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
+
     }
 
 

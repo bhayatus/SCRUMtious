@@ -1,9 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-
 import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,9 +9,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.HashMap;
-
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateUserStoryViewInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPresenterInt;
 
@@ -33,25 +28,29 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
 
     public void addUserStoryToDatabase(String name, int points, String details){
 
-        HashMap<String, String> userStoryMap = new HashMap<>();
         String stringPoints = Integer.toString(points);
-        userStoryMap.put("userStoryName", name);
-        userStoryMap.put("userStoryPoints", stringPoints);
-        userStoryMap.put("userStoryDetails", details);
-        userStoryMap.put("completed", "false");
-        userStoryMap.put("assignedTo", "null");
-        userStoryMap.put("assignedTo_completed", "null_false");
+
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(this.pid).child("user_stories");
+        mRef = mDatabase.getReference();
         final String userStoryID = mRef.push().getKey();
 
-        mRef.child(userStoryID).setValue(userStoryMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        HashMap userStoryMap = new HashMap<>();
+
+        // All the changes that need to be made in one go, to ensure atomicity
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryName", name);
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryPoints", stringPoints);
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryDetails", details);
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "completed", "false");
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo", "null");
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo_completed", "null_false");
+
+        mRef.updateChildren(userStoryMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
+            public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()){
                     createUserStoryView.onSuccessfulCreateUserStory();
                 }else{
-                    createUserStoryView.showMessage("Could not create user story.");
+                    createUserStoryView.showMessage("An error occurred, failed to create user story.");
                 }
             }
         });

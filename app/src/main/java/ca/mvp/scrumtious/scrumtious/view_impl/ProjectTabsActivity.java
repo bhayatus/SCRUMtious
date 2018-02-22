@@ -11,8 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import ca.mvp.scrumtious.scrumtious.R;
 
 public class ProjectTabsActivity extends AppCompatActivity {
@@ -31,10 +30,10 @@ public class ProjectTabsActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.projectTabsViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout mainTabs = (TabLayout) findViewById(R.id.projectTabsScreenMainTabs);
+        TabLayout mainTabs = (TabLayout) findViewById(R.id.projectTabsMainTabs);
         mainTabs.setupWithViewPager(mViewPager);
 
     }

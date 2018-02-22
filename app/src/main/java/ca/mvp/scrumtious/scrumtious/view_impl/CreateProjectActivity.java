@@ -37,11 +37,11 @@ public class CreateProjectActivity extends AppCompatActivity implements
     }
 
     private void setupFormWatcher(){
-        titleField = (EditText) findViewById(R.id.createProjectScreenTitleField);
-        descriptionField = (EditText) findViewById(R.id.createProjectScreenDescField);
-        titleFieldLayout = (TextInputLayout) findViewById(R.id.createProjectScreenTitleFieldLayout);
+        titleField = (EditText) findViewById(R.id.createProjectTitleField);
+        descriptionField = (EditText) findViewById(R.id.createProjectDescField);
+        titleFieldLayout = (TextInputLayout) findViewById(R.id.createProjectTitleFieldLayout);
         descriptionFieldLayout = (TextInputLayout)
-                findViewById(R.id.createProjectScreenDescFieldLayout);
+                findViewById(R.id.createProjectDescFieldLayout);
 
         titleFieldLayout.setError(null);
         descriptionFieldLayout.setError(null);
@@ -100,9 +100,12 @@ public class CreateProjectActivity extends AppCompatActivity implements
         });
     }
 
-
+    // Return to project list screen
     public void onSuccessfulCreateProject(){
-        Toast.makeText(this, "Created project " + titleField.getText().toString().trim() + ".", Toast.LENGTH_SHORT).show();
+        // Stop dialog if showing
+        if (createProjectProgressDialog != null && createProjectProgressDialog.isShowing()) {
+            createProjectProgressDialog.dismiss();
+        }
 
         // Return to project list screen
         Intent intent = new Intent(CreateProjectActivity.this, ProjectTabsActivity.class);
@@ -112,6 +115,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
     }
 
     public void showMessage(String message) {
+        // Stop dialog if showing
         if (createProjectProgressDialog != null && createProjectProgressDialog.isShowing()) {
             createProjectProgressDialog.dismiss();
         }
@@ -124,19 +128,21 @@ public class CreateProjectActivity extends AppCompatActivity implements
         // If either error message is displaying, that means the form can't be submitted properly
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() ) {
             showMessage("Cannot create project until fields are filled out properly.");
-            return;
         }
 
-        // Creates a dialog that appears to tell the user that creating the project is occurring
-        createProjectProgressDialog = new ProgressDialog(this);
-        createProjectProgressDialog.setTitle("Create Project");
-        createProjectProgressDialog.setCancelable(false);
-        createProjectProgressDialog.setMessage("Creating project...");
-        createProjectProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        createProjectProgressDialog.show();
+        else {
 
-        // Proceed to create project with backend authentication
-        createProjectPresenter.addProjectToDatabase(title, description);
+            // Creates a dialog that appears to tell the user that creating the project is occurring
+            createProjectProgressDialog = new ProgressDialog(this);
+            createProjectProgressDialog.setTitle("Create Project");
+            createProjectProgressDialog.setCancelable(false);
+            createProjectProgressDialog.setMessage("Creating project...");
+            createProjectProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            createProjectProgressDialog.show();
+
+            // Proceed to create project with backend authentication
+            createProjectPresenter.addProjectToDatabase(title, description);
+        }
     }
 
     @Override

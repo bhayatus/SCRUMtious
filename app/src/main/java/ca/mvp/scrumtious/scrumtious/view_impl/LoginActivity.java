@@ -41,10 +41,10 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
     // Set up listeners for the text fields
     private void setupFormWatcher() {
-        emailField = (EditText) findViewById(R.id.loginScreenEmailField);
-        passwordField = (EditText) findViewById(R.id.loginScreenPasswordField);
-        emailFieldLayout = (TextInputLayout) findViewById(R.id.loginScreenEmailFieldLayout);
-        passwordFieldLayout = (TextInputLayout) findViewById(R.id.loginScreenPasswordFieldLayout);
+        emailField = (EditText) findViewById(R.id.loginEmailField);
+        passwordField = (EditText) findViewById(R.id.loginPasswordField);
+        emailFieldLayout = (TextInputLayout) findViewById(R.id.loginEmailFieldLayout);
+        passwordFieldLayout = (TextInputLayout) findViewById(R.id.loginPasswordFieldLayout);
 
         // By default, errors should not show until user clicks a field and types, but this
         // also prevents the user from trying to submit an empty form

@@ -17,7 +17,6 @@
               tools:context="ca.mvp.scrumtious.scrumtious.view_impl.SignupActivity">
 
     <TextView
-        android:id="@+id/signupScreenMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -32,7 +31,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupScreenEmailFieldLayout"
+        android:id="@+id/signupEmailFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -42,7 +41,7 @@
         app:errorTextAppearance="@style/SignupErrorText">
 
         <EditText
-            android:id="@+id/signupScreenEmailField"
+            android:id="@+id/signupEmailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -56,7 +55,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupScreenPasswordFieldLayout"
+        android:id="@+id/signupPasswordFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -68,7 +67,7 @@
         >
 
         <EditText
-            android:id="@+id/signupScreenPasswordField"
+            android:id="@+id/signupPasswordField"
             android:layout_width="match_parent" 
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -82,7 +81,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupScreenRetypePasswordFieldLayout"
+        android:id="@+id/signupRetypePasswordFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -94,7 +93,7 @@
         >
 
         <EditText
-            android:id="@+id/signupScreenRetypePasswordField"
+            android:id="@+id/signupRetypePasswordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -108,7 +107,7 @@
 
 
     <Button
-        android:id="@+id/signupScreenSubmit"
+        android:id="@+id/signupSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

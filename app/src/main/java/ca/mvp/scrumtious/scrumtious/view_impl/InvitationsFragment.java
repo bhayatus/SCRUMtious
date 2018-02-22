@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +38,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_invitations, container, false);
-        invitationsList = view.findViewById(R.id.userInviteScreenRecyclerView);
+        invitationsList = view.findViewById(R.id.invitationsRecyclerView);
         setupRecyclerView();
         return view;
     }
@@ -91,6 +92,10 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
     }
 
+    public void showMessage(String message) {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+    }
+
     // Viewholder class to display invitations
     public static class InvitationsViewHolder extends RecyclerView.ViewHolder{
         View mView;
@@ -100,13 +105,12 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
             super(itemView);
             this.mView = itemView;
 
-            projectTitleView = (TextView) mView.findViewById(R.id.user_invite_row_project);
-            emailView = (TextView) mView.findViewById(R.id.user_invite_row_invitee);
-            acceptInvite = (ImageButton) mView.findViewById(R.id.user_invite_accept_btn);
-            declineInvite = (ImageButton) mView.findViewById(R.id.user_invite_delete_btn);
+            projectTitleView = (TextView) mView.findViewById(R.id.userInviteRowProject);
+            emailView = (TextView) mView.findViewById(R.id.userInviteRowInvitee);
+            acceptInvite = (ImageButton) mView.findViewById(R.id.userInviteRowAcceptBtn);
+            declineInvite = (ImageButton) mView.findViewById(R.id.userInviteRowDeclineButton);
 
         }
-
 
         // Populates each row of the recycler view with the invitation details
         public void setDetails(String projectTitle, String emailAddress){

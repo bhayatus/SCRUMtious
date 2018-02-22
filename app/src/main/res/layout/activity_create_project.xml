@@ -16,9 +16,7 @@
               tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateProjectActivity"
     >
 
-
     <TextView
-        android:id="@+id/createProjectScreenLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -29,7 +27,7 @@
         android:textSize="30sp"/>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createProjectScreenTitleFieldLayout"
+        android:id="@+id/createProjectTitleFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -38,7 +36,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createProjectScreenTitleField"
+            android:id="@+id/createProjectTitleField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -49,7 +47,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createProjectScreenDescFieldLayout"
+        android:id="@+id/createProjectDescFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -57,7 +55,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createProjectScreenDescField"
+            android:id="@+id/createProjectDescField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -81,7 +79,6 @@
         style="@style/Widget.AppCompat.Button"
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/white"
-
         android:textSize="18sp"/>
 
 </LinearLayout>

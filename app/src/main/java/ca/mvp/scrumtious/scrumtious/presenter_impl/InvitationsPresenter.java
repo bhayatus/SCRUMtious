@@ -11,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import java.util.HashMap;
+import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.InvitationsPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.InvitationsViewInt;
@@ -89,40 +91,41 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
         mAuth = FirebaseAuth.getInstance();
         final String invitedUid = mAuth.getCurrentUser().getUid();
 
-        // First add user to project
+        Map acceptInviteMap = new HashMap();
+
+        acceptInviteMap.put("/projects/" + projectId + "/" + invitedUid, "member");
+        acceptInviteMap.put("/users/" + invitedUid + "/" + projectId, "member");
+        acceptInviteMap.put("/invites/" + inviteId, null);
+
 
         mDatabase = FirebaseDatabase.getInstance();
         rootRef = mDatabase.getReference();
-        rootRef.child("projects").child(projectId).child(invitedUid).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        rootRef.updateChildren(acceptInviteMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    // Do the opposite now
-
-                    mDatabase = FirebaseDatabase.getInstance();
-                    rootRef = mDatabase.getReference();
-                    rootRef.child("users").child(invitedUid).child(projectId).setValue("member").addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                // Now remove the invite from the database
-                                removeInvite(inviteId);
-                            }
-
-                        }
-                    });
+            public void onComplete(@NonNull Task task) {
+                if (!task.isSuccessful()){
+                    invitationsView.showMessage("An error occurred, failed to accept invite.");
                 }
             }
         });
 
 
+
     }
 
-    // Remove the invite from the database
+    // Remove the invite from the database if user chooses to reject it
     @Override
     public void removeInvite(String inviteId) {
         mDatabase = FirebaseDatabase.getInstance();
         rootRef = mDatabase.getReference();
-        rootRef.child("invites").child(inviteId).removeValue();
+        rootRef.child("invites").child(inviteId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(!task.isSuccessful()){
+                    invitationsView.showMessage("An error occurred, failed to decline invite.");
+                }
+            }
+        });
     }
 }

@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,11 +36,17 @@ public class LoginPresenter implements LoginPresenterInt {
                                 loginScreenView.onSuccessfulLogin();
                             }
                         }
-                        else loginScreenView.showMessage("Invalid login credentials.");
+                        // Login failed
+                        else {
+                            loginScreenView.showMessage("Login failed.");
+
+
+                        }
                     }
                 });
     }
 
+    // Signs the user out
     @Override
     public void signOut() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
