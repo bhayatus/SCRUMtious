@@ -24,9 +24,6 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectListPresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ProjectListFragment extends Fragment implements ProjectListViewInt {
 
     private ProjectListPresenterInt projectListPresenterInt;

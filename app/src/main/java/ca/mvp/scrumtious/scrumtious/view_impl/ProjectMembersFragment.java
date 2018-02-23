@@ -73,7 +73,12 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     // Sets up the recycler view to display info about members
     private void setupRecyclerView(){
 
-        membersList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Sets up the layout so that results are displayed in reverse order, meaning new items are added to the bottom
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
+        membersList.setLayoutManager(mLayoutManager);
         membersList.setAdapter(projectMembersPresenter.setupMembersAdapter(membersList));
 
     }
@@ -201,6 +206,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         View mView;
         TextView emailView;
         ImageButton deleteView;
+        ImageButton owner;
 
         public MembersViewHolder(View itemView) {
             super(itemView);
@@ -208,6 +214,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
             emailView = (TextView) mView.findViewById(R.id.memberRowEmail);
             deleteView = (ImageButton) mView.findViewById(R.id.memberRowDeleteBtn);
+            owner = (ImageButton) mView.findViewById(R.id.memberRowOwner);
         }
 
 
@@ -221,10 +228,14 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             return deleteView;
         }
 
+        public ImageButton getOwner(){return owner;}
+
         // Under certain circumstances, delete member button should not be seen
         public void setDeleteInvisible(){
             deleteView.setVisibility(View.GONE);
         }
+
+        public void setOwnerInvisible(){owner.setVisibility(View.GONE);}
     }
 
 }

@@ -29,7 +29,6 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
     private SignupPresenter signUpPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Sign Up");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         signUpPresenter = new SignupPresenter(this);

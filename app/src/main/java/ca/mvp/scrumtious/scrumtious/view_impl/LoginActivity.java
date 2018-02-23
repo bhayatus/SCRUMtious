@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Log In");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginPresenter = new LoginPresenter(this);

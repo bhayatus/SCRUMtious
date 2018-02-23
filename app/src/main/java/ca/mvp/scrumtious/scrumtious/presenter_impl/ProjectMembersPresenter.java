@@ -2,6 +2,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.TooltipCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -61,6 +62,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     viewHolder.setDetails(model.getEmailAddress());
                     final String uid = getRef(position).getKey();
                     ImageButton delete = viewHolder.getDeleteView();
+                    ImageButton owner = viewHolder.getOwner();
                     final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
 
@@ -72,6 +74,11 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                             // Only owner can delete members
                             if ((dataSnapshot.getValue().toString().trim()).equals(mAuth.getCurrentUser().getUid()) == false){
                                 mViewHolder.setDeleteInvisible();
+                            }
+
+                            // Current member in the view isn't the project owner, disable the owner icon
+                            if (userModel.getUserID().equals(dataSnapshot.getValue().toString()) == false){
+                                mViewHolder.setOwnerInvisible();
                             }
 
                             // Owner should not be able to remove themself from the project
@@ -92,6 +99,14 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         public void onClick(View v) {
                             // If user chooses to remove member, do so after confirming
                             projectMembersView.onClickDelete(uid);
+                        }
+                    });
+
+                    // Shows tooltip for owner icon if user holds long enough
+                    owner.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TooltipCompat.setTooltipText(v, "This is the project owner");
                         }
                     });
 
