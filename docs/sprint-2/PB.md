@@ -4,7 +4,7 @@ Priorities (Lower is more important, using a linear sequence)
 
 As a team leader I want to create and delete user stories for my projects, so I can manage my product backlog and sprint backlogs
 Priority: 7 
-Points: 8
+Points: 6
 Criteria of Satisfaction:
 * Create user story:
   * Requires name of story, cost, and details
@@ -22,7 +22,7 @@ Criteria of Satisfaction:
 ---
 As a team leader I want to create sprints, so I can distribute the workload in a project, and plan deadlines
 Priority: 8
-Points: 6
+Points: 4
 Criteria of Satisfaction:
 * Be able to set name, start date, and end date
 ---
@@ -76,3 +76,5 @@ Points: 8
 Criteria of Satisfaction:
 * Chat should contain all previous messages sent beforehand
 * Should identify sender of each message
+
+Notes: Lowered user story for create/delete user stories down 2 points. Also lowered create sprints by 2 points.
