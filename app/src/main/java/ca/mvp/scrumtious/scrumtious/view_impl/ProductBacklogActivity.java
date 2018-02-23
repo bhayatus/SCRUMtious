@@ -16,10 +16,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProductBacklogPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProductBacklogViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProductBacklogPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 
 public class ProductBacklogActivity extends AppCompatActivity implements ProductBacklogViewInt {
 
@@ -32,6 +35,8 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
     private NavigationView navigationView;
 
     private boolean alreadyDeleted;
+
+    private ImageButton logoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,14 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
         // In case project is deleted, the user has to be taken back to project list screen
         productBacklogPresenter.setupProjectDeletedListener();
+
+        logoutBtn = findViewById(R.id.productBacklogLogoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthenticationHelper.logout(ProductBacklogActivity.this);
+            }
+        });
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

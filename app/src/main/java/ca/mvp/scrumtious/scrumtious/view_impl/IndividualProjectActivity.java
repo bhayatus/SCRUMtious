@@ -24,17 +24,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualProjectPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 
 public class IndividualProjectActivity extends AppCompatActivity implements IndividualProjectViewInt {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private ImageButton deleteBtn;
+    private ImageButton deleteBtn, logoutBtn;
     private String pid;
     private boolean alreadyDeleted;
 
@@ -60,6 +62,13 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         individualProjectPresenter.checkIfOwner();
 
         deleteBtn = findViewById(R.id.individualProjectDeleteBtn);
+        logoutBtn = findViewById(R.id.individualProjectLogoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthenticationHelper.logout(IndividualProjectActivity.this);
+            }
+        });
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

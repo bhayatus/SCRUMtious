@@ -21,7 +21,7 @@ public class LoginPresenter implements LoginPresenterInt {
     }
 
     @Override
-    public void attemptLogin(Activity context, String emailAddress, String password) {
+    public void attemptLogin(Activity context, final String emailAddress, final String password) {
         firebaseAuth = FirebaseAuth.getInstance();
         // Attempt the sign in
         firebaseAuth.signInWithEmailAndPassword(emailAddress, password).addOnCompleteListener(context,
@@ -33,24 +33,15 @@ public class LoginPresenter implements LoginPresenterInt {
                             if(!user.isEmailVerified()){
                                 loginScreenView.showMessage("Your e-mail address isn't verified yet.");
                             } else {
-                                loginScreenView.onSuccessfulLogin();
+                                loginScreenView.onSuccessfulLogin(emailAddress, password);
                             }
                         }
                         // Login failed
                         else {
                             loginScreenView.showMessage("Login failed.");
-
-
                         }
                     }
                 });
     }
 
-    // Signs the user out
-    @Override
-    public void signOut() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().signOut();
-        }
-    }
 }

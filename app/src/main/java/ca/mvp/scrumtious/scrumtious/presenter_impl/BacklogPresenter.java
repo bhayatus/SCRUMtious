@@ -99,12 +99,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                 // Show as in progress with icon
                 if (type.equals("PB_IN_PROGRESS") || type.equals("SPRINT_IN_PROGRESS")) {
-                    viewHolder.setMarkerRed(); // Set marker to red
                     completed.setImageResource(R.drawable.ic_checkbox_not_checked);
                 }
                 // Show as completed with icon
                 else{
-                    viewHolder.setMarkerGreen(); // Set marker to red
                     completed.setImageResource(R.drawable.ic_checkbox_checked);
                 }
 

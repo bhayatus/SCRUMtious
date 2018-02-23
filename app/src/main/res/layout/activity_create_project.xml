@@ -4,35 +4,58 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_centerHorizontal="true"
-              android:layout_centerVertical="true"
-              android:layout_marginLeft="10dp"
-              android:layout_marginRight="10dp"
-              android:descendantFocusability="beforeDescendants"
-              android:focusableInTouchMode="true"
-              android:focusable="true"
-              android:gravity="center_vertical"
               android:orientation="vertical"
               tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateProjectActivity"
     >
 
-    <TextView
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/title_activity_create_project"
-        android:textAlignment="center"
-        android:fontFamily="@font/open_sans"
-        android:textColor="@color/colorAccent"
-        android:textSize="30sp"/>
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/createProjectToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:theme="@style/IndividualProjectToolbar"
+            app:title="Create Project">
+
+            <ImageButton
+                android:id="@+id/createProjectLogoutBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_logout"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/createProjectTitleFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         app:errorEnabled="true">
 
         <EditText
@@ -51,6 +74,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         app:errorEnabled="true">
 
@@ -62,7 +87,6 @@
             android:hint="@string/create_project_desc"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="textMultiLine"
-
             android:lines="5"
             android:scrollbars="vertical"/>
     </android.support.design.widget.TextInputLayout>
@@ -80,5 +104,6 @@
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/white"
         android:textSize="18sp"/>
+    </LinearLayout>
 
 </LinearLayout>

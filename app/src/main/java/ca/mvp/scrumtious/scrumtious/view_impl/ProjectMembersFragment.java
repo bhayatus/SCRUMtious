@@ -184,7 +184,6 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     }
 
-
     @Override
     public void showMessage(String message) {
 

@@ -11,8 +11,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageButton;
 
 import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 
 public class ProjectTabsActivity extends AppCompatActivity {
 
@@ -20,10 +23,19 @@ public class ProjectTabsActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    private ImageButton logoutBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_tabs);
+        logoutBtn = findViewById(R.id.projectTabsLogoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthenticationHelper.logout(ProjectTabsActivity.this);
+            }
+        });
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -86,27 +98,10 @@ public class ProjectTabsActivity extends AppCompatActivity {
         }
     }
 
+    // Should ask to log user out
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Log Out?")
-                .setMessage("Are you sure you want to log out?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Go to log in screen
-                        Intent intent = new Intent(ProjectTabsActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Remain in this screen
-                    }
-                })
-                .create().show();
+        AuthenticationHelper.logout(ProjectTabsActivity.this);
     }
 
 }

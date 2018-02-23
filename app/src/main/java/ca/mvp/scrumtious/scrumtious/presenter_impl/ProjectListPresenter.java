@@ -25,8 +25,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupGeneralProjectsAdapter(RecyclerView projectList, ProgressDialog loadingProjectsDialog) {
-        final ProgressDialog dialog = loadingProjectsDialog;
+    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupGeneralProjectsAdapter(RecyclerView projectList, final ProgressDialog progressDialog) {
         //just to be safe if constructor wasn't called before
         mAuth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -55,17 +54,17 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
             }
             @Override
             public void onDataChanged() {
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
+                if (progressDialog != null && progressDialog.isShowing()){
+                    progressDialog.dismiss();
                 }
+
             }
         };
         return projectListAdapter;
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupMyProjectsAdapter(RecyclerView projectList, ProgressDialog loadingProjectsDialog) {
-        final ProgressDialog dialog = loadingProjectsDialog;
+    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupMyProjectsAdapter(RecyclerView projectList, final ProgressDialog progressDialog) {
         //just to be safe if constructor wasn't called before
         mAuth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -94,8 +93,8 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
             }
             @Override
             public void onDataChanged() {
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
             }
         };

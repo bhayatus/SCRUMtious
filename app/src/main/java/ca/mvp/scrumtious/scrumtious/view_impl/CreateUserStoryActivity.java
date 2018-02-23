@@ -12,16 +12,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateUserStoryViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateUserStoryPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 
 public class CreateUserStoryActivity extends AppCompatActivity implements CreateUserStoryViewInt {
 
     private EditText titleField, descriptionField, pointField;
     private TextInputLayout titleFieldLayout, descriptionFieldLayout, pointFieldLayout;
+    private ImageButton logoutBtn;
 
     private CreateUserStoryPresenterInt createUserStoryPresenter;
     private String pid;
@@ -44,6 +47,13 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         // If project is deleted, we have to go back to project list screen
         createUserStoryPresenter.setupProjectDeletedListener();
 
+        logoutBtn = findViewById(R.id.createUserStoryLogoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthenticationHelper.logout(CreateUserStoryActivity.this);
+            }
+        });
         setupFormWatcher();
     }
 

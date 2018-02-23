@@ -81,6 +81,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
         myProjectsAdapter = projectListPresenterInt.setupMyProjectsAdapter(projectList, loadingProjectsDialog);
         allProjectsAdapter = projectListPresenterInt.setupGeneralProjectsAdapter(projectList, loadingProjectsDialog);
+
         projectList.setAdapter(allProjectsAdapter);
         showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

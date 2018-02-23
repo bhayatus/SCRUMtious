@@ -2,8 +2,10 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -31,9 +33,6 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginPresenter = new LoginPresenter(this);
-
-        //In case user was logged in previously
-        loginPresenter.signOut();
 
         setupFormWatcher();
     }
@@ -165,8 +164,20 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
     // On successful login, go to the app's main activity
     @Override
-    public void onSuccessfulLogin() {
-        signingInProgressDialog.dismiss();
+    public void onSuccessfulLogin(String emailAddress, String password) {
+
+        if (signingInProgressDialog != null && signingInProgressDialog.isShowing()) {
+            signingInProgressDialog.dismiss();
+        }
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences(
+                getString(R.string.shared_preferences), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("emailAddress", emailAddress);
+        editor.putString("password", password);
+        editor.commit();
+
         Intent intent = new Intent(LoginActivity.this, ProjectTabsActivity.class);
         startActivity(intent);
         finish();

@@ -211,14 +211,6 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
             }
         }
 
-        public void setMarkerGreen(){
-            nameView.setTextColor(0xFF11CC24);
-        }
-
-        public void setMarkerRed(){
-            nameView.setTextColor(0xFFD70909);
-        }
-
         public ImageButton getCompleted(){
             return this.completed;
         }

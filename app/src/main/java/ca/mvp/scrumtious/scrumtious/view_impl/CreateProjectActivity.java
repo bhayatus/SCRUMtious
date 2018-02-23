@@ -12,11 +12,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateProjectPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 
 
 public class CreateProjectActivity extends AppCompatActivity implements
@@ -24,15 +26,25 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
     private EditText titleField, descriptionField;
     private TextInputLayout titleFieldLayout, descriptionFieldLayout;
-
     private ProgressDialog createProjectProgressDialog;
     private CreateProjectPresenter createProjectPresenter;
+
+    private ImageButton logoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
         createProjectPresenter = new CreateProjectPresenter(this);
+
+        logoutBtn = findViewById(R.id.createProjectLogoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthenticationHelper.logout(CreateProjectActivity.this);
+            }
+        });
+
         setupFormWatcher();
     }
 
