@@ -49,9 +49,9 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
-        membersList = view.findViewById(R.id.membersListScreenRecyclerView);
+        membersList = view.findViewById(R.id.projectMembersRecyclerView);
         setupRecyclerView();
-        addMemberBtn = view.findViewById(R.id.btn_add_member);
+        addMemberBtn = view.findViewById(R.id.projectMembersInviteMemberBtn);
 
         addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,12 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     // Sets up the recycler view to display info about members
     private void setupRecyclerView(){
 
-        membersList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Sets up the layout so that results are displayed in reverse order, meaning new items are added to the bottom
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
+        membersList.setLayoutManager(mLayoutManager);
         membersList.setAdapter(projectMembersPresenter.setupMembersAdapter(membersList));
 
     }
@@ -155,7 +160,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                             }
                             else {
 
-                                // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                // Creates a dialog that appears to tell the user that deleting a user is still occurring
                                 deletingMemberProgressDialog = new ProgressDialog(getContext());
                                 deletingMemberProgressDialog.setTitle("Delete Member");
                                 deletingMemberProgressDialog.setCancelable(false);
@@ -179,7 +184,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     }
 
-    // Exception messages for when deleting members
+
     @Override
     public void showMessage(String message) {
 
@@ -192,7 +197,14 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             deletingMemberProgressDialog.dismiss();
         }
 
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
+
 
     }
 
@@ -201,17 +213,19 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         View mView;
         TextView emailView;
         ImageButton deleteView;
+        ImageButton owner;
 
         public MembersViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
 
-            emailView = (TextView) mView.findViewById(R.id.member_row_email);
-            deleteView = (ImageButton) mView.findViewById(R.id.member_delete_btn);
+            emailView = (TextView) mView.findViewById(R.id.memberRowEmail);
+            deleteView = (ImageButton) mView.findViewById(R.id.memberRowDeleteBtn);
+            owner = (ImageButton) mView.findViewById(R.id.memberRowOwner);
         }
 
 
-        // Populates each row of the recycler view with the project details
+        // Populates each row of the recycler view with the member details
         public void setDetails(String emailAddress){
             emailView.setText(emailAddress);
         }
@@ -221,10 +235,14 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             return deleteView;
         }
 
+        public ImageButton getOwner(){return owner;}
+
         // Under certain circumstances, delete member button should not be seen
         public void setDeleteInvisible(){
             deleteView.setVisibility(View.GONE);
         }
+
+        public void setOwnerInvisible(){owner.setVisibility(View.GONE);}
     }
 
 }

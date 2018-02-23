@@ -2,6 +2,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.TooltipCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
+import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
@@ -58,10 +60,11 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 @Override
                 protected void populateViewHolder(ProjectMembersFragment.MembersViewHolder viewHolder, User model, int position) {
                     viewHolder.setDetails(model.getEmailAddress());
+                    final String uid = getRef(position).getKey();
                     ImageButton delete = viewHolder.getDeleteView();
+                    ImageButton owner = viewHolder.getOwner();
                     final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
-                    final int currentPosition = position;
 
                     mRef  = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
                             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -73,7 +76,12 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                 mViewHolder.setDeleteInvisible();
                             }
 
-                            // Owner should not be able to remove themself from the project
+                            // Current member in the view isn't the project owner, disable the owner icon
+                            if (userModel.getUserID().equals(dataSnapshot.getValue().toString()) == false){
+                                mViewHolder.setOwnerInvisible();
+                            }
+
+                            // Owner should not be able to remove them self from the project
                             if(userModel.getUserID().equals(dataSnapshot.getValue().toString().trim())){
                                 mViewHolder.setDeleteInvisible();
                             }
@@ -90,8 +98,15 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         @Override
                         public void onClick(View v) {
                             // If user chooses to remove member, do so after confirming
-                            String uid = getRef(currentPosition).getKey();
                             projectMembersView.onClickDelete(uid);
+                        }
+                    });
+
+                    // Shows tooltip for owner icon if user holds long enough
+                    owner.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TooltipCompat.setTooltipText(v, "This is the owner of the project");
                         }
                     });
 
@@ -109,20 +124,20 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
 
-        // First remove the project id reference in the user tree, then remove the user id from the
-        // project tree
-        mRef.child("users").child(uid).child(pid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        Map removeMemberMap = new HashMap();
+
+        // Both changes need to occur to ensure atomicity
+        removeMemberMap.put("/users/" + uid + "/" + pid, null);
+        removeMemberMap.put("/projects/" + pid + "/" + uid, null);
+
+        mRef.updateChildren(removeMemberMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    mRef.child("projects").child(pid).child(uid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                projectMembersView.showMessage("Deleted member from project.");
-                            }
-                        }
-                    });
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()) {
+                    projectMembersView.showMessage("Deleted member from project.");
+                }
+                else{
+                    projectMembersView.showMessage("An error occurred, failed to delete member from project.");
                 }
             }
         });
@@ -163,7 +178,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         mRef.child("projects").child(pid).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Only owner should see add member fab, should be invisible otherwise
+                // Only owner should see invite member button, should be invisible otherwise
                 if(!dataSnapshot.getValue().toString().equals(mUser.getUid())){
                     projectMembersView.setAddMemberInvisible();
                 }
@@ -221,9 +236,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                         checkMore = false;
                                         return;
                                     }
-
                             }
-
 
                             if (checkMore){
 
@@ -238,7 +251,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                             for (DataSnapshot d: dataSnapshot.getChildren()){
                                                 // If invitedUid matches, meaning the user has already been invited
                                                 if (d.child("invitedUid").getValue().toString().equals(invitedUid)){
-                                                    projectMembersView.showMessage("This user has already been invited to this project.");
+                                                    projectMembersView.showMessage("This user has already been invited to the project.");
                                                     return;
                                                 }
                                             }
@@ -276,9 +289,6 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
             }
         });
 
-
-
-
     }
 
     // Actually send the invite to the user at this point
@@ -288,8 +298,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
         mRef.child(pid).child("projectTitle").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String projectTitle = dataSnapshot.getValue().toString();
-                HashMap<String, String> inviteMap = new HashMap<>();
+                final String projectTitle = dataSnapshot.getValue().toString();
 
                 // Get uid and password of me, the person inviting
                 String invitingUid;
@@ -298,21 +307,29 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 invitingUid = mAuth.getCurrentUser().getUid();
                 invitingEmail = mAuth.getCurrentUser().getEmail();
 
-                // Store the info
-                inviteMap.put("projectId", pid);
-                inviteMap.put("projectTitle", projectTitle);
-                inviteMap.put("invitingUid", invitingUid);
-                inviteMap.put("invitingEmail", invitingEmail);
-                inviteMap.put("invitedUid", invitedUid);
-
-                // Generating a unique push id and adding the invite to it
+                // Generating a unique push id
                 mDatabase = FirebaseDatabase.getInstance();
-                mRef = mDatabase.getReference().child("invites");
+                mRef = mDatabase.getReference();
                 final String inviteId = mRef.push().getKey();
-                mRef.child(inviteId).setValue(inviteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                Map inviteMap = new HashMap();
+
+                // All of the following have to occur, to ensure atomicity
+                inviteMap.put("/invites/" + inviteId + "/" + "projectId", pid);
+                inviteMap.put("/invites/" + inviteId + "/" + "projectTitle", projectTitle);
+                inviteMap.put("/invites/" + inviteId + "/" + "invitingUid", invitingUid);
+                inviteMap.put("/invites/" + inviteId + "/" + "invitingEmail", invitingEmail);
+                inviteMap.put("/invites/" + inviteId + "/" + "invitedUid", invitedUid);
+
+                mRef.updateChildren(inviteMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        projectMembersView.showMessage("Sent an invite.");
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()){
+                            projectMembersView.showMessage("Sent an invite.");
+                        }
+                        else{
+                            projectMembersView.showMessage("An error occurred, failed to send an invite.");
+                        }
                     }
                 });
             }
