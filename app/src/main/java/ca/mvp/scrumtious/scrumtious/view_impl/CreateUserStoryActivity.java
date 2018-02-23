@@ -175,7 +175,14 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         if (createUserStoryProgressDialog != null && createUserStoryProgressDialog.isShowing()) {
             createUserStoryProgressDialog.dismiss();
         }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
     }
 
     public void onClickCreateUserStory(View view) {

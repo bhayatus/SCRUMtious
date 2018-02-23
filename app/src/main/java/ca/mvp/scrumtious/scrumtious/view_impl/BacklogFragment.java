@@ -4,6 +4,7 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -15,22 +16,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.PBInProgressPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.PBInProgressViewInt;
-import ca.mvp.scrumtious.scrumtious.model.UserStory;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.PBInProgressPresenter;
 
-public class PBInProgressFragment extends Fragment implements PBInProgressViewInt {
+import ca.mvp.scrumtious.scrumtious.R;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.BacklogPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.BacklogViewInt;
+import ca.mvp.scrumtious.scrumtious.model.UserStory;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.BacklogPresenter;
+
+public class BacklogFragment extends Fragment implements BacklogViewInt {
 
 
     private ProgressDialog deletingUserStoryDialog;
-    private PBInProgressPresenterInt pbInProgressPresenter;
-    private RecyclerView inProgressList;
-    private FirebaseRecyclerAdapter<UserStory, InProgressViewHolder> inProgressAdapter;
-    public PBInProgressFragment() {
+    private BacklogPresenterInt backlogPresenter;
+    private RecyclerView backlogList;
+    private FirebaseRecyclerAdapter<UserStory, BacklogViewHolder> backlogAdapter;
+    public BacklogFragment() {
         // Required empty public constructor
     }
 
@@ -38,16 +41,17 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String pid = getArguments().getString("projectId");
-        this.pbInProgressPresenter = new PBInProgressPresenter(this, pid);
-
+        String type = getArguments().getString("type");
+        String sprintId = getArguments().getString("sprintId");
+        this.backlogPresenter = new BacklogPresenter(this, pid, type, sprintId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pbin_progress, container, false);
-        inProgressList = view.findViewById(R.id.productBacklogInProgressRecyclerView);
+        View view = inflater.inflate(R.layout.fragment_backlog, container, false);
+        backlogList = view.findViewById(R.id.backlogRecyclerView);
         setupRecyclerView();
 
         return view;
@@ -55,13 +59,11 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
 
     private void setupRecyclerView(){
 
-        inProgressList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        inProgressAdapter = pbInProgressPresenter.setupInProgressAdapter(inProgressList);
-        inProgressList.setAdapter(inProgressAdapter);
+        backlogList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        backlogAdapter = backlogPresenter.setupInProgressAdapter(backlogList);
+        backlogList.setAdapter(backlogAdapter);
 
     }
-
-
 
     // User clicks on a specific user story
     @Override
@@ -69,26 +71,51 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
         // TODO
     }
 
-    // User wants to mark user story as completed
+    // User wants to mark user story as completed or in progress
     @Override
     public void onClickChangeStatus(final String usid, final boolean newStatus) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Mark As Completed?")
-                .setMessage("Are you sure you want to mark this user story as completed?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Change completed status of user story
-                        pbInProgressPresenter.changeCompletedStatus(usid, newStatus);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing
-                    }
-                })
-                .create().show();
+
+        // User wants to change to completed
+        if (newStatus){
+            builder.setTitle("Mark As Completed?")
+                    .setMessage("Are you sure you want to mark this user story as completed?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Change completed status of user story
+                            backlogPresenter.changeCompletedStatus(usid, newStatus);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing
+                        }
+                    })
+                    .create().show();
+        }
+        // User wants to change to in progress
+        else{
+            builder.setTitle("Mark As In Progress?")
+                    .setMessage("Are you sure you want to mark this user story as in progress?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Change completed status of user story
+                            backlogPresenter.changeCompletedStatus(usid, newStatus);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing
+                        }
+                    })
+                    .create().show();
+        }
+
+
     }
 
     @Override
@@ -126,7 +153,7 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
                                 deletingUserStoryDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deletingUserStoryDialog.show();
 
-                                pbInProgressPresenter.validatePassword(password, usid);
+                                backlogPresenter.validatePassword(password, usid);
                             }
                         }
                     }
@@ -154,21 +181,21 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
     }
 
 
-    // Viewholder class to display in progress user stories in the product backlog
-    public static class InProgressViewHolder extends RecyclerView.ViewHolder{
+    // Viewholder class to display user stories
+    public static class BacklogViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView nameView, pointsView;
         ImageButton completed;
         ImageButton delete;
 
-        public InProgressViewHolder(View itemView) {
+        public BacklogViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.userStoryIPRowName);
-            pointsView = (TextView) mView.findViewById(R.id.userStoryIPRowPoints);
-            completed = (ImageButton) mView.findViewById(R.id.userStoryIPRowCompleted);
-            delete = (ImageButton) mView.findViewById(R.id.userStoryIPRowDelete);
+            nameView = (TextView) mView.findViewById(R.id.userStoryRowName);
+            pointsView = (TextView) mView.findViewById(R.id.userStoryRowPoints);
+            completed = (ImageButton) mView.findViewById(R.id.userStoryRowCompleted);
+            delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
         }
 
 
@@ -177,11 +204,19 @@ public class PBInProgressFragment extends Fragment implements PBInProgressViewIn
             nameView.setText(name);
             // If only 1 point, don't display as plural
             if (Integer.parseInt(points) == 1){
-                pointsView.setText("Cost: "+ points + " point");
+                pointsView.setText(points + " point");
             }
             else {
-                pointsView.setText("Cost: " + points + " points");
+                pointsView.setText(points + " points");
             }
+        }
+
+        public void setMarkerGreen(){
+            nameView.setTextColor(0xFF11CC24);
+        }
+
+        public void setMarkerRed(){
+            nameView.setTextColor(0xFFD70909);
         }
 
         public ImageButton getCompleted(){

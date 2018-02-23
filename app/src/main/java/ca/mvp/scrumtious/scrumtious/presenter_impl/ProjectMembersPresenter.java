@@ -81,7 +81,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                 mViewHolder.setOwnerInvisible();
                             }
 
-                            // Owner should not be able to remove themself from the project
+                            // Owner should not be able to remove them self from the project
                             if(userModel.getUserID().equals(dataSnapshot.getValue().toString().trim())){
                                 mViewHolder.setDeleteInvisible();
                             }
@@ -106,7 +106,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     owner.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            TooltipCompat.setTooltipText(v, "This is the project owner");
+                            TooltipCompat.setTooltipText(v, "This is the owner of the project");
                         }
                     });
 

@@ -175,8 +175,13 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
         if (signingInProgressDialog != null && signingInProgressDialog.isShowing()) {
             signingInProgressDialog.dismiss();
         }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
-
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
     }
 
     @Override

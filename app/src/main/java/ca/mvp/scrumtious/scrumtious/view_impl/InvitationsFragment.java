@@ -93,7 +93,13 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
     }
 
     public void showMessage(String message) {
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
     }
 
     // Viewholder class to display invitations

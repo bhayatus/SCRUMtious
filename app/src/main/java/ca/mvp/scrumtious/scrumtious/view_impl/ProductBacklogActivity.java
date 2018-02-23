@@ -157,13 +157,27 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                 case 0:
                     Bundle data = new Bundle();
                     data.putString("projectId", pid);
-                    PBInProgressFragment pbInProgressFragment = new PBInProgressFragment();
+
+                    // This fragment will display info for product backlog in progress user stories
+                    data.putString("type", "PB_IN_PROGRESS");
+
+                    // Passes in null, to tell fragment and presenter that this is a pb user story
+                    data.putString("sprintId", "null");
+
+                    BacklogFragment pbInProgressFragment = new BacklogFragment();
                     pbInProgressFragment.setArguments(data);
                     return pbInProgressFragment;
                 case 1:
                     data = new Bundle();
                     data.putString("projectId", pid);
-                    PBCompletedFragment pbCompletedFragment = new PBCompletedFragment();
+
+                    // This fragment will display info for product backlog completed user stories
+                    data.putString("type", "PB_COMPLETED");
+
+                    // Passes in null, to tell fragment and presenter that this is a pb user story
+                    data.putString("sprintId", "null");
+
+                    BacklogFragment pbCompletedFragment = new BacklogFragment();
                     pbCompletedFragment.setArguments(data);
                     return pbCompletedFragment;
                 default:

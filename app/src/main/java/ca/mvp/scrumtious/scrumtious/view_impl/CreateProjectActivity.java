@@ -119,7 +119,13 @@ public class CreateProjectActivity extends AppCompatActivity implements
         if (createProjectProgressDialog != null && createProjectProgressDialog.isShowing()) {
             createProjectProgressDialog.dismiss();
         }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
     }
 
     public void onClickCreateProjectSubmit(View view){

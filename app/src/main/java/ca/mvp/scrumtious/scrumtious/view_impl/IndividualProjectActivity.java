@@ -155,7 +155,13 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     }
 
     public void showMessage(String message) {
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
     }
 
     // Delete button on top right is clicked

@@ -2,6 +2,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -20,61 +21,118 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.PBInProgressPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.PBInProgressViewInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.BacklogPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.BacklogViewInt;
 import ca.mvp.scrumtious.scrumtious.model.UserStory;
-import ca.mvp.scrumtious.scrumtious.view_impl.PBInProgressFragment;
+import ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment;
 
-public class PBInProgressPresenter implements PBInProgressPresenterInt {
+public class BacklogPresenter implements BacklogPresenterInt {
 
-    private PBInProgressViewInt pbInProgressView;
+    private BacklogViewInt backlogView;
     private String pid;
+    private final String type; // Tells the presenter what type of info to grab
+    private final String sprintId; // "null" if in product backlog, regular id if part of sprint
+
+    // Different types of backlogs
+    private final String pb_in_progress = "PB_IN_PROGRESS";
+    private final String pb_completed = "PB_COMPLETED";
+    private final String sprint_in_progress = "SPRINT_IN_PROGRESS";
+    private final String sprint_completed = "SPRINT_COMPLETED";
     private FirebaseDatabase mDatabase;
     private DatabaseReference rootRef;
     private Query mQuery;
 
-    public PBInProgressPresenter(PBInProgressViewInt pbInProgressView, String pid){
-        this.pbInProgressView = pbInProgressView;
+    public BacklogPresenter(BacklogViewInt backlogView, String pid, String type, String sprintId){
+        this.backlogView = backlogView;
         this.pid = pid;
+        this.type = type;
+        this.sprintId = sprintId;
     }
 
 
     @Override
-    public FirebaseRecyclerAdapter<UserStory, PBInProgressFragment.InProgressViewHolder> setupInProgressAdapter(RecyclerView inProgressList) {
+    public FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupInProgressAdapter(RecyclerView inProgressList) {
         rootRef = FirebaseDatabase.getInstance().getReference();
 
         // The query below grabs all user stories that are not assigned to any sprints
         // and that are not complete, hence the "false"
         // If I wanted to check for completed, the second part would be "true"
-        mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
-                .equalTo("null_false");
+        String typeQuery = this.sprintId + "_";
 
-        FirebaseRecyclerAdapter<UserStory, PBInProgressFragment.InProgressViewHolder> inProgressListAdapter
-                = new FirebaseRecyclerAdapter<UserStory, PBInProgressFragment.InProgressViewHolder>(
+        // Sets the equalTo string that the query needs to use to search for user stories
+        switch(type){
+            case pb_in_progress:
+                typeQuery += "false";
+                break;
+            case pb_completed:
+                typeQuery += "true";
+                break;
+
+            case sprint_in_progress:
+                typeQuery += "false";
+                break;
+            case sprint_completed:
+                typeQuery += "true";
+                break;
+        }
+
+        mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
+                .equalTo(typeQuery);
+
+        FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> inProgressListAdapter
+                = new FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder>(
                 UserStory.class,
                 R.layout.user_story_row,
-                PBInProgressFragment.InProgressViewHolder.class,
+                BacklogFragment.BacklogViewHolder.class,
                 mQuery
         ) {
 
             @Override
-            protected void populateViewHolder(PBInProgressFragment.InProgressViewHolder viewHolder, UserStory model, int position) {
+            protected void populateViewHolder(BacklogFragment.BacklogViewHolder viewHolder, UserStory model, int position) {
                 viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints());
-                final PBInProgressFragment.InProgressViewHolder mViewHolder = viewHolder;
+                final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
                 ImageButton completed = viewHolder.getCompleted();
                 ImageButton delete = viewHolder.getDelete();
 
                 // The id of the user story
                 final String usid = getRef(position).getKey().toString();
 
-                // Right now we are looking at in progress user stories, so they should appear as unchecked
-                // The opposite of this would be setting to ic_checkbox_checked
-                completed.setImageResource(R.drawable.ic_checkbox_not_checked);
+                // Show as in progress with icon
+                if (type.equals("PB_IN_PROGRESS") || type.equals("SPRINT_IN_PROGRESS")) {
+                    viewHolder.setMarkerRed(); // Set marker to red
+                    completed.setImageResource(R.drawable.ic_checkbox_not_checked);
+                }
+                // Show as completed with icon
+                else{
+                    viewHolder.setMarkerGreen(); // Set marker to red
+                    completed.setImageResource(R.drawable.ic_checkbox_checked);
+                }
+
                 // If user clicks on the checkbox button, notify user first
                 completed.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pbInProgressView.onClickChangeStatus(usid, true);
+
+                        switch(type){
+                            case pb_in_progress:
+                                // on the pb in progress view, ask to switch status to completed
+                                backlogView.onClickChangeStatus(usid, true);
+                                break;
+                            case pb_completed:
+                                // on the pb completed view, ask to switch status to in progress
+                                backlogView.onClickChangeStatus(usid, false);
+                                break;
+                            case sprint_in_progress:
+                                // on the sprint in progress view, ask to switch status to completed
+                                backlogView.onClickChangeStatus(usid, true);
+                                break;
+                            case sprint_completed:
+                                // on the sprint completed view, ask to switch status to in progress
+                                backlogView.onClickChangeStatus(usid, false);
+                                break;
+                        }
+
+
                     }
                 });
 
@@ -82,7 +140,7 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pbInProgressView.onClickDeleteUserStory(usid);
+                        backlogView.onClickDeleteUserStory(usid);
                     }
                 });
 
@@ -135,7 +193,7 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
 
                 // Password didn't match, tell user
                 else {
-                    pbInProgressView.showMessage("Incorrect password, could not delete user story.");
+                    backlogView.showMessage("Incorrect password, could not delete user story.");
                 }
             }
         });
@@ -170,10 +228,40 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
                     public void onComplete(@NonNull Task task) {
 
                         if (task.isSuccessful()){
-                            pbInProgressView.showMessage("Marked the user story as completed.");
+                            switch(type){
+                                case pb_in_progress:
+                                    backlogView.showMessage("Marked the user story as completed.");
+                                    break;
+                                case pb_completed:
+                                    backlogView.showMessage("Marked the user story as in progress.");
+                                    break;
+                                case sprint_in_progress:
+                                    backlogView.showMessage("Marked the user story as completed.");
+                                    break;
+                                case sprint_completed:
+                                    backlogView.showMessage("Marked the user story as in progress.");
+                                    break;
+                            }
                         }
                         else{
-                            pbInProgressView.showMessage("An error occurred, failed to mark the user story as completed.");
+
+                            switch(type){
+                                case pb_in_progress:
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.");
+                                    break;
+                                case pb_completed:
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.");
+
+                                    break;
+                                case sprint_in_progress:
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.");
+
+                                    break;
+                                case sprint_completed:
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.");
+                                    break;
+                            }
+
                         }
                     }
                 });
@@ -196,10 +284,10 @@ public class PBInProgressPresenter implements PBInProgressPresenterInt {
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully
                 if (task.isSuccessful()){
-                    pbInProgressView.showMessage("User story was deleted.");
+                    backlogView.showMessage("User story was deleted.");
                 }
                 else{
-                    pbInProgressView.showMessage("An error occurred, failed to delete the user story");
+                    backlogView.showMessage("An error occurred, failed to delete the user story");
                 }
             }
         });

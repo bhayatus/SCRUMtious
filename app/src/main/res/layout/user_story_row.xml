@@ -3,8 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/tools"
-    card_view:cardBackgroundColor="@color/cardview_light_background"
+    card_view:cardBackgroundColor="#f5f5f5"
     card_view:cardElevation="1dp">
 
     <LinearLayout
@@ -18,22 +17,27 @@
         android:layout_weight="1"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
 
         <TextView
-            android:id="@+id/userStoryIPRowName"
+            android:id="@+id/userStoryRowName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/open_sans"
             android:text="Name of User Story"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
             android:textSize="24sp"
-            android:padding="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             />
 
         <ImageButton
-            android:id="@+id/userStoryIPRowDelete"
+            android:id="@+id/userStoryRowDelete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -45,7 +49,7 @@
             />
 
         <ImageButton
-            android:id="@+id/userStoryIPRowCompleted"
+            android:id="@+id/userStoryRowCompleted"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -63,19 +67,35 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
             >
-        <TextView
-            android:id="@+id/userStoryIPRowPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/open_sans"
-            android:text="Cost: 1 point"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:padding="5dp"
-            />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/open_sans"
+                android:text="Cost: "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:paddingLeft="5dp"
+                />
+
+            <TextView
+                android:id="@+id/userStoryRowPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="-1"
+                android:fontFamily="@font/open_sans"
+                android:text="1 point"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:paddingLeft="2dp"
+                android:paddingRight="5dp"
+                />
 
     </android.widget.LinearLayout>
 
@@ -83,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="#f1f1f1f1"/>
+            android:background="#f1cccccc"/>
 
     </LinearLayout>
 

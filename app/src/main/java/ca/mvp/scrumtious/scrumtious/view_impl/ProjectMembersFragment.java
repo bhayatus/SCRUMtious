@@ -197,7 +197,14 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             deletingMemberProgressDialog.dismiss();
         }
 
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
+
 
     }
 
