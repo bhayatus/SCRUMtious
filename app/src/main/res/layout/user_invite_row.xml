@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingLeft="5dp"
-        android:fontFamily="@font/open_sans"
+        android:fontFamily="@font/droid_sans"
         android:text="@string/user_invite_row_title"/>
 
     <android.widget.LinearLayout
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/droid_sans"
             android:text="SCRUMtious"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingLeft="5dp"
-        android:fontFamily="@font/open_sans"
+        android:fontFamily="@font/droid_sans"
         android:text="by usaimbhayat@gmail.com"/>
 
     <View

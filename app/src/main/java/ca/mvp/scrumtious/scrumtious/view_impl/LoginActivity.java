@@ -159,7 +159,8 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
                     public void onClick(View v){
                         // Dismisses automatically
                     }
-                }).show();
+                }).setActionTextColor(getResources().getColor(R.color.colorAccent))
+                .show();
     }
 
     // On successful login, go to the app's main activity

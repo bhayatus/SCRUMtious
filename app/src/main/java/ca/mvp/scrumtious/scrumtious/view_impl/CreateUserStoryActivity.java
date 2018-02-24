@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -32,6 +33,8 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
     private boolean alreadyDeleted;
 
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,17 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                 AuthenticationHelper.logout(CreateUserStoryActivity.this);
             }
         });
+
+        toolbar = findViewById(R.id.createUserStoryToolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Should do the same as the user pressing back
+            }
+        });
+
         setupFormWatcher();
     }
 
@@ -83,15 +97,17 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
     public void setupFormWatcher() {
         titleField = (EditText) findViewById(R.id.createUserStoryNameField);
-        pointField = (EditText) findViewById(R.id.createUserStoryPointsField);
         descriptionField = (EditText) findViewById(R.id.createUserStoryDescField);
+        pointField = (EditText) findViewById(R.id.createUserStoryPointsField);
+
         titleFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryTitleFieldLayout);
         descriptionFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryDescFieldLayout);
         pointFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryPointsFieldLayout);
 
         titleFieldLayout.setError(null);
-        pointField.setError(null);
         descriptionFieldLayout.setError(null);
+        pointFieldLayout.setError(null);
+
         titleFieldLayout.setErrorEnabled(true);
         pointFieldLayout.setErrorEnabled(true);
         descriptionFieldLayout.setErrorEnabled(true);
@@ -118,6 +134,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                     titleFieldLayout.setError("Please enter a user story name.");
                 }else{
                     titleFieldLayout.setErrorEnabled(false);
+                    titleFieldLayout.setError(null);
                 }
             }
         });
@@ -142,6 +159,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                     descriptionFieldLayout.setError("Please enter a user story description.");
                 }else{
                     descriptionFieldLayout.setErrorEnabled(false);
+                    descriptionFieldLayout.setError(null);
                 }
 
             }
@@ -174,6 +192,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                     pointFieldLayout.setError("Please enter an amount of points between 0 and 9999.");
                 } else {
                     pointFieldLayout.setErrorEnabled(false);
+                    pointFieldLayout.setError(null);
                 }
             }
             }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
@@ -31,6 +32,8 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
     private ImageButton logoutBtn;
 
+    private android.support.v7.widget.Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -42,6 +45,16 @@ public class CreateProjectActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(CreateProjectActivity.this);
+            }
+        });
+
+        toolbar = findViewById(R.id.createProjectToolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // This should do the same as pressing back
             }
         });
 

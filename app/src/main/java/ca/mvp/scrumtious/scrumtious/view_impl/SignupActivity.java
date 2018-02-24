@@ -181,7 +181,8 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
                     public void onClick(View v){
                         // Dismisses automatically
                     }
-                }).show();
+                }).setActionTextColor(getResources().getColor(R.color.colorAccent))
+                .show();
     }
 
     @Override

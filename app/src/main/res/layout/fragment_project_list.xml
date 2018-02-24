@@ -16,7 +16,7 @@
                 android:layout_height="match_parent"
                 android:paddingRight="10dp"
                 android:text="@string/filter_owned_projects_only"
-                android:fontFamily="@font/open_sans"
+                android:fontFamily="@font/droid_sans"
                 android:gravity="center_vertical"
                 android:textSize="14sp"
                 />

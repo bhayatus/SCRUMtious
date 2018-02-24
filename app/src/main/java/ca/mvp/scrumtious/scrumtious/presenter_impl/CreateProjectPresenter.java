@@ -6,6 +6,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +36,9 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         mRef = mDatabase.getReference();
         final String projectId = mRef.push().getKey();
 
+        // Get the current date
+        long currentTimeInMilliseconds = System.currentTimeMillis();
+
         Map projectMap = new HashMap<>();
 
         // All the changes that need to be made in one go, to ensure atomicity
@@ -41,6 +46,7 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         projectMap.put("/projects/" + projectId + "/" + "projectDesc", projectDesc);
         projectMap.put("/projects/" + projectId + "/" + "projectOwnerUid", projectOwnerUid);
         projectMap.put("/projects/" + projectId + "/" + "projectOwnerEmail", projectOwnerEmail);
+        projectMap.put("/projects/" + projectId + "/" + "creationTimeStamp", currentTimeInMilliseconds);
         projectMap.put("/projects/" + projectId + "/" + projectOwnerUid, "member");
         projectMap.put("/users/" + projectOwnerUid + "/" + projectId, "member");
 

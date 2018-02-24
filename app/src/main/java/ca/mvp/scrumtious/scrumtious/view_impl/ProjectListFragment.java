@@ -134,7 +134,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView titleView, ownerEmailAddressView, descriptionView;
+        TextView titleView, ownerEmailAddressView, descriptionView, creationDateView;
 
         public ProjectsViewHolder(View itemView) {
             super(itemView);
@@ -143,14 +143,18 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             titleView = (TextView) mView.findViewById(R.id.projectRowTitle);
             ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddress);
             descriptionView = (TextView) mView.findViewById(R.id.projectRowDescription);
+            creationDateView = (TextView) mView.findViewById(R.id.projectRowCreatedDate);
         }
 
 
         // Populates each row of the recycler view with the project details
-        public void setDetails(String title, String ownerEmailAddress, String description){
+        public void setDetails(String title, String ownerEmailAddress, String description, String creationDate){
             titleView.setText(title);
             ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
             descriptionView.setText(description);
+            creationDateView.setText(creationDate);
         }
+
+
     }
 }

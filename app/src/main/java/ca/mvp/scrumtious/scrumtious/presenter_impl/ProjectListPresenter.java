@@ -2,6 +2,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.app.ProgressDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,9 +43,13 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
 
             @Override
             protected void populateViewHolder(ProjectListFragment.ProjectsViewHolder viewHolder, Project model, int position) {
-                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc());
-                final String pid = getRef(position).getKey();
+                // Grab the date
+                long timestamp = model.getCreationTimeStamp();
+                String dateFormatted = "Date Created: ";
+                dateFormatted += DateFormat.format("MM/dd/yyyy", timestamp).toString();
 
+                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc(), dateFormatted);
+                final String pid = getRef(position).getKey();
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -84,7 +89,12 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
 
             @Override
             protected void populateViewHolder(ProjectListFragment.ProjectsViewHolder viewHolder, Project model, int position) {
-                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc());
+                // Grab the date
+                long timestamp = model.getCreationTimeStamp();
+                String dateFormatted = "Date Created: ";
+                dateFormatted += DateFormat.format("MM/dd/yyyy", timestamp).toString();
+
+                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc(), dateFormatted);
                 final String pid = getRef(position).getKey();
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

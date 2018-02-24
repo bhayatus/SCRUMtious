@@ -1,11 +1,14 @@
 package ca.mvp.scrumtious.scrumtious.model;
 
+import java.util.Map;
+
 public class Project {
 
     private String projectOwnerUid;
     private String projectTitle;
     private String projectOwnerEmail;
     private String projectDesc;
+    private long creationTimeStamp;
 
     private final int MAX_DESC_SIZE = 254;
 
@@ -28,6 +31,7 @@ public class Project {
     public String getProjectTitle() { return this.projectTitle; }
     public String getProjectDesc() { return this.projectDesc; }
     public String getProjectOwnerEmail() { return this.projectOwnerEmail; }
+    public long getCreationTimeStamp() {return creationTimeStamp;}
 
     public int setProjectDesc(String newProjectDescToSet) {
         if (newProjectDescToSet == null) return -3;
