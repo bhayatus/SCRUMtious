@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -32,6 +33,11 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     private ProgressDialog loadingProjectsDialog;
     private Switch showOnlyMyProjects;
     private Button addProjectBtn;
+    private LinearLayout emptyStateView;
+
+    private FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> allProjectsAdapter;
+    private FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> myProjectsAdapter;
+
 
     public ProjectListFragment() {
         // Required empty public constructor
@@ -61,6 +67,8 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             }
         });
 
+        emptyStateView = (LinearLayout) view.findViewById(R.id.projectListEmptyStateView);
+
         return view;
 
     }
@@ -76,19 +84,19 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
         loadingProjectsDialog.show();
 
         projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        final FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> myProjectsAdapter;
-        final FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> allProjectsAdapter;
 
         myProjectsAdapter = projectListPresenterInt.setupMyProjectsAdapter(projectList, loadingProjectsDialog);
         allProjectsAdapter = projectListPresenterInt.setupGeneralProjectsAdapter(projectList, loadingProjectsDialog);
 
         projectList.setAdapter(allProjectsAdapter);
+
         showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 // User only wants to see the projects that they own
                 if (isChecked){
+
                     projectList.setAdapter(myProjectsAdapter);
                 }
                 else{
@@ -96,6 +104,19 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
                 }
             }
         });
+    }
+
+    // Switches between empty state screen and regular adapters based on item count being empty or not
+    @Override
+    public void setView(){
+        if (allProjectsAdapter.getItemCount() == 0 && myProjectsAdapter.getItemCount() == 0){
+            emptyStateView.setVisibility(View.VISIBLE);
+            projectList.setVisibility(View.GONE);
+        }
+        else{
+            emptyStateView.setVisibility(View.GONE);
+            projectList.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

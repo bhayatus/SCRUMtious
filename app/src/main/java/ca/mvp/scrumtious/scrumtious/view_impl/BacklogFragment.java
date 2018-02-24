@@ -33,6 +33,8 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
     private BacklogPresenterInt backlogPresenter;
     private RecyclerView backlogList;
     private FirebaseRecyclerAdapter<UserStory, BacklogViewHolder> backlogAdapter;
+    private LinearLayout emptyStateView;
+
     public BacklogFragment() {
         // Required empty public constructor
     }
@@ -52,6 +54,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_backlog, container, false);
         backlogList = view.findViewById(R.id.backlogRecyclerView);
+        emptyStateView = view.findViewById(R.id.backlogEmptyStateView);
         setupRecyclerView();
 
         return view;
@@ -63,6 +66,19 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
         backlogAdapter = backlogPresenter.setupInProgressAdapter(backlogList);
         backlogList.setAdapter(backlogAdapter);
 
+    }
+
+    // Show either the list of user stories, or the empty view
+    @Override
+    public void setView(){
+        if(backlogAdapter.getItemCount() == 0){
+            emptyStateView.setVisibility(View.VISIBLE);
+            backlogList.setVisibility(View.GONE);
+        }
+        else{
+            emptyStateView.setVisibility(View.GONE);
+            backlogList.setVisibility(View.VISIBLE);
+        }
     }
 
     // User clicks on a specific user story
@@ -176,7 +192,13 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
             deletingUserStoryDialog.dismiss();
         }
 
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Automatically dismisses
+                    }
+                }).show();
 
     }
 

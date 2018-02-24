@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,7 +55,14 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     // Failed to sign in, take them to login screen
                     else{
-                        Snackbar.make(findViewById(android.R.id.content), "Could not log you in.", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content), "Could not log you in.", Snackbar.LENGTH_LONG)
+                                .setAction("Dismiss", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // Automatically dismisses
+                                    }
+                                }).show();
+
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override

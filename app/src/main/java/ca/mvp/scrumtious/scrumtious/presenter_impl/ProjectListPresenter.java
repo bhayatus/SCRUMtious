@@ -25,7 +25,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupGeneralProjectsAdapter(RecyclerView projectList, final ProgressDialog progressDialog) {
+    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupGeneralProjectsAdapter(final RecyclerView projectList, final ProgressDialog progressDialog) {
         //just to be safe if constructor wasn't called before
         mAuth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -54,6 +54,9 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
             }
             @Override
             public void onDataChanged() {
+
+                projectListView.setView();
+
                 if (progressDialog != null && progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
@@ -93,6 +96,9 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
             }
             @Override
             public void onDataChanged() {
+
+                projectListView.setView();
+
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }

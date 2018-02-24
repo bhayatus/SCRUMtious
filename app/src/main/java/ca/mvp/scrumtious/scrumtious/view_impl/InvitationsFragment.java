@@ -13,16 +13,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.InvitationsPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.InvitationsViewInt;
+import ca.mvp.scrumtious.scrumtious.model.UserInvite;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.InvitationsPresenter;
 
 public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
     private RecyclerView invitationsList;
     private InvitationsPresenterInt invitationsPresenter;
+    private LinearLayout emptyStateView;
+
+    private FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> invitationsListAdapter;
+
     public InvitationsFragment() {
         // Required empty public constructor
     }
@@ -39,13 +48,28 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_invitations, container, false);
         invitationsList = view.findViewById(R.id.invitationsRecyclerView);
+        emptyStateView = view.findViewById(R.id.invitationsEmptyStateView);
         setupRecyclerView();
         return view;
     }
 
     private void setupRecyclerView(){
         invitationsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        invitationsList.setAdapter(invitationsPresenter.setupInvitationsAdapter(invitationsList));
+        invitationsListAdapter = invitationsPresenter.setupInvitationsAdapter(invitationsList);
+        invitationsList.setAdapter(invitationsListAdapter);
+    }
+
+    // Sets the view to either show the list of invitations, or nothing
+    @Override
+    public void setView(){
+        if (invitationsListAdapter.getItemCount() == 0){
+            emptyStateView.setVisibility(View.VISIBLE);
+            invitationsList.setVisibility(View.GONE);
+        }
+        else{
+            emptyStateView.setVisibility(View.GONE);
+            invitationsList.setVisibility(View.VISIBLE);
+        }
     }
 
     // When user clicks on the accept button for an invite

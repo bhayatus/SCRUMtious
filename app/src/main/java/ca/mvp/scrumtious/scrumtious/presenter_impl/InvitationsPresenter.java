@@ -77,7 +77,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
             }
             @Override
             public void onDataChanged() {
-
+                invitationsView.setView();
             }
         };
         return invitationsAdapter;

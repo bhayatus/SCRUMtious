@@ -166,7 +166,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
             }
             @Override
             public void onDataChanged() {
-
+                backlogView.setView();
             }
 
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateUserStoryActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -42,11 +41,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
-        android:focusable="true"
-        android:gravity="center_vertical">
+        android:focusable="true">
 
 
     <android.support.design.widget.TextInputLayout
@@ -132,4 +130,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
