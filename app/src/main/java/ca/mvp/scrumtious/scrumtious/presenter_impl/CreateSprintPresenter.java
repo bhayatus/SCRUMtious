@@ -64,8 +64,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
         });
     }
 
-    @Override
-    public void addSprintToDatabase(String sprintName, String sprintDesc, long sprintStartDate, long sprintEndDate) {
+    private void addSprintToDatabase(String sprintName, String sprintDesc, long sprintStartDate, long sprintEndDate) {
          mDatabase = FirebaseDatabase.getInstance();
 
          mRef = mDatabase.getReference()
@@ -95,7 +94,8 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
     }
 
     @Override
-    public void onCheckConflictingSprintDates(final long startDate, final long endDate) {
+    public void onCheckConflictingSprintDates(final String sprintName, final String sprintDesc,
+                                              final long sprintStartDate, final long sprintEndDate) {
 
         mRef = mDatabase.getReference();
         mRef.child("projects").child(this.pid).child("sprints").addListenerForSingleValueEvent(
@@ -103,22 +103,36 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        Timestamp startDateTimestamp = new Timestamp(startDate);
-                        Timestamp endDateTimestamp = new Timestamp(endDate);
+                        Timestamp startDateTimestamp = new Timestamp(sprintStartDate);
+                        Timestamp endDateTimestamp = new Timestamp(sprintEndDate);
 
                         for (DataSnapshot d: dataSnapshot.getChildren()) {
 
-                            Timestamp snapshotStartDateTimestamp = new Timestamp((long) d.child("sprintStartDate").getValue());
-                            Timestamp snapshotEndDateTimestamp = new Timestamp((long) d.child("sprintEndDate").getValue());
+                            // converts the longs to timestamp for the snapshot
+                            Timestamp snapshotStartDateTimestamp = new Timestamp((long) d.child("sprintStartDate")
+                                    .getValue());
+                            Timestamp snapshotEndDateTimestamp = new Timestamp((long) d.child("sprintEndDate")
+                                    .getValue());
 
+
+                            /*
+                            If the user defined dates are contained within a sprint that already exists, then raise an
+                            error
+                             */
                             if (startDateTimestamp.after(snapshotStartDateTimestamp) &&
                                     endDateTimestamp.before(snapshotEndDateTimestamp)) {
                                 dateConflictExists = true;
                             }
                         }
 
-                        createSprintView.setConflictExists(dateConflictExists);
-                        dateConflictExists = false;
+                        if (dateConflictExists == false) { // if not conflicts exist then add to DB
+                            addSprintToDatabase(sprintName, sprintDesc, sprintStartDate, sprintEndDate);
+                        } else {
+                            // an error occurred, notfiy the calling activity
+                            createSprintView.showMessage("Dates for sprint overlap with another sprint, please change " +
+                                    "the date.");
+                            dateConflictExists = false;
+                        }
                     }
 
                     @Override
