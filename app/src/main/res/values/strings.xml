@@ -21,6 +21,9 @@
     <string name="create_project_title">Title</string>
     <string name="create_project_create">Create</string>
     <string name="create_project_desc">Project Description</string>
+    <string name="create_sprint_title">Title</string>
+    <string name="create_sprint_create">Create</string>
+    <string name="create_sprint_desc">Sprint Description</string>
     <string name="title_activity_create_project">Create Project</string>
     <string name="filter_owned_projects_only">Owned Projects Only</string>
     <string name="title_activity_individual_project_screen">IndividualProjectScreenActivity</string>

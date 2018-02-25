@@ -108,6 +108,24 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                             // User chooses product backlog, do nothing as we are already there
                             case R.id.nav_product_backlog:
                                 break;
+
+                            // User chooses to view sprints
+                            case R.id.nav_sprints:
+
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(ProductBacklogActivity.this, SprintListActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
+                                break;
                         }
 
                         return true;

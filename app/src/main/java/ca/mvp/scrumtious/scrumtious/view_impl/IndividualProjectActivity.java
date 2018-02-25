@@ -1,5 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -119,6 +120,25 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                 },delayMilliseconds);
 
                                 break;
+
+                            // User chooses to view sprints
+                            case R.id.nav_sprints:
+
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(IndividualProjectActivity.this, SprintListActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
+                                break;
+
                         }
 
                         return true;
