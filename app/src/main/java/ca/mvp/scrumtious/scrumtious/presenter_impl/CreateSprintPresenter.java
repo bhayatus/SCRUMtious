@@ -69,8 +69,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
 
          mRef = mDatabase.getReference()
                  .child("projects")
-                 .child(this.pid)
-                 .child("sprints");
+                 .child(this.pid);
 
          final String sprintId = mRef.push().getKey(); //generates unique key for sprint
 
