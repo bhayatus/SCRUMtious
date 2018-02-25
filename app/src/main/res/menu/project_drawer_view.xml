@@ -10,5 +10,12 @@
             android:icon="@drawable/ic_product_backlog"
             android:title="Product Backlog" />
 
+        <item
+            android:id="@+id/nav_sprints"
+            android:icon="@drawable/ic_sprint"
+            android:title="Sprints" />
+
+
+
     </group>
 </menu>
