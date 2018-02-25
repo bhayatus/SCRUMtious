@@ -1,4 +1,123 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-public class CreateSprintPresenter {
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateSprintPresenterInt;
+import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateSprintViewInt;
+
+public class CreateSprintPresenter extends AppCompatActivity implements CreateSprintPresenterInt {
+
+    private CreateSprintViewInt createSprintView;
+    private final String pid;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
+    private FirebaseAuth mAuth;
+
+    private boolean foundConflictingDate = false;
+
+    public CreateSprintPresenter(CreateSprintViewInt createSprintView, String pid) {
+        this.createSprintView = createSprintView;
+        this.pid = pid;
+    }
+
+    // In case the project no longer exists or user was removed, user must be returned to project list screen
+    @Override
+    public void setupProjectDeletedListener(){
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects");
+        mRef.child(pid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // If project no longer exists, exit this screen and go back
+                if (!dataSnapshot.exists()){
+                    createSprintView.onProjectDeleted();
+                }
+
+                else{
+                    // Check if I'm no longer a member through my uid
+                    mAuth = FirebaseAuth.getInstance();
+                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                        createSprintView.onProjectDeleted();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void addSprintToDatabase(String sprintName, String sprintDesc, long sprintStartDate, long sprintEndDate) {
+         mDatabase = FirebaseDatabase.getInstance();
+
+         mRef = mDatabase.getReference()
+                 .child("projects")
+                 .child(this.pid)
+                 .child("sprints");
+
+         final String sprintId = mRef.push().getKey(); //generates unique key for sprint
+
+        Map sprintMap = new HashMap<>();
+        sprintMap.put("/sprints/" + sprintId + "/" + "sprintName", sprintName);
+        sprintMap.put("/sprints/" + sprintId + "/" + "sprintDesc", sprintDesc);
+        sprintMap.put("/sprints/" + sprintId + "/" + "sprintStartDate", sprintStartDate);
+        sprintMap.put("/sprints/" + sprintId + "/" + "sprintEndDate", sprintEndDate);
+
+        mRef.updateChildren(sprintMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    createSprintView.onSuccessfulCreateSprint();
+                } else {
+                    createSprintView.showMessage("An error occurred, failed to create sprint.");
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onCheckConflictingSprintDates(final long startDate, final long endDate) {
+
+        mRef = mDatabase.getReference();
+        mRef.child("projects").child(this.pid).child("sprints").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d: dataSnapshot.getChildren()) {
+                            long snapshotStartDate = (long) d.child("sprintStartDate").getValue();
+                            long snapshotEndDate = (long) d.child("sprintEndDate").getValue();
+
+                            if (startDate == snapshotStartDate || endDate == snapshotEndDate) {
+                                foundConflictingDate = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
+
 }
