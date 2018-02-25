@@ -117,6 +117,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                             If the user defined dates are contained within a sprint that already exists, then raise an
                             error
                              */
+
                             if ((startDateTimestamp.after(snapshotStartDateTimestamp) &&
                                     endDateTimestamp.before(snapshotEndDateTimestamp))
                                     || (!startDateTimestamp.after(snapshotEndDateTimestamp) &&
