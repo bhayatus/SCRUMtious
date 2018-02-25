@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
@@ -32,10 +33,10 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     private ProgressDialog createSprintProgessDialog;
     private CreateSprintPresenter createSprintPresenter;
 
-    private TextView DisplayStartDate;
-    private TextView DisplayEndDate;
-    private DatePickerDialog.OnDateSetListener StartDateSetListner;
-    private DatePickerDialog.OnDateSetListener EndDateSetListner;
+    private TextView displayStartDate;
+    private TextView displayEndDate;
+    private DatePickerDialog.OnDateSetListener startDateSetListner;
+    private DatePickerDialog.OnDateSetListener endDateSetListner;
 
     private ImageButton logoutBtn;
     private boolean alreadyDeleted;
@@ -55,71 +56,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_sprint);
 
-        DisplayStartDate = (TextView) findViewById(R.id.createSprintStartDate);
-        DisplayEndDate = (TextView) findViewById(R.id.createSprintEndDate);
-        DisplayStartDate.setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog startDialog = new DatePickerDialog(
-                        CreateSprintActivity.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
-                        StartDateSetListner,
-                        year,month,day
-                );
-                startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                startDialog.show();
-            }
-        });
-        DisplayEndDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog endDialog = new DatePickerDialog(
-                        CreateSprintActivity.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
-                        EndDateSetListner,
-                        year,month,day
-                );
-                endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                endDialog.show();
-            }
-        });
-
-        StartDateSetListner = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = day + "/" + month +"/" + year;
-                DisplayStartDate.setText(date);
-                startYear[0] = year;
-                startMonth[0] = month;
-                startDay[0] = day;
-
-            }
-        };
-        EndDateSetListner = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = day + "/" + month +"/" + year;
-                DisplayEndDate.setText(date);
-                endYear[0] = year;
-                endMonth[0] = month;
-                endDay[0] = day;
-            }
-        };
-        Calendar startCalender = new GregorianCalendar(startYear[0],startMonth[0],startDay[0]);
-        Calendar endCalender = new GregorianCalendar(endYear[0],endMonth[0],endDay[0]);
-        startDate = startCalender.getTimeInMillis();
-        endDate = endCalender.getTimeInMillis();
         //Setting the variables
         alreadyDeleted = false;
 
@@ -179,15 +116,83 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     public void setupFormWatcher(){
         titleField = (EditText)findViewById(R.id.createSprintTitleField);
         descriptionField = (EditText)findViewById(R.id.createSprintDescField);
+        displayStartDate = (TextView) findViewById(R.id.createSprintStartDate);
+        displayEndDate = (TextView) findViewById(R.id.createSprintEndDate);
 
         titleFieldLayout = (TextInputLayout)findViewById(R.id.createSprintTitleFieldLayout);
         descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createSprintDescFieldLayout);
+
 
         titleFieldLayout.setError(null);
         descriptionFieldLayout.setError(null);
 
         titleFieldLayout.setErrorEnabled(true);
         descriptionFieldLayout.setErrorEnabled(true);
+
+
+        displayStartDate.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog startDialog = new DatePickerDialog(
+                        CreateSprintActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        startDateSetListner,
+                        year,month,day
+                );
+                startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                startDialog.show();
+            }
+
+        });
+        displayEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog endDialog = new DatePickerDialog(
+                        CreateSprintActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        endDateSetListner,
+                        year,month,day
+                );
+                endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                endDialog.show();
+            }
+        });
+
+        startDateSetListner = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String date = day + "/" + month +"/" + year;
+                displayStartDate.setText(date);
+                startYear[0] = year;
+                startMonth[0] = month;
+                startDay[0] = day;
+                Calendar startCalender = new GregorianCalendar(startYear[0],startMonth[0],startDay[0]);
+                startDate = startCalender.getTimeInMillis();
+            }
+        };
+        endDateSetListner = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String date = day + "/" + month +"/" + year;
+                displayEndDate.setText(date);
+                endYear[0] = year;
+                endMonth[0] = month;
+                endDay[0] = day;
+                Calendar endCalender = new GregorianCalendar(endYear[0],endMonth[0],endDay[0]);
+                endDate = endCalender.getTimeInMillis();
+            }
+        };
 
         //Create watcher and listener for titleField
 
@@ -209,10 +214,10 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
                 if((titleFieldText == null) || (titleFieldText.trim().length() <= 0)){
                     titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Please enter a title for your sprint");
+                    titleFieldLayout.setError("Please enter a title for your sprint.");
                 }else if(titleFieldText.trim().length() > 28){
                     titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Sprint name is too long");
+                    titleFieldLayout.setError("Sprint name is too long.");
                 }else{
                     titleFieldLayout.setErrorEnabled(false);
                     titleFieldLayout.setError(null);
@@ -236,7 +241,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
                 String descriptionFieldText = descriptionField.getText().toString();
                 if(descriptionFieldText == null || (descriptionFieldText.trim().length() <= 0)){
                     descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a description for your sprint");
+                    descriptionFieldLayout.setError("Please enter a description for your sprint.");
                 }else{
                     descriptionFieldLayout.setErrorEnabled(false);
                     descriptionFieldLayout.setError(null);
@@ -264,8 +269,12 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
     public void onCreateSprint(View view){
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()){
-            showMessage("Cannot create sprint until fields are filled out proeprly");
-        }else{
+            showMessage("Cannot create sprint until fields are filled out properly.");
+        }
+        else if(startDate>=endDate){
+            showMessage("Cannot have start date on or after end date.");
+        }
+        else{
             String name = titleField.getText().toString().trim();
             String desc = descriptionField.getText().toString().trim();
 

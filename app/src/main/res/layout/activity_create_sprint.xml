@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             app:errorEnabled="true">
 
             <EditText
@@ -89,13 +90,7 @@
                 android:maxLength="512"
                 android:fontFamily="@font/droid_sans"/>
         </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/createSprintStartDateLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            app:errorEnabled="true">
+
             <TextView
                 android:id="@+id/createSprintStartDate"
                 android:layout_width="wrap_content"
@@ -108,19 +103,12 @@
                 android:fontFamily="@font/droid_sans"
                 android:gravity="center"
                 />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/createSprintEndDateLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            app:errorEnabled="true">
         <TextView
             android:id="@+id/createSprintEndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Select End Date"
+            android:layout_marginTop="25dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_gravity="center_horizontal"
@@ -128,7 +116,6 @@
             android:textSize="20sp"
             android:fontFamily="@font/droid_sans"
             />
-        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:layout_width="match_parent"
