@@ -285,7 +285,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             createSprintProgessDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             createSprintProgessDialog.show();
 
-            //createSprintProgessDialog.onCheckConflictingSprintDates(name, desc, startDate, endDate);
+            createSprintPresenter.onCheckConflictingSprintDates(name,desc,startDate,endDate);
 
         }
     }
