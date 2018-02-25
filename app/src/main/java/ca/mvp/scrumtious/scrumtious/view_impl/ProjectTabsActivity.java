@@ -1,8 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
@@ -25,6 +21,7 @@ public class ProjectTabsActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     private ImageButton logoutBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

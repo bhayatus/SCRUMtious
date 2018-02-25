@@ -24,12 +24,15 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/droid_sans"
                 android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
                 android:text="Project 1"
                 android:textColor="#d10f0f"
                 android:textSize="24sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:layout_toLeftOf="@id/projectRowLinearLayout"/>
 
                 <LinearLayout
+                    android:id="@+id/projectRowLinearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

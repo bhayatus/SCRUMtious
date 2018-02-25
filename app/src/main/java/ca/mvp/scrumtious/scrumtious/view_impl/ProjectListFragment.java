@@ -16,9 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListViewInt;
@@ -29,6 +27,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
     private ProjectListPresenterInt projectListPresenterInt;
 
+    private TextView ownedProjectsText;
     private RecyclerView projectList;
     private ProgressDialog loadingProjectsDialog;
     private Switch showOnlyMyProjects;
@@ -55,6 +54,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
+        ownedProjectsText = (TextView) view.findViewById(R.id.projectListOwnedProjectsText);
         projectList = (RecyclerView) view.findViewById(R.id.projectListRecyclerView);
         showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListSwitch);
         setupRecyclerView();
@@ -111,11 +111,15 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     public void setView(){
         if (allProjectsAdapter.getItemCount() == 0 && myProjectsAdapter.getItemCount() == 0){
             emptyStateView.setVisibility(View.VISIBLE);
+            showOnlyMyProjects.setVisibility(View.GONE);
+            ownedProjectsText.setVisibility(View.GONE);
             projectList.setVisibility(View.GONE);
         }
         else{
             emptyStateView.setVisibility(View.GONE);
             projectList.setVisibility(View.VISIBLE);
+            ownedProjectsText.setVisibility(View.VISIBLE);
+            showOnlyMyProjects.setVisibility(View.VISIBLE);
         }
     }
 
@@ -150,9 +154,43 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
         // Populates each row of the recycler view with the project details
         public void setDetails(String title, String ownerEmailAddress, String description, String creationDate, String numMembers){
+
+            // Shorten description for viewing purposes
+            String displayDesc = "";
+            if (!description.contains("\n")){
+                displayDesc = description;
+            }
+            else {
+                String[] parts = description.split("\n");
+                // Only one line break
+                if (parts.length == 2) {
+                    displayDesc = parts[0] + "\n" + parts[1];
+                }
+                // At least three lines
+                else{
+
+                    int numberOfNewLines = 0;
+                    int index = 0;
+                    int length = description.length();
+                    while(numberOfNewLines <= 2 && index < length){
+                        if (description.charAt(index) == '\n'){
+                            numberOfNewLines++;
+                            displayDesc += "\n";
+                        }
+                        else{
+                            displayDesc += description.charAt(index);
+                        }
+
+                        index++;
+                    }
+                    displayDesc += "...";
+                }
+
+            }
+
             titleView.setText(title);
             ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
-            descriptionView.setText(description);
+            descriptionView.setText(displayDesc);
             creationDateView.setText(creationDate);
             numMembersView.setText(numMembers);
         }

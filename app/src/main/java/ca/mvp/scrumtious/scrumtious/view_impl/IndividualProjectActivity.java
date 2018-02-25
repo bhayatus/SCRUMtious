@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,11 +39,13 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     private ViewPager mViewPager;
     private ImageButton deleteBtn, logoutBtn;
     private String pid;
+
+    private ProgressDialog deleteProjectProgressDialog;
+
     private boolean alreadyDeleted;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
-
 
     private IndividualProjectPresenterInt individualProjectPresenter;
 
@@ -148,6 +151,10 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     // Project no longer exists, go back
     public void onSuccessfulDeletion() {
 
+        if (deleteProjectProgressDialog != null && deleteProjectProgressDialog.isShowing()){
+            deleteProjectProgressDialog.dismiss();
+        }
+
         // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
         if (!alreadyDeleted) {
             alreadyDeleted = true;
@@ -164,6 +171,11 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     }
 
     public void showMessage(String message) {
+
+        if (deleteProjectProgressDialog != null && deleteProjectProgressDialog.isShowing()){
+            deleteProjectProgressDialog.dismiss();
+        }
+
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
                 .setAction("Dismiss", new View.OnClickListener(){
                     @Override
@@ -198,6 +210,15 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                 showMessage("Password incorrect, could not delete project.");
                             }
                             else {
+
+                                // Creates a dialog that appears to tell the user that deleting a user is still occurring
+                                deleteProjectProgressDialog = new ProgressDialog(IndividualProjectActivity.this);
+                                deleteProjectProgressDialog.setTitle("Delete Project");
+                                deleteProjectProgressDialog.setCancelable(false);
+                                deleteProjectProgressDialog.setMessage("Attempting to delete project...");
+                                deleteProjectProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                deleteProjectProgressDialog.show();
+
                                 // Password is of valid type, send it
                                 individualProjectPresenter.validatePassword(password);
                             }

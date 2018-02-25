@@ -12,6 +12,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right">
             <TextView
+                android:id="@+id/projectListOwnedProjectsText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingRight="10dp"
@@ -19,13 +20,15 @@
                 android:fontFamily="@font/droid_sans"
                 android:gravity="center_vertical"
                 android:textSize="14sp"
+                android:visibility="gone"
                 />
 
             <Switch
                 android:id="@+id/projectListSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:checked="false"/>
+                android:checked="false"
+                android:visibility="gone"/>
             </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

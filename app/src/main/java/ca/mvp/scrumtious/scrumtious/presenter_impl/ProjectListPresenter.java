@@ -3,6 +3,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 import android.app.ProgressDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +49,6 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
 
             @Override
             protected void populateViewHolder(ProjectListFragment.ProjectsViewHolder viewHolder, Project model, int position) {
-
                 final String pid = getRef(position).getKey();
 
                 // Grab the date

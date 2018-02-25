@@ -89,11 +89,15 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
                 String titleText = titleField.getText().toString();
 
-                if(titleText == null || (titleText.trim().length() <= 0
-                        ||  titleText.trim().length() > 254)) {
+                if(titleText == null || (titleText.trim().length() <= 0)) {
                     titleFieldLayout.setErrorEnabled(true);
                     titleFieldLayout.setError("Please enter a project title.");
-                }else{
+                }
+                else if (titleText.trim().length() > 18){
+                    titleFieldLayout.setErrorEnabled(true);
+                    titleFieldLayout.setError("Project title is too long.");
+                }
+                else{
                     titleFieldLayout.setErrorEnabled(false);
                 }
             }
@@ -113,11 +117,11 @@ public class CreateProjectActivity extends AppCompatActivity implements
             @Override
             public void afterTextChanged(Editable editable) {
                 String descText = descriptionField.getText().toString();
-                if(descText == null || (descText.trim().length() <= 0
-                        || descText.trim().length()> 512)){
+                if(descText == null || (descText.trim().length() <= 0)){
                     descriptionFieldLayout.setErrorEnabled(true);
                     descriptionFieldLayout.setError("Please enter a project description.");
-                }else{
+                }
+                else{
                     descriptionFieldLayout.setErrorEnabled(false);
                 }
 

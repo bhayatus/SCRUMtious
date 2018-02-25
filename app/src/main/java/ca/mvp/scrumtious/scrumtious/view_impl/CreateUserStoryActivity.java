@@ -129,10 +129,15 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                 String titleText = titleField.getText().toString();
 
                 if(titleText == null || (titleText.trim().length() <= 0
-                        ||  titleText.trim().length() > 254)) {
+                        )) {
                     titleFieldLayout.setErrorEnabled(true);
                     titleFieldLayout.setError("Please enter a user story name.");
-                }else{
+                }
+                else if (titleText.trim().length() > 28){
+                    titleFieldLayout.setErrorEnabled(true);
+                    titleFieldLayout.setError("User story name is too long.");
+                }
+                else{
                     titleFieldLayout.setErrorEnabled(false);
                     titleFieldLayout.setError(null);
                 }
@@ -153,11 +158,11 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
             @Override
             public void afterTextChanged(Editable editable) {
                 String descText = descriptionField.getText().toString();
-                if(descText == null || (descText.trim().length() <= 0
-                        || descText.trim().length() > 2048)){
+                if(descText == null || (descText.trim().length() <= 0)){
                     descriptionFieldLayout.setErrorEnabled(true);
                     descriptionFieldLayout.setError("Please enter a user story description.");
-                }else{
+                }
+                    else{
                     descriptionFieldLayout.setErrorEnabled(false);
                     descriptionFieldLayout.setError(null);
                 }
@@ -189,7 +194,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
                 int pointsVal = Integer.valueOf(pointsText);
                 if (pointsVal <= 0 || pointsVal > 9999) {
                     pointFieldLayout.setErrorEnabled(true);
-                    pointFieldLayout.setError("Please enter an amount of points between 0 and 9999.");
+                    pointFieldLayout.setError("Please enter an amount between 0 and 9999.");
                 } else {
                     pointFieldLayout.setErrorEnabled(false);
                     pointFieldLayout.setError(null);
