@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
 
-    private boolean foundConflictingDate = false;
+    private boolean dateConflictExists = false;
 
     public CreateSprintPresenter(CreateSprintViewInt createSprintView, String pid) {
         this.createSprintView = createSprintView;
@@ -101,15 +102,23 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot d: dataSnapshot.getChildren()) {
-                            long snapshotStartDate = (long) d.child("sprintStartDate").getValue();
-                            long snapshotEndDate = (long) d.child("sprintEndDate").getValue();
 
-                            if (startDate == snapshotStartDate || endDate == snapshotEndDate) {
-                                foundConflictingDate = true;
-                                break;
+                        Timestamp startDateTimestamp = new Timestamp(startDate);
+                        Timestamp endDateTimestamp = new Timestamp(endDate);
+
+                        for (DataSnapshot d: dataSnapshot.getChildren()) {
+
+                            Timestamp snapshotStartDateTimestamp = new Timestamp((long) d.child("sprintStartDate").getValue());
+                            Timestamp snapshotEndDateTimestamp = new Timestamp((long) d.child("sprintEndDate").getValue());
+
+                            if (startDateTimestamp.after(snapshotStartDateTimestamp) &&
+                                    endDateTimestamp.before(snapshotEndDateTimestamp)) {
+                                dateConflictExists = true;
                             }
                         }
+
+                        createSprintView.setConflictExists(dateConflictExists);
+                        dateConflictExists = false;
                     }
 
                     @Override
