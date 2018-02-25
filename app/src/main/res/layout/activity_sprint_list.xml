@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:backgroundTint="@color/colorPrimary"
-                    android:text="@string/add_user_story_btn_text"
+                    android:text="Add Sprint"
                     android:textColor="@color/white"
                     android:onClick="onClickAddSprint"
                     />

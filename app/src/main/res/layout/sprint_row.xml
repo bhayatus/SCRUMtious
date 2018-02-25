@@ -34,7 +34,7 @@
             android:text="This is a description that explains what the sprint is about, and now I am running out of things to say,
 so I'll stop."
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:layout_marginBottom="10dp"/>
 
         <TextView
@@ -43,8 +43,7 @@ so I'll stop."
             android:layout_height="wrap_content"
             android:fontFamily="@font/droid_sans"
             android:text="01/01/2018 to 01/25/2018"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
+            android:textColor="#797979"
             android:textSize="14sp"/>
 
     </LinearLayout>

@@ -57,27 +57,34 @@ public class BacklogPresenter implements BacklogPresenterInt {
         // The query below grabs all user stories that are not assigned to any sprints
         // and that are not complete, hence the "false"
         // If I wanted to check for completed, the second part would be "true"
-        String typeQuery = this.sprintId + "_";
+        String typeQuery = "";
 
         // Sets the equalTo string that the query needs to use to search for user stories
         switch(type){
             case pb_in_progress:
-                typeQuery += "false";
+                typeQuery = "false";
                 break;
             case pb_completed:
-                typeQuery += "true";
+                typeQuery = "true";
                 break;
-
             case sprint_in_progress:
-                typeQuery += "false";
+                typeQuery = this.sprintId + "_" + "false";
                 break;
             case sprint_completed:
-                typeQuery += "true";
+                typeQuery = this.sprintId + "_" + "true";
                 break;
         }
 
-        mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
-                .equalTo(typeQuery);
+        // Dealing with sprint backlog
+        if (type.equals(sprint_completed) || type.equals(sprint_in_progress)) {
+            mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
+                    .equalTo(typeQuery);
+        }
+
+        if (type.equals(pb_completed) || type.equals(pb_in_progress)){
+            mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("completed")
+                    .equalTo(typeQuery);
+        }
 
         FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> inProgressListAdapter
                 = new FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder>(
@@ -89,7 +96,25 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
             @Override
             protected void populateViewHolder(BacklogFragment.BacklogViewHolder viewHolder, UserStory model, int position) {
-                viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints());
+
+                String nameOfSprint = model.getAssignedToName();
+                String assignedToName;
+                // Not assigned to a sprint, don't bother showing assigned to layout
+                if (nameOfSprint.equals("..............................")){
+                    assignedToName = "Not yet assigned to a sprint";
+                    viewHolder.setSprintIconInvisible();
+                }
+                // User story in a sprint, show the sprint assigned to in the layout
+                else {
+                    assignedToName = "Assigned to: " + nameOfSprint;
+                }
+
+                // If in a sprint, don't show the assigned to layout
+                if (type.equals(sprint_completed) || type.equals(sprint_in_progress)){
+                    viewHolder.setAssignedToLayoutInvisible();
+                }
+
+                viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints(), assignedToName);
                 final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
                 ImageButton completed = viewHolder.getCompleted();
                 ImageButton delete = viewHolder.getDelete();

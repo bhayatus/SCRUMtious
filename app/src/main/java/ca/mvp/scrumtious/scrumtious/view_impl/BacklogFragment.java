@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -206,9 +207,11 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
     // Viewholder class to display user stories
     public static class BacklogViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView nameView, pointsView;
+        TextView nameView, pointsView, assignedToNameView;
         ImageButton completed;
         ImageButton delete;
+        ImageView sprintIcon;
+        LinearLayout assignedToLayout;
 
         public BacklogViewHolder(View itemView) {
             super(itemView);
@@ -216,13 +219,16 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
 
             nameView = (TextView) mView.findViewById(R.id.userStoryRowName);
             pointsView = (TextView) mView.findViewById(R.id.userStoryRowPoints);
+            assignedToNameView = (TextView) mView.findViewById(R.id.userStoryAssignedToName);
             completed = (ImageButton) mView.findViewById(R.id.userStoryRowCompleted);
             delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
+            assignedToLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToLayout);
+            sprintIcon = (ImageView) mView.findViewById(R.id.userStoryRowIcon);
         }
 
 
         // Populates each row of the recycler view with the user story details
-        public void setDetails(String name, String points){
+        public void setDetails(String name, String points, String assignedToName){
             nameView.setText(name);
             // If only 1 point, don't display as plural
             if (Integer.parseInt(points) == 1){
@@ -231,6 +237,9 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
             else {
                 pointsView.setText(points + " points");
             }
+
+            assignedToNameView.setText(assignedToName);
+
         }
 
         public ImageButton getCompleted(){
@@ -244,6 +253,15 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
         // Only owner should be able to delete user stories
         public void setDeleteInvisible(){
             this.delete.setVisibility(View.GONE);
+        }
+
+
+        public void setAssignedToLayoutInvisible(){
+            assignedToLayout.setVisibility(View.GONE);
+        }
+
+        public void setSprintIconInvisible(){
+            sprintIcon.setVisibility(View.GONE);
         }
     }
 }
