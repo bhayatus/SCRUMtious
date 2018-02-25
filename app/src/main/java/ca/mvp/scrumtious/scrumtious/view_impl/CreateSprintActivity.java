@@ -20,12 +20,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateSprintViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateSprintPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
-
 
 public class CreateSprintActivity extends AppCompatActivity implements CreateSprintViewInt {
 
@@ -177,8 +175,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         }
 
     }
-
-
+    
     public void setupFormWatcher(){
         titleField = (EditText)findViewById(R.id.createSprintTitleField);
         descriptionField = (EditText)findViewById(R.id.createSprintDescField);
