@@ -1,9 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateSprintActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/createSprintToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:theme="@style/IndividualProjectToolbar"
+            app:title="Create Sprint">
+
+            <ImageButton
+                android:id="@+id/createSprintLogoutBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_logout"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/createSprintTitleFieldLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:errorEnabled="true"
+            >
+
+
+            <EditText
+                android:id="@+id/createSprintTitleField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/create_sprint_title"
+                android:importantForAutofill="noExcludeDescendants"
+                android:inputType="text"
+                android:singleLine="true"
+                android:fontFamily="@font/droid_sans"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/createSprintDescFieldLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:errorEnabled="true">
+
+            <EditText
+                android:id="@+id/createSprintDescField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/create_sprint_desc"
+                android:importantForAutofill="noExcludeDescendants"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:scrollbars="vertical"
+                android:maxLength="512"
+                android:fontFamily="@font/droid_sans"/>
+        </android.support.design.widget.TextInputLayout>
+        <TextView
+            android:id="@+id/createSprintStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Select Start Date"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"
+            android:fontFamily="@font/droid_sans"
+
+            />
+        <TextView
+            android:id="@+id/createSprintEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Select End Date"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"
+            android:fontFamily="@font/droid_sans"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/login_signup_btn"
+            android:onClick="onClickCreateSprintSubmit"
+            android:text="@string/create_sprint_create"
+            style="@style/Widget.AppCompat.Button"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+</RelativeLayout>
