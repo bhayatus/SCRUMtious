@@ -121,26 +121,45 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
     // Delete the member from the project
     private void deleteMember(final String uid){
+
+        // Grab the number of members
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
-
-        Map removeMemberMap = new HashMap();
-
-        // Both changes need to occur to ensure atomicity
-        removeMemberMap.put("/users/" + uid + "/" + pid, null);
-        removeMemberMap.put("/projects/" + pid + "/" + uid, null);
-
-        mRef.updateChildren(removeMemberMap).addOnCompleteListener(new OnCompleteListener() {
+        mRef.child("projects").child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()) {
-                    projectMembersView.showMessage("Deleted member from project.");
-                }
-                else{
-                    projectMembersView.showMessage("An error occurred, failed to delete member from project.");
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long numMembers = (long) dataSnapshot.child("numMembers").getValue();
+                numMembers--; // User is being removed, decrease member count
+
+                mDatabase = FirebaseDatabase.getInstance();
+                mRef = mDatabase.getReference();
+
+                Map removeMemberMap = new HashMap();
+
+                // Following changes need to occur to ensure atomicity
+                removeMemberMap.put("/users/" + uid + "/" + pid, null);
+                removeMemberMap.put("/projects/" + pid + "/" + uid, null);
+                removeMemberMap.put("/projects/" + pid + "/" + "numMembers", numMembers);
+
+                mRef.updateChildren(removeMemberMap).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if(task.isSuccessful()) {
+                            projectMembersView.showMessage("Deleted member from project.");
+                        }
+                        else{
+                            projectMembersView.showMessage("An error occurred, failed to delete member from project.");
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
+
     }
 
     // Check the group owner's password before deleting member from project

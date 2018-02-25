@@ -9,24 +9,26 @@
         android:id="@+id/projectMembersRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/projectMembersLinearLayout"
+        android:layout_above="@id/projectMembersRelativeLayout"
         >
     </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-        android:id="@+id/projectMembersLinearLayout"
+    <RelativeLayout
+        android:id="@+id/projectMembersRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <Button
-            android:id="@+id/projectMembersInviteMemberBtn"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/invite_member_btn_text"
-            android:textColor="@color/white"
-            />
-    </LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/projectMembersAddMemberBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_invite"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

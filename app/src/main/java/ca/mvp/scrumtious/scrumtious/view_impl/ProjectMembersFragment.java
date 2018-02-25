@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,14 +23,11 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPrese
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectMembersPresenter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ProjectMembersFragment extends Fragment implements ProjectMembersViewInt {
 
     private ProjectMembersPresenterInt projectMembersPresenter;
     private RecyclerView membersList;
-    private Button addMemberBtn;
+    private FloatingActionButton addMemberBtn;
 
     private ProgressDialog invitingProgressDialog, deletingMemberProgressDialog;
     public ProjectMembersFragment() {
@@ -51,7 +49,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
         membersList = view.findViewById(R.id.projectMembersRecyclerView);
         setupRecyclerView();
-        addMemberBtn = view.findViewById(R.id.projectMembersInviteMemberBtn);
+        addMemberBtn = view.findViewById(R.id.projectMembersAddMemberBtn);
 
         addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override

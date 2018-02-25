@@ -8,9 +8,13 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
@@ -91,27 +95,44 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
         mAuth = FirebaseAuth.getInstance();
         final String invitedUid = mAuth.getCurrentUser().getUid();
 
-        Map acceptInviteMap = new HashMap();
-
-        acceptInviteMap.put("/projects/" + projectId + "/" + invitedUid, "member");
-        acceptInviteMap.put("/users/" + invitedUid + "/" + projectId, "member");
-        acceptInviteMap.put("/invites/" + inviteId, null);
-
+        // Get the number of members
 
         mDatabase = FirebaseDatabase.getInstance();
         rootRef = mDatabase.getReference();
-
-        rootRef.updateChildren(acceptInviteMap).addOnCompleteListener(new OnCompleteListener() {
+        rootRef.child("projects").child(projectId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if (!task.isSuccessful()){
-                    invitationsView.showMessage("An error occurred, failed to accept invite.");
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long numMembers = (long) dataSnapshot.child("numMembers").getValue();
+                numMembers++; // User accepted invite, have to increase member count
+
+                Map acceptInviteMap = new HashMap();
+
+                // All of the following have to happen to ensure atomicity
+                acceptInviteMap.put("/projects/" + projectId + "/" + invitedUid, "member");
+                acceptInviteMap.put("/projects/" + projectId + "/" + "numMembers", numMembers);
+                acceptInviteMap.put("/users/" + invitedUid + "/" + projectId, "member");
+                acceptInviteMap.put("/invites/" + inviteId, null);
+
+                mDatabase = FirebaseDatabase.getInstance();
+                rootRef = mDatabase.getReference();
+
+                rootRef.updateChildren(acceptInviteMap).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (!task.isSuccessful()){
+                            invitationsView.showMessage("An error occurred, failed to accept invite.");
+                        }
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-
-
-
     }
 
     // Remove the invite from the database if user chooses to reject it
