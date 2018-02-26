@@ -270,6 +270,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         }
     }
 
+    @Override
     public void showMessage(String message) {
 
         if (deleteSprintProgressDialog != null && deleteSprintProgressDialog.isShowing()){
