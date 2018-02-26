@@ -69,7 +69,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(ProductBacklogActivity.this)
-                        .setTitle("Help Info")
+                        .setTitle("Need Help?")
                         .setMessage("To get started, you can add a new user story to the product backlog with the button " +
                                 "below. " + "\n" +
                                 "User stories can then be deleted, or marked as completed/in progress with their respective " +

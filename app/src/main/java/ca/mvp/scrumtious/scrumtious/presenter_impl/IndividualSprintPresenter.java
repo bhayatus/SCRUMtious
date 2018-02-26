@@ -149,14 +149,14 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d: dataSnapshot.getChildren()){
-                    if (d.child("assignedTo").equals(sid)){
+                    if (d.child("assignedTo").getValue().toString().equals(sid)){
                         String usid = d.getKey().toString();
                         String completed = d.child("completed").getValue().toString();
 
                         String assignedTo_completed = "null" + "_" + completed;
 
                         deleteSprintMap.put("/projects/" + pid + "/" + "user_stories" + "/" + usid + "/" + "assignedTo", "null");
-                        deleteSprintMap.put("/projects/" + pid + "/" + "user_stories" + "/" + usid + "/" + "assignedToName", "..............................");
+                        deleteSprintMap.put("/projects/" + pid + "/" + "user_stories" + "/" + usid + "/" + "assignedToName", "");
                         deleteSprintMap.put("/projects/" + pid + "/" + "user_stories" + "/" + usid + "/" + "assignedTo_completed", assignedTo_completed);
                     }
                 }
