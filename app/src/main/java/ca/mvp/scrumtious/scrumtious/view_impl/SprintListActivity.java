@@ -166,11 +166,11 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     @Override
     public void goToSprintScreen(String sid) {
-        //Intent intent = new Intent(SprintListActivity.this, IndividualSprintActivity.class);
-        //intent.putExtra("projectId", pid);
-        //startActivity(intent);
+        Intent intent = new Intent(SprintListActivity.this, IndividualSprintActivity.class);
+        intent.putExtra("projectId", pid);
+        intent.putExtra("sprintId", sid);
+        startActivity(intent);
     }
-
 
     // If project no longer exists while we are on this screen, must return to the project list screen
     @Override

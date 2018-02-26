@@ -70,7 +70,6 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-<<<<<<< HEAD
         <activity android:name=".view_impl.CreateSprintActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
@@ -82,15 +81,13 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-
-=======
-        <activity android:name=".view_impl.CreateSprintActivity" />
-        <activity android:name=".view_impl.SprintListActivity" />
         <activity
             android:name=".view_impl.IndividualSprintActivity"
             android:label="@string/title_activity_individual_sprint"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
->>>>>>> 155159166_view_sprint_backlog
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

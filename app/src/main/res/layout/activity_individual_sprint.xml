@@ -43,6 +43,19 @@
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_logout"/>
 
+                <ImageButton
+                    android:id="@+id/individualSprintDeleteBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="true"
+                    android:onClick="onClickDelete"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_delete_forever_white_24dp"/>
+
             </android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout
@@ -61,26 +74,10 @@
             android:id="@+id/individualSprintViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="?attr/actionBarSize"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
         </android.support.v4.view.ViewPager>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            >
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/add_user_story_btn_text"
-                android:textColor="@color/white"
-                />
-        </LinearLayout>
 
 
     </android.support.design.widget.CoordinatorLayout>
