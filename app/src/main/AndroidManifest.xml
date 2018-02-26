@@ -71,7 +71,11 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".view_impl.CreateSprintActivity" />
-        <activity android:name=".view_impl.SprintListActivity"></activity>
+        <activity android:name=".view_impl.SprintListActivity" />
+        <activity
+            android:name=".view_impl.IndividualSprintActivity"
+            android:label="@string/title_activity_individual_sprint"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
