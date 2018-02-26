@@ -80,6 +80,36 @@
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/sprintListEmptyStateView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="152dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/frown"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:layout_marginBottom="20dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="#9B9B9B"
+                android:layout_marginBottom="50dp"
+                android:text="Looks like you have no sprints."
+                android:textSize="24sp" />
+        </LinearLayout>
+
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

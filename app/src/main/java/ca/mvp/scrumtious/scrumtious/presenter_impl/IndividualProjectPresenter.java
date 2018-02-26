@@ -115,7 +115,6 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
     private void deleteProject() {
         mDatabase = FirebaseDatabase.getInstance();
-        //mRef = mDatabase.getReference().child("projects");
         mRef = mDatabase.getReference();
 
         removeProjectMap = new HashMap();

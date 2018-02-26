@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -38,6 +39,8 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
     private boolean alreadyDeleted;
 
     private ImageButton logoutBtn;
+
+    private LinearLayout emptyStateView;
 
     private RecyclerView sprintList;
     private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListAdapter;
@@ -64,6 +67,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             }
         });
 
+        emptyStateView = (LinearLayout) findViewById(R.id.sprintListEmptyStateView);
 
         // The following sets up the navigation drawer
         mDrawerLayout = findViewById(R.id.sprintListNavDrawer);
@@ -136,6 +140,27 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     }
 
+    private void setupRecyclerView(){
+
+        sprintList.setLayoutManager(new LinearLayoutManager(this));
+
+        sprintListAdapter = sprintListPresenter.setupSprintListAdapter(sprintList);
+
+        sprintList.setAdapter(sprintListAdapter);
+    }
+
+    public void setView(){
+        if (sprintListAdapter.getItemCount() == 0){
+            emptyStateView.setVisibility(View.VISIBLE);
+            sprintList.setVisibility(View.GONE);
+        }
+        else{
+            emptyStateView.setVisibility(View.GONE);
+            sprintList.setVisibility(View.VISIBLE);
+        }
+    }
+
+
     // Used when the menu icon is clicked to open the navigation drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -153,15 +178,6 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         Intent intent = new Intent(SprintListActivity.this, CreateSprintActivity.class);
         intent.putExtra("projectId", pid);
         startActivity(intent);
-    }
-
-    private void setupRecyclerView(){
-
-        sprintList.setLayoutManager(new LinearLayoutManager(this));
-
-        sprintListAdapter = sprintListPresenter.setupSprintListAdapter(sprintList);
-
-        sprintList.setAdapter(sprintListAdapter);
     }
 
     @Override

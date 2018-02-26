@@ -5,4 +5,6 @@ public interface IndividualSprintPresenterInt {
 
     void setupProjectDeletedListener();
     void setupSprintDeletedListener();
+    void checkIfOwner();
+    void validatePassword(String password);
 }

@@ -100,7 +100,7 @@ public class SprintListPresenter implements SprintListPresenterInt {
             }
             @Override
             public void onDataChanged() {
-
+                sprintListView.setView();
             }
         };
         return sprintListAdapter;
