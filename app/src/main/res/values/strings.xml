@@ -43,4 +43,5 @@
     <string name="create_user_story_name">Name</string>
     <string name="create_user_story_create">Create</string>
     <string name="create_user_story_points">Points</string>
+    <string name="title_activity_individual_sprint">IndividualSprintActivity</string>
 </resources>
