@@ -90,6 +90,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
+                            projectMembersView.showMessage(databaseError.getMessage());
 
                         }
                     });
@@ -156,7 +157,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                projectMembersView.showMessage(databaseError.getMessage());
             }
         });
 

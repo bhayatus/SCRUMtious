@@ -1,5 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
+import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
     private final String pb_completed = "PB_COMPLETED";
     private final String sprint_in_progress = "SPRINT_IN_PROGRESS";
     private final String sprint_completed = "SPRINT_COMPLETED";
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference rootRef;
     private Query mQuery;
@@ -54,9 +56,6 @@ public class BacklogPresenter implements BacklogPresenterInt {
     public FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupInProgressAdapter(RecyclerView inProgressList) {
         rootRef = FirebaseDatabase.getInstance().getReference();
 
-        // The query below grabs all user stories that are not assigned to any sprints
-        // and that are not complete, hence the "false"
-        // If I wanted to check for completed, the second part would be "true"
         String typeQuery = "";
 
         // Sets the equalTo string that the query needs to use to search for user stories
@@ -81,6 +80,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     .equalTo(typeQuery);
         }
 
+        // Product backlog situation
         if (type.equals(pb_completed) || type.equals(pb_in_progress)){
             mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("completed")
                     .equalTo(typeQuery);
@@ -94,19 +94,23 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 mQuery
         ) {
 
+
+
             @Override
-            protected void populateViewHolder(BacklogFragment.BacklogViewHolder viewHolder, UserStory model, int position) {
+            protected void populateViewHolder(final BacklogFragment.BacklogViewHolder viewHolder, UserStory model, int position) {
 
                 String nameOfSprint = model.getAssignedToName();
                 String assignedToName;
+
                 // Not assigned to a sprint, don't bother showing assigned to layout
-                if (nameOfSprint.equals("..............................")){
+                if (nameOfSprint.equals("")){
                     assignedToName = "Not yet assigned to a sprint";
                     viewHolder.setSprintIconInvisible();
                 }
                 // User story in a sprint, show the sprint assigned to in the layout
                 else {
                     assignedToName = "Assigned to: " + nameOfSprint;
+                    viewHolder.setSprintIconVisible();
                 }
 
                 // If in a sprint, don't show the assigned to layout
@@ -115,6 +119,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 }
 
                 viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints(), assignedToName);
+
                 final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
                 ImageButton completed = viewHolder.getCompleted();
                 ImageButton delete = viewHolder.getDelete();
@@ -184,7 +189,16 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
+                        backlogView.showMessage(databaseError.getMessage());
+                    }
+                });
 
+                // If user holds down on user story long enough
+                viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        backlogView.onLongClick(usid);
+                        return false;
                     }
                 });
 
@@ -292,7 +306,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                backlogView.showMessage(databaseError.getMessage());
             }
         });
     }

@@ -230,7 +230,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
             String desc = descriptionField.getText().toString().trim();
             int points = Integer.valueOf(pointField.getText().toString().trim());
 
-            // Creates a dialog that appears to tell the user that creating the project is occurring
+            // Creates a dialog that appears to tell the user that creating the user story is occurring
             createUserStoryProgressDialog = new ProgressDialog(this);
             createUserStoryProgressDialog.setTitle("Create User Story");
             createUserStoryProgressDialog.setCancelable(false);

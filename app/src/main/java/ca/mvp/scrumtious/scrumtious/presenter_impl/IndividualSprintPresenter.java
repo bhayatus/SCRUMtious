@@ -105,7 +105,7 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                individualSprintView.showMessage(databaseError.getMessage());
             }
         });
 
@@ -177,7 +177,7 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                individualSprintView.showMessage(databaseError.getMessage());
             }
         });
 

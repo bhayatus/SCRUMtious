@@ -3,23 +3,17 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 import android.app.ProgressDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment;
-import ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment;
 
 public class ProjectListPresenter implements ProjectListPresenterInt {
     private ProjectListViewInt projectListView;

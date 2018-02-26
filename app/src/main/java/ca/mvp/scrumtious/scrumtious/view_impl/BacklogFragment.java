@@ -4,7 +4,6 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -21,20 +20,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
+import java.io.Serializable;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.BacklogPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.BacklogViewInt;
 import ca.mvp.scrumtious.scrumtious.model.UserStory;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.BacklogPresenter;
 
-public class BacklogFragment extends Fragment implements BacklogViewInt {
+public class BacklogFragment extends Fragment implements BacklogViewInt, Serializable {
 
+
+    private String pid;
 
     private ProgressDialog deletingUserStoryDialog;
     private BacklogPresenterInt backlogPresenter;
     private RecyclerView backlogList;
     private FirebaseRecyclerAdapter<UserStory, BacklogViewHolder> backlogAdapter;
     private LinearLayout emptyStateView;
+
+    private SendToFragment sendToFragment;
 
     public BacklogFragment() {
         // Required empty public constructor
@@ -43,10 +48,20 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String pid = getArguments().getString("projectId");
+        pid = getArguments().getString("projectId");
         String type = getArguments().getString("type");
         String sprintId = getArguments().getString("sprintId");
         this.backlogPresenter = new BacklogPresenter(this, pid, type, sprintId);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Pop up has to be dismissed
+        if (sendToFragment != null){
+            sendToFragment.dismiss();
+        }
     }
 
     @Override
@@ -188,7 +203,11 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
     @Override
     public void showMessage(String message) {
 
-        // Close dialog if they it is still running
+        if (sendToFragment != null){
+            sendToFragment.dismiss();
+        }
+
+        // Close dialog if it is still running
         if (deletingUserStoryDialog != null && deletingUserStoryDialog.isShowing()){
             deletingUserStoryDialog.dismiss();
         }
@@ -201,6 +220,15 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
                     }
                 }).show();
 
+    }
+
+    // Open up the dialog fragment to choose which sprint to assign this user story to
+    @Override
+    public void onLongClick(String usid){
+
+        sendToFragment = SendToFragment.newInstance(pid,usid);
+        sendToFragment.setBacklogView(this);
+        sendToFragment.show(getFragmentManager(), "SendToFragment");
     }
 
 
@@ -263,5 +291,9 @@ public class BacklogFragment extends Fragment implements BacklogViewInt {
         public void setSprintIconInvisible(){
             sprintIcon.setVisibility(View.GONE);
         }
+        public void setSprintIconVisible(){
+            sprintIcon.setVisibility(View.VISIBLE);
+        }
+
     }
 }

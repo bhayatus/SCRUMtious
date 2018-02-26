@@ -91,7 +91,6 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        navigationView.setCheckedItem(R.id.nav_product_backlog);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -147,6 +146,10 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                                         finish();
                                     }
                                 },delayMilliseconds);
+                                break;
+
+                            // TODO
+                            case R.id.nav_stats:
                                 break;
                         }
 

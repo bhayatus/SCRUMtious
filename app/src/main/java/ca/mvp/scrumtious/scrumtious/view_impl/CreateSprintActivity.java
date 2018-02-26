@@ -171,7 +171,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                String date = day + "/" + month +"/" + year;
+                String date = month + "/" + day + "/" + year;
                 displayStartDate.setText(date);
                 startYear[0] = year;
                 startMonth[0] = month;
@@ -184,7 +184,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                String date = day + "/" + month +"/" + year;
+                String date = month + "/" + day + "/" + year;
                 displayEndDate.setText(date);
                 endYear[0] = year;
                 endMonth[0] = month;

@@ -138,6 +138,10 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
                                 break;
 
+                                // TODO
+                            case R.id.nav_stats:
+                                break;
+
                         }
 
                         return true;

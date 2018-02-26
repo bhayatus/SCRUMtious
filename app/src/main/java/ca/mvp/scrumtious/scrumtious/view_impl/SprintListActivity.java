@@ -122,6 +122,10 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                             // User chooses to view sprints, do nothing as we are already there
                             case R.id.nav_sprints:
                                break;
+
+                            // TODO
+                            case R.id.nav_stats:
+                                break;
                         }
 
                         return true;

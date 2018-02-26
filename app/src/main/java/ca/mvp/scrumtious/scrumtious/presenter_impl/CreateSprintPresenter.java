@@ -59,7 +59,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                createSprintView.showMessage(databaseError.getMessage());
             }
         });
     }
@@ -138,7 +138,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        createSprintView.showMessage(databaseError.getMessage());
                     }
                 }
         );

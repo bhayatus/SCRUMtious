@@ -1,6 +1,4 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
-
-import android.app.ProgressDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.View;

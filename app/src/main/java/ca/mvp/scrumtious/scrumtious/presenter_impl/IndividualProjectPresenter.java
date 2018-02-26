@@ -20,7 +20,6 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPr
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt;
 
 public class IndividualProjectPresenter implements IndividualProjectPresenterInt {
-    private boolean deletedNormally = false;
     private IndividualProjectViewInt individualProjectView;
     private final String pid;
     private FirebaseDatabase mDatabase;
@@ -158,7 +157,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        individualProjectView.showMessage(databaseError.getMessage());
                     }
                 });
 
@@ -166,7 +165,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                individualProjectView.showMessage(databaseError.getMessage());
             }
         });
 

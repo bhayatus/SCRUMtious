@@ -1,6 +1,8 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -37,7 +40,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
     private boolean alreadyDeleted;
 
-    private ImageButton logoutBtn;
+    private ImageButton logoutBtn, helpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,28 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(ProductBacklogActivity.this);
+            }
+        });
+
+        helpBtn = findViewById(R.id.productBacklogHelpBtn);
+        helpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(ProductBacklogActivity.this)
+                        .setTitle("Help Info")
+                        .setMessage("To get started, you can add a new user story to the product backlog with the button " +
+                                "below. " + "\n" +
+                                "User stories can then be deleted, or marked as completed/in progress with their respective " +
+                                "buttons. " + "\n" +
+                                "To assign a user story to a sprint or the product backlog, click down it " +
+                                "for a few seconds. A dialog will pop up, allowing you to make your selection.")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -123,6 +148,10 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                                         finish();
                                     }
                                 },delayMilliseconds);
+                                break;
+
+                            // TODO
+                            case R.id.nav_stats:
                                 break;
                         }
 

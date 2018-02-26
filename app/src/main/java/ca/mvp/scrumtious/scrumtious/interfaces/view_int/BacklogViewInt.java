@@ -6,4 +6,5 @@ public interface BacklogViewInt {
     void onClickChangeStatus(String usid, boolean newStatus);
     void onClickDeleteUserStory(String usid);
     void setView();
+    void onLongClick(String usid);
 }

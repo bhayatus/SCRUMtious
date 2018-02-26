@@ -130,7 +130,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                invitationsView.showMessage(databaseError.getMessage());
             }
         });
     }
