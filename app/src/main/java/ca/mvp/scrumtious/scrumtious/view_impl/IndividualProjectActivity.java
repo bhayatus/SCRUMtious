@@ -49,8 +49,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     private NavigationView navigationView;
 
     private IndividualProjectPresenterInt individualProjectPresenter;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
