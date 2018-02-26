@@ -8,4 +8,5 @@ public interface IndividualSprintViewInt {
 
     void onProjectDeleted();
     void onSprintDeleted();
+    void setDeleteInvisible();
 }

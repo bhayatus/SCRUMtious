@@ -1,11 +1,14 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,8 +18,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import ca.mvp.scrumtious.scrumtious.R;
@@ -41,6 +46,9 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
     private boolean alreadyDeletedProject;
     private boolean alreadyDeletedSprint;
+
+    private ProgressDialog deleteSprintProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +60,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         this.individualSprintPresenter = new IndividualSprintPresenter(this, pid, sid);
         individualSprintPresenter.setupProjectDeletedListener(); // In case project is deleted
         individualSprintPresenter.setupSprintDeletedListener(); // In case sprint is deleted
+        individualSprintPresenter.checkIfOwner();
 
         alreadyDeletedProject = false;
         alreadyDeletedSprint = false;
@@ -154,8 +163,53 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
     }
 
-    // User wants to delete sprint
-    public void onClickDelete(View view){
+    // Delete button on top right is clicked
+    public void onClickDelete(View view) {
+        LayoutInflater inflater = (this).getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Sprint?")
+                .setView(alertView)
+                .setMessage("Are you sure you want to delete this sprint? Enter your password below to confirm.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Validate password and delete project
+                        EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
+                        String password = passwordET.getText().toString().trim();
+
+                        // Cannot send null password
+                        if(password == null){
+                            showMessage("Password incorrect, could not delete the sprint.");
+                        }
+                        else {
+                            // Cannot send empty string
+                            if(password.length() == 0){
+                                showMessage("Password incorrect, could not delete the sprint.");
+                            }
+                            else {
+
+                                // Creates a dialog that appears to tell the user that deleting a user is still occurring
+                                deleteSprintProgressDialog = new ProgressDialog(IndividualSprintActivity.this);
+                                deleteSprintProgressDialog.setTitle("Delete Sprint");
+                                deleteSprintProgressDialog.setCancelable(false);
+                                deleteSprintProgressDialog.setMessage("Attempting to delete sprint...");
+                                deleteSprintProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                deleteSprintProgressDialog.show();
+
+                                // Password is of valid type, send it
+                                individualSprintPresenter.validatePassword(password);
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
 
     }
 
@@ -175,6 +229,11 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
     // Project no longer exists, go to project list screen
     @Override
     public void onProjectDeleted() {
+
+        if (deleteSprintProgressDialog != null  && deleteSprintProgressDialog.isShowing()) {
+            deleteSprintProgressDialog.dismiss();
+        }
+
         if (!alreadyDeletedProject){
             alreadyDeletedProject = true;
 
@@ -186,9 +245,18 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         }
     }
 
+    @Override
+    public void setDeleteInvisible() {
+        deleteBtn.setVisibility(View.GONE);
+    }
+
     // Sprint deleted, go to sprint list screen
     @Override
     public void onSprintDeleted() {
+
+        if (deleteSprintProgressDialog != null  && deleteSprintProgressDialog.isShowing()) {
+            deleteSprintProgressDialog.dismiss();
+        }
 
         if (!alreadyDeletedSprint){
             alreadyDeletedSprint = true;
@@ -200,6 +268,21 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
             startActivity(intent);
             finish();
         }
+    }
+
+    public void showMessage(String message) {
+
+        if (deleteSprintProgressDialog != null && deleteSprintProgressDialog.isShowing()){
+            deleteSprintProgressDialog.dismiss();
+        }
+
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+                .setAction("Dismiss", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        // Dismisses automatically
+                    }
+                }).show();
     }
 
 
