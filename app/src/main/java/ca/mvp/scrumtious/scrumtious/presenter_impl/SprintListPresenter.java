@@ -64,9 +64,9 @@ public class SprintListPresenter implements SprintListPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter(final RecyclerView sprintList) {
+    public FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter(final RecyclerView sprintList, String sortBy) {
         mRef = FirebaseDatabase.getInstance().getReference();
-        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild("sprintStartDate");
+        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild(sortBy);
 
         FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListAdapter
                 = new FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder>(

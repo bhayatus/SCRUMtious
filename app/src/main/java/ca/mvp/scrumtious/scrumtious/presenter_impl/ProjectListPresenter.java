@@ -27,11 +27,19 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupGeneralProjectsAdapter(final RecyclerView projectList, final ProgressDialog progressDialog) {
+    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupProjectsAdapter(final RecyclerView projectList, final ProgressDialog progressDialog, boolean onlyUsers) {
         mAuth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         String userID = mAuth.getCurrentUser().getUid();
-        mQuery = rootRef.child("projects").orderByChild(userID).equalTo("member");
+
+        // User only wants to view the projects that they own
+        if (onlyUsers) {
+            mQuery = rootRef.child("projects").orderByChild("projectOwnerUid").equalTo(userID);
+        }
+        // User wants to see all projects that they are part of
+        else{
+            mQuery = rootRef.child("projects").orderByChild(userID).equalTo("member");
+        }
 
         FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> projectListAdapter
                 = new FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder>(
@@ -53,7 +61,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                 long numMembers = model.getNumMembers();
                 String numMembersString = Long.toString(numMembers);
 
-                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc(), dateFormatted, numMembersString);
+                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), dateFormatted, numMembersString);
 
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -72,58 +80,6 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                     progressDialog.dismiss();
                 }
 
-            }
-        };
-        return projectListAdapter;
-    }
-
-    @Override
-    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupMyProjectsAdapter(RecyclerView projectList, final ProgressDialog progressDialog) {
-        //just to be safe if constructor wasn't called before
-        mAuth = FirebaseAuth.getInstance();
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        String userID = mAuth.getCurrentUser().getUid();
-        mQuery = rootRef.child("projects").orderByChild("projectOwnerUid").equalTo(userID);
-
-        FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> projectListAdapter
-                = new FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder>(
-                Project.class,
-                R.layout.project_row,
-                ProjectListFragment.ProjectsViewHolder.class,
-                mQuery
-        ) {
-
-            @Override
-            protected void populateViewHolder(ProjectListFragment.ProjectsViewHolder viewHolder, Project model, int position) {
-
-                final String pid = getRef(position).getKey();
-
-                // Grab the date
-                long timestamp = model.getCreationTimeStamp();
-                final String dateFormatted = "Date Created: " + DateFormat.format("MM/dd/yyyy", timestamp).toString();
-
-                // Grab the number of members
-                long numMembers = model.getNumMembers();
-                String numMembersString = Long.toString(numMembers);
-
-                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc(), dateFormatted, numMembersString);
-
-
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        projectListView.goToProjectScreen(pid);
-                    }
-                });
-            }
-            @Override
-            public void onDataChanged() {
-
-                projectListView.setView();
-
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
             }
         };
         return projectListAdapter;

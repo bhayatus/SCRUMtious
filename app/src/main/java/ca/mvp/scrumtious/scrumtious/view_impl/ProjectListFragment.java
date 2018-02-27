@@ -85,8 +85,8 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
         projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        myProjectsAdapter = projectListPresenterInt.setupMyProjectsAdapter(projectList, loadingProjectsDialog);
-        allProjectsAdapter = projectListPresenterInt.setupGeneralProjectsAdapter(projectList, loadingProjectsDialog);
+        myProjectsAdapter = projectListPresenterInt.setupProjectsAdapter(projectList, loadingProjectsDialog, true);
+        allProjectsAdapter = projectListPresenterInt.setupProjectsAdapter(projectList, loadingProjectsDialog, false);
 
         projectList.setAdapter(allProjectsAdapter);
 
@@ -138,7 +138,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView titleView, ownerEmailAddressView, descriptionView, creationDateView, numMembersView;
+        TextView titleView, ownerEmailAddressView, creationDateView, numMembersView;
 
         public ProjectsViewHolder(View itemView) {
             super(itemView);
@@ -146,51 +146,16 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
             titleView = (TextView) mView.findViewById(R.id.projectRowTitle);
             ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddress);
-            descriptionView = (TextView) mView.findViewById(R.id.projectRowDescription);
             creationDateView = (TextView) mView.findViewById(R.id.projectRowCreatedDate);
             numMembersView = (TextView) mView.findViewById(R.id.projectRowNumberOfMembers);
         }
 
 
         // Populates each row of the recycler view with the project details
-        public void setDetails(String title, String ownerEmailAddress, String description, String creationDate, String numMembers){
-
-            // Shorten description for viewing purposes
-            String displayDesc = "";
-            if (!description.contains("\n")){
-                displayDesc = description;
-            }
-            else {
-                String[] parts = description.split("\n");
-                // Only one line break
-                if (parts.length == 2) {
-                    displayDesc = parts[0] + "\n" + parts[1];
-                }
-                // At least three lines
-                else{
-
-                    int numberOfNewLines = 0;
-                    int index = 0;
-                    int length = description.length();
-                    while(numberOfNewLines <= 2 && index < length){
-                        if (description.charAt(index) == '\n'){
-                            numberOfNewLines++;
-                            displayDesc += "\n";
-                        }
-                        else{
-                            displayDesc += description.charAt(index);
-                        }
-
-                        index++;
-                    }
-                    displayDesc += "...";
-                }
-
-            }
+        public void setDetails(String title, String ownerEmailAddress, String creationDate, String numMembers){
 
             titleView.setText(title);
             ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
-            descriptionView.setText(displayDesc);
             creationDateView.setText(creationDate);
             numMembersView.setText(numMembers);
         }

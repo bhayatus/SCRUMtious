@@ -52,7 +52,7 @@
                 android:cropToPadding="true"
                 android:onClick="onClickDelete"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_delete_forever_white_24dp"/>
+                android:src="@drawable/ic_delete_forever"/>
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout

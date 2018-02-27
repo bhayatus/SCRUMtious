@@ -9,5 +9,5 @@ public interface SprintListPresenterInt {
 
     void setupProjectDeletedListener();
     FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter
-            (RecyclerView sprintList);
+            (RecyclerView sprintList, String sortBy);
 }

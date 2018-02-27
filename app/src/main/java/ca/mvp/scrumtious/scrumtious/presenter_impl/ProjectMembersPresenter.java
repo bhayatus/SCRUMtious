@@ -62,7 +62,6 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     viewHolder.setDetails(model.getEmailAddress());
                     final String uid = getRef(position).getKey();
                     ImageButton delete = viewHolder.getDeleteView();
-                    ImageButton owner = viewHolder.getOwner();
                     final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
 
@@ -71,7 +70,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            // Only owner can delete members
+                            // Only owner can delete members, anyone else should not be able to
                             if ((dataSnapshot.getValue().toString().trim()).equals(mAuth.getCurrentUser().getUid()) == false){
                                 mViewHolder.setDeleteInvisible();
                             }
@@ -103,18 +102,9 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         }
                     });
 
-                    // Shows tooltip for owner icon if user holds long enough
-                    owner.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            TooltipCompat.setTooltipText(v, "This is the owner of the project");
-                        }
-                    });
-
                 }
                 @Override
                 public void onDataChanged() {
-
                 }
             };
             return membersListAdapter;

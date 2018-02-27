@@ -47,7 +47,7 @@
             android:background="@android:color/transparent"
             android:cropToPadding="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/ic_check_white_24dp"/>
+            app:srcCompat="@drawable/ic_checkmark"/>
 
         <ImageButton
             android:id="@+id/userInviteRowDeclineButton"
@@ -57,7 +57,7 @@
             android:background="@android:color/transparent"
             android:cropToPadding="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/ic_close_white_24dp"/>
+            app:srcCompat="@drawable/ic_close"/>
 
     </android.widget.LinearLayout>
 

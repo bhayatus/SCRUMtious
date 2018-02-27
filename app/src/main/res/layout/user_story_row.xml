@@ -46,7 +46,7 @@
             android:cropToPadding="true"
             android:scaleType="centerInside"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_delete_white_24dp"
+            android:src="@drawable/ic_delete"
             />
 
         <ImageButton

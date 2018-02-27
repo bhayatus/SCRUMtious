@@ -7,9 +7,6 @@ import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment;
 
 public interface ProjectListPresenterInt {
-    FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupGeneralProjectsAdapter
-            (RecyclerView projectList, ProgressDialog progressDialog);
-    FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupMyProjectsAdapter
-            (RecyclerView projectList, ProgressDialog progressDialog);
-
+    FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupProjectsAdapter
+            (RecyclerView projectList, ProgressDialog progressDialog, boolean onlyUsers);
 }

@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -38,12 +41,13 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     private boolean alreadyDeleted;
 
-    private ImageButton logoutBtn;
+    private ImageButton logoutBtn, sortBtn;
 
     private LinearLayout emptyStateView;
 
     private RecyclerView sprintList;
-    private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListAdapter;
+    private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListNameAdapter;
+    private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListStartDateAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,39 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(SprintListActivity.this);
+            }
+        });
+
+        sortBtn = (findViewById(R.id.sprintListSortBtn));
+        sortBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open up menu with two choices to sort by either date or name
+                PopupMenu popup = new PopupMenu(SprintListActivity.this, sortBtn);
+                MenuInflater inflate = popup.getMenuInflater();
+                inflate.inflate(R.menu.sprint_sort_view, popup.getMenu());
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            // User wants to sort sprints by name
+                            case R.id.sprint_sort_name:
+                                sprintList.setAdapter(sprintListNameAdapter);
+                                return true;
+
+                            // User wants to sort sprints by start date
+                            case R.id.sprint_sort_start_date:
+                                sprintList.setAdapter(sprintListStartDateAdapter);
+                                return true;
+                        }
+
+                        return false;
+                    }
+                });
+
+                popup.show();
+
             }
         });
 
@@ -148,13 +185,16 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
         sprintList.setLayoutManager(new LinearLayoutManager(this));
 
-        sprintListAdapter = sprintListPresenter.setupSprintListAdapter(sprintList);
+        // Sets up the two adapters, which sort by name and start date respectively
+        sprintListNameAdapter = sprintListPresenter.setupSprintListAdapter(sprintList, "sprintName");
+        sprintListStartDateAdapter = sprintListPresenter.setupSprintListAdapter(sprintList, "sprintStartDate");
 
-        sprintList.setAdapter(sprintListAdapter);
+
+        sprintList.setAdapter(sprintListNameAdapter);
     }
 
     public void setView(){
-        if (sprintListAdapter.getItemCount() == 0){
+        if (sprintListNameAdapter.getItemCount() == 0){
             emptyStateView.setVisibility(View.VISIBLE);
             sprintList.setVisibility(View.GONE);
         }
@@ -164,8 +204,6 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         }
     }
 
-
-    // Used when the menu icon is clicked to open the navigation drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

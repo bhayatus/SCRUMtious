@@ -232,8 +232,6 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             return deleteView;
         }
 
-        public ImageButton getOwner(){return owner;}
-
         // Under certain circumstances, delete member button should not be seen
         public void setDeleteInvisible(){
             deleteView.setVisibility(View.GONE);
