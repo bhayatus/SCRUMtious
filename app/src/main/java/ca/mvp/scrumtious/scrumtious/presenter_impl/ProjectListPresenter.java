@@ -65,7 +65,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                 long numSprints = model.getNumSprints();
                 String numSprintsString = Long.toString(numSprints);
 
-                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), dateFormatted, numMembersString, numSprintsString);
+                viewHolder.setDetails(model.getProjectTitle(), model.getProjectOwnerEmail(), model.getProjectDesc(), dateFormatted, numMembersString, numSprintsString);
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -362,7 +362,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             showMessage("Cannot create sprint until fields are filled out properly.", false);
         }
         else if(startDate>=endDate){
-            showMessage("Cannot have start date after end date.", false);
+            showMessage("Cannot have start date on, or after end date.", false);
         }
         else{
             String name = titleField.getText().toString().trim();

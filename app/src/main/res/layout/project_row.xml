@@ -32,8 +32,18 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/droid_sans"
                 android:text="Owner:"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/projectRowDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/droid_sans"
+                android:text="This is a description that explains what the sprint is about, and now I am running out of things to say, so I'll stop."
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -59,6 +69,7 @@
 
 
                     <ImageView
+                        android:id="@+id/projectRowNumberOfMembersIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_member" />
@@ -75,6 +86,7 @@
                         android:layout_marginRight="5dp"/>
 
                     <ImageView
+                        android:id="@+id/projectRowNumberOfSprintsIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_sprint_row"

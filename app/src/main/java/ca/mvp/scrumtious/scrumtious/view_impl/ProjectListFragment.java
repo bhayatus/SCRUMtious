@@ -3,16 +3,19 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -162,7 +165,8 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     // Viewholder class to display the project list
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView titleView, ownerEmailAddressView, creationDateView, numMembersView, numSprintsView;
+        TextView titleView, ownerEmailAddressView, descriptionView, creationDateView, numMembersView, numSprintsView;
+        ImageView membersIcon, sprintsIcon;
 
         public ProjectsViewHolder(View itemView) {
             super(itemView);
@@ -170,17 +174,70 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
             titleView = (TextView) mView.findViewById(R.id.projectRowTitle);
             ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddress);
+            descriptionView = (TextView) mView.findViewById(R.id.projectRowDescription);
             creationDateView = (TextView) mView.findViewById(R.id.projectRowCreatedDate);
             numMembersView = (TextView) mView.findViewById(R.id.projectRowNumberOfMembers);
             numSprintsView = (TextView) mView.findViewById(R.id.projectRowNumberOfSprints);
+            membersIcon = (ImageView) mView.findViewById(R.id.projectRowNumberOfMembersIcon);
+            sprintsIcon = (ImageView) mView.findViewById(R.id.projectRowNumberOfSprintsIcon);
+
+            membersIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TooltipCompat.setTooltipText(v, "Total number of members within this project");
+                }
+            });
+
+            sprintsIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TooltipCompat.setTooltipText(v, "Total number of sprints within this project");
+
+                }
+            });
+
         }
 
 
         // Populates each row of the recycler view with the project details
-        public void setDetails(String title, String ownerEmailAddress, String creationDate, String numMembers, String numSprints){
+        public void setDetails(String title, String ownerEmailAddress, String description, String creationDate, String numMembers, String numSprints){
+
+            // Shorten description for viewing purposes
+            String displayDesc = "";
+            if (!description.contains("\n")){
+                displayDesc = description;
+            }
+            else {
+                String[] parts = description.split("\n");
+                // Only one line break
+                if (parts.length == 2) {
+                    displayDesc = parts[0] + "\n" + parts[1];
+                }
+                // At least three lines
+                else{
+
+                    int numberOfNewLines = 0;
+                    int index = 0;
+                    int length = description.length();
+                    while(numberOfNewLines <= 2 && index < length){
+                        if (description.charAt(index) == '\n'){
+                            numberOfNewLines++;
+                            displayDesc += "\n";
+                        }
+                        else{
+                            displayDesc += description.charAt(index);
+                        }
+
+                        index++;
+                    }
+                    displayDesc += "...";
+                }
+
+            }
 
             titleView.setText(title);
             ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
+            descriptionView.setText(displayDesc);
             creationDateView.setText(creationDate);
             numMembersView.setText(numMembers);
             numSprintsView.setText(numSprints);

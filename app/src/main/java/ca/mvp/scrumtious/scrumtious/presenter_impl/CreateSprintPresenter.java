@@ -141,12 +141,11 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                             }
                         }
 
-                        if (!dateConflictExists) { // if not conflicts exist then add to DB
+                        if (!dateConflictExists) { // if no conflicts exist then add to DB
                             addSprintToDatabase(sprintName, sprintDesc, sprintStartDate, sprintEndDate);
                         } else {
                             // an error occurred, notify the calling activity
-                            createSprintView.showMessage("Dates for sprint overlap with another sprint, please select a different " +
-                                    "interval for the sprint.", false);
+                            createSprintView.showMessage("Dates for sprint overlap with another sprint, please select a different interval.", false);
                             dateConflictExists = false;
                         }
                     }
