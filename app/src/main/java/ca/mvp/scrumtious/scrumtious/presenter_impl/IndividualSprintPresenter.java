@@ -38,56 +38,6 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
         this.sid = sid;
     }
 
-    // In case the project no longer exists or user was removed, user must be returned to project list screen
-    @Override
-    public void setupProjectDeletedListener(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // If project no longer exists, exit this screen and go back
-                if (!dataSnapshot.exists()){
-                    individualSprintView.onProjectDeleted();
-                }
-
-                else{
-                    // Check if I'm no longer a member through my uid
-                    mAuth = FirebaseAuth.getInstance();
-                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
-                        individualSprintView.onProjectDeleted();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    // In case the sprint no longer exists or user was removed, user must be returned to project list screen
-    @Override
-    public void setupSprintDeletedListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("sprints");
-        mRef.child(sid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // If sprint no longer exists, exit this screen and go back
-                if (!dataSnapshot.exists()){
-                    individualSprintView.onSprintDeleted();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     // Need to verify if the owner if delete sprint button is to show
     public void checkIfOwner(){
         mDatabase = FirebaseDatabase.getInstance();
@@ -105,7 +55,6 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                individualSprintView.showMessage(databaseError.getMessage());
             }
         });
 
@@ -129,7 +78,7 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
 
                 // Password didn't match, tell user
                 else {
-                    individualSprintView.showMessage("Incorrect password, could not delete sprint.");
+                    individualSprintView.showMessage("Incorrect password, could not delete sprint.", false);
                 }
             }
         });
@@ -161,23 +110,44 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
                     }
                 }
 
-                mRef.updateChildren(deleteSprintMap).addOnCompleteListener(new OnCompleteListener() {
+                // Grab the old number of sprints
+
+                mDatabase = FirebaseDatabase.getInstance();
+                mRef = mDatabase.getReference();
+                mRef.child("projects").child(pid).child("numSprints").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task task) {
-                        // Successfully deleted sprint
-                        if (task.isSuccessful()){
-                            individualSprintView.onSprintDeleted();
-                        }
-                        else{
-                            individualSprintView.showMessage("An error occurred, failed to delete the sprint.");
-                        }
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        long numSprints = (long) dataSnapshot.getValue();
+
+                        numSprints--;
+
+                        deleteSprintMap.put("/projects/" + pid + "/" + "numSprints", numSprints);
+
+                        // Update database at this point
+                        mRef.updateChildren(deleteSprintMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                // Successfully deleted sprint
+                                if (task.isSuccessful()){
+                                    individualSprintView.onSprintDeleted();
+                                }
+                                else{
+                                    individualSprintView.showMessage("An error occurred, failed to delete the sprint.", false);
+                                }
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                individualSprintView.showMessage(databaseError.getMessage());
             }
         });
 

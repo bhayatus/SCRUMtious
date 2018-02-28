@@ -1,9 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -189,7 +187,6 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        backlogView.showMessage(databaseError.getMessage());
                     }
                 });
 
@@ -230,7 +227,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                 // Password didn't match, tell user
                 else {
-                    backlogView.showMessage("Incorrect password, could not delete user story.");
+                    backlogView.showMessage("Incorrect password, could not delete user story.", false);
                 }
             }
         });
@@ -267,16 +264,16 @@ public class BacklogPresenter implements BacklogPresenterInt {
                         if (task.isSuccessful()){
                             switch(type){
                                 case pb_in_progress:
-                                    backlogView.showMessage("Marked the user story as completed.");
+                                    backlogView.showMessage("Marked the user story as completed.", false);
                                     break;
                                 case pb_completed:
-                                    backlogView.showMessage("Marked the user story as in progress.");
+                                    backlogView.showMessage("Marked the user story as in progress.", false);
                                     break;
                                 case sprint_in_progress:
-                                    backlogView.showMessage("Marked the user story as completed.");
+                                    backlogView.showMessage("Marked the user story as completed.", false);
                                     break;
                                 case sprint_completed:
-                                    backlogView.showMessage("Marked the user story as in progress.");
+                                    backlogView.showMessage("Marked the user story as in progress.", false);
                                     break;
                             }
                         }
@@ -284,18 +281,18 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                             switch(type){
                                 case pb_in_progress:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.");
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.", false);
                                     break;
                                 case pb_completed:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.");
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.", false);
 
                                     break;
                                 case sprint_in_progress:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.");
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.", false);
 
                                     break;
                                 case sprint_completed:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.");
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.", false);
                                     break;
                             }
 
@@ -306,7 +303,6 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                backlogView.showMessage(databaseError.getMessage());
             }
         });
     }
@@ -321,10 +317,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully
                 if (task.isSuccessful()){
-                    backlogView.showMessage("User story was deleted.");
+                    backlogView.showMessage("User story was deleted.", false);
                 }
                 else{
-                    backlogView.showMessage("An error occurred, failed to delete the user story");
+                    backlogView.showMessage("An error occurred, failed to delete the user story", false);
                 }
             }
         });

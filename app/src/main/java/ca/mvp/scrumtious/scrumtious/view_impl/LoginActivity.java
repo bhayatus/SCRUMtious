@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -16,14 +15,19 @@ import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.LoginPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
 public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
     private LoginPresenter loginPresenter;
+    private LinearLayout loginLayout;
     private EditText emailField, passwordField;
     private TextInputLayout emailFieldLayout, passwordFieldLayout;
     private ProgressDialog signingInProgressDialog;
@@ -33,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginPresenter = new LoginPresenter(this);
-
+        loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
         setupFormWatcher();
     }
 
@@ -124,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
         // If either field has an error, cannot submit the form
         if (passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled()) {
-            showMessage("Cannot submit until the fields are filled out properly.");
+            showMessage("Cannot submit until the fields are filled out properly.", false);
             return;
         }
 
@@ -148,19 +152,20 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
     // Display message to user
     @Override
-    public void showMessage(String message) {
+    public void showMessage(String message, boolean showAsToast) {
         if (signingInProgressDialog != null && signingInProgressDialog.isShowing()){
         signingInProgressDialog.dismiss();
         }
 
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).setActionTextColor(getResources().getColor(R.color.colorAccent))
-                .show();
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
     }
 
     // On successful login, go to the app's main activity
@@ -193,8 +198,21 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        // Remove text from fields
+                        emailField.setText("");
+                        passwordField.setText("");
+
+                        emailFieldLayout.setError(null);
+                        passwordFieldLayout.setError(null);
+
+                        loginLayout.requestFocus();
+
                         // Exit the app
-                        finish();
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        startActivity(intent);
+
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

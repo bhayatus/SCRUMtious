@@ -14,6 +14,7 @@
               android:orientation="vertical"
               android:paddingLeft="@dimen/login_signup_padding"
               android:paddingRight="@dimen/login_signup_padding"
+              android:id="@+id/loginLayout"
               tools:context="ca.mvp.scrumtious.scrumtious.view_impl.LoginActivity">
 
     <TextView

@@ -48,8 +48,10 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         projectMap.put("/projects/" + projectId + "/" + "projectOwnerEmail", projectOwnerEmail);
         projectMap.put("/projects/" + projectId + "/" + "creationTimeStamp", currentTimeInMilliseconds);
         projectMap.put("/projects/" + projectId + "/" + "numMembers", 1);
+        projectMap.put("/projects/" + projectId + "/" + "numSprints", 0);
         projectMap.put("/projects/" + projectId + "/" + projectOwnerUid, "member");
         projectMap.put("/users/" + projectOwnerUid + "/" + projectId, "member");
+
 
         mRef.updateChildren(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -60,7 +62,7 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
                 }
                 // Failed at some point, roll back changes and tell user
                 else{
-                    createProjectView.showMessage("An error occurred, failed to create project");
+                    createProjectView.showMessage("An error occurred, failed to create project", false);
                 }
             }
         });

@@ -13,7 +13,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,16 +20,22 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.firebase.database.ValueEventListener;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateSprintViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateSprintPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class CreateSprintActivity extends AppCompatActivity implements CreateSprintViewInt {
 
     private EditText titleField, descriptionField;
     private TextInputLayout titleFieldLayout, descriptionFieldLayout;
-    private ProgressDialog createSprintProgessDialog;
+    private ProgressDialog createSprintProgressDialog;
     private CreateSprintPresenter createSprintPresenter;
 
     private TextView displayStartDate;
@@ -51,11 +56,13 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     private int[] endDay = new int[1];
     private long startDate;
     private long endDate;
+
+    private ValueEventListener projectListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_sprint);
-
 
         //Setting the variables
         alreadyDeleted = false;
@@ -64,7 +71,6 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         pid = data.getString("projectId");
 
         createSprintPresenter = new CreateSprintPresenter(this, pid);
-        createSprintPresenter.setupProjectDeletedListener();
 
         logoutBtn = findViewById(R.id.createSprintLogoutBtn);
 
@@ -87,6 +93,20 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
         setupFormWatcher();
 
+    }
+
+    // Setup listeners for removal
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        super.onResume();
+    }
+
+    // Remove listeners for removal
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        super.onPause();
     }
 
     public void onBackPressed(){
@@ -253,37 +273,40 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     }
 
 
-    public void showMessage(String message){
-        if(createSprintProgessDialog != null && createSprintProgessDialog.isShowing()){
-            createSprintProgessDialog.dismiss();
+    public void showMessage(String message, boolean showAsToast){
+        if(createSprintProgressDialog != null && createSprintProgressDialog.isShowing()){
+            createSprintProgressDialog.dismiss();
         }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
 
-                    }
-                }).show();
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
 
     }
 
     public void onCreateSprint(View view){
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()){
-            showMessage("Cannot create sprint until fields are filled out properly.");
+            showMessage("Cannot create sprint until fields are filled out properly.", false);
         }
         else if(startDate>=endDate){
-            showMessage("Cannot have start date on or after end date.");
+            showMessage("Cannot have start date on, or after end date.", false);
         }
         else{
             String name = titleField.getText().toString().trim();
             String desc = descriptionField.getText().toString().trim();
 
-            createSprintProgessDialog = new ProgressDialog(this);
-            createSprintProgessDialog.setTitle("Create Sprint");
-            createSprintProgessDialog.setCancelable(false);
-            createSprintProgessDialog.setMessage("Creating sprint...");
-            createSprintProgessDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            createSprintProgessDialog.show();
+            createSprintProgressDialog = new ProgressDialog(this);
+            createSprintProgressDialog.setTitle("Create Sprint");
+            createSprintProgressDialog.setCancelable(false);
+            createSprintProgressDialog.setMessage("Creating sprint...");
+            createSprintProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            createSprintProgressDialog.show();
 
             createSprintPresenter.onCheckConflictingSprintDates(name,desc,startDate,endDate);
 
@@ -291,8 +314,8 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     }
 
     public void onSuccessfulCreateSprint(){
-        if(createSprintProgessDialog != null && createSprintProgessDialog.isShowing()){
-            createSprintProgessDialog.dismiss();
+        if(createSprintProgressDialog != null && createSprintProgressDialog.isShowing()){
+            createSprintProgressDialog.dismiss();
         }
 
         Intent intent = new Intent(CreateSprintActivity.this, SprintListActivity.class);
@@ -315,7 +338,20 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         }
     }
 
-    
+    @Override
+    public void onSprintDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
+    }
 
 
 }

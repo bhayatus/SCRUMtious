@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
@@ -29,7 +30,7 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     // Grabs the info from the database
     @Override
-    public void setupDetails() {
+    public void getDetails() {
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects").child(pid);
@@ -43,16 +44,12 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
                     title = dataSnapshot.child("projectTitle").getValue().toString();
                     desc = dataSnapshot.child("projectDesc").getValue().toString();
                 }
-                else{
-                    projectOverviewView.showMessage("An error occurred, could not retrieve project information.");
-                }
 
                 projectOverviewView.setDetails(title, desc);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                projectOverviewView.showMessage(databaseError.getMessage());
             }
         });
 

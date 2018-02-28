@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.SignupPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
 public class SignupActivity extends AppCompatActivity implements SignupViewInt {
@@ -154,7 +154,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
         String password = passwordField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled() || retypePasswordFieldLayout.isErrorEnabled()) {
-            showMessage("Cannot submit until the fields are filled out properly.");
+            showMessage("Cannot submit until the fields are filled out properly.", false);
             return;
         }
 
@@ -171,18 +171,20 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(String message, boolean showAsToast) {
         if (signingInProgressDialog != null && signingInProgressDialog.isShowing()) {
             signingInProgressDialog.dismiss();
         }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).setActionTextColor(getResources().getColor(R.color.colorAccent))
-                .show();
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
     }
 
     @Override

@@ -1,15 +1,14 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.renderscript.Sampler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +18,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.TooltipCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,11 +26,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.database.ValueEventListener;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualProjectPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class IndividualProjectActivity extends AppCompatActivity implements IndividualProjectViewInt {
 
@@ -49,6 +51,8 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     private NavigationView navigationView;
 
     private IndividualProjectPresenterInt individualProjectPresenter;
+
+    private ValueEventListener projectListener;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,6 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         pid = data.getString("projectId");
 
         individualProjectPresenter = new IndividualProjectPresenter(this, pid);
-        individualProjectPresenter.setupProjectDeletedListener();
         individualProjectPresenter.checkIfOwner();
 
         deleteBtn = findViewById(R.id.individualProjectDeleteBtn);
@@ -113,6 +116,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                     public void run() {
                                         Intent intent = new Intent(IndividualProjectActivity.this, ProductBacklogActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -131,6 +135,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                     public void run() {
                                         Intent intent = new Intent(IndividualProjectActivity.this, SprintListActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -154,7 +159,20 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    // Setup listeners for removal
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        super.onResume();
+    }
+
+    // Remove listeners for removal
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        super.onPause();
     }
 
     // Used when the menu icon is clicked to open the navigation drawer
@@ -171,7 +189,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     }
 
 
-    // Project no longer exists, go back
+    // Project no longer exists due to user deleting it normally, go back
     public void onSuccessfulDeletion() {
 
         if (deleteProjectProgressDialog != null && deleteProjectProgressDialog.isShowing()){
@@ -189,23 +207,47 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         }
     }
 
+    // Project no longer exists due to it being deleted by another user, or the user is no longer
+    // part of the project due to being removed
+    @Override
+    public void onProjectDeleted() {
+        onSuccessfulDeletion();
+    }
+
+    @Override
+    public void onSprintDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
+    }
+
     public void setDeleteInvisible(){
         deleteBtn.setVisibility(View.GONE);
     }
 
-    public void showMessage(String message) {
+    public void showMessage(String message, boolean showAsToast) {
 
         if (deleteProjectProgressDialog != null && deleteProjectProgressDialog.isShowing()){
             deleteProjectProgressDialog.dismiss();
         }
 
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).show();
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
     }
 
     // Delete button on top right is clicked
@@ -225,12 +267,12 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not delete project.");
+                            showMessage("Password incorrect, could not delete project.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not delete project.");
+                                showMessage("Password incorrect, could not delete project.", false);
                             }
                             else {
 

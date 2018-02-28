@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -23,6 +23,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.InvitationsPresente
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.InvitationsViewInt;
 import ca.mvp.scrumtious.scrumtious.model.UserInvite;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.InvitationsPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
@@ -116,14 +117,17 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
     }
 
-    public void showMessage(String message) {
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).show();
+    public void showMessage(String message, boolean showAsToast) {
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(getActivity(), message);
+        }
     }
 
     // Viewholder class to display invitations

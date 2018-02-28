@@ -17,9 +17,10 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
-    private FirebaseAuth mAuth;
     private CreateUserStoryViewInt createUserStoryView;
     private String pid;
+
+
 
     public CreateUserStoryPresenter (CreateUserStoryViewInt createUserStoryView, String pid){
         this.createUserStoryView = createUserStoryView;
@@ -52,41 +53,11 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
                 if (task.isSuccessful()){
                     createUserStoryView.onSuccessfulCreateUserStory();
                 }else{
-                    createUserStoryView.showMessage("An error occurred, failed to create user story.");
+                    createUserStoryView.showMessage("An error occurred, failed to create user story.", false);
                 }
             }
         });
 
     }
-
-    // If project user is in no longer exists, must be taken to project list screen
-    @Override
-    public void setupProjectDeletedListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // If project no longer exists, exit this screen and go back
-                if (!dataSnapshot.exists()){
-                    createUserStoryView.onProjectDeleted();
-                }
-
-                else{
-                    // Check if I'm no longer a member through my uid
-                    mAuth = FirebaseAuth.getInstance();
-                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
-                        createUserStoryView.onProjectDeleted();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 
 }

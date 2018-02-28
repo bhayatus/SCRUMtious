@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,16 +16,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextThemeWrapper;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProductBacklogPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProductBacklogViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProductBacklogPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProductBacklogActivity extends AppCompatActivity implements ProductBacklogViewInt {
 
@@ -42,6 +46,8 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
     private ImageButton logoutBtn, helpBtn;
 
+    private ValueEventListener projectListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +58,6 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
         this.productBacklogPresenter = new ProductBacklogPresenter(this, pid);
-
-        // In case project is deleted, the user has to be taken back to project list screen
-        productBacklogPresenter.setupProjectDeletedListener();
 
         logoutBtn = findViewById(R.id.productBacklogLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +128,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                                     public void run() {
                                         Intent intent = new Intent(ProductBacklogActivity.this, IndividualProjectActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -144,6 +148,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                                     public void run() {
                                         Intent intent = new Intent(ProductBacklogActivity.this, SprintListActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -166,6 +171,20 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    // Setup listeners for removal
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        super.onResume();
+    }
+
+    // Remove listeners for removal
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        super.onPause();
     }
 
     // Used when the menu icon is clicked to open the navigation drawer
@@ -201,6 +220,21 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onSprintDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -266,8 +300,24 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
     }
 
     @Override
+    public void showMessage(String message, boolean showAsToast) {
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
+
+    }
+
+    @Override
     public void onBackPressed() {
         Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

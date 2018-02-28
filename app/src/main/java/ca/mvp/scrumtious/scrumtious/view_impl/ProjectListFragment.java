@@ -16,12 +16,15 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectListPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectListPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProjectListFragment extends Fragment implements ProjectListViewInt {
 
@@ -136,9 +139,24 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
         this.getActivity().startActivity(intent);
     }
 
+    @Override
+    public void showMessage(String message, boolean showAsToast) {
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(getActivity(), message);
+        }
+
+    }
+
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView titleView, ownerEmailAddressView, creationDateView, numMembersView;
+        TextView titleView, ownerEmailAddressView, creationDateView, numMembersView, numSprintsView;
 
         public ProjectsViewHolder(View itemView) {
             super(itemView);
@@ -148,16 +166,18 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddress);
             creationDateView = (TextView) mView.findViewById(R.id.projectRowCreatedDate);
             numMembersView = (TextView) mView.findViewById(R.id.projectRowNumberOfMembers);
+            numSprintsView = (TextView) mView.findViewById(R.id.projectRowNumberOfSprints);
         }
 
 
         // Populates each row of the recycler view with the project details
-        public void setDetails(String title, String ownerEmailAddress, String creationDate, String numMembers){
+        public void setDetails(String title, String ownerEmailAddress, String creationDate, String numMembers, String numSprints){
 
             titleView.setText(title);
             ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
             creationDateView.setText(creationDate);
             numMembersView.setText(numMembers);
+            numSprintsView.setText(numSprints);
         }
 
 

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,17 +17,23 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualSprintPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualSprintViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualSprintPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class IndividualSprintActivity extends AppCompatActivity implements IndividualSprintViewInt{
 
@@ -49,6 +54,8 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
     private ProgressDialog deleteSprintProgressDialog;
 
+    private ValueEventListener projectListener, sprintListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +65,6 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         sid = data.getString("sprintId");
 
         this.individualSprintPresenter = new IndividualSprintPresenter(this, pid, sid);
-        individualSprintPresenter.setupProjectDeletedListener(); // In case project is deleted
-        individualSprintPresenter.setupSprintDeletedListener(); // In case sprint is deleted
         individualSprintPresenter.checkIfOwner();
 
         alreadyDeletedProject = false;
@@ -111,6 +116,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                                     public void run() {
                                         Intent intent = new Intent(IndividualSprintActivity.this, IndividualProjectActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -127,6 +133,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                                     public void run() {
                                         Intent intent = new Intent(IndividualSprintActivity.this, ProductBacklogActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -142,6 +149,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                                     public void run() {
                                         Intent intent = new Intent(IndividualSprintActivity.this, SprintListActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -163,7 +171,22 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    // Setup listeners for removal
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        sprintListener = ListenerHelper.setupSprintDeletedListener(this, pid, sid);
+        super.onResume();
+    }
+
+    // Remove listeners for removal
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        ListenerHelper.removeSprintDeletedListener(sprintListener, pid, sid);
+        super.onPause();
     }
 
     // Delete button on top right is clicked
@@ -183,12 +206,12 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not delete the sprint.");
+                            showMessage("Password incorrect, could not delete the sprint.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not delete the sprint.");
+                                showMessage("Password incorrect, could not delete the sprint.", false);
                             }
                             else {
 
@@ -248,11 +271,6 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         }
     }
 
-    @Override
-    public void setDeleteInvisible() {
-        deleteBtn.setVisibility(View.GONE);
-    }
-
     // Sprint deleted, go to sprint list screen
     @Override
     public void onSprintDeleted() {
@@ -274,19 +292,36 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
     }
 
     @Override
-    public void showMessage(String message) {
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void setDeleteInvisible() {
+        deleteBtn.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showMessage(String message, boolean showAsToast) {
 
         if (deleteSprintProgressDialog != null && deleteSprintProgressDialog.isShowing()){
             deleteSprintProgressDialog.dismiss();
         }
 
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).show();
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
     }
 
 
@@ -362,6 +397,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
     public void onBackPressed() {
         Intent intent = new Intent(IndividualSprintActivity.this, SprintListActivity.class);
         intent.putExtra("projectId", pid);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

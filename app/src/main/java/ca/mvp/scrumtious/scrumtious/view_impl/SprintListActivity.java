@@ -1,13 +1,10 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -17,12 +14,13 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SprintListPresenterInt;
@@ -30,6 +28,8 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SprintListViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Sprint;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.SprintListPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class SprintListActivity extends AppCompatActivity implements SprintListViewInt {
 
@@ -49,6 +49,8 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
     private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListNameAdapter;
     private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListStartDateAdapter;
 
+    private ValueEventListener projectListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +61,6 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
         this.sprintListPresenter = new SprintListPresenter(this, pid);
-
-        // In case project is deleted, the user has to be taken back to project list screen
-        sprintListPresenter.setupProjectDeletedListener();
 
         logoutBtn = findViewById(R.id.sprintListLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +132,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                                     public void run() {
                                         Intent intent = new Intent(SprintListActivity.this, IndividualProjectActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -149,6 +149,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                                     public void run() {
                                         Intent intent = new Intent(SprintListActivity.this, ProductBacklogActivity.class);
                                         intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -181,6 +182,20 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     }
 
+    // Setup listeners for removal
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        super.onResume();
+    }
+
+    // Remove listeners for removal
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        super.onPause();
+    }
+
     private void setupRecyclerView(){
 
         sprintList.setLayoutManager(new LinearLayoutManager(this));
@@ -189,18 +204,19 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         sprintListNameAdapter = sprintListPresenter.setupSprintListAdapter(sprintList, "sprintName");
         sprintListStartDateAdapter = sprintListPresenter.setupSprintListAdapter(sprintList, "sprintStartDate");
 
-
-        sprintList.setAdapter(sprintListNameAdapter);
+        sprintList.setAdapter(sprintListStartDateAdapter);
     }
 
     public void setView(){
         if (sprintListNameAdapter.getItemCount() == 0){
             emptyStateView.setVisibility(View.VISIBLE);
             sprintList.setVisibility(View.GONE);
+            sortBtn.setVisibility(View.GONE);
         }
         else{
             emptyStateView.setVisibility(View.GONE);
             sprintList.setVisibility(View.VISIBLE);
+            sortBtn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -247,6 +263,36 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
     }
 
     @Override
+    public void onSprintDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void showMessage(String message, boolean showAsToast) {
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
+
+    }
+
+    @Override
     public void onBackPressed() {
         Intent intent = new Intent(SprintListActivity.this, ProjectTabsActivity.class);
         startActivity(intent);
@@ -255,7 +301,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     public static class SprintsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView nameView, descriptionView, startToEndDateView;
+        TextView nameView, descriptionView, startToEndDateView, currentSprintView;
 
         public SprintsViewHolder(View itemView) {
             super(itemView);
@@ -264,6 +310,11 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             nameView = (TextView) mView.findViewById(R.id.sprintRowName);
             descriptionView = (TextView) mView.findViewById(R.id.sprintRowDescription);
             startToEndDateView = (TextView) mView.findViewById(R.id.sprintRowStartToEnd);
+            currentSprintView = (TextView) mView.findViewById(R.id.sprintRowCurrentSprint);
+        }
+
+        public void setCurrentSprintViewVisible(){
+            currentSprintView.setVisibility(View.VISIBLE);
         }
 
 

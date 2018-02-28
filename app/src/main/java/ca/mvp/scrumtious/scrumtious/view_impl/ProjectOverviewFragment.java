@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectOverviewPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProjectOverviewFragment extends Fragment implements ProjectOverviewViewInt{
 
@@ -33,7 +35,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         pid = getArguments().getString("projectId");
 
         this.projectOverviewPresenter = new ProjectOverviewPresenter(this, pid);
-        projectOverviewPresenter.setupDetails();
+        projectOverviewPresenter.getDetails();
 
     }
 
@@ -50,16 +52,6 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         return view;
     }
 
-    public void showMessage(String message) {
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).show();
-    }
-
     @Override
     public void setDetails(String titleViewText, String descriptionViewText) {
 
@@ -67,4 +59,5 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         projectDescription.setText(descriptionViewText);
 
     }
+
 }

@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 import java.io.Serializable;
@@ -27,6 +28,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.BacklogPresenterInt
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.BacklogViewInt;
 import ca.mvp.scrumtious.scrumtious.model.UserStory;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.BacklogPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class BacklogFragment extends Fragment implements BacklogViewInt, Serializable {
 
@@ -167,13 +169,13 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Incorrect password, could not delete user story.");
+                            showMessage("Incorrect password, could not delete user story.", false);
                         }
 
                         else {
                             // Cannot send empty string
                             if(password.length() == 0) {
-                                showMessage("Incorrect password, could not delete user story.");
+                                showMessage("Incorrect password, could not delete user story.", false);
                             }
                             else {
 
@@ -201,7 +203,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(String message, boolean showAsToast) {
 
         if (sendToFragment != null){
             sendToFragment.dismiss();
@@ -212,13 +214,15 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
             deletingUserStoryDialog.dismiss();
         }
 
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Automatically dismisses
-                    }
-                }).show();
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(getActivity(), message);
+        }
 
     }
 

@@ -31,14 +31,14 @@ public class LoginPresenter implements LoginPresenterInt {
                         if (task.isSuccessful()) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(!user.isEmailVerified()){
-                                loginScreenView.showMessage("Your e-mail address isn't verified yet.");
+                                loginScreenView.showMessage("Your e-mail address isn't verified yet.", false);
                             } else {
                                 loginScreenView.onSuccessfulLogin(emailAddress, password);
                             }
                         }
                         // Login failed
                         else {
-                            loginScreenView.showMessage("Login failed.");
+                            loginScreenView.showMessage("Login failed.", false);
                         }
                     }
                 });

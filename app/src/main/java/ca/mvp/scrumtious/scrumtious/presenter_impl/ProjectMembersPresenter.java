@@ -2,7 +2,6 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.TooltipCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -89,7 +88,6 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            projectMembersView.showMessage(databaseError.getMessage());
 
                         }
                     });
@@ -136,10 +134,10 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
-                            projectMembersView.showMessage("Deleted member from project.");
+                            projectMembersView.showMessage("Deleted member from project.", false);
                         }
                         else{
-                            projectMembersView.showMessage("An error occurred, failed to delete member from project.");
+                            projectMembersView.showMessage("An error occurred, failed to delete member from project.", false);
                         }
                     }
                 });
@@ -147,7 +145,6 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                projectMembersView.showMessage(databaseError.getMessage());
             }
         });
 
@@ -171,7 +168,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                 // Password didn't match, tell user
                 else {
-                    projectMembersView.showMessage("Incorrect password, could not delete member.");
+                    projectMembersView.showMessage("Incorrect password, could not delete member.", false);
                 }
             }
         });
@@ -214,7 +211,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                 if (!dataSnapshot.exists()){
                     projectMembersView.showMessage("Cannot invite user with that e-mail address " +
-                            "as they do not exist.");
+                            "as they do not exist.", false);
                     return;
                 }
 
@@ -242,7 +239,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                                     if(id.equals(pid) && dataSnapshot.hasChild(invitedUid)){
                                         projectMembersView.showMessage("Cannot invite member as they are already" +
-                                                " part of this project.");
+                                                " part of this project.", false);
                                         checkMore = false;
                                         return;
                                     }
@@ -261,7 +258,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                             for (DataSnapshot d: dataSnapshot.getChildren()){
                                                 // If invitedUid matches, meaning the user has already been invited
                                                 if (d.child("invitedUid").getValue().toString().equals(invitedUid)){
-                                                    projectMembersView.showMessage("This user has already been invited to the project.");
+                                                    projectMembersView.showMessage("This user has already been invited to the project.", false);
                                                     return;
                                                 }
                                             }
@@ -335,10 +332,10 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()){
-                            projectMembersView.showMessage("Sent an invite.");
+                            projectMembersView.showMessage("Sent an invite.", false);
                         }
                         else{
-                            projectMembersView.showMessage("An error occurred, failed to send an invite.");
+                            projectMembersView.showMessage("An error occurred, failed to send an invite.", false);
                         }
                     }
                 });

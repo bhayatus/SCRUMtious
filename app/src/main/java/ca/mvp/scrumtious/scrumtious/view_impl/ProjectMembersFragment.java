@@ -6,22 +6,22 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectMembersPresenter;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProjectMembersFragment extends Fragment implements ProjectMembersViewInt {
 
@@ -97,13 +97,13 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
                         // Cannot send null email address
                         if(emailAddress == null){
-                            showMessage("Please enter the e-mail address of the user to invite.");
+                            showMessage("Please enter the e-mail address of the user to invite.", false);
                         }
 
                         else {
                             // Cannot send empty string
                             if(emailAddress.length() == 0) {
-                                showMessage("Please enter the e-mail address of the user to invite.");
+                                showMessage("Please enter the e-mail address of the user to invite.", false);
                             }
                             else {
 
@@ -148,13 +148,13 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Incorrect password, could not delete member.");
+                            showMessage("Incorrect password, could not delete member.", false);
                         }
 
                         else {
                             // Cannot send empty string
                             if(password.length() == 0) {
-                                showMessage("Incorrect password, could not delete member.");
+                                showMessage("Incorrect password, could not delete member.", false);
                             }
                             else {
 
@@ -183,7 +183,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(String message, boolean showAsToast) {
 
         // Close dialogs if they are still running
         if(invitingProgressDialog != null && invitingProgressDialog.isShowing()){
@@ -194,13 +194,15 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             deletingMemberProgressDialog.dismiss();
         }
 
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).show();
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(getActivity(), message);
+        }
 
 
     }

@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -14,12 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateProjectPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 
 public class CreateProjectActivity extends AppCompatActivity implements
@@ -145,18 +144,21 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
     }
 
-    public void showMessage(String message) {
+    public void showMessage(String message, boolean showAsToast) {
         // Stop dialog if showing
         if (createProjectProgressDialog != null && createProjectProgressDialog.isShowing()) {
             createProjectProgressDialog.dismiss();
         }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).show();
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
     }
 
     public void onClickCreateProjectSubmit(View view){
@@ -164,7 +166,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
         String description = descriptionField.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() ) {
-            showMessage("Cannot create project until fields are filled out properly.");
+            showMessage("Cannot create project until fields are filled out properly.", false);
         }
 
         else {

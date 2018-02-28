@@ -1,7 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.interfaces.view_int;
 
-public interface CreateUserStoryViewInt {
-    void showMessage(String message);
+public interface CreateUserStoryViewInt extends ListenerInt {
+    void showMessage(String message, boolean showAsToast);
     void onSuccessfulCreateUserStory();
     void onProjectDeleted();
 }

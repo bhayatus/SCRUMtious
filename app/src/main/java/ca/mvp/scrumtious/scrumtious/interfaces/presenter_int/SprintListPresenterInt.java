@@ -7,7 +7,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 public interface SprintListPresenterInt {
 
-    void setupProjectDeletedListener();
     FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter
             (RecyclerView sprintList, String sortBy);
 }

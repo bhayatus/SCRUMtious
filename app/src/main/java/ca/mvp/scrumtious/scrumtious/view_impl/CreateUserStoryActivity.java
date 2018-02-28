@@ -5,21 +5,28 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateUserStoryViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateUserStoryPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
+import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class CreateUserStoryActivity extends AppCompatActivity implements CreateUserStoryViewInt {
 
@@ -35,6 +42,8 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
     private Toolbar toolbar;
 
+    private ValueEventListener projectListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +55,6 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         pid = data.getString("projectId");
 
         createUserStoryPresenter = new CreateUserStoryPresenter(this, pid);
-
-        // If project is deleted, we have to go back to project list screen
-        createUserStoryPresenter.setupProjectDeletedListener();
 
         logoutBtn = findViewById(R.id.createUserStoryLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +75,20 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         });
 
         setupFormWatcher();
+    }
+
+    // Setup listeners for removal
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        super.onResume();
+    }
+
+    // Remove listeners for removal
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        super.onPause();
     }
 
     // Prevent user from accidentally leaving if form is filled in
@@ -205,25 +225,27 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(String message, boolean showAsToast) {
         if (createUserStoryProgressDialog != null && createUserStoryProgressDialog.isShowing()) {
             createUserStoryProgressDialog.dismiss();
         }
 
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .setAction("Dismiss", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        // Dismisses automatically
-                    }
-                }).show();
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
     }
 
     public void onClickCreateUserStory(View view) {
 
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()
                 || pointFieldLayout.isErrorEnabled()) {
-            showMessage("Cannot create user story until fields are filled out properly.");
+            showMessage("Cannot create user story until fields are filled out properly.", false);
         } else {
 
             String title = titleField.getText().toString().trim();
@@ -267,5 +289,20 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onSprintDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
     }
 }

@@ -36,7 +36,7 @@ public class SignupPresenter implements SignupPresenterInt {
                 }
                 else{
                     // Sign up failed, tell user
-                    signupView.showMessage(task.getException().getLocalizedMessage());
+                    signupView.showMessage(task.getException().getLocalizedMessage(), false);
                 }
             }
         });
@@ -58,7 +58,7 @@ public class SignupPresenter implements SignupPresenterInt {
                 else{
                     mAuth = FirebaseAuth.getInstance();
                     mAuth.getCurrentUser().delete();
-                    signupView.showMessage("An error occurred during the registration process, please try again.");
+                    signupView.showMessage("An error occurred during the registration process, please try again.", false);
                 }
 
 
@@ -94,7 +94,7 @@ public class SignupPresenter implements SignupPresenterInt {
                     // Failed to sign up user, remove them from authentication and tell them
                     mAuth = FirebaseAuth.getInstance();
                     mAuth.getCurrentUser().delete();
-                    signupView.showMessage("An error occurred during the registration process, please try again.");
+                    signupView.showMessage("An error occurred during the registration process, please try again.", false);
                 }
             }
         });

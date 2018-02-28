@@ -31,7 +31,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         // Defaults to empty string if no shared preferences string with identifier "e-mail"
         String uid = sharedPreferences.getString("emailAddress", "");
         String password = sharedPreferences.getString("password", "");
-        final int loadTimeMilliseconds = 1250;
+        final int loadTimeMilliseconds = 1750;
         // User was logged in
         if (!uid.equals("")){
             // Attempt sign in
@@ -47,6 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Intent intent = new Intent(SplashScreenActivity.this, ProjectTabsActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
                             }
@@ -68,6 +69,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
                             }

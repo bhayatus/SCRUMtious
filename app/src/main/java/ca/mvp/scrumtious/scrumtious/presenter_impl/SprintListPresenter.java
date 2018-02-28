@@ -11,6 +11,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.sql.Timestamp;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SprintListPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SprintListViewInt;
@@ -31,36 +34,6 @@ public class SprintListPresenter implements SprintListPresenterInt {
     public SprintListPresenter (SprintListViewInt sprintListView, String pid){
         this.sprintListView = sprintListView;
         this.pid = pid;
-    }
-
-    // In case the project no longer exists or user was removed, user must be returned to project list screen
-    @Override
-    public void setupProjectDeletedListener(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                // If project no longer exists, exit this screen and go back
-                if (!dataSnapshot.exists()){
-                    sprintListView.onProjectDeleted();
-                }
-
-                else{
-                    // Check if I'm no longer a member through my uid
-                    mAuth = FirebaseAuth.getInstance();
-                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
-                        sprintListView.onProjectDeleted();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override
@@ -85,6 +58,18 @@ public class SprintListPresenter implements SprintListPresenterInt {
                 long endDate = model.getSprintEndDate();
                 final String dateFormatted = DateFormat.format("MM/dd/yyyy", startDate).toString()
                         + " to " +  DateFormat.format("MM/dd/yyyy", endDate).toString();
+
+                long currentTime = System.currentTimeMillis();
+
+                Timestamp startDateTimestamp = new Timestamp(startDate);
+                Timestamp endDateTimestamp = new Timestamp(endDate);
+                Timestamp currentTimestamp = new Timestamp(currentTime);
+
+                // Currently inside of this sprint's time interval
+                if (currentTimestamp.after(startDateTimestamp) && currentTimestamp.before(endDateTimestamp)){
+                    viewHolder.setCurrentSprintViewVisible();
+                }
+
 
                 viewHolder.setDetails(model.getSprintName(), model.getSprintDesc(), dateFormatted);
 

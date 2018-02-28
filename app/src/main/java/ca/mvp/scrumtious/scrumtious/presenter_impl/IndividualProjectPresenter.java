@@ -25,43 +25,11 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
-
     private Map removeProjectMap;
 
     public IndividualProjectPresenter(IndividualProjectViewInt individualProjectView, String pid){
         this.individualProjectView = individualProjectView;
         this.pid = pid;
-    }
-
-    // In case the project no longer exists or user was removed, user must be returned to project list screen
-    @Override
-    public void setupProjectDeletedListener(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                // If project no longer exists, exit this screen and go back
-                if (!dataSnapshot.exists()){
-                        individualProjectView.onSuccessfulDeletion();
-
-                }
-
-                else{
-                    // Check if I'm no longer a member through my uid
-                    mAuth = FirebaseAuth.getInstance();
-                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
-                        individualProjectView.onSuccessfulDeletion();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     // Need to verify if the owner if delete project button is to show
@@ -105,7 +73,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
                 // Password didn't match, tell user
                 else {
-                    individualProjectView.showMessage("Incorrect password, could not delete project.");
+                    individualProjectView.showMessage("Incorrect password, could not delete project.", false);
                 }
             }
         });
@@ -149,7 +117,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
                                 }
                                 // Failed, tell user
                                 else{
-                                    individualProjectView.showMessage("An error occurred, failed to delete project.");
+                                    individualProjectView.showMessage("An error occurred, failed to delete project.", false);
                                 }
                             }
                         });
@@ -157,7 +125,6 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        individualProjectView.showMessage(databaseError.getMessage());
                     }
                 });
 
@@ -165,7 +132,6 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                individualProjectView.showMessage(databaseError.getMessage());
             }
         });
 

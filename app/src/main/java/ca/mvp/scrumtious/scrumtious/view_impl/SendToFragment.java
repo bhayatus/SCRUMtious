@@ -161,11 +161,11 @@ public class SendToFragment extends DialogFragment {
                         public void onComplete(@NonNull Task task) {
 
                             if (task.isSuccessful()){
-                                backlogView.showMessage("Successfully assigned user story.");
+                                backlogView.showMessage("Successfully assigned user story.", false);
                             }
 
                             else{
-                                backlogView.showMessage("An error occurred, failed to move the user story.");
+                                backlogView.showMessage("An error occurred, failed to move the user story.", false);
                             }
                         }
                     });
@@ -177,7 +177,6 @@ public class SendToFragment extends DialogFragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                backlogView.showMessage(databaseError.getMessage());
             }
         });
     }

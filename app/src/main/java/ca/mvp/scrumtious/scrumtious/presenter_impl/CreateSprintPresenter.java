@@ -25,46 +25,16 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
     private final String pid;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
-    private FirebaseAuth mAuth;
 
     private boolean dateConflictExists = false;
+
 
     public CreateSprintPresenter(CreateSprintViewInt createSprintView, String pid) {
         this.createSprintView = createSprintView;
         this.pid = pid;
     }
 
-    // In case the project no longer exists or user was removed, user must be returned to project list screen
-    @Override
-    public void setupProjectDeletedListener(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                // If project no longer exists, exit this screen and go back
-                if (!dataSnapshot.exists()){
-                    createSprintView.onProjectDeleted();
-                }
-
-                else{
-                    // Check if I'm no longer a member through my uid
-                    mAuth = FirebaseAuth.getInstance();
-                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
-                        createSprintView.onProjectDeleted();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                createSprintView.showMessage(databaseError.getMessage());
-            }
-        });
-    }
-
-    private void addSprintToDatabase(String sprintName, String sprintDesc, long sprintStartDate, long sprintEndDate) {
+    private void addSprintToDatabase(final String sprintName, final String sprintDesc, final long sprintStartDate, final long sprintEndDate) {
          mDatabase = FirebaseDatabase.getInstance();
 
          mRef = mDatabase.getReference()
@@ -73,20 +43,33 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
 
          final String sprintId = mRef.push().getKey(); //generates unique key for sprint
 
-        Map sprintMap = new HashMap<>();
-        sprintMap.put("/sprints/" + sprintId + "/" + "sprintName", sprintName);
-        sprintMap.put("/sprints/" + sprintId + "/" + "sprintDesc", sprintDesc);
-        sprintMap.put("/sprints/" + sprintId + "/" + "sprintStartDate", sprintStartDate);
-        sprintMap.put("/sprints/" + sprintId + "/" + "sprintEndDate", sprintEndDate);
-
-        mRef.updateChildren(sprintMap).addOnCompleteListener(new OnCompleteListener() {
+        mRef.child("numSprints").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()) {
-                    createSprintView.onSuccessfulCreateSprint();
-                } else {
-                    createSprintView.showMessage("An error occurred, failed to create sprint.");
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long numSprints = (long) dataSnapshot.getValue();
+                numSprints++;
+
+                Map sprintMap = new HashMap<>();
+                sprintMap.put("/sprints/" + sprintId + "/" + "sprintName", sprintName);
+                sprintMap.put("/sprints/" + sprintId + "/" + "sprintDesc", sprintDesc);
+                sprintMap.put("/sprints/" + sprintId + "/" + "sprintStartDate", sprintStartDate);
+                sprintMap.put("/sprints/" + sprintId + "/" + "sprintEndDate", sprintEndDate);
+                sprintMap.put("/" + "numSprints", numSprints);
+
+                mRef.updateChildren(sprintMap).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            createSprintView.onSuccessfulCreateSprint();
+                        } else {
+                            createSprintView.showMessage("An error occurred, failed to create sprint.", false);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
 
@@ -95,7 +78,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
     @Override
     public void onCheckConflictingSprintDates(final String sprintName, final String sprintDesc,
                                               final long sprintStartDate, final long sprintEndDate) {
-
+        mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
         mRef.child("projects").child(this.pid).child("sprints").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -118,12 +101,37 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                             error
                              */
 
-                            if ((startDateTimestamp.after(snapshotStartDateTimestamp) &&
-                                    endDateTimestamp.before(snapshotEndDateTimestamp))
-                                    || (!startDateTimestamp.after(snapshotEndDateTimestamp) &&
-                                    !snapshotStartDateTimestamp.after(endDateTimestamp))) {
+                            // POSSIBLE SCENARIOS FOR OVERLAP //
+
+                            //(my time range)               ///////
+                            //(other time range)        //////
+
+                            if (startDateTimestamp.after(snapshotStartDateTimestamp) &&
+                                    startDateTimestamp.before(snapshotEndDateTimestamp)){
                                 dateConflictExists = true;
                             }
+
+                            //(my time range)           //////
+                            //(other time range)           //////
+
+                            if (endDateTimestamp.after(snapshotStartDateTimestamp) &&
+                                    endDateTimestamp.before(snapshotEndDateTimestamp)){
+                                dateConflictExists = true;
+                            }
+
+
+                            //(my time range)         ///////////
+                            //(other time range)        /////
+
+                            if (startDateTimestamp.before(snapshotStartDateTimestamp) &&
+                                    endDateTimestamp.after(snapshotEndDateTimestamp)){
+                                dateConflictExists = true;
+                            }
+
+
+                         //(mine)       //////
+                         //(old)      //////////     is handled by both of the above
+
                         }
 
                         if (dateConflictExists == false) { // if not conflicts exist then add to DB
@@ -131,14 +139,13 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                         } else {
                             // an error occurred, notfiy the calling activity
                             createSprintView.showMessage("Dates for sprint overlap with another sprint, please change " +
-                                    "the date.");
+                                    "the date.", false);
                             dateConflictExists = false;
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        createSprintView.showMessage(databaseError.getMessage());
                     }
                 }
         );

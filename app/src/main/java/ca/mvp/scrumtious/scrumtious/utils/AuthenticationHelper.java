@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.view_impl.LoginActivity;
-import ca.mvp.scrumtious.scrumtious.view_impl.ProjectTabsActivity;
 
 // Class responsible for logging user out and removing e-mail, password from SharedPreferences
 public class AuthenticationHelper {

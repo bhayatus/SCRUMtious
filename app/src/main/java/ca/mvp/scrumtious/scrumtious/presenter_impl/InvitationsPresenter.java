@@ -120,7 +120,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (!task.isSuccessful()){
-                            invitationsView.showMessage("An error occurred, failed to accept invite.");
+                            invitationsView.showMessage("An error occurred, failed to accept invite.", false);
                         }
                     }
                 });
@@ -130,7 +130,6 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                invitationsView.showMessage(databaseError.getMessage());
             }
         });
     }
@@ -144,7 +143,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){
-                    invitationsView.showMessage("An error occurred, failed to decline invite.");
+                    invitationsView.showMessage("An error occurred, failed to decline invite.", false);
                 }
             }
         });

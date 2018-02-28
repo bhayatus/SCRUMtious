@@ -10,6 +10,7 @@ public class Project {
     private String projectDesc;
     private long creationTimeStamp;
     private long numMembers;
+    private long numSprints;
 
     private final int MAX_DESC_SIZE = 254;
 
@@ -24,5 +25,7 @@ public class Project {
     public String getProjectOwnerEmail() { return this.projectOwnerEmail; }
     public long getCreationTimeStamp() {return creationTimeStamp;}
     public long getNumMembers(){ return numMembers;}
+    public long getNumSprints(){ return numSprints;}
+
 
 }
