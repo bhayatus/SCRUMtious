@@ -28,29 +28,19 @@ import ca.mvp.scrumtious.scrumtious.model.Sprint;
 
 public class SendToFragment extends DialogFragment {
 
+    private String pid, usid;
+    private FirebaseRecyclerAdapter<Sprint, SendToSprintViewHolder> sendToListAdapter;
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private Query mQuery;
 
     private TextView pbView;
     private BacklogFragment backlogView;
-
     private RecyclerView sendToList;
-    private FirebaseRecyclerAdapter<Sprint, SendToSprintViewHolder> sendToListAdapter;
 
-    private String pid, usid;
     public SendToFragment() {
         // Required empty public constructor
-    }
-
-    // Constructs a new instance of this dialog, passing in important information
-    public static SendToFragment newInstance(String projectId, String userStoryId){
-        SendToFragment sendToFragment = new SendToFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("projectId", projectId);
-        bundle.putString("userStoryId", userStoryId);
-        sendToFragment.setArguments(bundle);
-        return sendToFragment;
     }
 
     @Override
@@ -59,11 +49,6 @@ public class SendToFragment extends DialogFragment {
 
         pid = getArguments().getString("projectId");
         usid = getArguments().getString("userStoryId");
-    }
-
-    // Necessary to call this after newInstance, sets up the backlog view
-    public void setBacklogView(BacklogFragment backlogView){
-        this.backlogView = backlogView;
     }
 
     @Override
@@ -87,6 +72,23 @@ public class SendToFragment extends DialogFragment {
         return view;
     }
 
+    // Constructs a new instance of this dialog, passing in important information needed
+    public static SendToFragment newInstance(String projectId, String userStoryId){
+        SendToFragment sendToFragment = new SendToFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("projectId", projectId);
+        bundle.putString("userStoryId", userStoryId);
+        sendToFragment.setArguments(bundle);
+        return sendToFragment;
+    }
+
+
+    // Necessary to call this after newInstance, sets up the backlog view
+    public void setBacklogView(BacklogFragment backlogView){
+        this.backlogView = backlogView;
+    }
+
+
     private void setupRecyclerView(){
 
         sendToList.setLayoutManager(new LinearLayoutManager(backlogView.getContext()));
@@ -95,6 +97,7 @@ public class SendToFragment extends DialogFragment {
         mRef = mDatabase.getReference();
         mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild("completed");
 
+        // Generates the adapter to grab the list of sprints we can assign the user story to
         sendToListAdapter = new FirebaseRecyclerAdapter<Sprint, SendToSprintViewHolder>(
                 Sprint.class,
                 R.layout.sendto_row,
@@ -109,6 +112,7 @@ public class SendToFragment extends DialogFragment {
 
                 viewHolder.setDetails(model.getSprintName());
 
+                // If sprint is selected, assign the user story to it
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -123,6 +127,7 @@ public class SendToFragment extends DialogFragment {
                 if (getItemCount() == 0){
                     sendToList.setVisibility(View.GONE);
                 }
+                // Items to show, display recycler view
                 else{
                     sendToList.setVisibility(View.VISIBLE);
                 }
@@ -181,6 +186,7 @@ public class SendToFragment extends DialogFragment {
         });
     }
 
+    // Viewholder class to display sprints that user can assign a user story to
     public static class SendToSprintViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView nameView;
@@ -192,12 +198,10 @@ public class SendToFragment extends DialogFragment {
             nameView = (TextView) mView.findViewById(R.id.sendToRowName);
         }
 
-
         // Populates each row of the recycler view with the sprint name
         public void setDetails(String name){
             nameView.setText(name);
         }
-
 
     }
 

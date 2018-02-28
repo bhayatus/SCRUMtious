@@ -27,11 +27,12 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class InvitationsFragment extends Fragment implements InvitationsViewInt{
 
-    private RecyclerView invitationsList;
     private InvitationsPresenterInt invitationsPresenter;
+    private FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> invitationListAdapter;
+
+    private RecyclerView invitationList;
     private LinearLayout emptyStateView;
 
-    private FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> invitationsListAdapter;
 
     public InvitationsFragment() {
         // Required empty public constructor
@@ -48,28 +49,28 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_invitations, container, false);
-        invitationsList = view.findViewById(R.id.invitationsRecyclerView);
+        invitationList = view.findViewById(R.id.invitationsRecyclerView);
         emptyStateView = view.findViewById(R.id.invitationsEmptyStateView);
         setupRecyclerView();
         return view;
     }
 
     private void setupRecyclerView(){
-        invitationsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        invitationsListAdapter = invitationsPresenter.setupInvitationsAdapter(invitationsList);
-        invitationsList.setAdapter(invitationsListAdapter);
+        invitationList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        invitationListAdapter = invitationsPresenter.setupInvitationListAdapter();
+        invitationList.setAdapter(invitationListAdapter);
     }
 
     // Sets the view to either show the list of invitations, or nothing
     @Override
-    public void setView(){
-        if (invitationsListAdapter.getItemCount() == 0){
+    public void setEmptyStateView(){
+        if (invitationListAdapter.getItemCount() == 0){
             emptyStateView.setVisibility(View.VISIBLE);
-            invitationsList.setVisibility(View.GONE);
+            invitationList.setVisibility(View.GONE);
         }
         else{
             emptyStateView.setVisibility(View.GONE);
-            invitationsList.setVisibility(View.VISIBLE);
+            invitationList.setVisibility(View.VISIBLE);
         }
     }
 
@@ -83,6 +84,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Accept the invite
                         invitationsPresenter.acceptInvite(projectId, inviteId);
                     }
                 })
@@ -104,6 +106,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Remove the invite
                         invitationsPresenter.removeInvite(inviteId);
                     }
                 })

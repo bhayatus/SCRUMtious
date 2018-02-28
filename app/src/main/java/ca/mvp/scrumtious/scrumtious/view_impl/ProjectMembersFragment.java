@@ -26,10 +26,11 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 public class ProjectMembersFragment extends Fragment implements ProjectMembersViewInt {
 
     private ProjectMembersPresenterInt projectMembersPresenter;
+
     private RecyclerView membersList;
     private FloatingActionButton addMemberBtn;
-
     private ProgressDialog invitingProgressDialog, deletingMemberProgressDialog;
+
     public ProjectMembersFragment() {
         // Required empty public constructor
     }
@@ -39,7 +40,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         super.onCreate(savedInstanceState);
         String pid = getArguments().getString("projectId");
         this.projectMembersPresenter = new ProjectMembersPresenter(this, pid);
-        projectMembersPresenter.checkIfOwner();
+        projectMembersPresenter.checkIfOwner(); // Only owner can invite users, check here
     }
 
     @Override
@@ -61,14 +62,12 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         return view;
     }
 
-    // Only owner of the project can view and click the add member fab
+    // Only owner of the project can view and click the add member floating action button
     @Override
     public void setAddMemberInvisible() {
         addMemberBtn.setVisibility(View.GONE);
     }
 
-
-    // Sets up the recycler view to display info about members
     private void setupRecyclerView(){
 
         // Sets up the layout so that results are displayed in reverse order, meaning new items are added to the bottom
@@ -77,10 +76,11 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         mLayoutManager.setStackFromEnd(true);
 
         membersList.setLayoutManager(mLayoutManager);
-        membersList.setAdapter(projectMembersPresenter.setupMembersAdapter(membersList));
+        membersList.setAdapter(projectMembersPresenter.setupMemberListAdapter());
 
     }
 
+    // Owner clicked on the invite member button
     public void onClickInviteMember(View view) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_add_member, null);
@@ -91,7 +91,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                 .setPositiveButton("Invite", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Validate password and delete project
+                        // Validate password before inviting member
                         EditText emailET = (EditText) alertView.findViewById(R.id.alert_dialogue_add_member_email_text_field);
                         String emailAddress = emailET.getText().toString().trim();
 
@@ -107,7 +107,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                             }
                             else {
 
-                                // Creates a dialog that appears to tell the user that inviting a user is still occurring
+                                // Creates a dialog that appears to tell the user that the user is being invited
                                 invitingProgressDialog = new ProgressDialog(getContext());
                                 invitingProgressDialog.setTitle("Invite User");
                                 invitingProgressDialog.setCancelable(false);
@@ -115,7 +115,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                                 invitingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 invitingProgressDialog.show();
 
-                                // Password is of valid type, send it
+                                // Password is of valid type, send it to the backend to validate
                                 projectMembersPresenter.checkBeforeInvite(emailAddress);
                             }
                         }
@@ -142,7 +142,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Validate password and delete project
+                        // Validate password and delete member
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
                         String password = passwordET.getText().toString().trim();
 
@@ -158,7 +158,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                             }
                             else {
 
-                                // Creates a dialog that appears to tell the user that deleting a user is still occurring
+                                // Creates a dialog that appears to tell the user that the member is being deleted
                                 deletingMemberProgressDialog = new ProgressDialog(getContext());
                                 deletingMemberProgressDialog.setTitle("Delete Member");
                                 deletingMemberProgressDialog.setCancelable(false);
@@ -166,7 +166,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                                 deletingMemberProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deletingMemberProgressDialog.show();
 
-                                // Password is of valid type, send it
+                                // Password is of valid type, send it to the backend to validate
                                 projectMembersPresenter.validatePassword(password, uid);
                             }
                         }
@@ -223,7 +223,6 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             owner = (ImageButton) mView.findViewById(R.id.memberRowOwner);
         }
 
-
         // Populates each row of the recycler view with the member details
         public void setDetails(String emailAddress){
             emailView.setText(emailAddress);
@@ -234,11 +233,12 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             return deleteView;
         }
 
-        // Under certain circumstances, delete member button should not be seen
+        // Only owner should be able to view this button, with the exception of their own self
         public void setDeleteInvisible(){
             deleteView.setVisibility(View.GONE);
         }
 
+        // Only owner should have this icon displayed
         public void setOwnerInvisible(){owner.setVisibility(View.GONE);}
     }
 

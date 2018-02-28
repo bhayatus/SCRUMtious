@@ -6,8 +6,7 @@ import ca.mvp.scrumtious.scrumtious.model.User;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment;
 
 public interface ProjectMembersPresenterInt {
-    FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMembersAdapter
-            (RecyclerView memberList);
+    FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMemberListAdapter();
 
     void validatePassword(String password, final String uid);
     void checkBeforeInvite(String emailAddress);

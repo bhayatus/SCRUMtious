@@ -41,7 +41,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                  .child("projects")
                  .child(this.pid);
 
-         final String sprintId = mRef.push().getKey(); //generates unique key for sprint
+         final String sprintId = mRef.push().getKey(); // generates unique key for sprint
 
         mRef.child("numSprints").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -76,7 +76,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
     }
 
     @Override
-    public void onCheckConflictingSprintDates(final String sprintName, final String sprintDesc,
+    public void checkConflictingSprintDates(final String sprintName, final String sprintDesc,
                                               final long sprintStartDate, final long sprintEndDate) {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
@@ -128,18 +128,25 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                                 dateConflictExists = true;
                             }
 
+                            //(my time range)       //////
+                            //(old time range)    //////////     is handled by both of the above
 
-                         //(mine)       //////
-                         //(old)      //////////     is handled by both of the above
 
+                            //(my time range)     ////           ////    /////
+                            //(old time range)       /////    ////       /////     are all handled below
+
+                            if (startDateTimestamp.equals(snapshotEndDateTimestamp) || endDateTimestamp.equals(snapshotStartDateTimestamp)
+                                    || startDateTimestamp.equals(snapshotStartDateTimestamp) || endDateTimestamp.equals(snapshotEndDateTimestamp)){
+                                dateConflictExists = true;
+                            }
                         }
 
-                        if (dateConflictExists == false) { // if not conflicts exist then add to DB
+                        if (!dateConflictExists) { // if not conflicts exist then add to DB
                             addSprintToDatabase(sprintName, sprintDesc, sprintStartDate, sprintEndDate);
                         } else {
-                            // an error occurred, notfiy the calling activity
-                            createSprintView.showMessage("Dates for sprint overlap with another sprint, please change " +
-                                    "the date.", false);
+                            // an error occurred, notify the calling activity
+                            createSprintView.showMessage("Dates for sprint overlap with another sprint, please select a different " +
+                                    "interval for the sprint.", false);
                             dateConflictExists = false;
                         }
                     }

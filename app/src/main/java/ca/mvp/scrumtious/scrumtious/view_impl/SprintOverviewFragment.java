@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import ca.mvp.scrumtious.scrumtious.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SprintOverviewFragment extends Fragment {
 
 

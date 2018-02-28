@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -13,6 +14,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SprintListPresenterInt;
@@ -37,7 +39,7 @@ public class SprintListPresenter implements SprintListPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter(final RecyclerView sprintList, String sortBy) {
+    public FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter(String sortBy) {
         mRef = FirebaseDatabase.getInstance().getReference();
         mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild(sortBy);
 
@@ -59,7 +61,12 @@ public class SprintListPresenter implements SprintListPresenterInt {
                 final String dateFormatted = DateFormat.format("MM/dd/yyyy", startDate).toString()
                         + " to " +  DateFormat.format("MM/dd/yyyy", endDate).toString();
 
-                long currentTime = System.currentTimeMillis();
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                long currentTime = cal.getTimeInMillis();
 
                 Timestamp startDateTimestamp = new Timestamp(startDate);
                 Timestamp endDateTimestamp = new Timestamp(endDate);
@@ -70,6 +77,10 @@ public class SprintListPresenter implements SprintListPresenterInt {
                     viewHolder.setCurrentSprintViewVisible();
                 }
 
+                // Edge case, could be on the same day as start or end
+                if (currentTimestamp.equals(startDateTimestamp) || currentTimestamp.equals(endDateTimestamp)){
+                    viewHolder.setCurrentSprintViewVisible();
+                }
 
                 viewHolder.setDetails(model.getSprintName(), model.getSprintDesc(), dateFormatted);
 
@@ -83,7 +94,7 @@ public class SprintListPresenter implements SprintListPresenterInt {
             }
             @Override
             public void onDataChanged() {
-                sprintListView.setView();
+                sprintListView.setEmptyStateView();
             }
         };
         return sprintListAdapter;

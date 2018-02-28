@@ -41,12 +41,12 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
 
     @Override
-    public FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMembersAdapter(RecyclerView memberList) {
+    public FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMemberListAdapter() {
             mDatabase = FirebaseDatabase.getInstance();
             mAuth = FirebaseAuth.getInstance();
-            DatabaseReference rootRef = mDatabase.getReference();
+            mRef = mDatabase.getReference();
             // Only query users who are in the project
-            mQuery = rootRef.child("users").orderByChild(pid).equalTo("member");
+            mQuery = mRef.child("users").orderByChild(pid).equalTo("member");
 
             FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> membersListAdapter
                     = new FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder>(
@@ -64,7 +64,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
 
-                    mRef  = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
+                    mRef = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
                             mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {

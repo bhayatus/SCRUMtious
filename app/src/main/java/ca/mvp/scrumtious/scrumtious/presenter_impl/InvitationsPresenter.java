@@ -28,7 +28,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
     private InvitationsViewInt invitationsView;
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
-    private DatabaseReference rootRef;
+    private DatabaseReference mRef;
     private Query mQuery;
     public InvitationsPresenter(InvitationsViewInt invitationsView){
         this.invitationsView = invitationsView;
@@ -36,12 +36,12 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> setupInvitationsAdapter(RecyclerView invitationsList) {
+    public FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> setupInvitationListAdapter() {
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        rootRef = mDatabase.getInstance().getReference();
+        mRef = mDatabase.getInstance().getReference();
         String userID = mAuth.getCurrentUser().getUid();
-        mQuery = rootRef.child("invites").orderByChild("invitedUid").equalTo(userID);
+        mQuery = mRef.child("invites").orderByChild("invitedUid").equalTo(userID);
 
         FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> invitationsAdapter
                 = new FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder>(
@@ -81,7 +81,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
             }
             @Override
             public void onDataChanged() {
-                invitationsView.setView();
+                invitationsView.setEmptyStateView();
             }
         };
         return invitationsAdapter;
@@ -98,8 +98,8 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
         // Get the number of members
 
         mDatabase = FirebaseDatabase.getInstance();
-        rootRef = mDatabase.getReference();
-        rootRef.child("projects").child(projectId).addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef = mDatabase.getReference();
+        mRef.child("projects").child(projectId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long numMembers = (long) dataSnapshot.child("numMembers").getValue();
@@ -114,9 +114,9 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
                 acceptInviteMap.put("/invites/" + inviteId, null);
 
                 mDatabase = FirebaseDatabase.getInstance();
-                rootRef = mDatabase.getReference();
+                mRef = mDatabase.getReference();
 
-                rootRef.updateChildren(acceptInviteMap).addOnCompleteListener(new OnCompleteListener() {
+                mRef.updateChildren(acceptInviteMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (!task.isSuccessful()){
@@ -138,8 +138,8 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
     @Override
     public void removeInvite(String inviteId) {
         mDatabase = FirebaseDatabase.getInstance();
-        rootRef = mDatabase.getReference();
-        rootRef.child("invites").child(inviteId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        mRef = mDatabase.getReference();
+        mRef.child("invites").child(inviteId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){

@@ -27,6 +27,7 @@ import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
     private LoginPresenter loginPresenter;
+
     private LinearLayout loginLayout;
     private EditText emailField, passwordField;
     private TextInputLayout emailFieldLayout, passwordFieldLayout;
@@ -39,6 +40,41 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         loginPresenter = new LoginPresenter(this);
         loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
         setupFormWatcher();
+    }
+
+    // Leave the app (with permission) if back button is pressed
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog));
+        builder.setTitle("Leave the app?")
+                .setMessage("Are you sure you want to exit the app?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Remove text from fields
+                        emailField.setText("");
+                        passwordField.setText("");
+
+                        emailFieldLayout.setError(null);
+                        passwordFieldLayout.setError(null);
+
+                        loginLayout.requestFocus();
+
+                        // Exit the app
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        startActivity(intent);
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Remain in app
+                    }
+                })
+                .create().show();
     }
 
     // Set up listeners for the text fields
@@ -132,11 +168,11 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
             return;
         }
 
-        // Creates a dialog that appears to tell the user that the sign in is occurring
+        // Creates a dialog that appears to tell the user that the login is occurring
         signingInProgressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
-        signingInProgressDialog.setTitle("Sign In");
+        signingInProgressDialog.setTitle("Login");
         signingInProgressDialog.setCancelable(false);
-        signingInProgressDialog.setMessage("Attempting to sign you in...");
+        signingInProgressDialog.setMessage("Attempting to log you in...");
         signingInProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         signingInProgressDialog.show();
 
@@ -150,7 +186,6 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         startActivity(intent);
     }
 
-    // Display message to user
     @Override
     public void showMessage(String message, boolean showAsToast) {
         if (signingInProgressDialog != null && signingInProgressDialog.isShowing()){
@@ -168,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         }
     }
 
-    // On successful login, go to the app's main activity
+    // On successful login, go to the project list screen
     @Override
     public void onSuccessfulLogin(String emailAddress, String password) {
 
@@ -176,6 +211,8 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
             signingInProgressDialog.dismiss();
         }
 
+        // Store the login information in shared preferences, so that user
+        // gets logged in automatically the next time they use the app (unless they explicitly log out)
         SharedPreferences sharedPreferences = this.getSharedPreferences(
                 getString(R.string.shared_preferences), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -189,38 +226,4 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         finish();
     }
 
-    // Leave the app if back button is pressed
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog));
-        builder.setTitle("Leave the app?")
-                .setMessage("Are you sure you want to exit the app?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        // Remove text from fields
-                        emailField.setText("");
-                        passwordField.setText("");
-
-                        emailFieldLayout.setError(null);
-                        passwordFieldLayout.setError(null);
-
-                        loginLayout.requestFocus();
-
-                        // Exit the app
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        startActivity(intent);
-
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Remain in app
-                    }
-                })
-                .create().show();
-    }
 }

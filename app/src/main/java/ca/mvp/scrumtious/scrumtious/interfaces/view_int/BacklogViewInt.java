@@ -5,6 +5,6 @@ public interface BacklogViewInt {
     void goToUserStoryScreen(String usid);
     void onClickChangeStatus(String usid, boolean newStatus);
     void onClickDeleteUserStory(String usid);
-    void setView();
-    void onLongClick(String usid);
+    void setEmptyStateView();
+    void onLongClickUserStory(String usid);
 }

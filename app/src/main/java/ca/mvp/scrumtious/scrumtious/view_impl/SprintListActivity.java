@@ -35,28 +35,24 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     private SprintListPresenterInt sprintListPresenter;
     private String pid;
-
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
-
-    private boolean alreadyDeleted;
-
-    private ImageButton logoutBtn, sortBtn;
-
-    private LinearLayout emptyStateView;
-
-    private RecyclerView sprintList;
+    private ValueEventListener projectListener;
     private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListNameAdapter;
     private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListStartDateAdapter;
 
-    private ValueEventListener projectListener;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView navigationView;
+    private ImageButton logoutBtn, sortBtn;
+    private LinearLayout emptyStateView;
+    private RecyclerView sprintList;
+
+    private boolean projectAlreadyDeleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sprint_list);
 
-        alreadyDeleted = false; // Project is not deleted at this point
+        projectAlreadyDeleted = false; // Project is not deleted at this point
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
@@ -109,7 +105,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         mDrawerLayout = findViewById(R.id.sprintListNavDrawer);
         navigationView = findViewById(R.id.sprintListNavView);
 
-        // By default, should highlight product backlog option to indicate that is where the user is
+        // By default, should highlight sprint list option to indicate that is where the user is
         navigationView.setCheckedItem(R.id.nav_sprints);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -122,7 +118,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                         int item = menuItem.getItemId();
                         switch(item){
 
-                            // User chooses Project Overview in menu, go there
+                            // User chooses project overview in menu, go there
                             case R.id.nav_overview:
                                 // Allow nav drawer to close smoothly before switching activities
                                 Handler handler = new Handler();
@@ -170,54 +166,31 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                     }
                 });
 
-        sprintList = (RecyclerView) findViewById(R.id.sprintListRecyclerView);
-
-        setupRecyclerView();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.sprintListToolbar);
         setSupportActionBar(toolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        sprintList = (RecyclerView) findViewById(R.id.sprintListRecyclerView);
+
+        setupRecyclerView();
+
+
     }
 
-    // Setup listeners for removal
+    // Setup listeners
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
     }
 
-    // Remove listeners for removal
+    // Remove listeners
     @Override
     protected void onPause() {
         ListenerHelper.removeProjectDeletedListener(projectListener, pid);
         super.onPause();
-    }
-
-    private void setupRecyclerView(){
-
-        sprintList.setLayoutManager(new LinearLayoutManager(this));
-
-        // Sets up the two adapters, which sort by name and start date respectively
-        sprintListNameAdapter = sprintListPresenter.setupSprintListAdapter(sprintList, "sprintName");
-        sprintListStartDateAdapter = sprintListPresenter.setupSprintListAdapter(sprintList, "sprintStartDate");
-
-        sprintList.setAdapter(sprintListStartDateAdapter);
-    }
-
-    public void setView(){
-        if (sprintListNameAdapter.getItemCount() == 0){
-            emptyStateView.setVisibility(View.VISIBLE);
-            sprintList.setVisibility(View.GONE);
-            sortBtn.setVisibility(View.GONE);
-        }
-        else{
-            emptyStateView.setVisibility(View.GONE);
-            sprintList.setVisibility(View.VISIBLE);
-            sortBtn.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -232,27 +205,20 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickAddSprint(View view){
-        Intent intent = new Intent(SprintListActivity.this, CreateSprintActivity.class);
-        intent.putExtra("projectId", pid);
-        startActivity(intent);
-    }
-
     @Override
-    public void goToSprintScreen(String sid) {
-        Intent intent = new Intent(SprintListActivity.this, IndividualSprintActivity.class);
-        intent.putExtra("projectId", pid);
-        intent.putExtra("sprintId", sid);
+    public void onBackPressed() {
+        Intent intent = new Intent(SprintListActivity.this, ProjectTabsActivity.class);
         startActivity(intent);
+        finish();
     }
 
-    // If project no longer exists while we are on this screen, must return to the project list screen
+    // Project was deleted by another user, or user was removed from the project
     @Override
     public void onProjectDeleted() {
 
         // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
-        if (!alreadyDeleted) {
-            alreadyDeleted = true;
+        if (!projectAlreadyDeleted) {
+            projectAlreadyDeleted = true;
 
             // Return to project list screen, and clear the task stack so we can't go back
             Intent intent = new Intent(SprintListActivity.this, ProjectTabsActivity.class);
@@ -277,6 +243,48 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         // Needs to be here even if not implemented
     }
 
+    private void setupRecyclerView(){
+
+        sprintList.setLayoutManager(new LinearLayoutManager(this));
+
+        // Sets up the two adapters, which sort by name and start date respectively
+        sprintListNameAdapter = sprintListPresenter.setupSprintListAdapter("sprintName");
+        sprintListStartDateAdapter = sprintListPresenter.setupSprintListAdapter("sprintStartDate");
+
+        sprintList.setAdapter(sprintListStartDateAdapter);
+    }
+
+    // If no sprints to display, should show empty view
+    @Override
+    public void setEmptyStateView(){
+        if (sprintListNameAdapter.getItemCount() == 0){
+            emptyStateView.setVisibility(View.VISIBLE);
+            sprintList.setVisibility(View.GONE);
+            sortBtn.setVisibility(View.GONE);
+        }
+        else{
+            emptyStateView.setVisibility(View.GONE);
+            sprintList.setVisibility(View.VISIBLE);
+            sortBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // User clicks on add sprint button, take them to the screen
+    public void onClickAddSprint(View view){
+        Intent intent = new Intent(SprintListActivity.this, CreateSprintActivity.class);
+        intent.putExtra("projectId", pid);
+        startActivity(intent);
+    }
+
+    // User clicks on a specific sprint
+    @Override
+    public void goToSprintScreen(String sid) {
+        Intent intent = new Intent(SprintListActivity.this, IndividualSprintActivity.class);
+        intent.putExtra("projectId", pid);
+        intent.putExtra("sprintId", sid);
+        startActivity(intent);
+    }
+
     @Override
     public void showMessage(String message, boolean showAsToast) {
 
@@ -292,13 +300,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SprintListActivity.this, ProjectTabsActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
+    // Viewholder class to display list of sprints
     public static class SprintsViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView nameView, descriptionView, startToEndDateView, currentSprintView;
@@ -313,6 +315,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             currentSprintView = (TextView) mView.findViewById(R.id.sprintRowCurrentSprint);
         }
 
+        // Display message indicating that the current date falls within a sprint
         public void setCurrentSprintViewVisible(){
             currentSprintView.setVisibility(View.VISIBLE);
         }
@@ -320,6 +323,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
         // Populates each row of the recycler view with the sprint details
         public void setDetails(String name, String description, String startToEndDate){
+
             // Shorten description for viewing purposes
             String displayDesc = "";
             if (!description.contains("\n")){

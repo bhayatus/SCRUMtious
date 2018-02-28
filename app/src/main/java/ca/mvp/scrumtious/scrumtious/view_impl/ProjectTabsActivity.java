@@ -17,9 +17,7 @@ import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 public class ProjectTabsActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     private ViewPager mViewPager;
-
     private ImageButton logoutBtn;
 
 
@@ -49,6 +47,13 @@ public class ProjectTabsActivity extends AppCompatActivity {
 
     }
 
+    // Should ask to logout user
+    @Override
+    public void onBackPressed() {
+        AuthenticationHelper.logout(ProjectTabsActivity.this);
+    }
+
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -61,10 +66,12 @@ public class ProjectTabsActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
 
             switch(position){
+                // Project List Tab
                 case 0:
                     ProjectListFragment projectListFragment = new ProjectListFragment();
                     return projectListFragment;
 
+                    // Invitations Tab
                 case 1:
                     InvitationsFragment invitationsFragment = new InvitationsFragment();
                     return invitationsFragment;
@@ -77,7 +84,7 @@ public class ProjectTabsActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
+            // Show 2 total tabs
             return 2;
         }
 
@@ -96,11 +103,4 @@ public class ProjectTabsActivity extends AppCompatActivity {
             }
         }
     }
-
-    // Should ask to log user out
-    @Override
-    public void onBackPressed() {
-        AuthenticationHelper.logout(ProjectTabsActivity.this);
-    }
-
 }

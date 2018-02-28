@@ -33,20 +33,21 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class CreateSprintActivity extends AppCompatActivity implements CreateSprintViewInt {
 
-    private EditText titleField, descriptionField;
-    private TextInputLayout titleFieldLayout, descriptionFieldLayout;
-    private ProgressDialog createSprintProgressDialog;
     private CreateSprintPresenter createSprintPresenter;
-
-    private TextView displayStartDate;
-    private TextView displayEndDate;
-    private DatePickerDialog.OnDateSetListener startDateSetListner;
-    private DatePickerDialog.OnDateSetListener endDateSetListner;
-
-    private ImageButton logoutBtn;
-    private boolean alreadyDeleted;
     private String pid;
+    private ValueEventListener projectListener;
+
+    private EditText titleField, descriptionField;
+    private TextView displayStartDate, displayEndDate;
+    private TextInputLayout titleFieldLayout, descriptionFieldLayout;
+    private DatePickerDialog startDialog, endDialog;
+    private DatePickerDialog.OnDateSetListener startDateSetListener;
+    private DatePickerDialog.OnDateSetListener endDateSetListener;
+    private ProgressDialog createSprintProgressDialog;
+    private ImageButton logoutBtn;
     private android.support.v7.widget.Toolbar toolbar;
+
+    private boolean projectAlreadyDeleted;
 
     private int[] startYear = new int[1];
     private int[] startMonth = new int[1];
@@ -57,15 +58,19 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     private long startDate;
     private long endDate;
 
-    private ValueEventListener projectListener;
+    private int defaultStartYear, defaultStartMonth, defaultStartDay;
+    private int defaultEndYear, defaultEndMonth, defaultEndDay;
+
+    private boolean choseStart = false;
+    private boolean choseEnd = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_sprint);
 
-        //Setting the variables
-        alreadyDeleted = false;
+        // Setting the flag
+        projectAlreadyDeleted = false;
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
@@ -95,20 +100,21 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
     }
 
-    // Setup listeners for removal
+    // Setup listeners
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
     }
 
-    // Remove listeners for removal
+    // Remove listeners
     @Override
     protected void onPause() {
         ListenerHelper.removeProjectDeletedListener(projectListener, pid);
         super.onPause();
     }
 
+    @Override
     public void onBackPressed(){
 
         if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0) {
@@ -132,6 +138,37 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         }
 
     }
+
+    // Project was deleted by another user, or user was removed from the project
+    @Override
+    public void onProjectDeleted() {
+
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!projectAlreadyDeleted) {
+            projectAlreadyDeleted = true;
+
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(CreateSprintActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onSprintDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
+    }
     
     public void setupFormWatcher(){
         titleField = (EditText)findViewById(R.id.createSprintTitleField);
@@ -142,27 +179,46 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         titleFieldLayout = (TextInputLayout)findViewById(R.id.createSprintTitleFieldLayout);
         descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createSprintDescFieldLayout);
 
-
         titleFieldLayout.setError(null);
         descriptionFieldLayout.setError(null);
 
         titleFieldLayout.setErrorEnabled(true);
         descriptionFieldLayout.setErrorEnabled(true);
 
+        // Current year, month, day for start date
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        // Makes sure it's set to proper date
+        Calendar startCalender = new GregorianCalendar(year, month, day);
+        defaultStartYear = startCalender.get(Calendar.YEAR);
+        defaultStartMonth = startCalender.get(Calendar.MONTH);
+        defaultStartDay = startCalender.get(Calendar.DAY_OF_MONTH);
+
+        // Current year, month, day for end date
+        cal = Calendar.getInstance();
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+
+        // Makes sure it's set to proper date
+        Calendar endCalender = new GregorianCalendar(year, month, day);
+        defaultEndYear = endCalender.get(Calendar.YEAR);
+        defaultEndMonth = endCalender.get(Calendar.MONTH);
+        defaultEndDay = endCalender.get(Calendar.DAY_OF_MONTH);
 
         displayStartDate.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog startDialog = new DatePickerDialog(
+
+                startDialog = new DatePickerDialog(
                         CreateSprintActivity.this,
                         android.R.style.Theme_Holo_Dialog_MinWidth,
-                        startDateSetListner,
-                        year,month,day
+                        startDateSetListener,
+                        defaultStartYear, defaultStartMonth, defaultStartDay
                 );
                 startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 startDialog.show();
@@ -172,22 +228,19 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         displayEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog endDialog = new DatePickerDialog(
+
+                endDialog = new DatePickerDialog(
                         CreateSprintActivity.this,
                         android.R.style.Theme_Holo_Dialog_MinWidth,
-                        endDateSetListner,
-                        year,month,day
+                        endDateSetListener,
+                        defaultEndYear, defaultEndMonth, defaultEndDay
                 );
                 endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 endDialog.show();
             }
         });
 
-        startDateSetListner = new DatePickerDialog.OnDateSetListener() {
+        startDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
@@ -196,11 +249,18 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
                 startYear[0] = year;
                 startMonth[0] = month;
                 startDay[0] = day;
-                Calendar startCalender = new GregorianCalendar(startYear[0],startMonth[0],startDay[0]);
+                Calendar startCalender = new GregorianCalendar(startYear[0],startMonth[0] - 1,startDay[0]);
                 startDate = startCalender.getTimeInMillis();
+
+                // Updates it so that opening the dialog picker again starts user at the previously chosen date
+                defaultStartYear = year;
+                defaultStartMonth = month - 1;
+                defaultStartDay = day;
+
+                choseStart = true;
             }
         };
-        endDateSetListner = new DatePickerDialog.OnDateSetListener() {
+        endDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
@@ -209,8 +269,15 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
                 endYear[0] = year;
                 endMonth[0] = month;
                 endDay[0] = day;
-                Calendar endCalender = new GregorianCalendar(endYear[0],endMonth[0],endDay[0]);
+                Calendar endCalender = new GregorianCalendar(endYear[0],endMonth[0] - 1,endDay[0]);
                 endDate = endCalender.getTimeInMillis();
+
+                // Updates it so that opening the dialog picker again starts user at the previously chosen date
+                defaultEndYear = year;
+                defaultEndMonth = month - 1;
+                defaultEndDay = day;
+
+                choseEnd = true;
             }
         };
 
@@ -235,7 +302,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
                 if((titleFieldText == null) || (titleFieldText.trim().length() <= 0)){
                     titleFieldLayout.setErrorEnabled(true);
                     titleFieldLayout.setError("Please enter a title for your sprint.");
-                }else if(titleFieldText.trim().length() > 28){
+                }else if(titleFieldText.trim().length() > 18){
                     titleFieldLayout.setErrorEnabled(true);
                     titleFieldLayout.setError("Sprint name is too long.");
                 }else{
@@ -290,17 +357,18 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
     }
 
-    public void onCreateSprint(View view){
-        if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()){
+    public void onClickCreateSprint(View view){
+        if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() || !choseStart || !choseEnd){
             showMessage("Cannot create sprint until fields are filled out properly.", false);
         }
         else if(startDate>=endDate){
-            showMessage("Cannot have start date on, or after end date.", false);
+            showMessage("Cannot have start date after end date.", false);
         }
         else{
             String name = titleField.getText().toString().trim();
             String desc = descriptionField.getText().toString().trim();
 
+            // Creates a progress dialog to let the user know that the sprint is being created
             createSprintProgressDialog = new ProgressDialog(this);
             createSprintProgressDialog.setTitle("Create Sprint");
             createSprintProgressDialog.setCancelable(false);
@@ -308,11 +376,13 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             createSprintProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             createSprintProgressDialog.show();
 
-            createSprintPresenter.onCheckConflictingSprintDates(name,desc,startDate,endDate);
+            // Check to make sure that dates don't overlap first
+            createSprintPresenter.checkConflictingSprintDates(name,desc,startDate,endDate);
 
         }
     }
 
+    // Sprint has been created, go back
     public void onSuccessfulCreateSprint(){
         if(createSprintProgressDialog != null && createSprintProgressDialog.isShowing()){
             createSprintProgressDialog.dismiss();
@@ -322,35 +392,6 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         intent.putExtra("projectId", pid);
         startActivity(intent);
         finish();
-    }
-
-    public void onProjectDeleted() {
-
-        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
-        if (!alreadyDeleted) {
-            alreadyDeleted = true;
-
-            // Return to project list screen and make sure we can't go back by clearing the task stack
-            Intent intent = new Intent(CreateSprintActivity.this, ProjectTabsActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    @Override
-    public void onSprintDeleted() {
-        // Needs to be here even if not implemented
-    }
-
-    @Override
-    public void onUserStoryDeleted() {
-        // Needs to be here even if not implemented
-    }
-
-    @Override
-    public void onTaskDeleted() {
-        // Needs to be here even if not implemented
     }
 
 

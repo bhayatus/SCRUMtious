@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.renderscript.Sampler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,14 +17,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
@@ -38,28 +35,26 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class IndividualProjectActivity extends AppCompatActivity implements IndividualProjectViewInt {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private ImageButton deleteBtn, logoutBtn;
+    private IndividualProjectPresenterInt individualProjectPresenter;
     private String pid;
-
-    private ProgressDialog deleteProjectProgressDialog;
-
-    private boolean alreadyDeleted;
+    private ValueEventListener projectListener;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    private ImageButton deleteBtn, logoutBtn;
+    private ProgressDialog deleteProjectProgressDialog;
 
-    private IndividualProjectPresenterInt individualProjectPresenter;
+    private boolean projectAlreadyDeleted;
 
-    private ValueEventListener projectListener;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_project);
 
-        alreadyDeleted = false; // Project hasn't been deleted yet
+         projectAlreadyDeleted = false; // Project hasn't been deleted yet
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
@@ -103,7 +98,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                         mDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
-                            // User chooses Project Overview in menu, do nothing as we are already there
+                            // User chooses project overview in menu, do nothing as we are already there
                             case R.id.nav_overview:
                                 break;
                             // User chooses product backlog, go to it
@@ -124,7 +119,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
                                 break;
 
-                            // User chooses to view sprints
+                            // User chooses to view sprints, go there
                             case R.id.nav_sprints:
 
                                 // Allow nav drawer to close smoothly before switching activities
@@ -161,21 +156,27 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    // Setup listeners for removal
+    // Setup listeners
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
     }
 
-    // Remove listeners for removal
+    // Remove listeners
     @Override
     protected void onPause() {
         ListenerHelper.removeProjectDeletedListener(projectListener, pid);
         super.onPause();
     }
 
-    // Used when the menu icon is clicked to open the navigation drawer
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -188,27 +189,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         return super.onOptionsItemSelected(item);
     }
 
-
-    // Project no longer exists due to user deleting it normally, go back
-    public void onSuccessfulDeletion() {
-
-        if (deleteProjectProgressDialog != null && deleteProjectProgressDialog.isShowing()){
-            deleteProjectProgressDialog.dismiss();
-        }
-
-        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
-        if (!alreadyDeleted) {
-            alreadyDeleted = true;
-            // Return to project list screen and make sure we can't go back by clearing the task stack
-            Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    // Project no longer exists due to it being deleted by another user, or the user is no longer
-    // part of the project due to being removed
+    // Project was deleted by another user, or user was removed from the project
     @Override
     public void onProjectDeleted() {
         onSuccessfulDeletion();
@@ -229,6 +210,28 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         // Needs to be here even if not implemented
     }
 
+
+    // Project no longer exists due to user deleting it normally, go back
+    public void onSuccessfulDeletion() {
+
+        if (deleteProjectProgressDialog != null && deleteProjectProgressDialog.isShowing()){
+            deleteProjectProgressDialog.dismiss();
+        }
+
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!projectAlreadyDeleted) {
+            projectAlreadyDeleted = true;
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+
+    // Called when current user isn't the owner of the project, they should not be
+    // able to see the delete project button
     public void setDeleteInvisible(){
         deleteBtn.setVisibility(View.GONE);
     }
@@ -250,7 +253,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         }
     }
 
-    // Delete button on top right is clicked
+    // Delete project button is clicked
     public void onClickDelete(View view) {
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
@@ -261,7 +264,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Validate password and delete project
+                        // Validate password before deleting
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
                         String password = passwordET.getText().toString().trim();
 
@@ -284,7 +287,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                 deleteProjectProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deleteProjectProgressDialog.show();
 
-                                // Password is of valid type, send it
+                                // Password is of valid type, send it to backend to validate
                                 individualProjectPresenter.validatePassword(password);
                             }
                         }
@@ -309,6 +312,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         @Override
         public Fragment getItem(int position) {
             switch(position){
+                // Project Overview Tab
                 case 0:
                     Bundle data = new Bundle();
                     data.putString("projectId", pid);
@@ -316,6 +320,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                     projectOverviewFragment.setArguments(data);
                     return projectOverviewFragment;
 
+                    // Members Tab
                 case 1:
                     data = new Bundle();
                     data.putString("projectId", pid);
@@ -329,7 +334,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
+            // Show 2 total tabs
             return 2;
         }
 
@@ -347,11 +352,5 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                     return null;
             }
         }
-    }
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

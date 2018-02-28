@@ -32,16 +32,16 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class BacklogFragment extends Fragment implements BacklogViewInt, Serializable {
 
-
+    private BacklogPresenterInt backlogPresenter;
     private String pid;
 
-    private ProgressDialog deletingUserStoryDialog;
-    private BacklogPresenterInt backlogPresenter;
     private RecyclerView backlogList;
     private FirebaseRecyclerAdapter<UserStory, BacklogViewHolder> backlogAdapter;
-    private LinearLayout emptyStateView;
 
     private SendToFragment sendToFragment;
+    private LinearLayout emptyStateView;
+    private ProgressDialog deletingUserStoryDialog;
+
 
     public BacklogFragment() {
         // Required empty public constructor
@@ -78,17 +78,18 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
         return view;
     }
 
+
     private void setupRecyclerView(){
 
         backlogList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        backlogAdapter = backlogPresenter.setupInProgressAdapter(backlogList);
+        backlogAdapter = backlogPresenter.setupBacklogAdapter();
         backlogList.setAdapter(backlogAdapter);
 
     }
 
     // Show either the list of user stories, or the empty view
     @Override
-    public void setView(){
+    public void setEmptyStateView(){
         if(backlogAdapter.getItemCount() == 0){
             emptyStateView.setVisibility(View.VISIBLE);
             backlogList.setVisibility(View.GONE);
@@ -117,7 +118,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Change completed status of user story
+                            // Change status to completed
                             backlogPresenter.changeCompletedStatus(usid, newStatus);
                         }
                     })
@@ -136,7 +137,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Change completed status of user story
+                            // Change completed status of user story to in progress
                             backlogPresenter.changeCompletedStatus(usid, newStatus);
                         }
                     })
@@ -152,6 +153,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
 
     }
 
+    // User wants to delete the user story
     @Override
     public void onClickDeleteUserStory(final String usid) {
         LayoutInflater inflater = (this).getLayoutInflater();
@@ -163,7 +165,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Validate password and delete project
+                        // Validate password first
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
                         String password = passwordET.getText().toString().trim();
 
@@ -187,6 +189,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
                                 deletingUserStoryDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deletingUserStoryDialog.show();
 
+                                // Send password to backend, to validate before deleting
                                 backlogPresenter.validatePassword(password, usid);
                             }
                         }
@@ -228,7 +231,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
 
     // Open up the dialog fragment to choose which sprint to assign this user story to
     @Override
-    public void onLongClick(String usid){
+    public void onLongClickUserStory(String usid){
 
         sendToFragment = SendToFragment.newInstance(pid,usid);
         sendToFragment.setBacklogView(this);
@@ -262,6 +265,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
         // Populates each row of the recycler view with the user story details
         public void setDetails(String name, String points, String assignedToName){
             nameView.setText(name);
+
             // If only 1 point, don't display as plural
             if (Integer.parseInt(points) == 1){
                 pointsView.setText(points + " point");
@@ -287,14 +291,17 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
             this.delete.setVisibility(View.GONE);
         }
 
-
+        // Called when user story isn't assigned to a sprint
         public void setAssignedToLayoutInvisible(){
             assignedToLayout.setVisibility(View.GONE);
         }
 
+        // Called when user story isn't assigned to a sprint
         public void setSprintIconInvisible(){
             sprintIcon.setVisibility(View.GONE);
         }
+
+        // Called when user story is assigned to a sprint
         public void setSprintIconVisible(){
             sprintIcon.setVisibility(View.VISIBLE);
         }

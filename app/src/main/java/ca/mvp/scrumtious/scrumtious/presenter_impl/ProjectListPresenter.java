@@ -18,7 +18,7 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment;
 public class ProjectListPresenter implements ProjectListPresenterInt {
     private ProjectListViewInt projectListView;
     private FirebaseAuth mAuth;
-    private DatabaseReference rootRef;
+    private DatabaseReference mRef;
     private Query mQuery;
 
     public ProjectListPresenter(ProjectListViewInt projectListView){
@@ -27,18 +27,18 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
     }
 
     @Override
-    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupProjectsAdapter(final RecyclerView projectList, final ProgressDialog progressDialog, boolean onlyUsers) {
+    public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupProjectListAdapter(final ProgressDialog progressDialog, boolean ownedOnly) {
         mAuth = FirebaseAuth.getInstance();
-        rootRef = FirebaseDatabase.getInstance().getReference();
+        mRef = FirebaseDatabase.getInstance().getReference();
         String userID = mAuth.getCurrentUser().getUid();
 
         // User only wants to view the projects that they own
-        if (onlyUsers) {
-            mQuery = rootRef.child("projects").orderByChild("projectOwnerUid").equalTo(userID);
+        if (ownedOnly) {
+            mQuery = mRef.child("projects").orderByChild("projectOwnerUid").equalTo(userID);
         }
         // User wants to see all projects that they are part of
         else{
-            mQuery = rootRef.child("projects").orderByChild(userID).equalTo("member");
+            mQuery = mRef.child("projects").orderByChild(userID).equalTo("member");
         }
 
         FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> projectListAdapter
@@ -77,7 +77,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
             @Override
             public void onDataChanged() {
 
-                projectListView.setView();
+                projectListView.setEmptyStateView();
 
                 if (progressDialog != null && progressDialog.isShowing()){
                     progressDialog.dismiss();

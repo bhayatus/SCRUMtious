@@ -29,17 +29,15 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 public class ProjectListFragment extends Fragment implements ProjectListViewInt {
 
     private ProjectListPresenterInt projectListPresenterInt;
-
-    private TextView ownedProjectsText;
-    private RecyclerView projectList;
-    private ProgressDialog loadingProjectsDialog;
-    private Switch showOnlyMyProjects;
-    private Button addProjectBtn;
-    private LinearLayout emptyStateView;
-
     private FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> allProjectsAdapter;
     private FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> myProjectsAdapter;
 
+    private LinearLayout emptyStateView;
+    private TextView ownedProjectsText;
+    private Switch showOnlyMyProjects;
+    private Button addProjectBtn;
+    private RecyclerView projectList;
+    private ProgressDialog loadingProjectsDialog;
 
     public ProjectListFragment() {
         // Required empty public constructor
@@ -78,7 +76,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
     private void setupRecyclerView(){
 
-        // Creates a dialog that appears to tell the user that the sign in is occurring
+        // Creates a dialog that appears to tell the user that projects are being loaded
         loadingProjectsDialog = new ProgressDialog(getActivity());
         loadingProjectsDialog.setTitle("Load Projects");
         loadingProjectsDialog.setCancelable(false);
@@ -88,9 +86,13 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
         projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        myProjectsAdapter = projectListPresenterInt.setupProjectsAdapter(projectList, loadingProjectsDialog, true);
-        allProjectsAdapter = projectListPresenterInt.setupProjectsAdapter(projectList, loadingProjectsDialog, false);
+        // The adapter that displays only projects owned by the user
+        myProjectsAdapter = projectListPresenterInt.setupProjectListAdapter(loadingProjectsDialog, true);
 
+        // The adapter that displays all projects that the user is in
+        allProjectsAdapter = projectListPresenterInt.setupProjectListAdapter(loadingProjectsDialog, false);
+
+        // Show all projects by default
         projectList.setAdapter(allProjectsAdapter);
 
         showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -102,6 +104,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
                     projectList.setAdapter(myProjectsAdapter);
                 }
+                // User wants to see all projects
                 else{
                     projectList.setAdapter(allProjectsAdapter);
                 }
@@ -111,7 +114,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
     // Switches between empty state screen and regular adapters based on item count being empty or not
     @Override
-    public void setView(){
+    public void setEmptyStateView(){
         if (allProjectsAdapter.getItemCount() == 0 && myProjectsAdapter.getItemCount() == 0){
             emptyStateView.setVisibility(View.VISIBLE);
             showOnlyMyProjects.setVisibility(View.GONE);
@@ -126,6 +129,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
         }
     }
 
+    // User clicked on a specific project
     @Override
     public void goToProjectScreen(String pid) {
         Intent intent = new Intent(getActivity(), IndividualProjectActivity.class);
@@ -134,6 +138,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     }
 
 
+    // User clicked on the add project button, go to the screen
     public void onClickAddNewProject(View view){
         Intent intent = new Intent(this.getActivity(), CreateProjectActivity.class);
         this.getActivity().startActivity(intent);
@@ -154,6 +159,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
 
     }
 
+    // Viewholder class to display the project list
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView titleView, ownerEmailAddressView, creationDateView, numMembersView, numSprintsView;

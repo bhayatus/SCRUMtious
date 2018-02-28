@@ -35,25 +35,25 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 public class ProductBacklogActivity extends AppCompatActivity implements ProductBacklogViewInt {
 
     private ProductBacklogPresenterInt productBacklogPresenter;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private String pid;
-    private ViewPager mViewPager;
+    private ValueEventListener projectListener;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
-
-    private boolean alreadyDeleted;
-
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
     private ImageButton logoutBtn, helpBtn;
 
-    private ValueEventListener projectListener;
+    private boolean projectAlreadyDeleted;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_backlog);
 
-        alreadyDeleted = false; // Project is not deleted at this point
+        projectAlreadyDeleted = false; // Project is not deleted at this point
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
@@ -67,6 +67,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
             }
         });
 
+        // Displays a help popup
         helpBtn = findViewById(R.id.productBacklogHelpBtn);
         helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +119,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                         mDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
-                            // User chooses Project Overview in menu, go there
+                            // User chooses project overview in menu, go there
                             case R.id.nav_overview:
                                 // Allow nav drawer to close smoothly before switching activities
                                 Handler handler = new Handler();
@@ -139,7 +140,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                             case R.id.nav_product_backlog:
                                 break;
 
-                            // User chooses to view sprints
+                            // User chooses to view sprints, go there
                             case R.id.nav_sprints:
                                 handler = new Handler();
                                 delayMilliseconds = 250;
@@ -173,21 +174,20 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
     }
 
-    // Setup listeners for removal
+    // Setup listeners
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
     }
 
-    // Remove listeners for removal
+    // Remove listeners
     @Override
     protected void onPause() {
         ListenerHelper.removeProjectDeletedListener(projectListener, pid);
         super.onPause();
     }
 
-    // Used when the menu icon is clicked to open the navigation drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -200,19 +200,21 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickAddUserStory(View view){
-        Intent intent = new Intent(ProductBacklogActivity.this, CreateUserStoryActivity.class);
-        intent.putExtra("projectId", pid);
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
-    // If project no longer exists while we are on this screen, must return to the project list screen
+    // Project was deleted by another user, or user was removed from the project
     @Override
     public void onProjectDeleted() {
 
         // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
-        if (!alreadyDeleted) {
-            alreadyDeleted = true;
+        if (!projectAlreadyDeleted) {
+            projectAlreadyDeleted = true;
 
             // Return to project list screen, and clear the task stack so we can't go back
             Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
@@ -237,6 +239,28 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         // Needs to be here even if not implemented
     }
 
+    // User clicked the add new user story button, go to that screen
+    public void onClickAddUserStory(View view){
+        Intent intent = new Intent(ProductBacklogActivity.this, CreateUserStoryActivity.class);
+        intent.putExtra("projectId", pid);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showMessage(String message, boolean showAsToast) {
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
+
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -246,6 +270,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         @Override
         public Fragment getItem(int position) {
             switch(position){
+                // In Progress Tab
                 case 0:
                     Bundle data = new Bundle();
                     data.putString("projectId", pid);
@@ -259,6 +284,8 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                     BacklogFragment pbInProgressFragment = new BacklogFragment();
                     pbInProgressFragment.setArguments(data);
                     return pbInProgressFragment;
+
+                // Completed Tab
                 case 1:
                     data = new Bundle();
                     data.putString("projectId", pid);
@@ -279,7 +306,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
+            // Show 2 total tabs
             return 2;
         }
 
@@ -297,28 +324,5 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                     return null;
             }
         }
-    }
-
-    @Override
-    public void showMessage(String message, boolean showAsToast) {
-
-        // Show message in toast so it persists across activity transitions
-        if (showAsToast){
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        }
-
-        else {
-            // Call the utils class method to handle making the snackbar
-            SnackbarHelper.showSnackbar(this, message);
-        }
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 }

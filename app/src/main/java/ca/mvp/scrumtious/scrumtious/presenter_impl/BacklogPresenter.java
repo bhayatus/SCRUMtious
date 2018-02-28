@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.sql.Ref;
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
@@ -39,7 +41,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
     private final String sprint_completed = "SPRINT_COMPLETED";
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference rootRef;
+    private DatabaseReference mRef;
     private Query mQuery;
 
     public BacklogPresenter(BacklogViewInt backlogView, String pid, String type, String sprintId){
@@ -51,8 +53,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
 
     @Override
-    public FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupInProgressAdapter(RecyclerView inProgressList) {
-        rootRef = FirebaseDatabase.getInstance().getReference();
+    public FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupBacklogAdapter() {
+        mRef = FirebaseDatabase.getInstance().getReference();
 
         String typeQuery = "";
 
@@ -74,17 +76,17 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
         // Dealing with sprint backlog
         if (type.equals(sprint_completed) || type.equals(sprint_in_progress)) {
-            mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
+            mQuery = mRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
                     .equalTo(typeQuery);
         }
 
         // Product backlog situation
         if (type.equals(pb_completed) || type.equals(pb_in_progress)){
-            mQuery = rootRef.child("projects").child(pid).child("user_stories").orderByChild("completed")
+            mQuery = mRef.child("projects").child(pid).child("user_stories").orderByChild("completed")
                     .equalTo(typeQuery);
         }
 
-        FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> inProgressListAdapter
+        FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> backlogListAdapter
                 = new FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder>(
                 UserStory.class,
                 R.layout.user_story_row,
@@ -93,19 +95,18 @@ public class BacklogPresenter implements BacklogPresenterInt {
         ) {
 
 
-
             @Override
             protected void populateViewHolder(final BacklogFragment.BacklogViewHolder viewHolder, UserStory model, int position) {
 
                 String nameOfSprint = model.getAssignedToName();
                 String assignedToName;
 
-                // Not assigned to a sprint, don't bother showing assigned to layout
+                // Not assigned to a sprint, don't bother showing assigned to icon
                 if (nameOfSprint.equals("")){
                     assignedToName = "Not yet assigned to a sprint";
                     viewHolder.setSprintIconInvisible();
                 }
-                // User story in a sprint, show the sprint assigned to in the layout
+                // User story in a sprint, show the sprint it is assigned to
                 else {
                     assignedToName = "Assigned to: " + nameOfSprint;
                     viewHolder.setSprintIconVisible();
@@ -125,7 +126,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 // The id of the user story
                 final String usid = getRef(position).getKey().toString();
 
-                // Show as in progress with icon
+                // Show as in progress with image
                 if (type.equals("PB_IN_PROGRESS") || type.equals("SPRINT_IN_PROGRESS")) {
                     completed.setImageResource(R.drawable.ic_checkbox_not_checked);
                 }
@@ -194,7 +195,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        backlogView.onLongClick(usid);
+                        backlogView.onLongClickUserStory(usid);
                         return false;
                     }
                 });
@@ -202,12 +203,12 @@ public class BacklogPresenter implements BacklogPresenterInt {
             }
             @Override
             public void onDataChanged() {
-                backlogView.setView();
+                backlogView.setEmptyStateView();
             }
 
 
         };
-        return inProgressListAdapter;
+        return backlogListAdapter;
     }
 
     // Check the group owner's password before deleting user story
@@ -242,9 +243,9 @@ public class BacklogPresenter implements BacklogPresenterInt {
         final String userStoryId = usid;
 
         mDatabase = FirebaseDatabase.getInstance();
-        rootRef = mDatabase.getReference();
+        mRef = mDatabase.getReference();
         // Gets the current user story
-        rootRef.child("projects").child(pid).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef.child("projects").child(pid).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get the assigned to variable, whether it be the product backlog or a specific sprint backlog
@@ -257,7 +258,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completed", completed);
                 statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "assignedTo_completed", assignedTo_completed);
 
-                rootRef.updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener() {
+                mRef.updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
 
@@ -311,8 +312,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
     @Override
     public void deleteUserStory(String usid) {
         mDatabase = FirebaseDatabase.getInstance();
-        rootRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
-        rootRef.child(usid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
+        mRef.child(usid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully

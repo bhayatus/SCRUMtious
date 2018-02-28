@@ -24,14 +24,14 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 public class CreateProjectActivity extends AppCompatActivity implements
         CreateProjectViewInt {
 
-    private EditText titleField, descriptionField;
-    private TextInputLayout titleFieldLayout, descriptionFieldLayout;
-    private ProgressDialog createProjectProgressDialog;
     private CreateProjectPresenter createProjectPresenter;
 
+    private EditText titleField, descriptionField;
+    private TextInputLayout titleFieldLayout, descriptionFieldLayout;
     private ImageButton logoutBtn;
-
     private android.support.v7.widget.Toolbar toolbar;
+    private ProgressDialog createProjectProgressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -58,6 +58,29 @@ public class CreateProjectActivity extends AppCompatActivity implements
         });
 
         setupFormWatcher();
+    }
+
+
+    @Override
+    public void onBackPressed(){
+
+        if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0){
+            new AlertDialog.Builder(this)
+                    .setTitle("Discard Project?")
+                    .setMessage("Are you sure you to discard this new project?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(CreateProjectActivity.this, ProjectTabsActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }else {
+            super.onBackPressed();
+        }
     }
 
 
@@ -161,6 +184,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
         }
     }
 
+    // User clicks on create project button
     public void onClickCreateProjectSubmit(View view){
         String title = titleField.getText().toString().trim();
         String description = descriptionField.getText().toString().trim();
@@ -171,7 +195,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
         else {
 
-            // Creates a dialog that appears to tell the user that creating the project is occurring
+            // Creates a dialog that appears to tell the user project creation is occurring
             createProjectProgressDialog = new ProgressDialog(this);
             createProjectProgressDialog.setTitle("Create Project");
             createProjectProgressDialog.setCancelable(false);
@@ -183,29 +207,6 @@ public class CreateProjectActivity extends AppCompatActivity implements
             createProjectPresenter.addProjectToDatabase(title, description);
         }
     }
-
-    @Override
-    public void onBackPressed(){
-
-        if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0){
-            new AlertDialog.Builder(this)
-                    .setTitle("Discard Project?")
-                    .setMessage("Are you sure you to discard this new project?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(CreateProjectActivity.this, ProjectTabsActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        }else {
-            super.onBackPressed();
-        }
-    }
-
 
 }
 

@@ -30,7 +30,7 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     // Grabs the info from the database
     @Override
-    public void getDetails() {
+    public void getProjectDetails() {
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects").child(pid);
@@ -45,7 +45,7 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
                     desc = dataSnapshot.child("projectDesc").getValue().toString();
                 }
 
-                projectOverviewView.setDetails(title, desc);
+                projectOverviewView.setProjectDetails(title, desc);
             }
 
             @Override

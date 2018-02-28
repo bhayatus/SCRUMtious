@@ -6,5 +6,5 @@ public interface InvitationsViewInt {
     void onClickAccept(String projectId, String inviteId);
     void onClickDecline(String inviteId);
     void showMessage(String message, boolean showAsToast);
-    void setView();
+    void setEmptyStateView();
 }

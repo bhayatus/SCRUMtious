@@ -1,5 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.interfaces.presenter_int;
 
 public interface CreateSprintPresenterInt {
-    void onCheckConflictingSprintDates(String sprintName, String sprintDesc, long sprintStartDate, long sprintEndDate);
+    void checkConflictingSprintDates(String sprintName, String sprintDesc, long sprintStartDate, long sprintEndDate);
 }

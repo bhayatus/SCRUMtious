@@ -10,16 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateUserStoryViewInt;
@@ -30,26 +25,24 @@ import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class CreateUserStoryActivity extends AppCompatActivity implements CreateUserStoryViewInt {
 
+    private CreateUserStoryPresenterInt createUserStoryPresenter;
+    private String pid;
+    private ValueEventListener projectListener;
+
     private EditText titleField, descriptionField, pointField;
     private TextInputLayout titleFieldLayout, descriptionFieldLayout, pointFieldLayout;
     private ImageButton logoutBtn;
-
-    private CreateUserStoryPresenterInt createUserStoryPresenter;
-    private String pid;
+    private Toolbar toolbar;
     private ProgressDialog createUserStoryProgressDialog;
 
-    private boolean alreadyDeleted;
-
-    private Toolbar toolbar;
-
-    private ValueEventListener projectListener;
+    private boolean projectAlreadyDeleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_story);
 
-        alreadyDeleted = false; // Project isn't deleted at this point
+        projectAlreadyDeleted = false; // Project isn't deleted at this point
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
@@ -77,14 +70,14 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         setupFormWatcher();
     }
 
-    // Setup listeners for removal
+    // Setup listeners
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
     }
 
-    // Remove listeners for removal
+    // Remove listeners
     @Override
     protected void onPause() {
         ListenerHelper.removeProjectDeletedListener(projectListener, pid);
@@ -113,6 +106,37 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         }else {
             super.onBackPressed();
         }
+    }
+
+    // Project was deleted by another user, or user was removed from the project
+    @Override
+    public void onProjectDeleted() {
+
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!projectAlreadyDeleted) {
+            projectAlreadyDeleted = true;
+
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(CreateUserStoryActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onSprintDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onUserStoryDeleted() {
+        // Needs to be here even if not implemented
+    }
+
+    @Override
+    public void onTaskDeleted() {
+        // Needs to be here even if not implemented
     }
 
     public void setupFormWatcher() {
@@ -243,6 +267,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
     public void onClickCreateUserStory(View view) {
 
+        // If any of the errors are showing, cannot proceed
         if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()
                 || pointFieldLayout.isErrorEnabled()) {
             showMessage("Cannot create user story until fields are filled out properly.", false);
@@ -252,7 +277,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
             String desc = descriptionField.getText().toString().trim();
             int points = Integer.valueOf(pointField.getText().toString().trim());
 
-            // Creates a dialog that appears to tell the user that creating the user story is occurring
+            // Creates a dialog that appears to tell the user that the user story is being created
             createUserStoryProgressDialog = new ProgressDialog(this);
             createUserStoryProgressDialog.setTitle("Create User Story");
             createUserStoryProgressDialog.setCancelable(false);
@@ -264,6 +289,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         }
     }
 
+    // User story has been created, return to product backlog
     @Override
     public void onSuccessfulCreateUserStory() {
         if (createUserStoryProgressDialog != null && createUserStoryProgressDialog.isShowing()) {
@@ -273,36 +299,5 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         intent.putExtra("projectId", pid);
         startActivity(intent);
         finish();
-    }
-
-    // Project no longer exists to user, must go back to project list screen
-    @Override
-    public void onProjectDeleted() {
-
-        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
-        if (!alreadyDeleted) {
-            alreadyDeleted = true;
-
-            // Return to project list screen and make sure we can't go back by clearing the task stack
-            Intent intent = new Intent(CreateUserStoryActivity.this, ProjectTabsActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    @Override
-    public void onSprintDeleted() {
-        // Needs to be here even if not implemented
-    }
-
-    @Override
-    public void onUserStoryDeleted() {
-        // Needs to be here even if not implemented
-    }
-
-    @Override
-    public void onTaskDeleted() {
-        // Needs to be here even if not implemented
     }
 }

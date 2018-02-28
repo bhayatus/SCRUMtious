@@ -8,5 +8,5 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 public interface SprintListPresenterInt {
 
     FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter
-            (RecyclerView sprintList, String sortBy);
+            (String sortBy);
 }

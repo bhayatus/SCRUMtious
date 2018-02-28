@@ -9,8 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +23,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        // Grabs the shared preferences file
         SharedPreferences sharedPreferences = this.getSharedPreferences(
                 getString(R.string.shared_preferences), Context.MODE_PRIVATE);
 
@@ -32,6 +31,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         String uid = sharedPreferences.getString("emailAddress", "");
         String password = sharedPreferences.getString("password", "");
         final int loadTimeMilliseconds = 1750;
+
         // User was logged in
         if (!uid.equals("")){
             // Attempt sign in
@@ -41,7 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     // Sign in succeeded, go to project list screen
                     if (task.isSuccessful()){
-                        // User is already logged in, proceed
+                        // User was logged in, proceed
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override

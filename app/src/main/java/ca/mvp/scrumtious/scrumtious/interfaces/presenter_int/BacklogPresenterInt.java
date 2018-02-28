@@ -6,8 +6,7 @@ import ca.mvp.scrumtious.scrumtious.model.UserStory;
 import ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment;
 
 public interface BacklogPresenterInt {
-    FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupInProgressAdapter
-            (RecyclerView memberList);
+    FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupBacklogAdapter();
 
     void changeCompletedStatus(String usid, boolean newStatus);
     void deleteUserStory(String usid);

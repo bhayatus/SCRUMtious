@@ -35,7 +35,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         pid = getArguments().getString("projectId");
 
         this.projectOverviewPresenter = new ProjectOverviewPresenter(this, pid);
-        projectOverviewPresenter.getDetails();
+        projectOverviewPresenter.getProjectDetails();
 
     }
 
@@ -52,8 +52,9 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         return view;
     }
 
+    // Set the provided details into the respective views
     @Override
-    public void setDetails(String titleViewText, String descriptionViewText) {
+    public void setProjectDetails(String titleViewText, String descriptionViewText) {
 
         projectTitle.setText(titleViewText);
         projectDescription.setText(descriptionViewText);

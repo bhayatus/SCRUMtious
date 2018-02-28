@@ -22,17 +22,48 @@ import ca.mvp.scrumtious.scrumtious.utils.UserInputValidator;
 
 public class SignupActivity extends AppCompatActivity implements SignupViewInt {
 
+    private SignupPresenter signUpPresenter;
+
     private EditText emailField, passwordField, retypePasswordField;
     private TextInputLayout emailFieldLayout, passwordFieldLayout, retypePasswordFieldLayout;
-
     private ProgressDialog signingInProgressDialog;
-    private SignupPresenter signUpPresenter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         signUpPresenter = new SignupPresenter(this);
         setupFormWatcher();
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        // Make sure user doesn't accidentally leave the screen with text filled in
+        if(emailField.getText().toString().trim().length() > 0 ||
+                passwordField.getText().toString().trim().length() > 0 ||
+                retypePasswordField.getText().toString().trim().length() > 0){
+
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
+                    .setTitle("Leave The Screen?")
+                    .setMessage("Are you sure you want to go back? You will lose anything " +
+                            "you have typed in on this page.")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }
+        else{
+            super.onBackPressed();
+        }
+
     }
 
     private void setupFormWatcher() {
@@ -148,11 +179,12 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
 
     }
 
+    // User clicks the sign up button
     public void onClickSignUpSubmit(View view){
 
         String emailAddress = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
-        // If either error message is displaying, that means the form can't be submitted properly
+        // If any error message is displaying, that means the form can't be submitted properly
         if(passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled() || retypePasswordFieldLayout.isErrorEnabled()) {
             showMessage("Cannot submit until the fields are filled out properly.", false);
             return;
@@ -168,6 +200,18 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
 
         // Proceed to sign up user with backend authentication
         signUpPresenter.attemptSignUp(emailAddress, password);
+    }
+
+    // Sign up was successful, meaning verification e-mail was sent
+    @Override
+    public void onSuccessfulSignUp() {
+        showMessage("Verification e-mail sent.", true);
+
+        // Return to login screen
+        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 
     @Override
@@ -187,44 +231,5 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
         }
     }
 
-    @Override
-    public void onSuccessfulSignUp() {
-        Toast.makeText(this, "Verification e-mail sent.", Toast.LENGTH_SHORT).show();
-
-        // Return to login screen
-        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-
-    }
-
-    @Override
-    public void onBackPressed(){
-
-        // Make sure user doesn't accidentally leave the screen with text filled in
-        if(emailField.getText().toString().trim().length() > 0 ||
-                passwordField.getText().toString().trim().length() > 0 ||
-                retypePasswordField.getText().toString().trim().length() > 0){
-
-            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
-                    .setTitle("Leave The Screen?")
-                    .setMessage("Are you sure you want to go back? You will lose anything " +
-                            "you have typed in on this page.")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        }
-        else{
-            super.onBackPressed();
-        }
-
-    }
-
 }
+
