@@ -234,7 +234,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
     public void onLongClickUserStory(String usid){
 
         sendToFragment = SendToFragment.newInstance(pid,usid);
-        sendToFragment.setBacklogView(this);
+        sendToFragment. setBacklogView(this);
         sendToFragment.show(getFragmentManager(), "SendToFragment");
     }
 

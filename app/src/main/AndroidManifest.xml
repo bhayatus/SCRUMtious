@@ -36,7 +36,6 @@
         <activity
             android:name=".view_impl.ProjectTabsActivity"
             android:configChanges="orientation"
-            android:label="@string/title_activity_project_tabs_screen"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -83,7 +82,6 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".view_impl.IndividualSprintActivity"
-            android:label="@string/title_activity_individual_sprint"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"

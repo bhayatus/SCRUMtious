@@ -34,6 +34,9 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     private DatabaseReference mRef;
     private Query mQuery;
 
+    private long numMembers;
+
+
     public ProjectMembersPresenter (ProjectMembersViewInt projectMembersView, String pid){
         this.projectMembersView = projectMembersView;
         this.pid = pid;

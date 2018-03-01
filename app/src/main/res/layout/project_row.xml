@@ -114,6 +114,4 @@
         android:layout_weight="1"
         android:background="#e0e0e0" />
 
-
-
 </android.support.v7.widget.CardView>

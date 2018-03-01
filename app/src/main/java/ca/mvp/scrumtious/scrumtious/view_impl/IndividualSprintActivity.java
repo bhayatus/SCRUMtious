@@ -346,12 +346,17 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
                 // Overview Tab
                 case 0:
+                    Bundle data = new Bundle();
+                    data.putString("projectId", pid);
+                    data.putString("sprintId", sid);
+
                     SprintOverviewFragment sprintOverviewFragment = new SprintOverviewFragment();
+                    sprintOverviewFragment.setArguments(data);
                     return sprintOverviewFragment;
 
                 // In Progress Tab
                 case 1:
-                    Bundle data = new Bundle();
+                    data = new Bundle();
                     data.putString("projectId", pid);
                     // This fragment will display info for product backlog in progress user stories
                     data.putString("type", "SPRINT_IN_PROGRESS");

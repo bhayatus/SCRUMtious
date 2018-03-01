@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ValueEventListener;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
@@ -22,6 +24,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
 
     private ProjectOverviewPresenterInt projectOverviewPresenter;
     private String pid;
+    private ValueEventListener projectDetailsListener;
 
     private TextView projectTitle, projectDescription;
 
@@ -35,10 +38,19 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         pid = getArguments().getString("projectId");
 
         this.projectOverviewPresenter = new ProjectOverviewPresenter(this, pid);
-        projectOverviewPresenter.getProjectDetails();
-
     }
 
+    @Override
+    public void onResume() {
+        projectDetailsListener = projectOverviewPresenter.getProjectDetailsListener();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        projectOverviewPresenter.removeProjectDetailsListener(projectDetailsListener);
+        super.onPause();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

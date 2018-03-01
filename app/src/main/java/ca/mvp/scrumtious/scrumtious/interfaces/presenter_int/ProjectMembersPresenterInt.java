@@ -11,5 +11,4 @@ public interface ProjectMembersPresenterInt {
     void validatePassword(String password, final String uid);
     void checkBeforeInvite(String emailAddress);
     void checkIfOwner();
-
 }

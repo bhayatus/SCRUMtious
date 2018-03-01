@@ -16,8 +16,8 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
     private ProjectOverviewViewInt projectOverviewView;
     private String pid;
 
-    private String title = "";
-    private String desc = "";
+    private String title = " ";
+    private String desc = " ";
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
@@ -30,12 +30,12 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     // Grabs the info from the database
     @Override
-    public void getProjectDetails() {
+    public ValueEventListener getProjectDetailsListener() {
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects").child(pid);
 
-        mRef.addValueEventListener(new ValueEventListener() {
+        ValueEventListener projectDetailsListener = mRef.addValueEventListener(new ValueEventListener() {
 
             // Grab the new title and description, and display it
             @Override
@@ -43,15 +43,23 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
                 if (dataSnapshot.exists()) {
                     title = dataSnapshot.child("projectTitle").getValue().toString();
                     desc = dataSnapshot.child("projectDesc").getValue().toString();
+                    projectOverviewView.setProjectDetails(title, desc);
                 }
-
-                projectOverviewView.setProjectDetails(title, desc);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
+        return projectDetailsListener;
+    }
+
+    @Override
+    public void removeProjectDetailsListener(ValueEventListener projectDetailsListener) {
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects").child(pid);
+        mRef.removeEventListener(projectDetailsListener);
     }
 }
