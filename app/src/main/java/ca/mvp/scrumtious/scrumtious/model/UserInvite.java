@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.model;
 
-
 public class UserInvite {
 
     private String projectId, projectTitle, invitingUid, invitedUid, invitingEmail;

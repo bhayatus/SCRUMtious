@@ -6,11 +6,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateProjectPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
 
@@ -19,6 +16,7 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
+
     private CreateProjectViewInt createProjectView;
 
     public CreateProjectPresenter(CreateProjectViewInt createProjectView) {

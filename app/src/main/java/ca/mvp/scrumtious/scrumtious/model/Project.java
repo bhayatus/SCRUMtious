@@ -1,7 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.model;
 
-import java.util.Map;
-
 public class Project {
 
     private String projectOwnerUid;
@@ -11,8 +9,6 @@ public class Project {
     private long creationTimeStamp;
     private long numMembers;
     private long numSprints;
-
-    private final int MAX_DESC_SIZE = 254;
 
     // empty constructor is needed for firebase
     public Project() {

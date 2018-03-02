@@ -1,8 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -20,11 +18,14 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPr
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt;
 
 public class IndividualProjectPresenter implements IndividualProjectPresenterInt {
-    private IndividualProjectViewInt individualProjectView;
-    private final String pid;
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
+
+    private IndividualProjectViewInt individualProjectView;
+    private final String pid;
+
     private Map removeProjectMap;
 
     public IndividualProjectPresenter(IndividualProjectViewInt individualProjectView, String pid){
@@ -32,7 +33,8 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
         this.pid = pid;
     }
 
-    // Need to verify if the owner if delete project button is to show
+    // Need to verify if the owner, if delete project button is to show
+    @Override
     public void checkIfOwner(){
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();

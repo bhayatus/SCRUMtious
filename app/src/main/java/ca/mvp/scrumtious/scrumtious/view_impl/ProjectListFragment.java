@@ -1,9 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

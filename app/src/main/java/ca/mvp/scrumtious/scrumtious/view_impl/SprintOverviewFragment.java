@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

@@ -1,7 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -14,7 +13,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
@@ -25,11 +23,13 @@ import ca.mvp.scrumtious.scrumtious.view_impl.InvitationsFragment;
 
 public class InvitationsPresenter implements InvitationsPresenterInt {
 
-    private InvitationsViewInt invitationsView;
-    private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
     private Query mQuery;
+
+    private InvitationsViewInt invitationsView;
+    private FirebaseDatabase mDatabase;
+
     public InvitationsPresenter(InvitationsViewInt invitationsView){
         this.invitationsView = invitationsView;
 
@@ -41,6 +41,8 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
         mAuth = FirebaseAuth.getInstance();
         mRef = mDatabase.getInstance().getReference();
         String userID = mAuth.getCurrentUser().getUid();
+
+        // Only display invites that were meant for the current user
         mQuery = mRef.child("invites").orderByChild("invitedUid").equalTo(userID);
 
         FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> invitationsAdapter

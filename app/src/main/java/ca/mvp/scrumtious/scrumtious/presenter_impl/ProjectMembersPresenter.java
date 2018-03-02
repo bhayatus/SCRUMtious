@@ -1,7 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -27,15 +26,13 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment;
 
 public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
-    private final String pid;
-    private ProjectMembersViewInt projectMembersView;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
     private Query mQuery;
 
-    private long numMembers;
-
+    private final String pid;
+    private ProjectMembersViewInt projectMembersView;
 
     public ProjectMembersPresenter (ProjectMembersViewInt projectMembersView, String pid){
         this.projectMembersView = projectMembersView;
@@ -48,6 +45,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
             mDatabase = FirebaseDatabase.getInstance();
             mAuth = FirebaseAuth.getInstance();
             mRef = mDatabase.getReference();
+
             // Only query users who are in the project
             mQuery = mRef.child("users").orderByChild(pid).equalTo("member");
 
@@ -180,6 +178,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     }
 
     // Need to verify if the owner if add member button is to show
+    @Override
     public void checkIfOwner(){
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();

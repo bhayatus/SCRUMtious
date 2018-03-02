@@ -5,22 +5,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
-import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
 
     private ProjectOverviewViewInt projectOverviewView;
     private String pid;
 
     private String title = " ";
     private String desc = " ";
-
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
 
     public ProjectOverviewPresenter(ProjectOverviewViewInt projectOverviewView, String pid){
         this.projectOverviewView = projectOverviewView;
@@ -56,6 +53,7 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
         return projectDetailsListener;
     }
 
+    // Listener should be removed if user is no longer viewing the fragment
     @Override
     public void removeProjectDetailsListener(ValueEventListener projectDetailsListener) {
         mDatabase = FirebaseDatabase.getInstance();

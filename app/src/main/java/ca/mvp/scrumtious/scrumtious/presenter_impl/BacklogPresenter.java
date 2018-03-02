@@ -1,7 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -17,8 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.sql.Ref;
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
@@ -29,8 +26,13 @@ import ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment;
 
 public class BacklogPresenter implements BacklogPresenterInt {
 
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
+    private Query mQuery;
+
     private BacklogViewInt backlogView;
     private String pid;
+
     private final String type; // Tells the presenter what type of info to grab
     private final String sprintId; // "null" if in product backlog, regular id if part of sprint
 
@@ -39,10 +41,6 @@ public class BacklogPresenter implements BacklogPresenterInt {
     private final String pb_completed = "PB_COMPLETED";
     private final String sprint_in_progress = "SPRINT_IN_PROGRESS";
     private final String sprint_completed = "SPRINT_COMPLETED";
-
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private Query mQuery;
 
     public BacklogPresenter(BacklogViewInt backlogView, String pid, String type, String sprintId){
         this.backlogView = backlogView;
@@ -100,6 +98,15 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                 String nameOfSprint = model.getAssignedToName();
                 String assignedToName;
+
+                // User story is in progress
+                if (model.getCompleted().equals("false")){
+                    viewHolder.setCardRed();
+                }
+                // User story is completed
+                else{
+                    viewHolder.setCardGreen();
+                }
 
                 // Not assigned to a sprint, don't bother showing assigned to icon
                 if (nameOfSprint.equals("")){

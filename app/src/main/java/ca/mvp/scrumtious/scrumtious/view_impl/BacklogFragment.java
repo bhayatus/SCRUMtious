@@ -4,9 +4,11 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,11 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-
-import java.io.Serializable;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.BacklogPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.BacklogViewInt;
@@ -30,7 +28,7 @@ import ca.mvp.scrumtious.scrumtious.model.UserStory;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.BacklogPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
-public class BacklogFragment extends Fragment implements BacklogViewInt, Serializable {
+public class BacklogFragment extends Fragment implements BacklogViewInt{
 
     private BacklogPresenterInt backlogPresenter;
     private String pid;
@@ -247,6 +245,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
         ImageButton delete;
         ImageView sprintIcon;
         LinearLayout assignedToLayout;
+        CardView card;
 
         public BacklogViewHolder(View itemView) {
             super(itemView);
@@ -259,6 +258,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
             delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
             assignedToLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToLayout);
             sprintIcon = (ImageView) mView.findViewById(R.id.userStoryRowIcon);
+            card = (CardView) mView.findViewById(R.id.userStoryRowCardView);
         }
 
 
@@ -306,5 +306,12 @@ public class BacklogFragment extends Fragment implements BacklogViewInt, Seriali
             sprintIcon.setVisibility(View.VISIBLE);
         }
 
+        public void setCardRed(){
+            card.setCardBackgroundColor(Color.parseColor("#DE1212"));
+        }
+
+        public void setCardGreen(){
+            card.setCardBackgroundColor(Color.parseColor("#00C853"));
+        }
     }
 }

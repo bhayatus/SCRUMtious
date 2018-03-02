@@ -2,16 +2,13 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +18,11 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateSprintViewInt;
 
 public class CreateSprintPresenter extends AppCompatActivity implements CreateSprintPresenterInt {
 
-    private CreateSprintViewInt createSprintView;
-    private final String pid;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
+
+    private CreateSprintViewInt createSprintView;
+    private final String pid;
 
     private boolean dateConflictExists = false;
 
@@ -36,10 +34,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
 
     private void addSprintToDatabase(final String sprintName, final String sprintDesc, final long sprintStartDate, final long sprintEndDate) {
          mDatabase = FirebaseDatabase.getInstance();
-
-         mRef = mDatabase.getReference()
-                 .child("projects")
-                 .child(this.pid);
+         mRef = mDatabase.getReference().child("projects").child(this.pid);
 
          final String sprintId = mRef.push().getKey(); // generates unique key for sprint
 
@@ -50,6 +45,8 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                 numSprints++;
 
                 Map sprintMap = new HashMap<>();
+
+                // All must happen to ensure atomicity
                 sprintMap.put("/sprints/" + sprintId + "/" + "sprintName", sprintName);
                 sprintMap.put("/sprints/" + sprintId + "/" + "sprintDesc", sprintDesc);
                 sprintMap.put("/sprints/" + sprintId + "/" + "sprintStartDate", sprintStartDate);
@@ -78,6 +75,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
     @Override
     public void checkConflictingSprintDates(final String sprintName, final String sprintDesc,
                                               final long sprintStartDate, final long sprintEndDate) {
+
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
         mRef.child("projects").child(this.pid).child("sprints").addListenerForSingleValueEvent(

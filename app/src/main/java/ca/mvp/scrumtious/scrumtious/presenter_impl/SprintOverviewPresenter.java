@@ -5,23 +5,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SprintOverviewPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SprintOverviewViewInt;
 
 public class SprintOverviewPresenter implements SprintOverviewPresenterInt {
 
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
 
     private SprintOverviewViewInt sprintOverviewView;
     private String pid, sid;
 
     private String title = "";
     private String desc = "";
-
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
 
     public SprintOverviewPresenter(SprintOverviewViewInt sprintOverviewView, String pid, String sid){
         this.sprintOverviewView = sprintOverviewView;
@@ -58,6 +54,7 @@ public class SprintOverviewPresenter implements SprintOverviewPresenterInt {
 
     }
 
+    // Remove the listener if user leaves the fragment
     @Override
     public void removeSprintDetailsListener(ValueEventListener sprintDetailsListener) {
         mDatabase = FirebaseDatabase.getInstance();

@@ -1,24 +1,17 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.firebase.database.ValueEventListener;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectOverviewPresenter;
-import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProjectOverviewFragment extends Fragment implements ProjectOverviewViewInt{
 

@@ -1,7 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.app.ProgressDialog;
-import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.View;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -16,10 +15,12 @@ import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment;
 
 public class ProjectListPresenter implements ProjectListPresenterInt {
-    private ProjectListViewInt projectListView;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
     private Query mQuery;
+
+    private ProjectListViewInt projectListView;
 
     public ProjectListPresenter(ProjectListViewInt projectListView){
         this.projectListView = projectListView;

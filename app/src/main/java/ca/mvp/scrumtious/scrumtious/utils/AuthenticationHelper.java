@@ -1,15 +1,12 @@
 package ca.mvp.scrumtious.scrumtious.utils;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import com.google.firebase.auth.FirebaseAuth;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.view_impl.LoginActivity;
 

@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;

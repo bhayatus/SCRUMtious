@@ -16,14 +16,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import com.google.firebase.database.ValueEventListener;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProductBacklogPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProductBacklogViewInt;

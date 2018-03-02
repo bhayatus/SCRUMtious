@@ -7,6 +7,7 @@
                              android:layout_weight="1"
                              android:baselineAligned="false"
                              android:orientation="vertical"
+                             android:layout_margin="3dp"
                              android:paddingLeft="5dp"
                              android:paddingRight="5dp">
 
@@ -70,13 +71,5 @@
         android:paddingLeft="5dp"
         android:fontFamily="@font/droid_sans"
         android:text="by usaimbhayat@gmail.com"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="1"
-        android:background="#e0e0e0"/>
-
 
 </android.widget.LinearLayout>

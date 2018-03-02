@@ -1,21 +1,13 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
-import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
 import java.sql.Timestamp;
 import java.util.Calendar;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.SprintListPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SprintListViewInt;
@@ -24,14 +16,12 @@ import ca.mvp.scrumtious.scrumtious.view_impl.SprintListActivity;
 
 public class SprintListPresenter implements SprintListPresenterInt {
 
-    private SprintListViewInt sprintListView;
-    private String pid;
-
-    private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mRef;
-
     private Query mQuery;
+
+    private SprintListViewInt sprintListView;
+    private String pid;
 
     public SprintListPresenter (SprintListViewInt sprintListView, String pid){
         this.sprintListView = sprintListView;
@@ -40,7 +30,10 @@ public class SprintListPresenter implements SprintListPresenterInt {
 
     @Override
     public FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter(String sortBy) {
-        mRef = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();
+
+        // Grab the list of sprints within this project
         mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild(sortBy);
 
         FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListAdapter
