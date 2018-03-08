@@ -49,7 +49,7 @@
                 android:paddingRight="20dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/droid_sans"
-                android:text="About this sprint:"
+                android:text="About this project:"
                 android:textStyle="bold"/>
 
             <LinearLayout
