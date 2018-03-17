@@ -14,8 +14,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -126,6 +129,36 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                     }
                 })
                 .create().show();
+    }
+    public void onClickSwitchTask(View view,final String tid){
+        PopupMenu popup = new PopupMenu(getActivity(), view);
+        MenuInflater inflate = popup.getMenuInflater();
+        inflate.inflate(R.menu.task_status_view, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.task_not_started:
+                        taskBoardPresenter.changeStatus(tid,"not_started");
+                        return true;
+
+
+                    case R.id.task_in_progress:
+                        taskBoardPresenter.changeStatus(tid,"in_progress");
+                        return true;
+
+                    case R.id.task_completed:
+                        taskBoardPresenter.changeStatus(tid,"completed");
+                        return true;
+                }
+
+                return false;
+            }
+        });
+
+        popup.show();
     }
     public static class TaskBoardViewHolder extends RecyclerView.ViewHolder{
         View mView;

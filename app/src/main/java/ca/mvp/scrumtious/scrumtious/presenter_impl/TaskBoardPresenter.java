@@ -1,5 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageButton;
@@ -67,6 +68,14 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
                 ImageButton deleteTaskBtn = viewHolder.getTaskDelete();
 
+                ImageButton switchTaskBtn = viewHolder.getTaskSwitch();
+
+                switchTaskBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        taskBoardView.onClickSwitchTask(view,tid);
+                    }
+                });
                 // User wants to delete the task
                 deleteTaskBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
