@@ -10,5 +10,5 @@
     <dimen name="project_list_padding">10dp</dimen>
     <dimen name="project_list_top_padding">15dp</dimen>
     <dimen name="task_desc_padding">20dp</dimen>
-    <dimen name="task_desc_bottom_padding">10dp</dimen>
+    <dimen name="task_desc_bottom_padding">30dp</dimen>
 </resources>

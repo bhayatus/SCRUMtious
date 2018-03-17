@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/taskRowCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,6 +28,28 @@
             android:text="@string/one_hundred_fourty_char_string"
             android:textColor="@color/white"
             android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/taskAssignedToName"
+            android:layout_alignStart="@+id/taskAssignedToName"
+            android:text="@string/task_assigned_to_prompt"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/taskAssignedToName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/taskDeleteBtn"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="9dp"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic"
+            tools:text="Louis George Maurice Adolphe Roche"/>
 
         <ImageButton
             android:id="@+id/taskSwitchStatesBtn"
