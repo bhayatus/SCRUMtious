@@ -1,4 +1,4 @@
-<>
+<resources>
     <string name="app_name">SCRUMtious</string>
     <string name="shared_preferences">Shared Preferences UID</string>
     <string name="signup_retype_password">Re-type password</string>

@@ -129,7 +129,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     }
     public static class TaskBoardViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView desc;
+        TextView desc, assignToName;
         ImageButton taskSwitch;
         ImageButton taskDelete;
         CardView card;
@@ -139,12 +139,14 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             this.mView = itemView;
 
             desc = (TextView) mView.findViewById(R.id.taskDescription);
+            assignToName = (TextView) mView.findViewById(R.id.taskAssignedToName);
             taskDelete = (ImageButton) mView.findViewById(R.id.taskDeleteBtn);
             taskSwitch = (ImageButton) mView.findViewById(R.id.taskSwitchStatesBtn);
             card = (CardView) mView.findViewById(R.id.taskRowCard);
         }
-        public void setDetails(String description){
+        public void setDetails(String description, String assignedTo){
             desc.setText(description);
+            assignToName.setText(assignedTo);
         }
         public ImageButton getTaskSwitch(){
             return this.taskSwitch;

@@ -58,7 +58,12 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
             protected void populateViewHolder(TaskBoardFragment.TaskBoardViewHolder viewHolder, ca.mvp.scrumtious.scrumtious.model.Task model, int position) {
                 final String tid = getRef(position).getKey().toString();
                 final TaskBoardFragment.TaskBoardViewHolder mViewHolder = viewHolder;
-                viewHolder.setDetails(model.getTaskDesc());
+                String assignedTo = "Nobody";
+                // Assigned to someone
+                if (!model.getAssignedTo().equals("null")){
+                    assignedTo = model.getAssignedTo().toString();
+                }
+                viewHolder.setDetails(model.getTaskDesc(), assignedTo);
 
                 ImageButton deleteTaskBtn = viewHolder.getTaskDelete();
 
@@ -142,8 +147,6 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
             }
         });
-
-
 
     }
 
