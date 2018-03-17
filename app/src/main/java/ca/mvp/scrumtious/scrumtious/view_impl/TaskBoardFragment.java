@@ -67,15 +67,17 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     }
     public void setupRecyclerView(){
         taskBoardList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Sets up the specified type of adapter
         taskBoardAdapter = taskBoardPresenter.setupTaskBoardAdapter(type);
         taskBoardList.setAdapter(taskBoardAdapter);
     }
     @Override
     public void showMessage(String message, boolean showAsToast) {
-        // Show message in toast so it persists across activity transitions
         if (deletingTaskDialog!=null && deletingTaskDialog.isShowing()){
             deletingTaskDialog.dismiss();
         }
+
+        // Show message in toast so it persists across activity transitions
         if (showAsToast){
             Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
         }
@@ -88,7 +90,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
     @Override
     public void setEmptyStateView() {
-        if(taskBoardAdapter.getItemCount()==0){
+        if(taskBoardAdapter.getItemCount() == 0){
             emptyStateView.setVisibility(View.VISIBLE);
             taskBoardList.setVisibility(View.GONE);
         }
@@ -97,12 +99,9 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             taskBoardList.setVisibility(View.VISIBLE);
         }
     }
-    public void onClickDeleteTask(final String taskid){
-        LayoutInflater inflater = (this).getLayoutInflater();
-        final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
+    public void onClickDeleteTask(final String tid){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Task")
-                .setView(alertView)
                 .setMessage("Are you sure you want to delete this task?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -115,8 +114,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                         deletingTaskDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                         deletingTaskDialog.show();
 
-                        // Send password to backend, to validate before deleting
-                        taskBoardPresenter.deleteTask(taskid);
+                        taskBoardPresenter.deleteTask(tid);
                         }
 
                     }
@@ -145,8 +143,8 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             taskSwitch = (ImageButton) mView.findViewById(R.id.taskSwitchStatesBtn);
             card = (CardView) mView.findViewById(R.id.taskRowCard);
         }
-        public void setDetails(String desc){
-            this.desc.setText(desc);
+        public void setDetails(String description){
+            desc.setText(description);
         }
         public ImageButton getTaskSwitch(){
             return this.taskSwitch;

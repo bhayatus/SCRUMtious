@@ -250,6 +250,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
     }
 
+
+
     // Change the user story completed flag from either true to false, or false to true
     @Override
     public void changeCompletedStatus(String usid, boolean newStatus){
@@ -279,16 +281,16 @@ public class BacklogPresenter implements BacklogPresenterInt {
                         if (task.isSuccessful()){
                             switch(type){
                                 case pb_in_progress:
-                                    backlogView.showMessage("Marked the user story as completed.", false);
+                                    backlogView.showMessage("Marked the user story as \"Completed\".", false);
                                     break;
                                 case pb_completed:
-                                    backlogView.showMessage("Marked the user story as in progress.", false);
+                                    backlogView.showMessage("Marked the user story as \"In Progress\".", false);
                                     break;
                                 case sprint_in_progress:
-                                    backlogView.showMessage("Marked the user story as completed.", false);
+                                    backlogView.showMessage("Marked the user story as \"Completed\".", false);
                                     break;
                                 case sprint_completed:
-                                    backlogView.showMessage("Marked the user story as in progress.", false);
+                                    backlogView.showMessage("Marked the user story as \"In Progress\".", false);
                                     break;
                             }
                         }
@@ -296,18 +298,18 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                             switch(type){
                                 case pb_in_progress:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.", false);
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as \"Completed\".", false);
                                     break;
                                 case pb_completed:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.", false);
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as \"In Progress\".", false);
 
                                     break;
                                 case sprint_in_progress:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as completed.", false);
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as \"Completed\".", false);
 
                                     break;
                                 case sprint_completed:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as in progress.", false);
+                                    backlogView.showMessage("An error occurred, failed to mark the user story as \"In Progress\".", false);
                                     break;
                             }
 
@@ -335,7 +337,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     backlogView.showMessage("User story was deleted.", false);
                 }
                 else{
-                    backlogView.showMessage("An error occurred, failed to delete the user story", false);
+                    backlogView.showMessage("An error occurred, failed to delete the user story.", false);
                 }
             }
         });
