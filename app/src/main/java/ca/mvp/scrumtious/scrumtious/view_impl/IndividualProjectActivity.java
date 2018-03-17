@@ -205,11 +205,6 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         // Needs to be here even if not implemented
     }
 
-    @Override
-    public void onTaskDeleted() {
-        // Needs to be here even if not implemented
-    }
-
 
     // Project no longer exists due to user deleting it normally, go back
     public void onSuccessfulDeletion() {

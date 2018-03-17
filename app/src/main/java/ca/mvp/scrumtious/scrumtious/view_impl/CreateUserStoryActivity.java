@@ -134,11 +134,6 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         // Needs to be here even if not implemented
     }
 
-    @Override
-    public void onTaskDeleted() {
-        // Needs to be here even if not implemented
-    }
-
     public void setupFormWatcher() {
         titleField = (EditText) findViewById(R.id.createUserStoryNameField);
         descriptionField = (EditText) findViewById(R.id.createUserStoryDescField);

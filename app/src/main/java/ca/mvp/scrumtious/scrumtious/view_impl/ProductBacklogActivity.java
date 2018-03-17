@@ -231,11 +231,6 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         // Needs to be here even if not implemented
     }
 
-    @Override
-    public void onTaskDeleted() {
-        // Needs to be here even if not implemented
-    }
-
     // User clicked the add new user story button, go to that screen
     public void onClickAddUserStory(View view){
         Intent intent = new Intent(ProductBacklogActivity.this, CreateUserStoryActivity.class);

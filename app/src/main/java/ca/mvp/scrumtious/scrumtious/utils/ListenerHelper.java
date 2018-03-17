@@ -79,4 +79,31 @@ public class ListenerHelper {
         DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("sprints").child(sid);
         mRef.removeEventListener(listener);
     }
+
+    public static ValueEventListener setupUserStoryDeletedListener(final ListenerInt context, String pid, String usid){
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
+                ValueEventListener userStoryListener = mRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // If user story no longer exists, exit the screen and go back
+                        if (!dataSnapshot.exists()){
+                            context.onUserStoryDeleted();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        return userStoryListener;
+    }
+
+    public static void removeUserStoryDeletedListener(ValueEventListener listener, String pid, String usid){
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
+        mRef.removeEventListener(listener);
+    }
 }
