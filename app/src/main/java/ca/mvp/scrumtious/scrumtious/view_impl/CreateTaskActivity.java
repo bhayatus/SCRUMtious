@@ -14,12 +14,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.database.ValueEventListener;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateTaskViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateProjectPresenter;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateTaskPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
+import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
+
 
 
 public class CreateTaskActivity extends AppCompatActivity implements
@@ -30,8 +34,17 @@ public class CreateTaskActivity extends AppCompatActivity implements
     private android.support.v7.widget.Toolbar toolbar;
     private ProgressDialog createTaskProgressDialog;
 
+    private EditText descriptionField;
+    private TextInputLayout descriptionFieldLayout;
+
+    private ImageButton logoutBtn;
     private String pid, usid;
 
+    private ValueEventListener projectListener;
+    private ValueEventListener userStoryListener;
+
+    private boolean projectAlreadyDeleted;
+    private boolean userStoryAlreadyDeleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -41,6 +54,10 @@ public class CreateTaskActivity extends AppCompatActivity implements
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
         usid = data.getString("userStoryId");
+
+        // Setting the flag
+        projectAlreadyDeleted = false;
+        userStoryAlreadyDeleted = false;
 
         createTaskPresenter = new CreateTaskPresenter(this, pid, usid);
 
@@ -61,123 +78,91 @@ public class CreateTaskActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed(){
 
-//        if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0){
-//            new AlertDialog.Builder(this)
-//                    .setTitle("Discard Project?")
-//                    .setMessage("Are you sure you to discard this new project?")
-//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            Intent intent = new Intent(CreateProjectActivity.this, ProjectTabsActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//                    })
-//                    .setNegativeButton("No", null)
-//                    .show();
-//        }else {
-//            super.onBackPressed();
-//        }
+        if(descriptionField.getText().toString().trim().length() > 0){
+            new AlertDialog.Builder(this)
+                    .setTitle("Discard Task?")
+                    .setMessage("Are you sure you want to discard the task?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(CreateTaskActivity.this, IndividualUserStoryActivity.this);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     private void setupFormWatcher(){
-//        titleField = (EditText) findViewById(R.id.createProjectTitleField);
-//        descriptionField = (EditText) findViewById(R.id.createProjectDescField);
-//        titleFieldLayout = (TextInputLayout) findViewById(R.id.createProjectTitleFieldLayout);
-//        descriptionFieldLayout = (TextInputLayout)
-//                findViewById(R.id.createProjectDescFieldLayout);
-//
-//        titleFieldLayout.setError(null);
-//        descriptionFieldLayout.setError(null);
-//        titleFieldLayout.setErrorEnabled(true);
-//        descriptionFieldLayout.setErrorEnabled(true);
-//
-//        //Create a watcher for titleField
-//        //Create a listener for titleField and validate it
-//        titleField.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//                String titleText = titleField.getText().toString();
-//
-//                if(titleText == null || (titleText.trim().length() <= 0)) {
-//                    titleFieldLayout.setErrorEnabled(true);
-//                    titleFieldLayout.setError("Please enter a project title.");
-//                }
-//                else if (titleText.trim().length() > 18){
-//                    titleFieldLayout.setErrorEnabled(true);
-//                    titleFieldLayout.setError("Project title is too long.");
-//                }
-//                else{
-//                    titleFieldLayout.setErrorEnabled(false);
-//                }
-//            }
-//        });
-//
-//        descriptionField.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                String descText = descriptionField.getText().toString();
-//                if(descText == null || (descText.trim().length() <= 0)){
-//                    descriptionFieldLayout.setErrorEnabled(true);
-//                    descriptionFieldLayout.setError("Please enter a project description.");
-//                }
-//                else{
-//                    descriptionFieldLayout.setErrorEnabled(false);
-//                }
-//
-//            }
-//        });
 
+        descriptionField = (EditText) findViewById (R.id.createTaskDescField);
+        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createSprintDescFieldLayout);
+
+        descriptionFieldLayout.setErrorEnabled(true);
+        descriptionFieldLayout.setError(null);
+
+        descriptionField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String descFieldText = descriptionField.getText().toString();
+
+                if((descFieldText == null) || (descFieldText.trim().length() <= 0)){
+                    descriptionFieldLayout.setErrorEnabled(true);
+                    descriptionFieldLayout.setError("Please enter a description for your task.");
+
+
+                    //////////////////////////////////////CHANGE AFTER BECAUSE OF LENGTH, TESTING 50 /////////////////////////////////////////////////////////
+                }else if(descFieldText.trim().length() > 50){
+                    descriptionFieldLayout.setErrorEnabled(true);
+                    descriptionFieldLayout.setError("Task name is too long.");
+                }else{
+                    descriptionFieldLayout.setErrorEnabled(false);
+                    descriptionFieldLayout.setError(null);
+                }
+            }
+
+        });
     }
 
     // Return to task list screen
     public void onSuccessfulCreateTask(){
-//        // Stop dialog if showing
-//        if (createProjectProgressDialog != null && createProjectProgressDialog.isShowing()) {
-//            createProjectProgressDialog.dismiss();
-//        }
-//
-//        // Return to project list screen
-//        Intent intent = new Intent(CreateProjectActivity.this, ProjectTabsActivity.class);
-//        startActivity(intent);
-//        finish();
 
+        //Stop dialog if showing
+        if(createTaskProgressDialog != null && createTaskProgressDialog.isShowing()){
+            createTaskProgressDialog.dismiss();
+        }
+
+        //Return to IndividualUserStoryActivity
+        Intent intent = new Intent(CreateTaskActivity.this, IndividualUserStoryActivity.class);
+        intent.putExtra("userId", usid);
+        startActivity(intent);
+        finish();
     }
 
     public void showMessage(String message, boolean showAsToast) {
-//        // Stop dialog if showing
-//        if (createProjectProgressDialog != null && createProjectProgressDialog.isShowing()) {
-//            createProjectProgressDialog.dismiss();
-//        }
-//
-//        // Show message in toast so it persists across activity transitions
-//        if (showAsToast){
-//            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-//        }
-//
-//        else {
-//            // Call the utils class method to handle making the snackbar
-//            SnackbarHelper.showSnackbar(this, message);
-//        }
+
+        if(createTaskProgressDialog != null && createTaskProgressDialog.isShowing()){
+            createTaskProgressDialog.dismiss();
+        }
+        if(showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }else{
+            SnackbarHelper.showSnackbar(this, message);
+        }
     }
 
     // User clicks on create task button
@@ -205,12 +190,49 @@ public class CreateTaskActivity extends AppCompatActivity implements
 //            createProjectPresenter.addProjectToDatabase(title, description);
 //        }
 
+        String desc = descriptionField.getText().toString().trim();
+        if(descriptionFieldLayout.isErrorEnabled()){
+            showMessage("Cannot create task.", false);
+        }else{
+            createTaskProgressDialog = new ProgressDialog(this);
+            createTaskProgressDialog.setTitle("Create task");
+            createTaskProgressDialog.setCancelable(false);
+            createTaskProgressDialog.setMessage("Creating task...");
+            createTaskProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            createTaskProgressDialog.show();
+
+            createTaskProgressDialog.addTaskToDatabase(desc);
+        }
+
+    }
+
+    // Setup listeners
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        super.onResume();
+    }
+
+    // Remove listeners
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        super.onPause();
     }
 
     // NEEDS TO BE IMPLEMENTED
     @Override
     public void onProjectDeleted() {
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!projectAlreadyDeleted) {
+            projectAlreadyDeleted = true;
 
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(CreateTaskActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
     // NEEDS TO BE IMPLEMENTED
@@ -222,8 +244,18 @@ public class CreateTaskActivity extends AppCompatActivity implements
     // NEEDS TO BE IMPLEMENTED
     @Override
     public void onUserStoryDeleted() {
+        if (!userStoryAlreadyDeleted) {
+            userStoryAlreadyDeleted = true;
+
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(CreateTaskActivity.this, ProductBacklogActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
 
     }
 
 }
+
 
