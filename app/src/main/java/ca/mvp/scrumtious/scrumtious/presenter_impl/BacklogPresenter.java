@@ -207,6 +207,13 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     }
                 });
 
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        backlogView.goToUserStoryScreen(usid);
+                    }
+                });
+
             }
             @Override
             public void onDataChanged() {

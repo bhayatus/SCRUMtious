@@ -92,8 +92,15 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".view_impl.IndividualUserStoryActivity"></activity>
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity android:name=".view_impl.IndividualUserStoryActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
     </application>
 
 </manifest>

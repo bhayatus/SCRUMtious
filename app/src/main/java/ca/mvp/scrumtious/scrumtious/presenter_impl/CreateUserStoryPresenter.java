@@ -41,6 +41,7 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo", "null");
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo_completed", "null_false");
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedToName", "");
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "numTasks", 0);
 
         mRef.updateChildren(userStoryMap).addOnCompleteListener(new OnCompleteListener() {
             @Override

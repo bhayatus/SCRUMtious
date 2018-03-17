@@ -4,6 +4,7 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -101,7 +102,10 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
     // User clicks on a specific user story
     @Override
     public void goToUserStoryScreen(String usid) {
-        // TODO
+        Intent intent = new Intent(getActivity(), IndividualUserStoryActivity.class);
+        intent.putExtra("projectId", pid);
+        intent.putExtra("userStoryId", usid);
+        startActivity(intent);
     }
 
     // User wants to mark user story as completed or in progress

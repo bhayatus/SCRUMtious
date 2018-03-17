@@ -48,6 +48,8 @@ public class CreateTaskPresenter extends AppCompatActivity implements CreateTask
 
                 Map taskMap = new HashMap<>();
                 taskMap.put("/tasks/" + taskId + "/taskDesc", taskDesc);
+                taskMap.put("/tasks/" + taskId + "/status", "not_started");
+
                 taskMap.put("/tasks/" + taskId + "/assignedTo", "null");
                 taskMap.put("/numTasks", numTasks);
 

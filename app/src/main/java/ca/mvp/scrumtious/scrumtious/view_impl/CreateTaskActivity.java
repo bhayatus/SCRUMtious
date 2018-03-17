@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
     private EditText descriptionField;
     private TextInputLayout descriptionFieldLayout;
     private ImageButton logoutBtn;
-
+    private Button createBtn;
 
     private String pid, usid;
 
@@ -60,7 +61,14 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
         createTaskPresenter = new CreateTaskPresenter(this, pid, usid);
 
-        logoutBtn = findViewById(R.id.createSprintLogoutBtn);
+        createBtn = findViewById(R.id.createTaskCreateBtn);
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickCreateTaskSubmit(v);
+            }
+        });
+        logoutBtn = findViewById(R.id.createTaskLogoutBtn);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +189,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
         String desc = descriptionField.getText().toString().trim();
         if(descriptionFieldLayout.isErrorEnabled()){
-            showMessage("Cannot create task.", false);
+            showMessage("Cannot create task without a description.", false);
         }else{
             createTaskProgressDialog = new ProgressDialog(this);
             createTaskProgressDialog.setTitle("Create task");
