@@ -76,7 +76,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:background="@drawable/login_signup_btn"
-            android:onClick="onClickCreateSprint"
+            android:onClick="onClickCreateTask"
             android:text="@string/create_sprint_create"
             style="@style/Widget.AppCompat.Button"
             android:backgroundTint="@color/colorPrimary"
