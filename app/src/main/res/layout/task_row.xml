@@ -5,7 +5,7 @@
     android:id="@+id/taskRowCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@android:color/holo_orange_light"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="2dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
