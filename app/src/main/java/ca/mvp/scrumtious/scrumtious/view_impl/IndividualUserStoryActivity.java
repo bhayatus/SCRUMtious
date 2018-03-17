@@ -252,7 +252,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                     Bundle data = new Bundle();
                     data.putString("projectId", pid);
                     data.putString("userStoryId", usid);
-                    data.putString("type", "TASK_NOT_STARTED");
+                    data.putString("type", "not_started");
                     TaskBoardFragment notStartedFragment = new TaskBoardFragment();
                     notStartedFragment.setArguments(data);
 
@@ -263,7 +263,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                     data = new Bundle();
                     data.putString("projectId", pid);
                     data.putString("userStoryId", usid);
-                    data.putString("type", "TASK_IN_PROGRESS");
+                    data.putString("type", "in_progress");
                     TaskBoardFragment inProgressFragment = new TaskBoardFragment();
                     inProgressFragment.setArguments(data);
                     return inProgressFragment;
@@ -273,7 +273,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                     data = new Bundle();
                     data.putString("projectId", pid);
                     data.putString("userStoryId", usid);
-                    data.putString("type", "TASK_COMPLETED");
+                    data.putString("type", "completed");
                     TaskBoardFragment completedFragment = new TaskBoardFragment();
                     completedFragment.setArguments(data);
                     return completedFragment;
