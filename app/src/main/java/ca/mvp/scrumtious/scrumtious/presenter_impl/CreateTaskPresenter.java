@@ -34,10 +34,11 @@ public class CreateTaskPresenter extends AppCompatActivity implements CreateTask
     public void addTaskToDatabase(final String taskDesc){
 
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(this.pid).child("user_stories")
-                .child(this.usid);
+        mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories")
+                .child(usid);
 
-        final String taskId = mRef.push().getKey(); //unique key for tasks
+        // Unique key for tasks
+        final String taskId = mRef.push().getKey();
 
         mRef.child("numTasks").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -47,8 +48,8 @@ public class CreateTaskPresenter extends AppCompatActivity implements CreateTask
 
                 Map taskMap = new HashMap<>();
                 taskMap.put("/tasks/" + taskId + "/taskDesc", taskDesc);
-                taskMap.put("/tasks/" + taskId + "/assignedTo", null);
-                taskMap.put("/" + "numTasks", numTasks);
+                taskMap.put("/tasks/" + taskId + "/assignedTo", "null");
+                taskMap.put("/numTasks", numTasks);
 
                 mRef.updateChildren(taskMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override

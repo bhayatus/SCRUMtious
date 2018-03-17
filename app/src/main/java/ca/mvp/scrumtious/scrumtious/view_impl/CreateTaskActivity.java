@@ -18,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateTaskViewInt;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateProjectPresenter;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.CreateTaskPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
@@ -33,11 +32,11 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
     private android.support.v7.widget.Toolbar toolbar;
     private ProgressDialog createTaskProgressDialog;
-
     private EditText descriptionField;
     private TextInputLayout descriptionFieldLayout;
-
     private ImageButton logoutBtn;
+
+
     private String pid, usid;
 
     private ValueEventListener projectListener;
@@ -60,6 +59,15 @@ public class CreateTaskActivity extends AppCompatActivity implements
         userStoryAlreadyDeleted = false;
 
         createTaskPresenter = new CreateTaskPresenter(this, pid, usid);
+
+        logoutBtn = findViewById(R.id.createSprintLogoutBtn);
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthenticationHelper.logout(CreateTaskActivity.this);
+            }
+        });
 
         toolbar = findViewById(R.id.createTaskToolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
@@ -100,7 +108,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
     private void setupFormWatcher(){
 
         descriptionField = (EditText) findViewById (R.id.createTaskDescField);
-        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createSprintDescFieldLayout);
+        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createTaskDescFieldLayout);
 
         descriptionFieldLayout.setErrorEnabled(true);
         descriptionFieldLayout.setError(null);
@@ -148,7 +156,8 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
         //Return to IndividualUserStoryActivity
         Intent intent = new Intent(CreateTaskActivity.this, IndividualUserStoryActivity.class);
-        intent.putExtra("userId", usid);
+        intent.putExtra("projectId", pid);
+        intent.putExtra("userStoryId", usid);
         startActivity(intent);
         finish();
     }
@@ -168,28 +177,6 @@ public class CreateTaskActivity extends AppCompatActivity implements
     // User clicks on create task button
     public void onClickCreateTaskSubmit(View view){
 
-
-//        String title = titleField.getText().toString().trim();
-//        String description = descriptionField.getText().toString().trim();
-//        // If either error message is displaying, that means the form can't be submitted properly
-//        if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() ) {
-//            showMessage("Cannot create project until fields are filled out properly.", false);
-//        }
-//
-//        else {
-//
-//            // Creates a dialog that appears to tell the user project creation is occurring
-//            createProjectProgressDialog = new ProgressDialog(this);
-//            createProjectProgressDialog.setTitle("Create Project");
-//            createProjectProgressDialog.setCancelable(false);
-//            createProjectProgressDialog.setMessage("Creating project...");
-//            createProjectProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//            createProjectProgressDialog.show();
-//
-//            // Proceed to create project with backend authentication
-//            createProjectPresenter.addProjectToDatabase(title, description);
-//        }
-
         String desc = descriptionField.getText().toString().trim();
         if(descriptionFieldLayout.isErrorEnabled()){
             showMessage("Cannot create task.", false);
@@ -201,7 +188,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
             createTaskProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             createTaskProgressDialog.show();
 
-            createTaskProgressDialog.addTaskToDatabase(desc);
+            createTaskPresenter.addTaskToDatabase(desc);
         }
 
     }
@@ -210,17 +197,18 @@ public class CreateTaskActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        userStoryListener = ListenerHelper.setupUserStoryDeletedListener(this, pid, usid);
         super.onResume();
     }
 
     // Remove listeners
     @Override
     protected void onPause() {
-        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid, usid);
+        ListenerHelper.removeUserStoryDeletedListener(userStoryListener, pid, usid);
         super.onPause();
     }
 
-    // NEEDS TO BE IMPLEMENTED
     @Override
     public void onProjectDeleted() {
         // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
@@ -235,7 +223,6 @@ public class CreateTaskActivity extends AppCompatActivity implements
         }
     }
 
-    // NEEDS TO BE IMPLEMENTED
     @Override
     public void onSprintDeleted() {
 
