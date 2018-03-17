@@ -65,7 +65,7 @@
                 android:importantForAutofill="noExcludeDescendants"
                 android:inputType="textMultiLine"
                 android:lines="5"
-                android:maxLength="512"
+                android:maxLength="140"
                 android:scrollbars="vertical"/>
         </android.support.design.widget.TextInputLayout>
 
