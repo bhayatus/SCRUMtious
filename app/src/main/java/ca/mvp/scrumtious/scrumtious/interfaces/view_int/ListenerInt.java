@@ -4,5 +4,4 @@ public interface ListenerInt {
     void onProjectDeleted();
     void onSprintDeleted();
     void onUserStoryDeleted();
-    void onTaskDeleted();
 }

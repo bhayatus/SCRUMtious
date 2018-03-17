@@ -253,11 +253,6 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         // Needs to be here even if not implemented
     }
 
-    @Override
-    public void onTaskDeleted() {
-        // Needs to be here even if not implemented
-    }
-
     // Delete sprint button is clicked
     public void onClickDelete(View view) {
         LayoutInflater inflater = (this).getLayoutInflater();

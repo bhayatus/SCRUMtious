@@ -238,11 +238,6 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         // Needs to be here even if not implemented
     }
 
-    @Override
-    public void onTaskDeleted() {
-        // Needs to be here even if not implemented
-    }
-
     private void setupRecyclerView(){
 
         sprintList.setLayoutManager(new LinearLayoutManager(this));
