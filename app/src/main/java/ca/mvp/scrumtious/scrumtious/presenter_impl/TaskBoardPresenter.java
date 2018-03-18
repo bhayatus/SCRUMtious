@@ -2,6 +2,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.media.Image;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -60,15 +61,28 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                 final String tid = getRef(position).getKey().toString();
                 final TaskBoardFragment.TaskBoardViewHolder mViewHolder = viewHolder;
                 String assignedTo = "Nobody";
+
+                String status = model.getStatus().toString();
+
                 // Assigned to someone
                 if (!model.getAssignedTo().equals("null")){
                     assignedTo = model.getAssignedTo().toString();
                 }
+
                 viewHolder.setDetails(model.getTaskDesc(), assignedTo);
 
                 ImageButton deleteTaskBtn = viewHolder.getTaskDelete();
-
                 ImageButton switchTaskBtn = viewHolder.getTaskSwitch();
+
+                if (status.equals("not_started")){
+                    viewHolder.setCardRed();
+                }
+                else if (status.equals("in_progress")){
+                    viewHolder.setCardYellow();
+                }
+                else{
+                    viewHolder.setCardGreen();
+                }
 
                 switchTaskBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -161,7 +175,8 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
     @Override
     public void changeStatus(String tid, final String newStatus) {
-        mRef = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("user_stories").child("tasks")
+        mRef = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("user_stories")
+                .child(usid).child("tasks")
                 .child(tid);
         Map changeStatusMap = new HashMap();
         changeStatusMap.put("/status", newStatus);
@@ -171,10 +186,10 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
             public void onComplete(@NonNull Task task) {
                 // Successful task change
                 if (task.isSuccessful()){
-                    if (newStatus == "not_started"){
+                    if (newStatus.equals("not_started")){
                         taskBoardView.showMessage("Marked the task as \"Not Started\".", false);
                     }
-                    else if (newStatus == "in_progress"){
+                    else if (newStatus.equals("in_progress")){
                         taskBoardView.showMessage("Marked the task as \"In Progress\".", false);
                     }
                     else{
@@ -183,10 +198,10 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                 }
                 // Failed to change the status
                 else{
-                    if (newStatus == "not_started"){
+                    if (newStatus.equals("not_started")){
                         taskBoardView.showMessage("An error occurred, failed to mark the task as \"Not Started\".", false);
                     }
-                    else if (newStatus == "in_progress"){
+                    else if (newStatus.equals("in_progress")){
                         taskBoardView.showMessage("An error occurred, failed to mark the task as \"In Progress\".", false);
                     }
                     else{

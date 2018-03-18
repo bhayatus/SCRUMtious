@@ -16,6 +16,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -204,6 +205,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
         public void setCardGreen(){
             card.setCardBackgroundColor(Color.parseColor("#8BC34A"));
+
         }
     }
 }

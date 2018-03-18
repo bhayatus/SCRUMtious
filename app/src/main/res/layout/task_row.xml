@@ -6,16 +6,40 @@
     android:id="@+id/taskRowCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="#F44336"
     app:cardCornerRadius="2dp"
     app:cardElevation="4dp"
-    android:backgroundTint="#F44336"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    android:paddingTop="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/taskRowDescLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true">
+
+            <ImageButton
+                android:id="@+id/taskSwitchStatesBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_task_switch_state_white_24dp"/>
+
+            <ImageButton
+                android:id="@+id/taskDeleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_delete_white"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/taskDescription"
@@ -24,55 +48,41 @@
             android:paddingBottom="@dimen/task_desc_bottom_padding"
             android:paddingLeft="@dimen/task_desc_padding"
             android:paddingRight="@dimen/task_desc_padding"
-            android:paddingTop="@dimen/task_desc_padding"
+            android:layout_below="@id/taskRowDescLayout"
             android:text="@string/one_hundred_fourty_char_string"
             android:textColor="@color/white"
             android:textSize="14sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/taskAssignedToName"
-            android:layout_alignStart="@+id/taskAssignedToName"
-            android:paddingLeft="10dp"
-            android:text="@string/task_assigned_to_prompt"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
 
-        <TextView
-            android:id="@+id/taskAssignedToName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/taskDeleteBtn"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="9dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="5dp"
-            android:text="TextView"
-            android:textColor="@color/white"
-            android:textStyle="bold|italic"
-            tools:text="Louis George Maurice Adolphe Roche"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_member_white"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"/>
 
-        <ImageButton
-            android:id="@+id/taskSwitchStatesBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/taskDescription"
-            android:backgroundTint="@android:color/transparent"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_task_switch_state_white_24dp"/>
+            <TextView
+                android:id="@+id/taskAssignedToName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/taskDeleteBtn"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="9dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="8dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:paddingBottom="10dp"
+                tools:text="Louis George Maurice Adolphe Roche"/>
 
-        <ImageButton
-            android:id="@+id/taskDeleteBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/taskDescription"
-            android:layout_toStartOf="@+id/taskSwitchStatesBtn"
-            android:backgroundTint="@android:color/transparent"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_delete_white"/>
+        </LinearLayout>
+
 
     </RelativeLayout>
 
