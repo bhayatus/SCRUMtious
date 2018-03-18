@@ -297,6 +297,8 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
             return this.delete;
         }
 
+        public void setCompletedInvisible() { this.completed.setVisibility(View.GONE);}
+
         // Only owner should be able to delete user stories
         public void setDeleteInvisible(){
             this.delete.setVisibility(View.GONE);

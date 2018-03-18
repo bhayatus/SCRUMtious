@@ -38,6 +38,7 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryPoints", stringPoints);
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryDetails", details);
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "completed", "false");
+        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "completedDate", 0);
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo", "null");
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo_completed", "null_false");
         userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedToName", "");
