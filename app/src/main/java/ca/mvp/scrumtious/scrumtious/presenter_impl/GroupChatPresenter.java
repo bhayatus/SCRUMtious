@@ -107,15 +107,14 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
 
                 viewHolder.setDetails(messageContent, timeStamp, sender);
                 if(sender.equals(userEmail)){
-                    viewHolder.hideLeft();
+                    mViewHolder.hideLeft();
                 }else{
-                    viewHolder.hideRight();
+                    mViewHolder.hideRight();
                 }
-
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener(){
+                mViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
 
                     public void onClick(View v){
-                        groupChatView.showMessageDetails(mid);
+                        mViewHolder.showMessageDetails(mid);
                     }
                 });
             }
