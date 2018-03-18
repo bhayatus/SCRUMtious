@@ -12,16 +12,17 @@
     app:cardUseCompatPadding="true"
     android:paddingTop="10dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/taskRowDescLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentRight="true">
+            android:layout_gravity="right">
 
             <ImageButton
                 android:id="@+id/taskSwitchStatesBtn"
@@ -45,45 +46,41 @@
             android:id="@+id/taskDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/task_desc_bottom_padding"
             android:paddingLeft="@dimen/task_desc_padding"
             android:paddingRight="@dimen/task_desc_padding"
-            android:layout_below="@id/taskRowDescLayout"
             android:text="@string/one_hundred_fourty_char_string"
             android:textColor="@color/white"
             android:textSize="14sp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
+            android:paddingTop="10dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_member_white"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"/>
+                android:paddingLeft="20dp" />
 
             <TextView
                 android:id="@+id/taskAssignedToName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/taskDeleteBtn"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="9dp"
-                android:paddingTop="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="2dp"
                 android:paddingRight="8dp"
-                android:text="TextView"
+                android:text="Louis George Maurice Adolphe Roche"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:paddingBottom="10dp"
-                tools:text="Louis George Maurice Adolphe Roche"/>
+                />
 
         </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>
