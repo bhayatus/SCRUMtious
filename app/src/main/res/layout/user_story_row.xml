@@ -112,7 +112,6 @@
             android:orientation="vertical"
             android:paddingLeft="17dp"
             android:paddingRight="10dp"
-            android:paddingBottom="5dp"
             >
 
             <TextView
@@ -130,6 +129,14 @@
 
         </android.widget.LinearLayout>
 
+        <ImageButton
+            android:id="@+id/userStoryRowMoreIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more_white"
+            android:layout_marginLeft="17dp"
+            android:background="@android:color/transparent"/>
+
         <android.widget.LinearLayout
             android:id="@+id/userStoryRowAssignedToLayout"
             android:layout_width="match_parent"
@@ -137,13 +144,13 @@
             android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal"
+            android:paddingTop="10dp"
             android:paddingLeft="17dp"
             android:paddingRight="10dp"
             >
 
 
             <ImageView
-                android:id="@+id/userStoryRowIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

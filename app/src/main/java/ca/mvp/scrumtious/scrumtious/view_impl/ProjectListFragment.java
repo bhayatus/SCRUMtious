@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -26,6 +27,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectListViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Project;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectListPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
+import ca.mvp.scrumtious.scrumtious.utils.StringHelper;
 
 public class ProjectListFragment extends Fragment implements ProjectListViewInt {
 
@@ -165,6 +167,10 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
         View mView;
         TextView titleView, ownerEmailAddressView, descriptionView, creationDateView, numMembersView, numSprintsView;
         ImageView membersIcon, sprintsIcon;
+        ImageButton moreIcon;
+
+        // Don't show whole description by default
+        boolean showFull = false;
 
         public ProjectsViewHolder(View itemView) {
             super(itemView);
@@ -178,6 +184,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             numSprintsView = (TextView) mView.findViewById(R.id.projectRowNumberOfSprints);
             membersIcon = (ImageView) mView.findViewById(R.id.projectRowNumberOfMembersIcon);
             sprintsIcon = (ImageView) mView.findViewById(R.id.projectRowNumberOfSprintsIcon);
+            moreIcon = (ImageButton) mView.findViewById(R.id.projectRowMoreIcon);
 
             membersIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -200,37 +207,22 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
         // Populates each row of the recycler view with the project details
         public void setDetails(String title, String ownerEmailAddress, String description, String creationDate, String numMembers, String numSprints){
 
-            // Shorten description for viewing purposes
-            String displayDesc = "";
-            if (!description.contains("\n")){
-                displayDesc = description;
+            // Show whole description by default
+            String displayDesc = description;
+
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
             }
-            else {
-                String[] parts = description.split("\n");
-                // Only one line break
-                if (parts.length == 2) {
-                    displayDesc = parts[0] + "\n" + parts[1];
-                }
-                // At least three lines
-                else{
 
-                    int numberOfNewLines = 0;
-                    int index = 0;
-                    int length = description.length();
-                    while(numberOfNewLines <= 2 && index < length){
-                        if (description.charAt(index) == '\n'){
-                            numberOfNewLines++;
-                            displayDesc += "\n";
-                        }
-                        else{
-                            displayDesc += description.charAt(index);
-                        }
-
-                        index++;
-                    }
-                    displayDesc += "...";
-                }
-
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
             }
 
             titleView.setText(title);
@@ -239,6 +231,45 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             creationDateView.setText(creationDate);
             numMembersView.setText(numMembers);
             numSprintsView.setText(numSprints);
+        }
+
+        // Either show or hide the more icon
+        public void showOrHideMoreIcon(boolean hide){
+            if (hide){
+                moreIcon.setVisibility(View.GONE);
+            }
+            else{
+                moreIcon.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public ImageButton getMoreIcon(){
+            return moreIcon;
+        }
+
+        // User clicked on the show more icon, switch boolean state and reset description
+        public void switchShowFull(String description){
+            showFull = !showFull;
+
+            // Show whole description by default
+            String displayDesc = description;
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
+            }
+
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
+            }
+
+            // Reset the description
+            descriptionView.setText(displayDesc);
         }
 
 

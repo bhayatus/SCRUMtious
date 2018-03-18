@@ -30,6 +30,7 @@ import ca.mvp.scrumtious.scrumtious.presenter_impl.SprintListPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
+import ca.mvp.scrumtious.scrumtious.utils.StringHelper;
 
 public class SprintListActivity extends AppCompatActivity implements SprintListViewInt {
 
@@ -300,6 +301,11 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         View mView;
         TextView nameView, descriptionView, startToEndDateView, currentSprintView;
 
+        ImageButton moreIcon;
+
+        // Don't show whole description by default
+        boolean showFull = false;
+
         public SprintsViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
@@ -308,6 +314,9 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             descriptionView = (TextView) mView.findViewById(R.id.sprintRowDescription);
             startToEndDateView = (TextView) mView.findViewById(R.id.sprintRowStartToEnd);
             currentSprintView = (TextView) mView.findViewById(R.id.sprintRowCurrentSprint);
+
+            moreIcon = (ImageButton) mView.findViewById(R.id.sprintRowMoreIcon);
+
         }
 
         // Display message indicating that the current date falls within a sprint
@@ -319,42 +328,66 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         // Populates each row of the recycler view with the sprint details
         public void setDetails(String name, String description, String startToEndDate){
 
-            // Shorten description for viewing purposes
-            String displayDesc = "";
-            if (!description.contains("\n")){
-                displayDesc = description;
+            // Show whole description by default
+            String displayDesc = description;
+
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
             }
-            else {
-                String[] parts = description.split("\n");
-                // Only one line break
-                if (parts.length == 2) {
-                    displayDesc = parts[0] + "\n" + parts[1];
-                }
-                // At least three lines
-                else{
 
-                    int numberOfNewLines = 0;
-                    int index = 0;
-                    int length = description.length();
-                    while(numberOfNewLines <= 2 && index < length){
-                        if (description.charAt(index) == '\n'){
-                            numberOfNewLines++;
-                            displayDesc += "\n";
-                        }
-                        else{
-                            displayDesc += description.charAt(index);
-                        }
-
-                        index++;
-                    }
-                    displayDesc += "...";
-                }
-
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
             }
 
             nameView.setText(name);
             descriptionView.setText(displayDesc);
             startToEndDateView.setText(startToEndDate);
+        }
+
+        // Either show or hide the more icon
+        public void showOrHideMoreIcon(boolean hide){
+            if (hide){
+                moreIcon.setVisibility(View.GONE);
+            }
+            else{
+                moreIcon.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public ImageButton getMoreIcon(){
+            return moreIcon;
+        }
+
+        // User clicked on the show more icon, switch boolean state and reset description
+        public void switchShowFull(String description){
+            showFull = !showFull;
+
+            // Show whole description by default
+            String displayDesc = description;
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
+            }
+
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
+            }
+
+            // Reset the description
+            descriptionView.setText(displayDesc);
         }
 
 

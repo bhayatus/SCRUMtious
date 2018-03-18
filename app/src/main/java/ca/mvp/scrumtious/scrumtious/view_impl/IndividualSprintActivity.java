@@ -338,19 +338,9 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         public Fragment getItem(int position) {
             switch(position){
 
-                // Overview Tab
+                // In Progress Tab
                 case 0:
                     Bundle data = new Bundle();
-                    data.putString("projectId", pid);
-                    data.putString("sprintId", sid);
-
-                    SprintOverviewFragment sprintOverviewFragment = new SprintOverviewFragment();
-                    sprintOverviewFragment.setArguments(data);
-                    return sprintOverviewFragment;
-
-                // In Progress Tab
-                case 1:
-                    data = new Bundle();
                     data.putString("projectId", pid);
                     // This fragment will display info for product backlog in progress user stories
                     data.putString("type", "SPRINT_IN_PROGRESS");
@@ -363,7 +353,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                     return pbInProgressFragment;
 
                     // Completed Tab
-                case 2:
+                case 1:
                     data = new Bundle();
                     data.putString("projectId", pid);
                     // This fragment will display info for product backlog completed user stories
@@ -382,8 +372,8 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
         @Override
         public int getCount() {
-            // Show 3 total tabs
-            return 3;
+            // Show 2 total tabs
+            return 2;
         }
 
         @Nullable
@@ -391,12 +381,9 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         public CharSequence getPageTitle(int position) {
             switch(position){
                 case 0:
-                    return "OVERVIEW";
-
-                case 1:
                     return "IN PROGRESS";
 
-                case 2:
+                case 1:
                     return "COMPLETED";
 
                 default:

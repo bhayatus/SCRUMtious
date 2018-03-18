@@ -3,6 +3,8 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 import android.app.ProgressDialog;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.ImageButton;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -54,6 +56,9 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
             protected void populateViewHolder(ProjectListFragment.ProjectsViewHolder viewHolder, Project model, int position) {
                 final String pid = getRef(position).getKey();
 
+                final ProjectListFragment.ProjectsViewHolder mViewHolder = viewHolder;
+                final Project projectModel = model;
+
                 // Grab the date
                 long timestamp = model.getCreationTimeStamp();
                 final String dateFormatted = "Date Created: " + DateFormat.format("MM/dd/yyyy", timestamp).toString();
@@ -72,6 +77,17 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                     @Override
                     public void onClick(View v) {
                         projectListView.goToProjectScreen(pid);
+                    }
+                });
+
+                ImageButton moreBtn = viewHolder.getMoreIcon();
+
+                // When user clicks the button, toggle the description showing boolean and reset description
+                moreBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewHolder.switchShowFull(projectModel.getProjectDesc());
+
                     }
                 });
             }

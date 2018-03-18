@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +48,8 @@ public class SprintListPresenter implements SprintListPresenterInt {
             @Override
             protected void populateViewHolder(SprintListActivity.SprintsViewHolder viewHolder, Sprint model, int position) {
                 final String sid = getRef(position).getKey();
+                final SprintListActivity.SprintsViewHolder mViewHolder = viewHolder;
+                final Sprint sprintModel = model;
 
                 // Grab the dates
                 long startDate = model.getSprintStartDate();
@@ -82,6 +85,15 @@ public class SprintListPresenter implements SprintListPresenterInt {
                     @Override
                     public void onClick(View v) {
                         sprintListView.goToSprintScreen(sid);
+                    }
+                });
+
+                ImageButton moreBtn = viewHolder.getMoreIcon();
+                // When user clicks the button, toggle the description showing boolean and reset description
+                moreBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewHolder.switchShowFull(sprintModel.getSprintDesc());
                     }
                 });
             }

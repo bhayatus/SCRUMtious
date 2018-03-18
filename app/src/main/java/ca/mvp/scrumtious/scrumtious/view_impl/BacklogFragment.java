@@ -28,6 +28,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.BacklogViewInt;
 import ca.mvp.scrumtious.scrumtious.model.UserStory;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.BacklogPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
+import ca.mvp.scrumtious.scrumtious.utils.StringHelper;
 
 public class BacklogFragment extends Fragment implements BacklogViewInt{
 
@@ -224,12 +225,17 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
     // Viewholder class to display user stories
     public static class BacklogViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView nameView, pointsView, descView, assignedToNameView;
+        TextView nameView, pointsView, descriptionView, assignedToNameView;
         ImageButton completed;
         ImageButton delete;
-        ImageView sprintIcon;
         LinearLayout assignedToLayout;
         CardView card;
+
+        ImageButton moreIcon;
+
+        // Don't show whole description by default
+        boolean showFull = false;
+
 
         public BacklogViewHolder(View itemView) {
             super(itemView);
@@ -237,19 +243,37 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
             nameView = (TextView) mView.findViewById(R.id.userStoryRowName);
             pointsView = (TextView) mView.findViewById(R.id.userStoryRowPoints);
-            descView = (TextView) mView.findViewById(R.id.userStoryRowDesc);
+            descriptionView = (TextView) mView.findViewById(R.id.userStoryRowDesc);
             assignedToNameView = (TextView) mView.findViewById(R.id.userStoryAssignedToName);
             completed = (ImageButton) mView.findViewById(R.id.userStoryRowCompleted);
             delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
             assignedToLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToLayout);
-            sprintIcon = (ImageView) mView.findViewById(R.id.userStoryRowIcon);
             card = (CardView) mView.findViewById(R.id.userStoryRowCardView);
+            moreIcon = (ImageButton) mView.findViewById(R.id.userStoryRowMoreIcon);
         }
 
 
         // Populates each row of the recycler view with the user story details
         public void setDetails(String name, String points, String assignedToName, String description){
             nameView.setText(name);
+
+            // Show whole description by default
+            String displayDesc = description;
+
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
+            }
+
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
+            }
 
             // If only 1 point, don't display as plural
             if (Integer.parseInt(points) == 1){
@@ -261,7 +285,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
             assignedToNameView.setText(assignedToName);
 
-            descView.setText(description);
+            descriptionView.setText(displayDesc);
 
         }
 
@@ -283,16 +307,6 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
             assignedToLayout.setVisibility(View.GONE);
         }
 
-        // Called when user story isn't assigned to a sprint
-        public void setSprintIconInvisible(){
-            sprintIcon.setVisibility(View.GONE);
-        }
-
-        // Called when user story is assigned to a sprint
-        public void setSprintIconVisible(){
-            sprintIcon.setVisibility(View.VISIBLE);
-        }
-
         public void setCardRed(){
             card.setCardBackgroundColor(Color.parseColor("#DE1212"));
         }
@@ -300,5 +314,45 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
         public void setCardGreen(){
             card.setCardBackgroundColor(Color.parseColor("#00C853"));
         }
+
+        // Either show or hide the more icon
+        public void showOrHideMoreIcon(boolean hide){
+            if (hide){
+                moreIcon.setVisibility(View.GONE);
+            }
+            else{
+                moreIcon.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public ImageButton getMoreIcon(){
+            return moreIcon;
+        }
+
+        // User clicked on the show more icon, switch boolean state and reset description
+        public void switchShowFull(String description){
+            showFull = !showFull;
+
+            // Show whole description by default
+            String displayDesc = description;
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
+            }
+
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
+            }
+
+            // Reset the description
+            descriptionView.setText(displayDesc);
+        }
+
     }
 }

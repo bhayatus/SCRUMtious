@@ -95,6 +95,11 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
             @Override
             protected void populateViewHolder(final BacklogFragment.BacklogViewHolder viewHolder, UserStory model, int position) {
+                // The id of the user story
+                final String usid = getRef(position).getKey().toString();
+
+                final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
+                final UserStory userStoryModel = model;
 
                 String nameOfSprint = model.getAssignedToName();
                 String assignedToName;
@@ -111,12 +116,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 // Not assigned to a sprint, don't bother showing assigned to icon
                 if (nameOfSprint.equals("")){
                     assignedToName = "Not yet assigned to a sprint";
-                    viewHolder.setSprintIconInvisible();
                 }
                 // User story in a sprint, show the sprint it is assigned to
                 else {
                     assignedToName = "Assigned to: " + nameOfSprint;
-                    viewHolder.setSprintIconVisible();
                 }
 
                 // If in a sprint, don't show the assigned to layout
@@ -126,12 +129,18 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                 viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints(), assignedToName, model.getUserStoryDetails());
 
-                final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
                 ImageButton completed = viewHolder.getCompleted();
                 ImageButton delete = viewHolder.getDelete();
 
-                // The id of the user story
-                final String usid = getRef(position).getKey().toString();
+
+                ImageButton moreBtn = viewHolder.getMoreIcon();
+                // When user clicks the button, toggle the description showing boolean and reset description
+                moreBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewHolder.switchShowFull(userStoryModel.getUserStoryDetails());
+                    }
+                });
 
                 // Show as in progress with image
                 if (type.equals("PB_IN_PROGRESS") || type.equals("SPRINT_IN_PROGRESS")) {

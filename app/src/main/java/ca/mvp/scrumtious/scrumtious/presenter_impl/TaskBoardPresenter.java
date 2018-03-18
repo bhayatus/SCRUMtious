@@ -60,6 +60,8 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
             protected void populateViewHolder(TaskBoardFragment.TaskBoardViewHolder viewHolder, ca.mvp.scrumtious.scrumtious.model.Task model, int position) {
                 final String tid = getRef(position).getKey().toString();
                 final TaskBoardFragment.TaskBoardViewHolder mViewHolder = viewHolder;
+                final ca.mvp.scrumtious.scrumtious.model.Task taskModel = model;
+
                 String assignedTo = "Not assigned to any member";
 
                 String status = model.getStatus().toString();
@@ -95,6 +97,17 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                     @Override
                     public void onClick(View v) {
                         taskBoardView.onClickDeleteTask(tid);
+                    }
+                });
+
+                ImageButton moreBtn = viewHolder.getMoreIcon();
+
+                // When user clicks the button, toggle the description showing boolean and reset description
+                moreBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewHolder.switchShowFull(taskModel.getTaskDesc());
+
                     }
                 });
 
@@ -146,7 +159,7 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                     mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
 
                     Map deleteTaskMap = new HashMap();
-                    deleteTaskMap.put("/numTasks", oldNumTasks+1);
+                    deleteTaskMap.put("/numTasks", oldNumTasks-1);
                     deleteTaskMap.put("/tasks/" + tid, null);
 
                     mRef.updateChildren(deleteTaskMap).addOnCompleteListener(new OnCompleteListener() {

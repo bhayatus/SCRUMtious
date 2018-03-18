@@ -2,10 +2,12 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardBackgroundColor="@color/cardview_light_background"
-    card_view:cardElevation="1dp"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="4dp"
     android:layout_margin="3dp">
 
         <LinearLayout
@@ -45,6 +47,13 @@
                 android:text="This is a description that explains what the sprint is about, and now I am running out of things to say, so I'll stop."
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/projectRowMoreIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_more"
+                android:background="@android:color/transparent"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

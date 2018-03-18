@@ -36,6 +36,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.TaskBoardViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Task;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.TaskBoardPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
+import ca.mvp.scrumtious.scrumtious.utils.StringHelper;
 
 public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
@@ -168,23 +169,47 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     }
     public static class TaskBoardViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView desc, assignToName;
+        TextView descriptionView, assignToName;
         ImageButton taskSwitch;
         ImageButton taskDelete;
         CardView card;
+
+        ImageButton moreIcon;
+        // Don't show whole description by default
+        boolean showFull = false;
 
         public TaskBoardViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
 
-            desc = (TextView) mView.findViewById(R.id.taskDescription);
+            descriptionView = (TextView) mView.findViewById(R.id.taskDescription);
             assignToName = (TextView) mView.findViewById(R.id.taskAssignedToName);
             taskDelete = (ImageButton) mView.findViewById(R.id.taskDeleteBtn);
             taskSwitch = (ImageButton) mView.findViewById(R.id.taskSwitchStatesBtn);
             card = (CardView) mView.findViewById(R.id.taskRowCard);
+            moreIcon = (ImageButton) mView.findViewById(R.id.taskRowMoreIcon);
         }
         public void setDetails(String description, String assignedTo){
-            desc.setText(description);
+
+            // Show whole description by default
+            String displayDesc = description;
+
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
+            }
+
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
+            }
+
+            descriptionView.setText(displayDesc);
             assignToName.setText(assignedTo);
         }
         public ImageButton getTaskSwitch(){
@@ -211,6 +236,45 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
         public void setCardGreen(){
             card.setCardBackgroundColor(Color.parseColor("#8BC34A"));
 
+        }
+
+        // Either show or hide the more icon
+        public void showOrHideMoreIcon(boolean hide){
+            if (hide){
+                moreIcon.setVisibility(View.GONE);
+            }
+            else{
+                moreIcon.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public ImageButton getMoreIcon(){
+            return moreIcon;
+        }
+
+        // User clicked on the show more icon, switch boolean state and reset description
+        public void switchShowFull(String description){
+            showFull = !showFull;
+
+            // Show whole description by default
+            String displayDesc = description;
+
+            // Shorten the description
+            if (!showFull){
+                displayDesc = StringHelper.shortenDescription(description);
+            }
+
+            // Description is showing entirely, hide show more icon
+            if (displayDesc.trim().equals(description)){
+                showOrHideMoreIcon(true);
+            }
+            // Description has been shortened, don't show more icon
+            else{
+                showOrHideMoreIcon(false);
+            }
+
+            // Reset the description
+            descriptionView.setText(displayDesc);
         }
     }
 }

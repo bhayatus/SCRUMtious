@@ -29,7 +29,7 @@
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:theme="@style/IndividualProjectToolbar"
-                app:title="Sprint Dashboard">
+                app:title="Sprint Backlog">
 
                 <ImageButton
                     android:id="@+id/individualSprintLogoutBtn"

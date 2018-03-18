@@ -151,7 +151,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
         // Populates each row of the recycler view with the invitation details
         public void setDetails(String projectTitle, String emailAddress){
             projectTitleView.setText(projectTitle);
-            emailView.setText("by " + emailAddress);
+            emailView.setText("from " + emailAddress);
         }
 
         public ImageButton getAcceptButton(){
