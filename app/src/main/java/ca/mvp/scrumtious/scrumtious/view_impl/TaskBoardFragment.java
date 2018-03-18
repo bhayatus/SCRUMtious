@@ -41,11 +41,13 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
     private String pid;
     private String type;
+
     private TaskBoardPresenterInt taskBoardPresenter;
     private RecyclerView taskBoardList;
     private LinearLayout emptyStateView;
     private FirebaseRecyclerAdapter<Task, TaskBoardViewHolder> taskBoardAdapter;
     private ProgressDialog deletingTaskDialog;
+
     public TaskBoardFragment() {
         // Required empty public constructor
     }
@@ -92,6 +94,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
         }
     }
 
+    // If there are no tasks to show in this specific tab, or there are
     @Override
     public void setEmptyStateView() {
         if(taskBoardAdapter.getItemCount() == 0){

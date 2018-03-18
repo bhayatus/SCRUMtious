@@ -142,9 +142,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
                     descriptionFieldLayout.setErrorEnabled(true);
                     descriptionFieldLayout.setError("Please enter a description for your task.");
 
-
-                    //////////////////////////////////////CHANGE AFTER BECAUSE OF LENGTH, TESTING 50 /////////////////////////////////////////////////////////
-                }else if(descFieldText.trim().length() > 50){
+                }else if(descFieldText.trim().length() > 140){
                     descriptionFieldLayout.setErrorEnabled(true);
                     descriptionFieldLayout.setError("Task name is too long.");
                 }else{
@@ -156,7 +154,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
         });
     }
 
-    // Return to task list screen
+    // Return to task board
     public void onSuccessfulCreateTask(){
 
         //Stop dialog if showing
@@ -164,7 +162,6 @@ public class CreateTaskActivity extends AppCompatActivity implements
             createTaskProgressDialog.dismiss();
         }
 
-        //Return to IndividualUserStoryActivity
         Intent intent = new Intent(CreateTaskActivity.this, IndividualUserStoryActivity.class);
         intent.putExtra("projectId", pid);
         intent.putExtra("userStoryId", usid);
@@ -247,6 +244,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
             // Return to project list screen and make sure we can't go back by clearing the task stack
             Intent intent = new Intent(CreateTaskActivity.this, ProductBacklogActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("projectId", pid);
             startActivity(intent);
             finish();
         }

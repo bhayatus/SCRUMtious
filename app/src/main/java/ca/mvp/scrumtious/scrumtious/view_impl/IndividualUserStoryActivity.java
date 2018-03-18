@@ -224,6 +224,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
             // Return to product backlog
             Intent intent = new Intent(IndividualUserStoryActivity.this, ProductBacklogActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("projectId", pid);
             startActivity(intent);
             finish();
         }

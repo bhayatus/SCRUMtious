@@ -43,8 +43,6 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
     private boolean projectAlreadyDeleted;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
