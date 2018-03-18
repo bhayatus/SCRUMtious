@@ -11,4 +11,6 @@
     <dimen name="project_list_top_padding">15dp</dimen>
     <dimen name="task_desc_padding">20dp</dimen>
     <dimen name="task_desc_bottom_padding">30dp</dimen>
+    <dimen name="group_chat_message_input_padding">10dp</dimen>
+    <dimen name="group_chat_message_input_field_height">40dp</dimen>
 </resources>
