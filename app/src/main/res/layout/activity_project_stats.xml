@@ -46,7 +46,10 @@
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
-
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/burndownGraph"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
