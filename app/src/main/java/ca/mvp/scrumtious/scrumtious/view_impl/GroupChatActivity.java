@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.GroupChatPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.GroupChatViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Message;
+import ca.mvp.scrumtious.scrumtious.presenter_impl.GroupChatPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class GroupChatActivity extends AppCompatActivity implements GroupChatViewInt {
@@ -28,6 +30,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     private ProgressDialog loadingMessagesDialog;
     private ImageButton groupChatSendBtn;
     private RecyclerView messageList;
+    private String pid;
 
     public GroupChatActivity(){
 
@@ -36,7 +39,10 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        groupChatPresenter = new GroupChatPresenter(this);
+
+        Bundle data = getIntent().getExtras();
+        pid = data.getString("projectId");
+        groupChatPresenter = new GroupChatPresenter(this, pid);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,16 +75,10 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     }
 
     private void setupRecyclerView(){
-        loadingMessagesDialog = new ProgressDialog(getApplicationContext());
-        loadingMessagesDialog.setTitle("Load Messages");
-        loadingMessagesDialog.setCancelable(false);
-        loadingMessagesDialog.setMessage("Now loading your messages...");
-        loadingMessagesDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loadingMessagesDialog.show();
 
         messageList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        groupChatAdapter = groupChatPresenter.setupGroupChatAdapter(loadingMessagesDialog, false);
+        groupChatAdapter = groupChatPresenter.setupMessageAdapter();
 
         messageList.setAdapter(groupChatAdapter);
     }
@@ -105,6 +105,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         View mView;
         TextView messageContentRight, messageContentLeft,messageTimestampRight, messageTimestampLeft, messageSentByLeft;
+        LinearLayout leftContainer, rightContainer;
 
         public MessagesViewHolder(View itemView){
 
@@ -116,42 +117,46 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
             messageTimestampRight= (TextView) mView.findViewById(R.id.message_timestamp_right);
             messageTimestampLeft= (TextView) mView.findViewById(R.id.message_timestamp_left);
             messageSentByLeft = (TextView) mView.findViewById(R.id.message_sent_by_left);
+            leftContainer = (LinearLayout) mView.findViewById(R.id.message_container_left);
+            rightContainer = (LinearLayout) mView.findViewById(R.id.message_container_right);
 
         }
-        //change it, use the containers
+
         public void hideLeft(){
 
-            messageContentLeft.setVisibility(View.GONE);
-            messageTimestampLeft.setVisibility(View.GONE);
-            messageSentByLeft.setVisibility(View.GONE);
-            messageContentRight.setVisibility(View.VISIBLE);
-            messageTimestampRight.setVisibility(View.VISIBLE);
+            leftContainer.setVisibility(View.GONE);
+            rightContainer.setVisibility(View.VISIBLE);
+
         }
 
         public void hideRight(){
 
-            messageContentRight.setVisibility(View.GONE);
-            messageTimestampRight.setVisibility(View.GONE);
-            messageContentLeft.setVisibility(View.VISIBLE);
-            messageTimestampLeft.setVisibility(View.VISIBLE);
-            messageSentByLeft.setVisibility(View.VISIBLE);
+            leftContainer.setVisibility(View.VISIBLE);
+            rightContainer.setVisibility(View.GONE);
 
         }
 
-        public void setDetailsLeft(String messageText, String timeStamp, String senderEmail){
-
+        public void setDetails(String messageText, String timeStamp, String senderEmail){
             messageContentLeft.setText(messageText);
             messageTimestampLeft.setText(timeStamp);
             messageSentByLeft.setText(senderEmail);
-
-        }
-
-        public void setDetailsRight(String messageText, String timeStamp){
-
             messageContentRight.setText(messageText);
             messageTimestampRight.setText(timeStamp);
-
         }
+    }
+
+    public void showMessage(String message, boolean showAsToast) {
+
+        // Show message in toast so it persists across activity transitions
+        if (showAsToast){
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            // Call the utils class method to handle making the snackbar
+            SnackbarHelper.showSnackbar(this, message);
+        }
+
     }
 
 
