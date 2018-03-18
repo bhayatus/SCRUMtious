@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,25 +125,54 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         public void hideLeft(){
 
+            messageContentRight.setVisibility(View.GONE);
+            messageTimestampRight.setVisibility(View.VISIBLE);
             leftContainer.setVisibility(View.GONE);
-            rightContainer.setVisibility(View.VISIBLE);
 
         }
 
         public void hideRight(){
 
-            leftContainer.setVisibility(View.VISIBLE);
+            messageContentLeft.setVisibility(View.VISIBLE);
+            messageTimestampLeft.setVisibility(View.GONE);
+            messageSentByLeft.setVisibility(View.GONE);
             rightContainer.setVisibility(View.GONE);
 
         }
 
-        public void setDetails(String messageText, String timeStamp, String senderEmail){
+        public void setDetails(String messageText, long timeStamp, String senderEmail){
             messageContentLeft.setText(messageText);
-            messageTimestampLeft.setText(timeStamp);
+            final String dateFormatted = DateFormat.format("MM/dd/yyyy", timeStamp).toString();
+            messageTimestampLeft.setText(dateFormatted);
             messageSentByLeft.setText(senderEmail);
             messageContentRight.setText(messageText);
-            messageTimestampRight.setText(timeStamp);
+            messageTimestampRight.setText(dateFormatted);
         }
+
+
+        public void showMessageDetails(String mid) {
+            if(messageContentRight.isShown()){
+                if(messageTimestampRight.isShown()){
+                    messageTimestampRight.setVisibility(View.GONE);
+                }
+                else{
+                    messageTimestampRight.setVisibility(View.VISIBLE);
+                }
+
+            }
+            else if(messageContentLeft.isShown()){
+                if(messageTimestampLeft.isShown()){
+                    messageTimestampLeft.setVisibility(View.GONE);
+                    messageSentByLeft.setVisibility(View.GONE);
+                }
+                else{
+                    messageTimestampLeft.setVisibility(View.VISIBLE);
+                    messageSentByLeft.setVisibility(View.GONE);
+                }
+
+            }
+        }
+
     }
 
     public void showMessage(String message, boolean showAsToast) {
@@ -159,5 +189,10 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     }
 
+    @Override
+    public void onSuccessfulSent() {
+        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
+        groupChatMessageInput.setText("");
+    }
 
 }
