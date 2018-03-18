@@ -50,7 +50,6 @@ public class CreateTaskPresenter extends AppCompatActivity implements CreateTask
                 taskMap.put("/tasks/" + taskId + "/taskDesc", taskDesc);
                 taskMap.put("/tasks/" + taskId + "/status", "not_started");
 
-                taskMap.put("/tasks/" + taskId + "/assignedTo", "");
                 taskMap.put("/numTasks", numTasks);
 
                 mRef.updateChildren(taskMap).addOnCompleteListener(new OnCompleteListener() {

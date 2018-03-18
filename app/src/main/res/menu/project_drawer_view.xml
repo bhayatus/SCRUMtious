@@ -16,6 +16,11 @@
             android:title="Sprint List" />
 
         <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_chat"
+            android:title="Team Chat" />
+
+        <item
             android:id="@+id/nav_stats"
             android:icon="@drawable/ic_stats"
             android:title="Project Stats" />

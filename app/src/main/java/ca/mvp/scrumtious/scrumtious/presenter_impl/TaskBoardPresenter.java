@@ -62,16 +62,11 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                 final TaskBoardFragment.TaskBoardViewHolder mViewHolder = viewHolder;
                 final ca.mvp.scrumtious.scrumtious.model.Task taskModel = model;
 
-                String assignedTo = "Not assigned to any member";
 
                 String status = model.getStatus().toString();
 
-                // Not assigned to someone
-                if (!model.getAssignedTo().equals("")){
-                    assignedTo = model.getAssignedTo().toString();
-                }
 
-                viewHolder.setDetails(model.getTaskDesc(), assignedTo);
+                viewHolder.setDetails(model.getTaskDesc());
 
                 ImageButton deleteTaskBtn = viewHolder.getTaskDelete();
                 ImageButton switchTaskBtn = viewHolder.getTaskSwitch();
