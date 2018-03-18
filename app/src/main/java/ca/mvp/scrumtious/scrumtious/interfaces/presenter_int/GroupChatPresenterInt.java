@@ -1,11 +1,13 @@
 package ca.mvp.scrumtious.scrumtious.interfaces.presenter_int;
 
-/**
- * Created by Swetha on 2018-03-18.
- */
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+
+import ca.mvp.scrumtious.scrumtious.model.Message;
+import ca.mvp.scrumtious.scrumtious.view_impl.GroupChatActivity;
 
 public interface GroupChatPresenterInt {
 
-    void addMessagesToDatabase(String message, long timeStamp);
-
+    void addMessagesToDatabase(String messageText);
+    FirebaseRecyclerAdapter<Message, GroupChatActivity.MessagesViewHolder> setupMessageAdapter
+            ();
 }
