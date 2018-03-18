@@ -82,7 +82,7 @@ public class ListenerHelper {
 
     public static ValueEventListener setupUserStoryDeletedListener(final ListenerInt context, String pid, String usid){
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
+        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
                 ValueEventListener userStoryListener = mRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
