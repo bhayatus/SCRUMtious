@@ -9,5 +9,4 @@ public interface BacklogPresenterInt {
 
     void changeCompletedStatus(String usid, boolean newStatus);
     void deleteUserStory(String usid);
-    void validatePassword(String password, String usid);
 }

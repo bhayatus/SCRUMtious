@@ -106,6 +106,8 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             taskBoardList.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
     public void onClickDeleteTask(final String tid){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Task")
@@ -203,7 +205,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
         }
 
         public void setCardYellow(){
-            card.setCardBackgroundColor(Color.parseColor("#FFC107"));
+            card.setCardBackgroundColor(Color.parseColor("#F5BA0A"));
         }
 
         public void setCardGreen(){

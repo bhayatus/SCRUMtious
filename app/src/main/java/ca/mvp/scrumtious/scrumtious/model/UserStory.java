@@ -2,7 +2,7 @@ package ca.mvp.scrumtious.scrumtious.model;
 
 public class UserStory {
 
-    private String userStoryName, userStoryPoints, completed, assignedToName;
+    private String userStoryName, userStoryPoints, userStoryDetails, completed, assignedToName;
     public UserStory(){
 
     }
@@ -14,6 +14,8 @@ public class UserStory {
     public String getUserStoryPoints() {
         return userStoryPoints;
     }
+
+    public String getUserStoryDetails(){ return userStoryDetails; }
 
     public String getCompleted(){ return completed; }
 

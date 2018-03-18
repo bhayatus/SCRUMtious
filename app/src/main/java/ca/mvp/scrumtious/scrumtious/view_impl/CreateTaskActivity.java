@@ -140,11 +140,8 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
                 if((descFieldText == null) || (descFieldText.trim().length() <= 0)){
                     descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a description for your task.");
+                    descriptionFieldLayout.setError("Please enter a task description.");
 
-                }else if(descFieldText.trim().length() > 140){
-                    descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Task name is too long.");
                 }else{
                     descriptionFieldLayout.setErrorEnabled(false);
                     descriptionFieldLayout.setError(null);

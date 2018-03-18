@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/task_not_started"
-        android:title="Not Started" />
+        android:title="Mark As Not Started" />
     <item android:id="@+id/task_in_progress"
-        android:title="In Progress" />
+        android:title="Mark As In Progress" />
     <item android:id="@+id/task_completed"
-        android:title="Completed" />
+        android:title="Mark As Completed" />
 </menu>

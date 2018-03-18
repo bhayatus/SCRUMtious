@@ -322,7 +322,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
                 String descriptionFieldText = descriptionField.getText().toString();
                 if(descriptionFieldText == null || (descriptionFieldText.trim().length() <= 0)){
                     descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a description for your sprint.");
+                    descriptionFieldLayout.setError("Please enter a sprint description.");
                 }else{
                     descriptionFieldLayout.setErrorEnabled(false);
                     descriptionFieldLayout.setError(null);

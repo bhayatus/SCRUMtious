@@ -88,7 +88,7 @@
             android:inputType="textMultiLine"
             android:lines="5"
             android:scrollbars="vertical"
-            android:maxLength="512"/>
+            android:maxLength="280"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button

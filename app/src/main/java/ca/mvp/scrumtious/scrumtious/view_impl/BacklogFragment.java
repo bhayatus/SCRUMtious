@@ -155,35 +155,16 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
     }
 
-    // User wants to delete the user story
+    // Owner wants to delete the user story
     @Override
-    public void onClickDeleteUserStory(final String usid) {
-        LayoutInflater inflater = (this).getLayoutInflater();
-        final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
+    public void onClickDeleteUserStory(final String usid){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Delete User Story?")
-                .setView(alertView)
-                .setMessage("Are you sure you want to delete this user story? Enter your password below to confirm.")
+        builder.setTitle("Delete User Story")
+                .setMessage("Are you sure you want to delete this user story?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Validate password first
-                        EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
-                        String password = passwordET.getText().toString().trim();
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        // Cannot send null password
-                        if(password == null){
-                            showMessage("Incorrect password, could not delete user story.", false);
-                        }
-
-                        else {
-                            // Cannot send empty string
-                            if(password.length() == 0) {
-                                showMessage("Incorrect password, could not delete user story.", false);
-                            }
-                            else {
-
-                                // Creates a dialog that appears to tell the user that deleting a user story is occurring
                                 deletingUserStoryDialog = new ProgressDialog(getContext());
                                 deletingUserStoryDialog.setTitle("Delete User Story");
                                 deletingUserStoryDialog.setCancelable(false);
@@ -191,20 +172,19 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
                                 deletingUserStoryDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deletingUserStoryDialog.show();
 
-                                // Send password to backend, to validate before deleting
-                                backlogPresenter.validatePassword(password, usid);
+                                // Now actually delete it
+                                backlogPresenter.deleteUserStory(usid);
                             }
+
                         }
-                    }
-                })
+                )
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        // Remain in this screen
                     }
                 })
                 .create().show();
-
     }
 
     @Override
@@ -244,7 +224,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
     // Viewholder class to display user stories
     public static class BacklogViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView nameView, pointsView, assignedToNameView;
+        TextView nameView, pointsView, descView, assignedToNameView;
         ImageButton completed;
         ImageButton delete;
         ImageView sprintIcon;
@@ -257,6 +237,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
             nameView = (TextView) mView.findViewById(R.id.userStoryRowName);
             pointsView = (TextView) mView.findViewById(R.id.userStoryRowPoints);
+            descView = (TextView) mView.findViewById(R.id.userStoryRowDesc);
             assignedToNameView = (TextView) mView.findViewById(R.id.userStoryAssignedToName);
             completed = (ImageButton) mView.findViewById(R.id.userStoryRowCompleted);
             delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
@@ -267,7 +248,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
 
         // Populates each row of the recycler view with the user story details
-        public void setDetails(String name, String points, String assignedToName){
+        public void setDetails(String name, String points, String assignedToName, String description){
             nameView.setText(name);
 
             // If only 1 point, don't display as plural
@@ -279,6 +260,8 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
             }
 
             assignedToNameView.setText(assignedToName);
+
+            descView.setText(description);
 
         }
 

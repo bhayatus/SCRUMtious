@@ -124,7 +124,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     viewHolder.setAssignedToLayoutInvisible();
                 }
 
-                viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints(), assignedToName);
+                viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints(), assignedToName, model.getUserStoryDetails());
 
                 final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
                 ImageButton completed = viewHolder.getCompleted();
@@ -225,33 +225,6 @@ public class BacklogPresenter implements BacklogPresenterInt {
         return backlogListAdapter;
     }
 
-    // Check the group owner's password before deleting user story
-    @Override
-    public void validatePassword(String password, final String usid) {
-
-        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
-        mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                // If password entered matched the password of the group owner, then delete user story
-                if (task.isSuccessful()) {
-                    deleteUserStory(usid);
-                }
-
-                // Password didn't match, tell user
-                else {
-                    backlogView.showMessage("Incorrect password, could not delete user story.", false);
-                }
-            }
-        });
-
-
-    }
-
-
-
     // Change the user story completed flag from either true to false, or false to true
     @Override
     public void changeCompletedStatus(String usid, boolean newStatus){
@@ -334,7 +307,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully
                 if (task.isSuccessful()){
-                    backlogView.showMessage("User story was deleted.", false);
+                    backlogView.showMessage("Successfully deleted user story.", false);
                 }
                 else{
                     backlogView.showMessage("An error occurred, failed to delete the user story.", false);
