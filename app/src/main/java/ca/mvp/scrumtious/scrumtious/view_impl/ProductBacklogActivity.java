@@ -1,5 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -151,8 +152,40 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                                 },delayMilliseconds);
                                 break;
 
-                            // TODO
+                            // User chooses to go to chat room
+                            case R.id.nav_chat:
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(ProductBacklogActivity.this, GroupChatActvity.class);
+                                        intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
+                                break;
+
+                            // User chooses to go to project stats
                             case R.id.nav_stats:
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(ProductBacklogActivity.this, ProjectStatsActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
                                 break;
                         }
 
