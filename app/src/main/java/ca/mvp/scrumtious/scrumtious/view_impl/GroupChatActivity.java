@@ -385,7 +385,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
         groupChatMessageInput.setText("");
         hideKeyboard();
-        groupChatMessageInput.setFocusable(false);
+        groupChatMessageInput.clearFocus();
     }
 
     @Override
