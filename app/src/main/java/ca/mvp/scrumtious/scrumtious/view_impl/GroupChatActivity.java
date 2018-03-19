@@ -1,7 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,13 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -251,9 +248,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     private void setupRecyclerView(){
 
         messageList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
         groupChatAdapter = groupChatPresenter.setupMessageAdapter();
-
         messageList.setAdapter(groupChatAdapter);
     }
 
@@ -263,11 +258,18 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         String messageInput = groupChatMessageInput.getText().toString();
         if (isValidMessage(messageInput)){
             groupChatPresenter.addMessagesToDatabase(messageInput);
+            hideKeyboard();
+
         }
         else{
             //cannot send an empty message
         }
 
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     //Check if message is empty
