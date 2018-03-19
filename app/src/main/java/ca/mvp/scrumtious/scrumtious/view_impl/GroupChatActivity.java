@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -205,6 +200,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        scrollToBottom();
         super.onResume();
     }
 
@@ -348,13 +344,6 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         }
 
-        public TextView getMessageContentRight() {
-            return messageContentRight;
-        }
-
-        public TextView getMessageContentLeft() {
-            return messageContentLeft;
-        }
 
         public TextView getMessageTimestampRight() {
             return messageTimestampRight;
@@ -362,10 +351,6 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         public TextView getMessageTimestampLeft() {
             return messageTimestampLeft;
-        }
-
-        public TextView getMessageSentByLeft() {
-            return messageSentByLeft;
         }
 
     }
