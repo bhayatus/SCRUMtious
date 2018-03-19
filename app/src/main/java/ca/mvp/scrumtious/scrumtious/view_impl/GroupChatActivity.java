@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -317,8 +316,8 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
 
         public void hideLeftDetails(){
-            TransitionManager.beginDelayedTransition(leftContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC / 3));
-            messageLeftDetailsContent.setVisibility(View.GONE);
+            TransitionManager.beginDelayedTransition(leftContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
+            messageLeftDetailsContent.setVisibility(View.INVISIBLE);
         }
 
         public void showRightDetails(){
@@ -327,8 +326,8 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         }
 
         public void hideRightDetails(){
-            TransitionManager.beginDelayedTransition(rightContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC / 3));
-            messageTimestampRight.setVisibility(View.GONE);
+            TransitionManager.beginDelayedTransition(rightContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
+            messageTimestampRight.setVisibility(View.INVISIBLE);
         }
 
 
