@@ -30,7 +30,7 @@
                 android:background="?attr/colorPrimary"
                 android:theme="@style/IndividualProjectToolbar"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="Group Chat">
+                app:title="Team Chat">
 
                 <ImageButton
                     android:id="@+id/groupChatLogoutBtn"
