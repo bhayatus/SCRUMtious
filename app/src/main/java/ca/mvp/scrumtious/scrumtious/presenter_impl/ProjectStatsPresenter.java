@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,9 +24,8 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
     private DatabaseReference mRef;
 
     private long totalCost;
-
-    private List<String> dates;
-    private List<Long> costs;
+    private ArrayList<String> dates;
+    private ArrayList<Long> costs;
 
 
     public ProjectStatsPresenter(ProjectStatsViewInt projectStatsView, String pid){
@@ -35,47 +35,27 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
     @Override
     public void setupBurndownChart() {
+        totalCost = 0;
         dates = new ArrayList<String>();
-        costs = new ArrayList<>();
+        costs = new ArrayList<Long>();
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("sprints");
-
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
+        mRef.orderByChild("completedDate").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Go through list of sprints
                 for (DataSnapshot d: dataSnapshot.getChildren()){
-                    String sprintId = d.getKey().toString();
+                    // Need this to add to total cost, graph y-axis starts with this value after all
+                    long userStoryCost = Long.parseLong(d.child("userStoryPoints").getValue().toString());
+                    totalCost += userStoryCost;
 
-                    mDatabase = FirebaseDatabase.getInstance();
-                    mRef = mDatabase.getReference().child("projects").child(pid).child("sprints")
-                            .child(sprintId).child("user_stories");
-                    mRef.orderByChild("completedDate").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot d: dataSnapshot.getChildren()){
-                                String userStoryId = d.getKey().toString();
-
-                                // Need this to add to total cost, graph y-axis starts with this value after all
-                                long userStoryCost = (long) d.child("userStoryPoints").getValue();
-                                totalCost += userStoryCost;
-
-                                // If user story was marked as completed
-                                if ((long) d.child("completedDate").getValue() != 0){
-                                    long completedDate = (long) d.child("completedDate").getValue();
-                                    final String dateFormatted = DateFormat.format("MM/dd/yyyy", completedDate).toString();
-
-                                    costs.add(userStoryCost);
-                                    dates.add(dateFormatted);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    // If user story was marked as completed
+                    if ((long) d.child("completedDate").getValue() != 0){
+                        final String dateFormatted = DateFormat.format("MM/dd/yyyy", (long) d.child("completedDate").getValue()).toString();
+                        Log.e("date", dateFormatted);
+                        Log.e("cost", Long.toString(userStoryCost));
+                        costs.add(userStoryCost);
+                        dates.add(dateFormatted);
+                    }
 
                 }
 
@@ -92,7 +72,7 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
                             costs.add(0, totalCost);
 
                             // Send data to view to display in burndown chart
-                            //projectStatsView.populateBurndownChart(dates, costs);
+                            projectStatsView.populateBurndownChart(dates, costs);
 
                         }
                     }
@@ -102,7 +82,6 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
                     }
                 });
-
             }
 
             @Override

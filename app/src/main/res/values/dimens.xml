@@ -15,4 +15,5 @@
     <dimen name="group_chat_message_input_field_height">40dp</dimen>
     <dimen name="group_message_input_radius">20dp</dimen>
     <dimen name="group_message_input_border_stroke_width">1dp</dimen>
+    <dimen name="message_date_margin_bottom">5dp</dimen>
 </resources>

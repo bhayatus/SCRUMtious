@@ -1,5 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -202,6 +204,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     @Override
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        scrollToBottom();
         super.onResume();
     }
 
@@ -258,8 +261,6 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         String messageInput = groupChatMessageInput.getText().toString();
         if (isValidMessage(messageInput)){
             groupChatPresenter.addMessagesToDatabase(messageInput);
-            hideKeyboard();
-
         }
         else{
             //cannot send an empty message
@@ -279,6 +280,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     public static class MessagesViewHolder extends RecyclerView.ViewHolder{
 
+        private static final int MESSAGE_FADE_IN_DURATION_SEC = 250;
         View mView;
 
         TextView messageContentRight, messageContentLeft,messageTimestampRight, messageTimestampLeft, messageSentByLeft;
@@ -305,21 +307,49 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         }
 
         public void showLeftDetails(){
-            messageSentByLeft.setVisibility(View.VISIBLE);
             messageTimestampLeft.setVisibility(View.VISIBLE);
+            messageSentByLeft.setVisibility(View.VISIBLE);
         }
 
         public void hideLeftDetails(){
-            messageSentByLeft.setVisibility(View.GONE);
             messageTimestampLeft.setVisibility(View.GONE);
         }
 
         public void showRightDetails(){
+
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            messageTimestampRight.setAlpha(0f);
             messageTimestampRight.setVisibility(View.VISIBLE);
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            messageTimestampRight.animate()
+                    .alpha(1f)
+                    .setDuration(MESSAGE_FADE_IN_DURATION_SEC)
+                    .setListener(null);
         }
 
         public void hideRightDetails(){
-            messageTimestampRight.setVisibility(View.GONE);
+
+            // Animate the loading view to 0% opacity. After the animation ends,
+            // set its visibility to GONE as an optimization step (it won't
+            // participate in layout passes, etc.)
+
+            rightContainer.animate()
+                    .translationY(messageTimestampLeft.getHeight())
+                    .setListener(null);
+
+            messageTimestampRight.animate()
+                    .alpha(0f)
+                    .setDuration(MESSAGE_FADE_IN_DURATION_SEC)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            messageTimestampRight.setVisibility(View.GONE);
+                        }
+                    });
+
         }
 
 
@@ -327,6 +357,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         public void showLeftSide(){
             leftContainer.setVisibility(View.VISIBLE);
             rightContainer.setVisibility(View.GONE);
+            messageSentByLeft.setVisibility(View.VISIBLE);
 
         }
 
@@ -339,24 +370,16 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
 
         public void setDetails(String messageText, long timeStamp, String senderEmail){
-
             messageContentLeft.setText(messageText);
-            final String dateFormatted = "at " + DateFormat.format("HH:mm", timeStamp).toString() +
-                    " on " + DateFormat.format("MM/dd/yyyy", timeStamp).toString();
+            final String dateFormatted = "Sent: " + DateFormat.format("MM/dd/yyyy", timeStamp).toString() +
+                    " @ " + DateFormat.format("HH:mm", timeStamp).toString();
             messageTimestampLeft.setText(dateFormatted);
-            messageSentByLeft.setText("Sent by: " + senderEmail);
+            messageSentByLeft.setText(senderEmail);
             messageContentRight.setText(messageText);
             messageTimestampRight.setText(dateFormatted);
 
         }
 
-        public TextView getMessageContentRight() {
-            return messageContentRight;
-        }
-
-        public TextView getMessageContentLeft() {
-            return messageContentLeft;
-        }
 
         public TextView getMessageTimestampRight() {
             return messageTimestampRight;
@@ -364,10 +387,6 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         public TextView getMessageTimestampLeft() {
             return messageTimestampLeft;
-        }
-
-        public TextView getMessageSentByLeft() {
-            return messageSentByLeft;
         }
 
     }
@@ -390,6 +409,8 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     public void onSuccessfulSent() {
         EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
         groupChatMessageInput.setText("");
+        hideKeyboard();
+        groupChatMessageInput.setFocusable(false);
     }
 
     @Override
