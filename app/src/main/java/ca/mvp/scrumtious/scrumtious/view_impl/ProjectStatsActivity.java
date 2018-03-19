@@ -244,15 +244,15 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
         burndownGraph.removeAllSeries();
         burndownGraph.setTitle("Burndown Chart");
-        burndownGraph.getViewport().setXAxisBoundsManual(true);
-        burndownGraph.getViewport().setMinX(dates.get(0).getTime());
-        burndownGraph.getViewport().setMaxX(dates.get((dates.size()-1)).getTime());
+        //burndownGraph.getViewport().setXAxisBoundsManual(true);
+        //burndownGraph.getViewport().setMinX(dates.get(0).getTime());
+        //burndownGraph.getViewport().setMaxX(dates.get((dates.size()-1)).getTime());
 
         // enable scaling and scrolling
-        burndownGraph.getViewport().setScrollable(true); // enables horizontal scrolling
-        burndownGraph.getViewport().setScrollableY(true); // enables vertical scrolling
-        burndownGraph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-        burndownGraph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+        //burndownGraph.getViewport().setScrollable(true); // enables horizontal scrolling
+        //burndownGraph.getViewport().setScrollableY(true); // enables vertical scrolling
+        //burndownGraph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+        //burndownGraph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
         Log.e(dates.toString(), points.toString());
         sdf = new SimpleDateFormat("MM/dd/yyyy");
         burndownGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
