@@ -62,11 +62,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:textSize="18sp"
                     android:fontFamily="@font/droid_sans"
-                    android:text="Lorem ipsum dolor sit amet, te sit erat movet mandamus. Nulla noster audiam eos cu, summo facilis repudiare duo eu. Cu nobis dicam luptatum vix. Brute reformidans usu ea, graeco noluisse laboramus has ex. Ad per porro expetenda maiestatis, ex stet nominavi urbanitas vel.
-
-Suas stet probatus no eos, ne sed movet regione. At mollis suavitate his. Has ei patrioque torquatos accommodare, sea no sint movet omittam, esse impedit facilisis ex pri. Mel ei epicuri mentitum repudiandae. Mei doming denique consectetuer ex, delenit salutandi at per."
+                    android:textSize="18sp"
                     />
 
             </LinearLayout>
