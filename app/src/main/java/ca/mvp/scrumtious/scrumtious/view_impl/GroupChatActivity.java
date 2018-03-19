@@ -372,7 +372,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         public void setDetails(String messageText, long timeStamp, String senderEmail){
             messageContentLeft.setText(messageText);
             final String dateFormatted = "Sent: " + DateFormat.format("MM/dd/yyyy", timeStamp).toString() +
-                    " @ " + DateFormat.format("HH:mm", timeStamp).toString();
+                    " @ " + DateFormat.format("KK:mm a", timeStamp).toString();
             messageTimestampLeft.setText(dateFormatted);
             messageSentByLeft.setText(senderEmail);
             messageContentRight.setText(messageText);
