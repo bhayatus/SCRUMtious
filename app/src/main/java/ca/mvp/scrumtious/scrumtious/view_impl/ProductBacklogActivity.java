@@ -230,8 +230,9 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ProductBacklogActivity.this, ProjectTabsActivity.class);
+        Intent intent = new Intent(ProductBacklogActivity.this, IndividualProjectActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("projectId", pid);
         startActivity(intent);
         finish();
     }

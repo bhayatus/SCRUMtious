@@ -241,7 +241,9 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SprintListActivity.this, ProjectTabsActivity.class);
+        Intent intent = new Intent(SprintListActivity.this, IndividualProjectActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("projectId", pid);
         startActivity(intent);
         finish();
     }

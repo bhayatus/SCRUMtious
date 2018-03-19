@@ -1,5 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -242,8 +243,9 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(GroupChatActivity.this, ProjectTabsActivity.class);
+        Intent intent = new Intent(GroupChatActivity.this, IndividualProjectActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("projectId", pid);
         startActivity(intent);
         finish();
     }

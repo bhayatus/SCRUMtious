@@ -229,8 +229,9 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ProjectStatsActivity.this, ProjectTabsActivity.class);
+        Intent intent = new Intent(ProjectStatsActivity.this, IndividualProjectActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("projectId", pid);
         startActivity(intent);
         finish();
     }
