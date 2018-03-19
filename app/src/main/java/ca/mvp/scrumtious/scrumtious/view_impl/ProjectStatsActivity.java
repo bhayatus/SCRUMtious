@@ -60,6 +60,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         this.projectAlreadyDeleted = false;
         burndownGraph = (GraphView) findViewById(R.id.burndownGraph);
+        burndownGraph.getViewport().setScalable(true);
+        burndownGraph.getViewport().setScrollable(true);
 
         logoutBtn = findViewById(R.id.projectStatsLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
