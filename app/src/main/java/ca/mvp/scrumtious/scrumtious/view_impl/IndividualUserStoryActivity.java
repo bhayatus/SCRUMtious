@@ -158,7 +158,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Intent intent = new Intent(IndividualUserStoryActivity.this, GroupChatActvity.class);
+                                        Intent intent = new Intent(IndividualUserStoryActivity.this, GroupChatActivity.class);
                                         intent.putExtra("projectId", pid);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);

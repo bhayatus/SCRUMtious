@@ -19,7 +19,7 @@
     <color name="task_row_in_progress_color">#FFC107</color>
     <color name="task_row_completed_color">#8bc34a</color>
     <color name="task_row_not_started_color">#f44336</color>
-    <color name="group_chat_message_input_bg_color">#f7f7f7</color>
+    <color name="group_chat_message_input_bg_color">#d6d4d4</color>
     <color name="group_chat_right_message_bg_color">#d73838</color>
     <color name="group_chat_left_message_bg_color">@color/group_chat_message_input_bg_color</color>
 </resources>

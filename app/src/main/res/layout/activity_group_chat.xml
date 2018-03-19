@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/productBacklogNavDrawer"
+    android:id="@+id/groupChatNavDrawer"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.GroupChatActivity"
@@ -30,7 +30,7 @@
                 android:background="?attr/colorPrimary"
                 android:theme="@style/IndividualProjectToolbar"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="Product Backlog">
+                app:title="Group Chat">
 
                 <ImageButton
                     android:id="@+id/groupChatLogoutBtn"
@@ -86,7 +86,7 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/productBacklogNavView"
+        android:id="@+id/groupChatNavView"
         app:menu="@menu/project_drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

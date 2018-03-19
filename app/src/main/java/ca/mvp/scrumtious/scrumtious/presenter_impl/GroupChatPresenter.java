@@ -6,6 +6,7 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -52,19 +53,21 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
         String senderEmail = mAuth.getCurrentUser().getEmail();
 
         mDatabase = FirebaseDatabase.getInstance();
-
         mRef = mDatabase.getReference().child("projects").child(pid).child("messages");
-        final String messageId = mRef.push().getKey();
 
-        Map messagesMap = new HashMap<>();
+        final String messageId = mRef.push().getKey();
 
         // Get the current date long timeStamp = System.currentTimeMillis();
         long timeStamp = System.currentTimeMillis();
 
+        Map messagesMap = new HashMap<>();
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();
         //All changes made in one go, ensure atomicity
-        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/", messageText);
-        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/", senderEmail);
-        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/", timeStamp);
+        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/messageText", messageText);
+        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/senderEmail", senderEmail);
+        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/timeStamp", timeStamp);
 
         mRef.updateChildren(messagesMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(Task<Void> task) {
@@ -82,8 +85,6 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
         mAuth = FirebaseAuth.getInstance();
         mRef = FirebaseDatabase.getInstance().getReference();
 
-        String userID = mAuth.getCurrentUser().getUid();
-
         mQuery = mRef.child("projects").child(pid).child("messages").orderByChild("timeStamp");
 
         FirebaseRecyclerAdapter<Message, GroupChatActivity.MessagesViewHolder> messageListAdapter
@@ -95,30 +96,57 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
         ){
 
             @Override
-            protected void populateViewHolder(GroupChatActivity.MessagesViewHolder viewHolder, Message model, int position) {
+            protected void populateViewHolder(final GroupChatActivity.MessagesViewHolder viewHolder, Message model, int position) {
                 final GroupChatActivity.MessagesViewHolder mViewHolder = viewHolder;
                 final Message messageModel = model;
 
                 long timeStamp = model.getTimeStamp();
                 String messageContent = model.getMessageText();
                 String sender = model.getSenderEmail();
+
+                mAuth = FirebaseAuth.getInstance();
                 String userEmail = mAuth.getCurrentUser().getEmail();
                 final String mid = getRef(position).getKey();
 
                 viewHolder.setDetails(messageContent, timeStamp, sender);
-                if(sender.equals(userEmail)){
-                    mViewHolder.hideLeft();
-                }else{
-                    mViewHolder.hideRight();
-                }
-                mViewHolder.itemView.setOnClickListener(new View.OnClickListener(){
 
-                    public void onClick(View v){
-                        mViewHolder.showMessageDetails(mid);
+                // Current message was from current user
+                if(sender.equals(userEmail)){
+                    mViewHolder.showRightSide();
+                }else{
+                    mViewHolder.showLeftSide();
+                }
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Details are shown currently, hide them
+                        if (mViewHolder.getMessageTimestampLeft().isShown()){
+                            mViewHolder.hideLeftDetails();
+                        }
+                        else{
+                            mViewHolder.showLeftDetails();
+                        }
+                        if (mViewHolder.getMessageTimestampRight().isShown()){
+                            mViewHolder.hideRightDetails();
+                        }
+                        else{
+                            mViewHolder.showRightDetails();
+                        }
                     }
                 });
+
+            }
+
+            @Override
+            public void onDataChanged() {
+
+                groupChatView.scrollToBottom();
+
             }
         };
+
+
 
         return messageListAdapter;
     }

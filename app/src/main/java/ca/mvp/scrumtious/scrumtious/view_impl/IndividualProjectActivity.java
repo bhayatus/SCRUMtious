@@ -147,7 +147,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Intent intent = new Intent(IndividualProjectActivity.this, GroupChatActvity.class);
+                                        Intent intent = new Intent(IndividualProjectActivity.this, GroupChatActivity.class);
                                         intent.putExtra("projectId", pid);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
@@ -206,6 +206,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(IndividualProjectActivity.this, ProjectTabsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

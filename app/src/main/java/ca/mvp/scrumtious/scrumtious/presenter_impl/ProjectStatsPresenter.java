@@ -92,7 +92,7 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
                             costs.add(0, totalCost);
 
                             // Send data to view to display in burndown chart
-                            projectStatsView.populateBurndownChart(dates, costs);
+                            //projectStatsView.populateBurndownChart(dates, costs);
 
                         }
                     }

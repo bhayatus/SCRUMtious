@@ -163,7 +163,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Intent intent = new Intent(IndividualSprintActivity.this, GroupChatActvity.class);
+                                        Intent intent = new Intent(IndividualSprintActivity.this, GroupChatActivity.class);
                                         intent.putExtra("projectId", pid);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);

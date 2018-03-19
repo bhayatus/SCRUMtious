@@ -3,16 +3,30 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/message_container_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
         >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true">
+
+        <TextView
+            android:id="@+id/message_timestamp_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dec 20, 2018 @ 2:15PM"
+            android:textAlignment="viewEnd"
+            android:textSize="12sp"
+            android:layout_gravity="right"/>
 
         <TextView
             android:id="@+id/message_content_right"
@@ -21,19 +35,12 @@
             android:background="@drawable/message_row_rounded_rect_red"
             android:padding="15dp"
             android:text="@string/one_hundred_fourty_char_string"
-            android:textAlignment="viewStart"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:layout_gravity="right"/>
 
-        <TextView
-            android:id="@+id/message_timestamp_right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="15dp"
-            android:text="Dec 20, 2018 @ 2:15PM"
-            android:textAlignment="viewEnd"
-            android:textSize="12sp"/>
+        </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout android:id="@+id/message_container_left"
                   android:layout_width="wrap_content"
@@ -41,30 +48,11 @@
                   android:orientation="vertical"
                   android:padding="10dp">
 
-        <TextView
-            android:id="@+id/message_content_left"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/message_row_rounded_rect_gray"
-            android:padding="15dp"
-            android:text="@string/one_hundred_fourty_char_string"
-            android:textAlignment="viewStart"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="10dp"
-                android:text="Sent By:"
-                android:textSize="12sp"
-                android:textStyle="bold"/>
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/message_sent_by_left"
@@ -72,16 +60,28 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Louis George Maurice Adolphe Roche Albert"
-                android:textSize="12sp"/>
-        </LinearLayout>
+                android:textSize="12sp" />
 
         <TextView
             android:id="@+id/message_timestamp_left"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="15dp"
             android:text="Dec 20, 2018 @ 2:15PM"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/message_content_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:background="@drawable/message_row_rounded_rect_gray"
+            android:padding="15dp"
+            android:text="@string/one_hundred_fourty_char_string"
+            android:textAlignment="viewStart"
+            />
+
 
     </LinearLayout>
 
