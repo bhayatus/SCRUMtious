@@ -9,17 +9,17 @@
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectStatsActivity"
     >
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                      android:layout_width="match_parent"
                                                      android:layout_height="match_parent"
                                                      android:fitsSystemWindows="true"
         >
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/stats_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            >
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/projectStatsToolbar"
@@ -46,13 +46,16 @@
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
+
         <com.jjoe64.graphview.GraphView
+            android:id="@+id/burndownGraph"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/stats_app_bar"
+            />
 
-            android:id="@+id/burndownGraph"/>
-
-    </android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/projectStatsNavView"
