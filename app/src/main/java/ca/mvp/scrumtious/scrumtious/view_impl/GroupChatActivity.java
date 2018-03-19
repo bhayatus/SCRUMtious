@@ -1,13 +1,13 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.transition.AutoTransition;
+import android.support.transition.TransitionManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -286,6 +286,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         TextView messageContentRight, messageContentLeft,messageTimestampRight, messageTimestampLeft, messageSentByLeft;
         LinearLayout leftContainer;
         RelativeLayout rightContainer;
+        LinearLayout messageLeftDetailsContent;
 
         public MessagesViewHolder(View itemView){
 
@@ -299,6 +300,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
             messageSentByLeft = (TextView) mView.findViewById(R.id.message_sent_by_left);
             leftContainer = (LinearLayout) mView.findViewById(R.id.message_container_left);
             rightContainer = (RelativeLayout) mView.findViewById(R.id.message_container_right);
+            messageLeftDetailsContent = mView.findViewById(R.id.message_left_details_content);
 
             // Don't display details by default
             hideLeftDetails();
@@ -307,49 +309,24 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         }
 
         public void showLeftDetails(){
-            messageTimestampLeft.setVisibility(View.VISIBLE);
-            messageSentByLeft.setVisibility(View.VISIBLE);
+            TransitionManager.beginDelayedTransition(leftContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
+            messageLeftDetailsContent.setVisibility(View.VISIBLE);
         }
 
+
         public void hideLeftDetails(){
-            messageTimestampLeft.setVisibility(View.GONE);
+            TransitionManager.beginDelayedTransition(leftContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC / 3));
+            messageLeftDetailsContent.setVisibility(View.GONE);
         }
 
         public void showRightDetails(){
-
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            messageTimestampRight.setAlpha(0f);
+            TransitionManager.beginDelayedTransition(rightContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
             messageTimestampRight.setVisibility(View.VISIBLE);
-
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            messageTimestampRight.animate()
-                    .alpha(1f)
-                    .setDuration(MESSAGE_FADE_IN_DURATION_SEC)
-                    .setListener(null);
         }
 
         public void hideRightDetails(){
-
-            // Animate the loading view to 0% opacity. After the animation ends,
-            // set its visibility to GONE as an optimization step (it won't
-            // participate in layout passes, etc.)
-
-            rightContainer.animate()
-                    .translationY(messageTimestampLeft.getHeight())
-                    .setListener(null);
-
-            messageTimestampRight.animate()
-                    .alpha(0f)
-                    .setDuration(MESSAGE_FADE_IN_DURATION_SEC)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            messageTimestampRight.setVisibility(View.GONE);
-                        }
-                    });
-
+            TransitionManager.beginDelayedTransition(rightContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC / 3));
+            messageTimestampRight.setVisibility(View.GONE);
         }
 
 
@@ -358,14 +335,12 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
             leftContainer.setVisibility(View.VISIBLE);
             rightContainer.setVisibility(View.GONE);
             messageSentByLeft.setVisibility(View.VISIBLE);
-
         }
 
         // Current user does not match current sender of message
         public void showRightSide(){
             leftContainer.setVisibility(View.GONE);
             rightContainer.setVisibility(View.VISIBLE);
-
         }
 
 
