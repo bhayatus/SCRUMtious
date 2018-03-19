@@ -53,10 +53,10 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         this.projectStatsPresenter = new ProjectStatsPresenter(this, pid);
 
-        projectStatsPresenter.setupBurndownChart();
-
         this.projectAlreadyDeleted = false;
         burndownGraph = (GraphView) findViewById(R.id.burndownGraph);
+        burndownGraph.getViewport().setScalable(true);
+        burndownGraph.getViewport().setScrollable(true);
 
         logoutBtn = findViewById(R.id.projectStatsLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +178,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
+        projectStatsPresenter.setupBurndownChart();
     }
 
     // Remove listeners
@@ -233,6 +234,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     @Override
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
+        Log.e(dates.toString(), points.toString());
+        series = new LineGraphSeries<DataPoint>();
         //Log.e(dates.toString(), points.toString());
         series = new LineGraphSeries<DataPoint>();
         //setup first
