@@ -30,15 +30,14 @@
                 android:id="@+id/projectOverviewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:ems="10"
+                android:fontFamily="@font/droid_sans"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/droid_sans"
-                android:text="Insert Project Name"
                 android:textColor="@color/colorAccent"
-                android:layout_marginBottom="20dp" />
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -52,10 +51,9 @@
                 android:textStyle="bold"/>
 
             <LinearLayout
-                android:layout_margin="10dp"
-                android:background="@drawable/overview_desc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
 
                 <TextView
                     android:id="@+id/projectOverviewDesc"
@@ -63,11 +61,28 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:fontFamily="@font/droid_sans"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     />
 
             </LinearLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/current_sprint_individual_project_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="@dimen/project_overview_user_story_row_card_margin"
+                android:layout_marginRight="@dimen/project_overview_user_story_row_card_margin">
+            </android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/current_user_story_individual_project_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/project_overview_user_story_row_card_margin"
+                android:layout_marginLeft="@dimen/project_overview_user_story_row_card_margin"
+                android:layout_marginRight="@dimen/project_overview_user_story_row_card_margin">
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 

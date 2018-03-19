@@ -16,4 +16,5 @@
     <dimen name="group_message_input_radius">20dp</dimen>
     <dimen name="group_message_input_border_stroke_width">1dp</dimen>
     <dimen name="message_date_margin_bottom">5dp</dimen>
+    <dimen name="project_overview_user_story_row_card_margin">10dp</dimen>
 </resources>
