@@ -40,7 +40,7 @@ import ca.mvp.scrumtious.scrumtious.utils.StringHelper;
 
 public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
-    private String pid;
+    private String pid, usid;
     private String type;
 
     private TaskBoardPresenterInt taskBoardPresenter;
@@ -48,6 +48,9 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     private LinearLayout emptyStateView;
     private FirebaseRecyclerAdapter<Task, TaskBoardViewHolder> taskBoardAdapter;
     private ProgressDialog deletingTaskDialog;
+
+    private AssignToFragment assignToFragment;
+
 
     public TaskBoardFragment() {
         // Required empty public constructor
@@ -57,9 +60,9 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.pid = getArguments().getString("projectId");
-        String userStoryId = getArguments().getString("userStoryId");
+        this. usid = getArguments().getString("userStoryId");
         type = getArguments().getString("type");
-        this.taskBoardPresenter = new TaskBoardPresenter(this,pid,userStoryId);
+        this.taskBoardPresenter = new TaskBoardPresenter(this,pid,usid);
     }
 
     @Override
@@ -72,6 +75,18 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
         setupRecyclerView();
         return view;
     }
+
+    @Override
+    public void onPause() {
+
+        // Pop up has to be dismissed
+        if (assignToFragment != null){
+            assignToFragment.dismiss();
+        }
+
+        super.onPause();
+    }
+
     public void setupRecyclerView(){
         taskBoardList.setLayoutManager(new LinearLayoutManager(getActivity()));
         // Sets up the specified type of adapter
@@ -80,6 +95,12 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     }
     @Override
     public void showMessage(String message, boolean showAsToast) {
+
+        // Pop up has to be dismissed
+        if (assignToFragment != null){
+            assignToFragment.dismiss();
+        }
+
         if (deletingTaskDialog!=null && deletingTaskDialog.isShowing()){
             deletingTaskDialog.dismiss();
         }
@@ -167,9 +188,19 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
         popup.show();
     }
+
+    // Open up the dialog fragment to choose which user to assign this task to
+    @Override
+    public void onLongClickTask(String tid){
+
+        assignToFragment = AssignToFragment.newInstance(pid,usid,tid);
+        assignToFragment. setTaskBoardView(this);
+        assignToFragment.show(getFragmentManager(), "AssignToFragment");
+    }
+
     public static class TaskBoardViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView descriptionView;
+        TextView descriptionView, assignedToView;
         ImageButton taskSwitch;
         ImageButton taskDelete;
         CardView card;
@@ -183,12 +214,13 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             this.mView = itemView;
 
             descriptionView = (TextView) mView.findViewById(R.id.taskDescription);
+            assignedToView = (TextView) mView.findViewById(R.id.taskAssignedTo);
             taskDelete = (ImageButton) mView.findViewById(R.id.taskDeleteBtn);
             taskSwitch = (ImageButton) mView.findViewById(R.id.taskSwitchStatesBtn);
             card = (CardView) mView.findViewById(R.id.taskRowCard);
             moreIcon = (ImageButton) mView.findViewById(R.id.taskRowMoreIcon);
         }
-        public void setDetails(String description){
+        public void setDetails(String description, String assignedTo){
 
             // Show whole description by default
             String displayDesc = description;
@@ -206,6 +238,14 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             // Description has been shortened, don't show more icon
             else{
                 showOrHideMoreIcon(false);
+            }
+
+            // Not assigned to any member
+            if (assignedTo.equals("")){
+                assignedToView.setText("Not assigned to any member");
+            }
+            else{
+                assignedToView.setText("Assigned to " + assignedTo);
             }
 
             descriptionView.setText(displayDesc);

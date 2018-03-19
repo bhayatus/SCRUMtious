@@ -7,4 +7,5 @@ public interface TaskBoardViewInt {
     void setEmptyStateView();
     void onClickDeleteTask(final String taskid);
     void onClickSwitchTask(View view, final String tid);
+    void onLongClickTask(String tid);
 }

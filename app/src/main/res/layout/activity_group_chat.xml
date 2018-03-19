@@ -76,6 +76,7 @@
                 android:hint="@string/group_chat_message_hint"
                 android:inputType="textMultiLine"
                 android:maxLines="3"
+                android:fontFamily="@font/droid_sans"
                 android:minHeight="@dimen/group_chat_message_input_field_height"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"

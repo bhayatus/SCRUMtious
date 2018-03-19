@@ -24,14 +24,12 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/task_desc_padding"
             android:paddingRight="@dimen/task_desc_padding"
+            android:fontFamily="@font/droid_sans"
             android:text="@string/one_hundred_fourty_char_string"
             android:textColor="@color/white"
             android:textSize="14sp"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+
 
         <ImageButton
             android:id="@+id/taskRowMoreIcon"
@@ -45,11 +43,29 @@
 
             <LinearLayout
                 android:id="@+id/taskRowIconLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_alignParentRight="true"
                 android:layout_margin="2dp">
+
+                <ImageButton
+                    android:id="@+id/taskAssignedToIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_member_white"/>
+
+                <TextView
+                    android:id="@+id/taskAssignedTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/droid_sans"
+                    android:layout_gravity="center_vertical"
+                    android:text="Assigned to usaimbhayat@gmail.com"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"/>
 
                 <ImageButton
                     android:id="@+id/taskSwitchStatesBtn"
@@ -69,9 +85,6 @@
 
 
             </LinearLayout>
-
-        </RelativeLayout>
-
 
     </LinearLayout>
 

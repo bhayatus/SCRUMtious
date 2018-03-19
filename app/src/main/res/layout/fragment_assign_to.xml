@@ -1,0 +1,49 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.mvp.scrumtious.scrumtious.view_impl.AssignToFragment">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_gravity="center">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:fontFamily="@font/droid_sans"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="Assign task to:"/>
+
+
+       <View
+           android:layout_width="match_parent"
+           android:layout_height="1dp"
+           android:layout_weight="1"
+           android:background="#e0e0e0" />
+
+           <TextView
+               android:id="@+id/assignToNone"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:fontFamily="@font/droid_sans"
+               android:gravity="center"
+               android:layout_gravity="center_horizontal"
+               android:textSize="18sp"
+               android:padding="10dp"
+               android:text="No one" />
+
+
+       <android.support.v7.widget.RecyclerView
+           android:id="@+id/assignToRecyclerView"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+   </LinearLayout>
+
+
+</FrameLayout>

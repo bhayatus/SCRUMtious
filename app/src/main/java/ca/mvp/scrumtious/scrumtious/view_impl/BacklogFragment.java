@@ -58,12 +58,14 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
     @Override
     public void onPause() {
-        super.onPause();
 
         // Pop up has to be dismissed
         if (sendToFragment != null){
             sendToFragment.dismiss();
         }
+
+        super.onPause();
+
     }
 
     @Override

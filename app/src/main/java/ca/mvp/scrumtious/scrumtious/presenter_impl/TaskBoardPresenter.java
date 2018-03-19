@@ -57,16 +57,16 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
 
             @Override
-            protected void populateViewHolder(TaskBoardFragment.TaskBoardViewHolder viewHolder, ca.mvp.scrumtious.scrumtious.model.Task model, int position) {
+            protected void populateViewHolder(final TaskBoardFragment.TaskBoardViewHolder viewHolder, ca.mvp.scrumtious.scrumtious.model.Task model, int position) {
                 final String tid = getRef(position).getKey().toString();
                 final TaskBoardFragment.TaskBoardViewHolder mViewHolder = viewHolder;
                 final ca.mvp.scrumtious.scrumtious.model.Task taskModel = model;
 
 
                 String status = model.getStatus().toString();
+                String assignedTo = model.getAssignedTo();
 
-
-                viewHolder.setDetails(model.getTaskDesc());
+                viewHolder.setDetails(model.getTaskDesc(), assignedTo);
 
                 ImageButton deleteTaskBtn = viewHolder.getTaskDelete();
                 ImageButton switchTaskBtn = viewHolder.getTaskSwitch();
@@ -103,6 +103,17 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                     public void onClick(View v) {
                         mViewHolder.switchShowFull(taskModel.getTaskDesc());
 
+                    }
+                });
+
+                viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        // Open up the dialog to choose a member
+                        taskBoardView.onLongClickTask(tid);
+
+                        return true;
                     }
                 });
 
