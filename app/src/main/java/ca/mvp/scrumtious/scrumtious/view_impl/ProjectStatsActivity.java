@@ -8,15 +8,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
 import com.google.firebase.database.ValueEventListener;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -37,6 +41,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     private LineGraphSeries<DataPoint> series;
     private GraphView burndownGraph;
+    private SimpleDateFormat sdf;
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
@@ -55,8 +60,11 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         this.projectAlreadyDeleted = false;
         burndownGraph = (GraphView) findViewById(R.id.burndownGraph);
-        burndownGraph.getViewport().setScalable(true);
-        burndownGraph.getViewport().setScrollable(true);
+
+
+        //burndownGraph.getViewport().setScrollable(true);
+        //burndownGraph.getViewport().setScalable(true);
+
 
         logoutBtn = findViewById(R.id.projectStatsLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -234,19 +242,44 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     @Override
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
+        burndownGraph.removeAllSeries();
+        burndownGraph.setTitle("Burndown Chart");
+        burndownGraph.getViewport().setXAxisBoundsManual(true);
+        burndownGraph.getViewport().setMinX(dates.get(0).getTime());
+        burndownGraph.getViewport().setMaxX(dates.get((dates.size()-1)).getTime());
+
+        // enable scaling and scrolling
+        burndownGraph.getViewport().setScrollable(true); // enables horizontal scrolling
+        burndownGraph.getViewport().setScrollableY(true); // enables vertical scrolling
+        burndownGraph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+        burndownGraph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
         Log.e(dates.toString(), points.toString());
-        series = new LineGraphSeries<DataPoint>();
+        sdf = new SimpleDateFormat("MM/dd/yyyy");
+        burndownGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX){
+                    return sdf.format(new Date((long)value));
+                }
+                else{
+                    return super.formatLabel(value, isValueX);
+                }
+            }
+        });
+        DataPoint[] dp = new DataPoint[dates.size()];
         //Log.e(dates.toString(), points.toString());
         series = new LineGraphSeries<DataPoint>();
         //setup first
         long leftOverPoints = points.get(0);
         //Log.e(dates.get(0),Long.toString(leftOverPoints));
-        series.appendData(new DataPoint(dates.get(0),leftOverPoints),true,dates.size());
+        //series.appendData(new DataPoint(dates.get(0),0),false,dates.size());
+        dp[0]=new DataPoint(dates.get(0),leftOverPoints);
         for (int i = 1; i<dates.size();i++){
             leftOverPoints = leftOverPoints - points.get(i);
             //Log.e(dates.get(0),Long.toString(leftOverPoints));
-            series.appendData(new DataPoint(dates.get(i),leftOverPoints), true,dates.size());
+            dp[i]= new DataPoint(dates.get(i),leftOverPoints);
         }
+        series = new LineGraphSeries<>(dp);
         burndownGraph.addSeries(series);
     }
 }
