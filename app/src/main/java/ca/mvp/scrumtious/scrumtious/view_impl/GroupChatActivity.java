@@ -299,12 +299,11 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         }
 
         public void showLeftDetails(){
-            messageSentByLeft.setVisibility(View.VISIBLE);
             messageTimestampLeft.setVisibility(View.VISIBLE);
+            messageSentByLeft.setVisibility(View.VISIBLE);
         }
 
         public void hideLeftDetails(){
-            messageSentByLeft.setVisibility(View.GONE);
             messageTimestampLeft.setVisibility(View.GONE);
         }
 
@@ -321,6 +320,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         public void showLeftSide(){
             leftContainer.setVisibility(View.VISIBLE);
             rightContainer.setVisibility(View.GONE);
+            messageSentByLeft.setVisibility(View.VISIBLE);
 
         }
 
@@ -334,11 +334,12 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         public void setDetails(String messageText, long timeStamp, String senderEmail){
 
-            messageContentLeft.setText(messageText);
-            final String dateFormatted = "at " + DateFormat.format("HH:mm", timeStamp).toString() +
+            String dateFormatted = "Sent at " + DateFormat.format("HH:mm", timeStamp).toString() +
                     " on " + DateFormat.format("MM/dd/yyyy", timeStamp).toString();
+
+            messageContentLeft.setText(messageText);
             messageTimestampLeft.setText(dateFormatted);
-            messageSentByLeft.setText("Sent by: " + senderEmail);
+            messageSentByLeft.setText(senderEmail);
             messageContentRight.setText(messageText);
             messageTimestampRight.setText(dateFormatted);
 

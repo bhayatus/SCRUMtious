@@ -94,14 +94,14 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
                 mAuth = FirebaseAuth.getInstance();
                 String userEmail = mAuth.getCurrentUser().getEmail();
 
-                viewHolder.setDetails(messageContent, timeStamp, sender);
-
                 // Current message was from current user
                 if(sender.equals(userEmail)){
                     mViewHolder.showRightSide();
                 }else{
                     mViewHolder.showLeftSide();
                 }
+
+                viewHolder.setDetails(messageContent, timeStamp, sender);
 
                 // User clicked on the message
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
