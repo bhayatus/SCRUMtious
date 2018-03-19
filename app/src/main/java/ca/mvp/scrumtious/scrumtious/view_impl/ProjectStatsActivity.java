@@ -1,15 +1,13 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,13 +17,10 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import org.achartengine.model.XYSeries;
-
 import java.util.ArrayList;
 import java.util.Date;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualProjectPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectStatsPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectStatsViewInt;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectStatsPresenter;
@@ -239,6 +234,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     @Override
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
         //Log.e(dates.toString(), points.toString());
+        series = new LineGraphSeries<DataPoint>();
         //setup first
         long leftOverPoints = points.get(0);
         //Log.e(dates.get(0),Long.toString(leftOverPoints));

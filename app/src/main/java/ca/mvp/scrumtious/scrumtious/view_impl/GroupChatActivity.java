@@ -288,6 +288,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         LinearLayout leftContainer;
         RelativeLayout rightContainer;
         LinearLayout messageLeftDetailsContent;
+        AutoTransition autoTransition;
 
         public MessagesViewHolder(View itemView){
 
@@ -303,6 +304,9 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
             rightContainer = (RelativeLayout) mView.findViewById(R.id.message_container_right);
             messageLeftDetailsContent = mView.findViewById(R.id.message_left_details_content);
 
+            autoTransition = new AutoTransition();
+            autoTransition.setDuration(MESSAGE_FADE_IN_DURATION_SEC);
+
             // Don't display details by default
             hideLeftDetails();
             hideRightDetails();
@@ -310,23 +314,23 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         }
 
         public void showLeftDetails(){
-            TransitionManager.beginDelayedTransition(leftContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
+            TransitionManager.beginDelayedTransition(leftContainer, autoTransition);
             messageLeftDetailsContent.setVisibility(View.VISIBLE);
         }
 
 
         public void hideLeftDetails(){
-            TransitionManager.beginDelayedTransition(leftContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
+            TransitionManager.beginDelayedTransition(leftContainer, autoTransition);
             messageLeftDetailsContent.setVisibility(View.INVISIBLE);
         }
 
         public void showRightDetails(){
-            TransitionManager.beginDelayedTransition(rightContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
+            TransitionManager.beginDelayedTransition(rightContainer, autoTransition);
             messageTimestampRight.setVisibility(View.VISIBLE);
         }
 
         public void hideRightDetails(){
-            TransitionManager.beginDelayedTransition(rightContainer, new AutoTransition().setDuration(MESSAGE_FADE_IN_DURATION_SEC));
+            TransitionManager.beginDelayedTransition(rightContainer, autoTransition);
             messageTimestampRight.setVisibility(View.INVISIBLE);
         }
 
