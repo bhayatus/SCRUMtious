@@ -82,7 +82,8 @@
                 android:paddingTop="10dp"
                 android:scrollbars="vertical"
                 android:textAlignment="viewStart"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:backgroundTint="@color/white"/>
 
             <ImageButton
                 android:id="@+id/groupChatSendBtn"
