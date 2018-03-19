@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectStatsPresenterInt;
@@ -24,7 +25,7 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
     private DatabaseReference mRef;
 
     private long totalCost;
-    private ArrayList<String> dates;
+    private ArrayList<Date> dates;
     private ArrayList<Long> costs;
 
 
@@ -36,7 +37,7 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
     @Override
     public void setupBurndownChart() {
         totalCost = 0;
-        dates = new ArrayList<String>();
+        dates = new ArrayList<Date>();
         costs = new ArrayList<Long>();
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
@@ -50,8 +51,8 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
                     // If user story was marked as completed
                     if ((long) d.child("completedDate").getValue() != 0){
-                        final String dateFormatted = DateFormat.format("MM/dd/yyyy", (long) d.child("completedDate").getValue()).toString();
-                        Log.e("date", dateFormatted);
+                        final Date dateFormatted = new Date((long) d.child("completedDate").getValue());
+                        //Log.e("date", dateFormatted);
                         Log.e("cost", Long.toString(userStoryCost));
                         costs.add(userStoryCost);
                         dates.add(dateFormatted);
@@ -67,7 +68,7 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
                             long createdDate = (long) dataSnapshot.getValue();
-                            final String dateFormatted = DateFormat.format("MM/dd/yyyy", createdDate).toString();
+                            final Date dateFormatted = new Date(createdDate);
                             dates.add(0, dateFormatted);
                             costs.add(0, totalCost);
 

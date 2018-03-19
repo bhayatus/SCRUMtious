@@ -237,17 +237,17 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     }
 
     @Override
-    public void populateBurndownChart(ArrayList<String> dates, ArrayList<Long> points) {
+    public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
         //Log.e(dates.toString(), points.toString());
         //setup first
         long leftOverPoints = points.get(0);
-        Log.e(dates.get(0),Long.toString(leftOverPoints));
-        //series.appendData(new DataPoint(dates.get(0),leftOverPoints),true,dates.size());
+        //Log.e(dates.get(0),Long.toString(leftOverPoints));
+        series.appendData(new DataPoint(dates.get(0),leftOverPoints),true,dates.size());
         for (int i = 1; i<dates.size();i++){
             leftOverPoints = leftOverPoints - points.get(i);
-            Log.e(dates.get(0),Long.toString(leftOverPoints));
-            //series.appendData(new DataPoint(dates.get(i),leftOverPoints), true,dates.size());
+            //Log.e(dates.get(0),Long.toString(leftOverPoints));
+            series.appendData(new DataPoint(dates.get(i),leftOverPoints), true,dates.size());
         }
-        //burndownGraph.addSeries(series);
+        burndownGraph.addSeries(series);
     }
 }
