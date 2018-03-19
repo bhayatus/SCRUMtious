@@ -183,6 +183,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     protected void onResume() {
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
+        projectStatsPresenter.setupBurndownChart();
     }
 
     // Remove listeners

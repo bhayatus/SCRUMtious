@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +52,8 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
                     // If user story was marked as completed
                     if ((long) d.child("completedDate").getValue() != 0){
-                        final Date dateFormatted = new Date((long) d.child("completedDate").getValue());
+                        final Timestamp stamp = new Timestamp((long) d.child("completedDate").getValue());
+                        final Date dateFormatted = new Date(stamp.getTime());
                         //Log.e("date", dateFormatted);
                         Log.e("cost", Long.toString(userStoryCost));
                         costs.add(userStoryCost);
@@ -68,7 +70,8 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
                             long createdDate = (long) dataSnapshot.getValue();
-                            final Date dateFormatted = new Date(createdDate);
+                            final Timestamp stamp = new Timestamp(createdDate);
+                            final Date dateFormatted = new Date(stamp.getTime());
                             dates.add(0, dateFormatted);
                             costs.add(0, totalCost);
 
