@@ -54,14 +54,11 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
                     if ((long) d.child("completedDate").getValue() != 0){
                         final Timestamp stamp = new Timestamp((long) d.child("completedDate").getValue());
                         final Date dateFormatted = new Date(stamp.getTime());
-                        //Log.e("date", dateFormatted);
-                        Log.e("cost", Long.toString(userStoryCost));
                         costs.add(userStoryCost);
                         dates.add(dateFormatted);
                     }
 
                 }
-
                 // Grab the initial creation date
                 mDatabase = FirebaseDatabase.getInstance();
                 mRef = mDatabase.getReference().child("projects").child(pid);

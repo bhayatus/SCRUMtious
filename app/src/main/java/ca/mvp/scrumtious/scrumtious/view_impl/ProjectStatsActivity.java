@@ -58,8 +58,6 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         this.projectStatsPresenter = new ProjectStatsPresenter(this, pid);
 
-        projectStatsPresenter.setupBurndownChart();
-
         this.projectAlreadyDeleted = false;
         burndownGraph = (GraphView) findViewById(R.id.burndownGraph);
 
@@ -239,6 +237,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     @Override
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
+        Log.e(dates.toString(), points.toString());
+        series = new LineGraphSeries<DataPoint>();
         //Log.e(dates.toString(), points.toString());
         //setup first
         long leftOverPoints = points.get(0);
