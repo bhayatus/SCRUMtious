@@ -1,8 +1,15 @@
 package ca.mvp.scrumtious.scrumtious.interfaces.presenter_int;
 
-import com.google.firebase.database.ValueEventListener;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import ca.mvp.scrumtious.scrumtious.model.UserStory;
+import ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment;
 
 public interface ProjectOverviewPresenterInt {
-    ValueEventListener getProjectDetailsListener();
-    void removeProjectDetailsListener(ValueEventListener projectDetailsListener);
+    void setupProjectDetailsListener();
+    void removeProjectDetailsListener();
+
+    void setupCurrentSprintListener();
+    void removeCurrentSprintListener();
+
+    void getUserStoryProgress();
 }
