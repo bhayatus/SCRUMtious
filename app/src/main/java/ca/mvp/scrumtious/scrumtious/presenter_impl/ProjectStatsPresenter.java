@@ -1,7 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,10 +8,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.GregorianCalendar;
 
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectStatsPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectStatsViewInt;
@@ -26,7 +25,12 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
     private DatabaseReference mRef;
 
     private long totalCost;
-    private ArrayList<Date> dates;
+    private long createdTime;
+    private long numTotalUserStories;
+    private long numCompletedUserStories;
+    private GregorianCalendar createdDate;
+
+    private ArrayList<Long> daysFromStart;
     private ArrayList<Long> costs;
 
 
@@ -38,51 +42,91 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
     @Override
     public void setupBurndownChart() {
         totalCost = 0;
-        dates = new ArrayList<Date>();
+        numCompletedUserStories = 0;
+        numTotalUserStories = 0;
+        daysFromStart = new ArrayList<Long>();
         costs = new ArrayList<Long>();
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
-        mRef.orderByChild("completedDate").addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef = mDatabase.getReference().child("projects").child(pid);
+
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot d: dataSnapshot.getChildren()){
-                    // Need this to add to total cost, graph y-axis starts with this value after all
-                    long userStoryCost = Long.parseLong(d.child("userStoryPoints").getValue().toString());
-                    totalCost += userStoryCost;
+                if (dataSnapshot.exists()){
 
-                    // If user story was marked as completed
-                    if ((long) d.child("completedDate").getValue() != 0){
-                        final Timestamp stamp = new Timestamp((long) d.child("completedDate").getValue());
-                        final Date dateFormatted = new Date(stamp.getTime());
-                        costs.add(userStoryCost);
-                        dates.add(dateFormatted);
-                    }
+                    createdTime = (long) dataSnapshot.child("creationTimeStamp").getValue();
 
-                }
-                // Grab the initial creation date
-                mDatabase = FirebaseDatabase.getInstance();
-                mRef = mDatabase.getReference().child("projects").child(pid);
-                mRef.child("creationTimeStamp").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            long createdDate = (long) dataSnapshot.getValue();
-                            final Timestamp stamp = new Timestamp(createdDate);
-                            final Date dateFormatted = new Date(stamp.getTime());
-                            dates.add(0, dateFormatted);
-                            costs.add(0, totalCost);
+                    mDatabase = FirebaseDatabase.getInstance();
+                    mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
+                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                for (DataSnapshot d: dataSnapshot.getChildren()){
+                                    totalCost += Long.parseLong((String)d.child("userStoryPoints").getValue());
+                                    numTotalUserStories++;
+                                    // User story was marked as completed
+                                    if ((long) d.child("completedDate").getValue() != 0){
+                                        numCompletedUserStories++;
+                                        // Need to know project creation date without hours, minutes, seconds, and milliseconds
+                                        createdDate = new GregorianCalendar();
+                                        createdDate.setTime(new Timestamp(createdTime));
+                                        createdDate.set(GregorianCalendar.HOUR_OF_DAY, 0);
+                                        createdDate.set(GregorianCalendar.MINUTE, 0);
+                                        createdDate.set(GregorianCalendar.SECOND, 0);
+                                        createdDate.set(GregorianCalendar.MILLISECOND, 0);
 
-                            // Send data to view to display in burndown chart
-                            projectStatsView.populateBurndownChart(dates, costs);
+                                        // Now to add the value which indicates how many days past the initial day this is
+
+                                        long completedTime = (long) d.child("completedDate").getValue();
+
+                                        GregorianCalendar completedDate = new GregorianCalendar();
+                                        completedDate.setTime(new Timestamp(completedTime));
+
+                                        completedDate.set(GregorianCalendar.HOUR_OF_DAY, 0);
+                                        completedDate.set(GregorianCalendar.MINUTE, 0);
+                                        completedDate.set(GregorianCalendar.SECOND, 0);
+                                        completedDate.set(GregorianCalendar.MILLISECOND, 0);
+
+                                        // Now calculate the actual value of days passed
+                                        long daysPassed = 0;
+
+                                        while(completedDate.after(createdDate)){
+                                            createdDate.add(GregorianCalendar.DAY_OF_YEAR, 1);
+                                            daysPassed++;
+                                        }
+
+                                        // Add as a pair
+                                        daysFromStart.add(daysPassed);
+                                        costs.add(Long.parseLong((String)d.child("userStoryPoints").getValue()));
+
+                                    }
+
+                                }
+
+                                // Add the initial entry (first point on chart)
+                                daysFromStart.add(0, (long)0);
+                                costs.add(0, totalCost);
+
+                                // Send data to graph
+                                projectStatsView.populateBurndownChart(daysFromStart, costs);
+
+                                // Populate number of user stories info
+                                projectStatsView.populateNumUserStories(numTotalUserStories, numCompletedUserStories);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                }
+
             }
 
             @Override
@@ -91,7 +135,78 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
             }
         });
 
+    }
 
+    @Override
+    public void getNumMembers() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects").child(pid).child("numMembers");
 
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    projectStatsView.populateNumMembers((long) dataSnapshot.getValue());
+                }
+                else{
+                    projectStatsView.populateNumMembers(-1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void getNumSprints() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects").child(pid).child("numSprints");
+
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    projectStatsView.populateNumSprints((long) dataSnapshot.getValue());
+                }
+                else{
+                    projectStatsView.populateNumSprints(-1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void getProjectCreationDate() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference().child("projects").child(pid).child("creationTimeStamp");
+
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String dateFormatted = "This project was created on " +
+                            DateFormat.format("MM/dd/yyyy", (long) dataSnapshot.getValue()).toString()
+                            + " at " + DateFormat.format("KK:mm a", (long) dataSnapshot.getValue()).toString();
+
+                    projectStatsView.populateProjectCreationDate(dateFormatted);
+                }
+                else{
+                    projectStatsView.populateProjectCreationDate("");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -51,8 +51,8 @@
     <string name="project_overview_sprint_name_not_available">No Sprint to Show</string>
     <string name="project_overview_sprint_time_not_available">time not available</string>
     <string name="welcome_to">Welcome to</string>
-    <string name="current_user_story_progress">Current User Story Progress</string>
+    <string name="current_user_story_progress">User Story Completion</string>
     <string name="no_current_sprint_to_show">No current sprint to show</string>
-    <string name="current_sprint_progress">Current Sprint Progress</string>
+    <string name="current_sprint_progress">Current Sprint</string>
     <string name="unable_to_display_user_story_completion_progress">Unable to display user story completion progress</string>
 </resources>

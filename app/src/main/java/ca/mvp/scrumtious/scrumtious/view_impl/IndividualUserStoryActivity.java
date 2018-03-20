@@ -46,7 +46,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-    private ImageButton logoutBtn;
+    private ImageButton logoutBtn, helpBtn;
 
     private boolean projectAlreadyDeleted;
     private boolean userStoryAlreadyDeleted;
@@ -69,6 +69,30 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(IndividualUserStoryActivity.this);
+            }
+        });
+
+        // Displays a help popup
+        helpBtn = findViewById(R.id.individualUserStoryHelpBtn);
+        helpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(IndividualUserStoryActivity.this)
+                        .setTitle("Need Help?")
+                        .setMessage("Welcome to the task board! You can start by creating a task below. Once you have done that," +
+                                " you will be able to see the task in the \"Not Started\" tab. " + "\n" +
+                                "From there, you can assign a task to a " +
+                                " team member by holding down on it for a few seconds. A dialog will then pop up, allowing you " +
+                                "to assign the task to a member, or no one." + "\n" +
+                                "You can also switch the status of the task by clicking on the toolbar icon, or delete the task" +
+                                " entirely by selecting the trash can icon.")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
             }
         });
 

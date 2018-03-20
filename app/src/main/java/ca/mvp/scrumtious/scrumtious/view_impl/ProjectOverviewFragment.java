@@ -2,9 +2,11 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,9 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     emptyProgressView;
     private ProgressBar userStoryProgressCircle;
     private TextView userStoryProgressPercent;
+
+    private Handler refreshProgressHandler;
+    private Runnable refreshRunnable;
 
     public ProjectOverviewFragment() {
         // Required empty public constructor
@@ -51,6 +56,9 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     public void onPause() {
         projectOverviewPresenter.removeProjectDetailsListener();
         projectOverviewPresenter.removeCurrentSprintListener();
+        if (refreshProgressHandler != null){
+            refreshProgressHandler.removeCallbacks(refreshRunnable);
+        }
         super.onPause();
     }
 
@@ -123,15 +131,17 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     @Override
     public void setCurrentProgressCircle(long total, long completed) {
 
-//        Handler handler = new Handler();
-//
-//        // Refresh in 5 seconds
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                projectOverviewPresenter.getUserStoryProgress();
-//            }
-//        }, 5000);
+        refreshProgressHandler = new Handler();
+
+        refreshRunnable = new Runnable() {
+            @Override
+            public void run() {
+                projectOverviewPresenter.getUserStoryProgress();
+            }
+        };
+
+        // Refresh in 5 seconds
+        refreshProgressHandler.postDelayed(refreshRunnable, 5000);
 
         if (total == 0){
             currentUserStoryCard.setVisibility(View.GONE);

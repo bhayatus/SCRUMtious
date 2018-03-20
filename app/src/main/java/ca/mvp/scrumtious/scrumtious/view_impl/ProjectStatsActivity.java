@@ -1,6 +1,10 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -12,19 +16,18 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.database.ValueEventListener;
-import com.jjoe64.graphview.DefaultLabelFormatter;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
+import java.util.List;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectStatsPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectStatsViewInt;
@@ -40,13 +43,11 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     private boolean projectAlreadyDeleted;
 
-    private LineGraphSeries<DataPoint> series;
-    private GraphView burndownGraph;
-    private SimpleDateFormat sdf;
-
+    private TextView projectCreationDateView, numMembersView, numSprintsView, numUserStoriesView;
+    private LineChart burndownChart;
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
-    private ImageButton logoutBtn;
+    private ImageButton logoutBtn, helpBtn, refreshBtn;
 
 
     @Override
@@ -60,12 +61,13 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         this.projectStatsPresenter = new ProjectStatsPresenter(this, pid);
 
         this.projectAlreadyDeleted = false;
-        burndownGraph = (GraphView) findViewById(R.id.burndownGraph);
 
+        this.burndownChart = (LineChart) findViewById(R.id.burndownGraph);
 
-        //burndownGraph.getViewport().setScrollable(true);
-        //burndownGraph.getViewport().setScalable(true);
-
+        this.projectCreationDateView = (TextView) findViewById(R.id.projectStatsCreationDate);
+        this.numMembersView = (TextView) findViewById(R.id.projectStatsNumMembers);
+        this.numSprintsView = (TextView) findViewById(R.id.projectStatsNumSprints);
+        this.numUserStoriesView = (TextView) findViewById(R.id.projectStatsNumUserStories);
 
         logoutBtn = findViewById(R.id.projectStatsLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +76,54 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
                 AuthenticationHelper.logout(ProjectStatsActivity.this);
             }
         });
+
+        helpBtn = findViewById(R.id.projectStatsHelpBtn);
+        // Displays a help popup
+        helpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(ProjectStatsActivity.this)
+                        .setTitle("Need Help?")
+                        .setMessage("The burndown chart represents the progress your group has made through" +
+                                " completing user stories." + "\n" +
+                                "On the y-axis, the numbers represent the total amount of" +
+                                " user story points left that need to be completed. " + "\n" +
+                                "On the x-axis, the numbers represent" +
+                                " the number of days that have passed since the project was created.")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        refreshBtn = findViewById(R.id.projectStatsRefreshBtn);
+        // Displays a help popup
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(ProjectStatsActivity.this)
+                        .setTitle("Refresh Project Stats")
+                        .setMessage("Refresh all project stats?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Refresh all stats
+                                Intent intent = new Intent(ProjectStatsActivity.this, ProjectStatsActivity.class);
+                                intent.putExtra("projectId", pid);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", null) // Do nothing
+                        .show();
+            }
+        });
+
 
         // The following sets up the navigation drawer
         mDrawerLayout = findViewById(R.id.projectStatsNavDrawer);
@@ -188,6 +238,9 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
         super.onResume();
         projectStatsPresenter.setupBurndownChart();
+        projectStatsPresenter.getNumMembers();
+        projectStatsPresenter.getNumSprints();
+        projectStatsPresenter.getProjectCreationDate();
     }
 
     // Remove listeners
@@ -242,43 +295,115 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     }
 
     @Override
-    public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
-        if (dates.size()==1){
-            burndownGraph.setVisibility(View.GONE);
+    public void populateBurndownChart(ArrayList<Long> daysFromStart, ArrayList<Long> costs) {
+        List<Entry> entries = new ArrayList<Entry>();
+
+        // the labels that should be drawn on the XAxis
+        long leftOverPoints = costs.get(0);
+
+        entries.add(new Entry(0, leftOverPoints));
+
+        for(int i = 1; i < daysFromStart.size(); i++) {
+            leftOverPoints = leftOverPoints - costs.get(i);
+            entries.add(new Entry(daysFromStart.get(i), leftOverPoints));
+            Log.e(Long.toString(daysFromStart.get(i)), Long.toString(leftOverPoints));
         }
-        burndownGraph.removeAllSeries();
-        burndownGraph.setTitle("Burndown Chart");
 
 
-        Log.e(dates.toString(), points.toString());
-        burndownGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
-        DataPoint[] dp = new DataPoint[dates.size()];
-        //Log.e(dates.toString(), points.toString());
-        series = new LineGraphSeries<DataPoint>();
-        //setup first
-        long leftOverPoints = points.get(0);
-        //Log.e(dates.get(0),Long.toString(leftOverPoints));
-        //series.appendData(new DataPoint(dates.get(0),0),false,dates.size());
-        dp[0]=new DataPoint(dates.get(0).getTime(),leftOverPoints);
-        for (int i = 1; i<dates.size();i++){
-            leftOverPoints = leftOverPoints - points.get(i);
-            //Log.e(dates.get(0),Long.toString(leftOverPoints));
-            dp[i]= new DataPoint(dates.get(i).getTime(),leftOverPoints);
+        LineDataSet dataSet = new LineDataSet(entries, "Burndown Chart"); // add entries to dataset
+        dataSet.setColor(Color.RED);
+        dataSet.setValueTextColor(0);
+        dataSet.setCircleColor(Color.RED);
+        dataSet.setCircleColorHole(Color.RED);
+
+        List<Entry> finalPoint = new ArrayList<Entry>();
+        finalPoint.add(new Entry(daysFromStart.get(daysFromStart.size()-1)+1, 0));
+
+        LineDataSet finalSet = new LineDataSet(finalPoint, "");
+        finalSet.setVisible(false);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+        sets.add(dataSet);
+        sets.add(finalSet);
+
+        LineData lineData = new LineData(sets);
+
+        burndownChart.setData(lineData);
+
+        XAxis xAxis = burndownChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(Color.BLACK);
+
+        xAxis.setGranularity(1f);
+
+        YAxis yAxisLeft = burndownChart.getAxisLeft();
+        yAxisLeft.setTextSize(10f);
+        yAxisLeft.setTextColor(Color.BLACK);
+
+        YAxis yAxisRight = burndownChart.getAxisRight();
+        yAxisRight.setDrawLabels(false);
+
+        burndownChart.getLegend().setEnabled(false);
+        burndownChart.getDescription().setEnabled(false);
+        burndownChart.setDragEnabled(true);
+        burndownChart.setScaleEnabled(true);
+        burndownChart.setHighlightPerTapEnabled(false);
+        burndownChart.setHighlightPerDragEnabled(false);
+
+        burndownChart.invalidate(); // refresh
+    }
+
+    @Override
+    public void populateNumMembers(long numMembers) {
+
+        if (numMembers == 0){
+            numMembersView.setText("Unable to retrieve number of members data");
+            return;
         }
-        series = new LineGraphSeries<>(dp);
-        burndownGraph.addSeries(series);
-        burndownGraph.getViewport().setMinX(dates.get(0).getTime());
-        burndownGraph.getViewport().setMaxX(dates.get(dates.size()-1).getTime());
-        burndownGraph.getViewport().setXAxisBoundsManual(true);
-        burndownGraph.getViewport().setYAxisBoundsManual(true);
-        burndownGraph.getViewport().setMinY(0);
+        else if(numMembers == 1){
+            numMembersView.setText("You are currently the only member in this project");
+            return;
+        }
 
-        // enable scaling and scrolling
-        burndownGraph.getViewport().setScrollable(true); // enables horizontal scrolling
-        burndownGraph.getViewport().setScrollableY(true); // enables vertical scrolling
-        burndownGraph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-        burndownGraph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
-        burndownGraph.getGridLabelRenderer().setNumHorizontalLabels(3);
-        burndownGraph.getGridLabelRenderer().setHumanRounding(true);
+        numMembersView.setText("You have a total of " + numMembers + " members in this project" );
+
+    }
+
+    @Override
+    public void populateNumSprints(long numSprints) {
+        if (numSprints == -1){
+            numSprintsView.setText("Unable to retrieve number of sprints data");
+            return;
+        }
+        else if (numSprints == 0){
+            numSprintsView.setText("You currently have no sprints in this project");
+            return;
+        }
+        else if(numSprints == 1){
+            numSprintsView.setText("You have " + numSprints + " sprint in this project");
+            return;
+        }
+
+        numSprintsView.setText("You have " + numSprints + " sprints in this project");
+
+    }
+
+    @Override
+    public void populateNumUserStories(long total, long completed) {
+
+        numUserStoriesView.setText("You have completed " + completed + " out of a total of " + total + " user stories");
+    }
+
+    @Override
+    public void populateProjectCreationDate(String date) {
+        if (date.equals("")){
+            projectCreationDateView.setText("Unable to retrieve project creation date");
+            return;
+        }
+
+        projectCreationDateView.setText(date);
+
+
     }
 }

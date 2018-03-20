@@ -43,17 +43,175 @@
                     android:cropToPadding="true"
                     android:src="@drawable/ic_logout"/>
 
+                <ImageButton
+                    android:id="@+id/projectStatsRefreshBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:cropToPadding="true"
+                    android:src="@drawable/ic_refresh"/>
+
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 
-        <com.jjoe64.graphview.GraphView
-            android:id="@+id/burndownGraph"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/stats_app_bar"
-            android:layout_margin="15dp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/stats_app_bar"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/droid_sans"
+            android:text="Burndown Chart"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+                <ImageButton
+                    android:id="@+id/projectStatsHelpBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_info_black"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="300dp"
+                    android:ems="10"
+                    android:fontFamily="@font/droid_sans"
+                    android:text="Total Points"
+                    android:rotation="-90"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="14sp"
+                    />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/burndownGraph"
+                android:layout_width="320dp"
+                android:layout_alignParentRight="true"
+                android:layout_height="300dp"
+                />
+
+                </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:ems="10"
+                android:fontFamily="@font/droid_sans"
+                android:text="Days Passed"
+                android:gravity="center"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:ems="10"
+                android:gravity="center"
+                android:fontFamily="@font/droid_sans"
+                android:text="Other Information"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                />
+
+            <TextView
+                android:id="@+id/projectStatsCreationDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:ems="10"
+                android:gravity="center"
+                android:fontFamily="@font/droid_sans"
+                android:text="Unable to retrieve project creation date"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/projectStatsNumMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:ems="10"
+                android:gravity="center"
+                android:fontFamily="@font/droid_sans"
+                android:text="Unable to retrieve number of members data"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/projectStatsNumSprints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:ems="10"
+                android:gravity="center"
+                android:fontFamily="@font/droid_sans"
+                android:text="Unable to retrieve number of sprints data"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/projectStatsNumUserStories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:ems="10"
+                android:gravity="center"
+                android:fontFamily="@font/droid_sans"
+                android:text="Unable to retrieve number of user stories data"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="16sp"
+                />
+
+
+
+
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 

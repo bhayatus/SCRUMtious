@@ -212,7 +212,7 @@
                             android:layout_marginRight="7dp"
                             android:fontFamily="@font/droid_sans"
                             android:text="@string/project_overview_sprint_time_not_available"
-                            android:textColor="#757575"
+                            android:textColor="#09c2ff"
                             android:textSize="14sp"/>
 
                         <TextView
