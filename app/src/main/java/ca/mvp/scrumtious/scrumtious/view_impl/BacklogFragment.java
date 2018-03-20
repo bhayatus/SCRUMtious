@@ -312,11 +312,11 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
         }
 
         public void setCardRed(){
-            card.setCardBackgroundColor(Color.parseColor("#DE1212"));
+            card.setCardBackgroundColor(Color.parseColor("#F44336"));
         }
 
         public void setCardGreen(){
-            card.setCardBackgroundColor(Color.parseColor("#00C853"));
+            card.setCardBackgroundColor(Color.parseColor("#8BC34A"));
         }
 
         // Either show or hide the more icon

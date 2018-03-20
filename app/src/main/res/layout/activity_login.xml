@@ -73,7 +73,7 @@
             android:fontFamily="@font/droid_sans"
             android:hint="@string/signup_password"
             android:importantForAutofill="noExcludeDescendants"
-            android:inputType="textPassword"
+            android:inputType="textPassword|textCapSentences"
             android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 

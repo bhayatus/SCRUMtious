@@ -56,6 +56,10 @@
 
         </android.support.v7.widget.RecyclerView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e0e0e0"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +78,7 @@
                 android:background="@drawable/message_edit_text_border"
                 android:ems="10"
                 android:hint="@string/group_chat_message_hint"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="3"
                 android:fontFamily="@font/droid_sans"
                 android:minHeight="@dimen/group_chat_message_input_field_height"
@@ -84,7 +88,7 @@
                 android:scrollbars="vertical"
                 android:textAlignment="viewStart"
                 android:textSize="14sp"
-                android:backgroundTint="@color/white"/>
+          />
 
             <ImageButton
                 android:id="@+id/groupChatSendBtn"

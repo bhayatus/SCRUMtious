@@ -29,7 +29,7 @@
                 android:background="?attr/colorPrimary"
                 android:theme="@style/IndividualProjectToolbar"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="Product Backlog">
+                app:title="Project Stats">
 
                 <ImageButton
                     android:id="@+id/projectStatsLogoutBtn"

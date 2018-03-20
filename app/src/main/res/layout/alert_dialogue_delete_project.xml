@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimary"
-        android:inputType="textPassword"
+        android:inputType="textPassword|textCapSentences"
         android:selectAllOnFocus="false"
         android:singleLine="true">
     </EditText>
