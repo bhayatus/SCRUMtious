@@ -245,14 +245,12 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
         if (dates.size()==1){
             burndownGraph.setVisibility(View.GONE);
-            return ;
         }
         burndownGraph.removeAllSeries();
         burndownGraph.setTitle("Burndown Chart");
 
 
         Log.e(dates.toString(), points.toString());
-        sdf = new SimpleDateFormat("MM/dd/yyyy");
         burndownGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
         DataPoint[] dp = new DataPoint[dates.size()];
         //Log.e(dates.toString(), points.toString());
