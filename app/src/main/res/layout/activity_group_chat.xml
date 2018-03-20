@@ -78,7 +78,7 @@
                 android:background="@drawable/message_edit_text_border"
                 android:ems="10"
                 android:hint="@string/group_chat_message_hint"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="3"
                 android:fontFamily="@font/droid_sans"
                 android:minHeight="@dimen/group_chat_message_input_field_height"
