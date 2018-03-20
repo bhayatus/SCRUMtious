@@ -10,8 +10,8 @@
 
         <gradient
             android:angle="0"
-            android:endColor="#11c214"
-            android:startColor="#11c214"
+            android:endColor="@color/task_row_completed_color"
+            android:startColor="@color/task_row_completed_color"
             android:type="sweep"
             android:useLevel="false" />
     </shape>

@@ -1,18 +1,16 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
@@ -23,7 +21,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     private ProjectOverviewPresenterInt projectOverviewPresenter;
     private String pid;
 
-    public CardView currentSprintCard;
+    public CardView currentSprintCard, currentUserStoryCard;
     private TextView projectTitle, projectDescription, sprintName, sprintDescription, sprintDates, emptySprintView,
     emptyProgressView;
     private ProgressBar userStoryProgressCircle;
@@ -63,6 +61,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         View view = inflater.inflate(R.layout.fragment_project_overview, container, false);
 
         currentSprintCard = view.findViewById(R.id.projectOverviewSprintCard);
+        currentUserStoryCard = view.findViewById(R.id.projectOverviewUserStoryCard);
         emptySprintView = view.findViewById(R.id.projectOverviewEmptyCurrentSprint);
         emptyProgressView = view.findViewById(R.id.projectOverviewEmptyProgressView);
         projectTitle = view.findViewById(R.id.projectOverviewTitle);
@@ -135,6 +134,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
 //        }, 5000);
 
         if (total == 0){
+            currentUserStoryCard.setVisibility(View.GONE);
             userStoryProgressCircle.setVisibility(View.GONE);
             userStoryProgressPercent.setVisibility(View.GONE);
             emptyProgressView.setVisibility(View.VISIBLE);
