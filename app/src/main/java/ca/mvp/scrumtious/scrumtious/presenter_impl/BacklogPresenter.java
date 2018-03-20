@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -18,6 +19,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
@@ -343,10 +348,19 @@ public class BacklogPresenter implements BacklogPresenterInt {
                         .getValue());
                 Timestamp snapshotEndDateTimestamp = new Timestamp((long) dataSnapshot.child("sprintEndDate")
                         .getValue());
-                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+                Calendar cal = Calendar.getInstance();
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                int month = cal.get(Calendar.MONTH);
+                int year = cal.get(Calendar.YEAR);
+
+                Calendar currentCalender = new GregorianCalendar(year,month,day);
+
+                Timestamp currentTimestamp = new Timestamp(currentCalender.getTimeInMillis());
+
 
                 // On edges
-                if (currentTimestamp == snapshotStartDateTimestamp || currentTimestamp == snapshotEndDateTimestamp){
+                if (currentTimestamp.equals(snapshotStartDateTimestamp) || currentTimestamp.equals(snapshotEndDateTimestamp)){
                     backlogView.onClickChangeStatus(usid, newStatus);
                 }
                 // In between

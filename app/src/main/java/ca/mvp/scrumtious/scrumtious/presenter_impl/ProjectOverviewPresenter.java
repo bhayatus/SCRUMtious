@@ -10,6 +10,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectOverviewPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
 
@@ -88,10 +91,19 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
                 for (DataSnapshot d: dataSnapshot.getChildren()){
                     Timestamp startTimeStamp = new Timestamp((long) d.child("sprintStartDate").getValue());
                     Timestamp endTimeStamp = new Timestamp((long) d.child("sprintEndDate").getValue());
-                    Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
+
+
+                    Calendar cal = Calendar.getInstance();
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                    int month = cal.get(Calendar.MONTH);
+                    int year = cal.get(Calendar.YEAR);
+
+                    Calendar currentCalender = new GregorianCalendar(year,month,day);
+
+                    Timestamp currentTimeStamp = new Timestamp(currentCalender.getTimeInMillis());
 
                     // Within this sprint
-                    if (currentTimeStamp == startTimeStamp || currentTimeStamp == endTimeStamp ||
+                    if (currentTimeStamp.equals(startTimeStamp) || currentTimeStamp.equals(endTimeStamp) ||
                             (currentTimeStamp.after(startTimeStamp) && currentTimeStamp.before(endTimeStamp))){
                             currentSprintId = d.getKey().toString();
                             break;
