@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -242,30 +243,27 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     @Override
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
+        if (dates.size()==1){
+            burndownGraph.setVisibility(View.GONE);
+        }
         burndownGraph.removeAllSeries();
         burndownGraph.setTitle("Burndown Chart");
-        //burndownGraph.getViewport().setXAxisBoundsManual(true);
-        //burndownGraph.getViewport().setMinX(dates.get(0).getTime());
-        //burndownGraph.getViewport().setMaxX(dates.get((dates.size()-1)).getTime());
 
-        // enable scaling and scrolling
-        //burndownGraph.getViewport().setScrollable(true); // enables horizontal scrolling
-        //burndownGraph.getViewport().setScrollableY(true); // enables vertical scrolling
-        //burndownGraph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-        //burndownGraph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
         Log.e(dates.toString(), points.toString());
         sdf = new SimpleDateFormat("MM/dd/yyyy");
-        burndownGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if (isValueX){
-                    return sdf.format(new Date((long)value));
-                }
-                else{
-                    return super.formatLabel(value, isValueX);
-                }
-            }
-        });
+        burndownGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        //burndownGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+         //   @Override
+         //   public String formatLabel(double value, boolean isValueX) {
+         //       if (isValueX){
+          //          return sdf.format(new Date((long)value));
+            //    }
+           //     else{
+            //        return super.formatLabel(value, isValueX);
+             //   }
+           // }
+        //});
         DataPoint[] dp = new DataPoint[dates.size()];
         //Log.e(dates.toString(), points.toString());
         series = new LineGraphSeries<DataPoint>();
@@ -273,13 +271,26 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         long leftOverPoints = points.get(0);
         //Log.e(dates.get(0),Long.toString(leftOverPoints));
         //series.appendData(new DataPoint(dates.get(0),0),false,dates.size());
-        dp[0]=new DataPoint(dates.get(0),leftOverPoints);
+        dp[0]=new DataPoint(dates.get(0).getTime(),leftOverPoints);
         for (int i = 1; i<dates.size();i++){
             leftOverPoints = leftOverPoints - points.get(i);
             //Log.e(dates.get(0),Long.toString(leftOverPoints));
-            dp[i]= new DataPoint(dates.get(i),leftOverPoints);
+            dp[i]= new DataPoint(dates.get(i).getTime(),leftOverPoints);
         }
         series = new LineGraphSeries<>(dp);
         burndownGraph.addSeries(series);
+        burndownGraph.getViewport().setMinX(dates.get(0).getTime());
+        burndownGraph.getViewport().setMaxX(dates.get(dates.size()-1).getTime());
+        burndownGraph.getViewport().setXAxisBoundsManual(true);
+        burndownGraph.getViewport().setYAxisBoundsManual(true);
+        burndownGraph.getViewport().setMinY(0);
+
+        // enable scaling and scrolling
+        burndownGraph.getViewport().setScrollable(true); // enables horizontal scrolling
+        burndownGraph.getViewport().setScrollableY(true); // enables vertical scrolling
+        burndownGraph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+        burndownGraph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+        burndownGraph.getGridLabelRenderer().setNumHorizontalLabels(3);
+        burndownGraph.getGridLabelRenderer().setHumanRounding(true);
     }
 }
