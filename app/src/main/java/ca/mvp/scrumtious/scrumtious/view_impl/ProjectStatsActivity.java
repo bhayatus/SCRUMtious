@@ -245,6 +245,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     public void populateBurndownChart(ArrayList<Date> dates, ArrayList<Long> points) {
         if (dates.size()==1){
             burndownGraph.setVisibility(View.GONE);
+            return ;
         }
         burndownGraph.removeAllSeries();
         burndownGraph.setTitle("Burndown Chart");
@@ -253,17 +254,6 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         Log.e(dates.toString(), points.toString());
         sdf = new SimpleDateFormat("MM/dd/yyyy");
         burndownGraph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
-        //burndownGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
-         //   @Override
-         //   public String formatLabel(double value, boolean isValueX) {
-         //       if (isValueX){
-          //          return sdf.format(new Date((long)value));
-            //    }
-           //     else{
-            //        return super.formatLabel(value, isValueX);
-             //   }
-           // }
-        //});
         DataPoint[] dp = new DataPoint[dates.size()];
         //Log.e(dates.toString(), points.toString());
         series = new LineGraphSeries<DataPoint>();
