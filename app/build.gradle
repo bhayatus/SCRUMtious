@@ -32,8 +32,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:design:27.0.2'
     compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.jjoe64:graphview:4.2.1'
-    compile 'org.achartengine:achartengine:1.2.0'
     compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
 
 }

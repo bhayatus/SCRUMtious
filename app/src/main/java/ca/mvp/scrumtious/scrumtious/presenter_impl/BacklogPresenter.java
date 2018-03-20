@@ -106,6 +106,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 final String usid = getRef(position).getKey().toString();
 
                 final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
+
                 final UserStory userStoryModel = model;
 
                 String nameOfSprint = model.getAssignedToName();
@@ -118,6 +119,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 // User story is completed
                 else{
                     viewHolder.setCardGreen();
+                    String dateFormatted = "Completed on " +
+                            android.text.format.DateFormat.format("MM/dd/yyyy", model.getCompletedDate()).toString()
+                            + " at " + android.text.format.DateFormat.format("KK:mm a", model.getCompletedDate()).toString();
+                    viewHolder.setCompletedDateDetails(dateFormatted);
                 }
 
                 // Not assigned to a sprint, don't bother showing assigned to icon
