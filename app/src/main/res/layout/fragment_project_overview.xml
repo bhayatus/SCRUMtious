@@ -299,20 +299,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
                 android:id="@+id/projectOverviewSprintCard"
                 android:layout_marginTop="10dp"
                 app:cardCornerRadius="3dp"
                 app:cardElevation="2dp"
-                app:contentPadding="5dp"
                 card_view:cardBackgroundColor="@color/cardview_light_background">
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="5dp"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:id="@+id/sprintRowNameProjectOverview"
@@ -322,6 +321,8 @@
                         android:layout_marginLeft="8dp"
                         android:fontFamily="@font/droid_sans"
                         android:paddingBottom="5dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
                         android:text="Name of Sprint"
                         android:textColor="#d10f0f"
                         android:textSize="20dp"
@@ -333,6 +334,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:fontFamily="@font/droid_sans"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
                         android:paddingBottom="2dp"
                         android:paddingTop="5dp"
                         android:text="This is a description that explains what the sprint is about, and now I am running out of things to say,
@@ -345,6 +348,8 @@ so I'll stop."
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
                         android:layout_marginTop="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
                         android:paddingBottom="10dp"
                         android:orientation="horizontal">
 
@@ -372,9 +377,7 @@ so I'll stop."
                     <TextView
                         android:id="@+id/current_sprint_progress_tv"
                         android:layout_width="match_parent"
-
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:background="@color/colorAccent"
                         android:ems="10"
                         android:fontFamily="@font/droid_sans"
