@@ -8,7 +8,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -192,9 +191,8 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String dateFormatted = "This project was created on " +
-                            DateFormat.format("MM/dd/yyyy", (long) dataSnapshot.getValue()).toString()
-                            + " at " + DateFormat.format("KK:mm a", (long) dataSnapshot.getValue()).toString();
+                    String dateFormatted = DateFormat.format("MM/dd/yyyy", (long) dataSnapshot.getValue()).toString()
+                            + "\n @ " + DateFormat.format("KK:mm a", (long) dataSnapshot.getValue()).toString();
 
                     projectStatsView.populateProjectCreationDate(dateFormatted);
                 }

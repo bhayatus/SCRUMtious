@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,8 +25,10 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectStatsPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectStatsViewInt;
@@ -49,6 +50,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     private NavigationView navigationView;
     private ImageButton logoutBtn, helpBtn, refreshBtn;
 
+    private TextView projectCreationDateViewNotEmpty, numMembersViewNotEmpty, numSprintsViewNotEmpty,
+            numUserStoriesViewNotEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,16 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         this.numMembersView = (TextView) findViewById(R.id.projectStatsNumMembers);
         this.numSprintsView = (TextView) findViewById(R.id.projectStatsNumSprints);
         this.numUserStoriesView = (TextView) findViewById(R.id.projectStatsNumUserStories);
+
+        this.projectCreationDateViewNotEmpty = findViewById(R.id.projectStatsCreationDateNotEmptyStateCount);
+        this.numMembersViewNotEmpty = findViewById(R.id.projectStatsNumMemebersNotEmptyStateCount);
+        this.numSprintsViewNotEmpty = findViewById(R.id.projectStatsNumSprintsNotEmptyStateCount);
+        this.numUserStoriesViewNotEmpty = findViewById(R.id.projectStatsNumUserStoriesNotEmptyStateCount);
+
+        this.projectCreationDateViewNotEmpty.setVisibility(View.GONE);
+        this.numMembersViewNotEmpty.setVisibility(View.GONE);
+        this.numMembersViewNotEmpty.setVisibility(View.GONE);
+        this.numUserStoriesViewNotEmpty.setVisibility(View.GONE);
 
         logoutBtn = findViewById(R.id.projectStatsLogoutBtn);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -358,52 +371,79 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     public void populateNumMembers(long numMembers) {
 
         if (numMembers == 0){
+            numMembersViewNotEmpty.setVisibility(View.GONE);
+            numMembersView.setVisibility(View.VISIBLE);
             numMembersView.setText("Unable to retrieve number of members data");
             return;
         }
         else if(numMembers == 1){
-            numMembersView.setText("You are currently the only member in this project");
+            numMembersView.setVisibility(View.GONE);
+//            numMembersView.setText("You are currently the only member in this project");
+            numMembersViewNotEmpty.setText("1");
+            numMembersViewNotEmpty.setVisibility(View.VISIBLE);
+
             return;
         }
 
-        numMembersView.setText("You have a total of " + numMembers + " members in this project" );
-
+        numMembersView.setVisibility(View.GONE);
+        numMembersViewNotEmpty.setText(String.valueOf(numMembers));
+        numMembersViewNotEmpty.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void populateNumSprints(long numSprints) {
         if (numSprints == -1){
+            numSprintsViewNotEmpty.setVisibility(View.GONE);
+            numSprintsView.setVisibility(View.VISIBLE);
             numSprintsView.setText("Unable to retrieve number of sprints data");
             return;
         }
         else if (numSprints == 0){
+            numSprintsViewNotEmpty.setVisibility(View.GONE);
+            numSprintsView.setVisibility(View.VISIBLE);
             numSprintsView.setText("You currently have no sprints in this project");
             return;
         }
         else if(numSprints == 1){
-            numSprintsView.setText("You have " + numSprints + " sprint in this project");
+            numSprintsView.setVisibility(View.GONE);
+            numSprintsViewNotEmpty.setText(String.valueOf(numSprints));
+            numSprintsViewNotEmpty.setVisibility(View.VISIBLE);
             return;
         }
 
-        numSprintsView.setText("You have " + numSprints + " sprints in this project");
+        numSprintsView.setVisibility(View.GONE);
+        numSprintsViewNotEmpty.setText(String.valueOf(numSprints));
+        numSprintsViewNotEmpty.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void populateNumUserStories(long total, long completed) {
 
-        numUserStoriesView.setText("You have completed " + completed + " out of a total of " + total + " user stories");
+        if (completed != 0) {
+            numUserStoriesView.setVisibility(View.GONE);
+            numUserStoriesViewNotEmpty.setText(String.valueOf(completed) + "/" + String.valueOf(total));
+            numUserStoriesViewNotEmpty.setVisibility(View.VISIBLE);
+        } else if (completed <= 0 || total <= 0) {
+            numUserStoriesViewNotEmpty.setVisibility(View.GONE);
+            numUserStoriesView.setVisibility(View.VISIBLE);
+        }
+
+//        numUserStoriesView.setVisibility(View.GONE);
+//        numUserStoriesViewNotEmpty.setText(String.valueOf(completed) + "/" + String.valueOf(total));
     }
 
     @Override
     public void populateProjectCreationDate(String date) {
         if (date.equals("")){
+            projectCreationDateViewNotEmpty.setVisibility(View.GONE);
+            projectCreationDateView.setVisibility(View.VISIBLE);
             projectCreationDateView.setText("Unable to retrieve project creation date");
             return;
         }
 
-        projectCreationDateView.setText(date);
-
-
+        projectCreationDateView.setVisibility(View.GONE);
+        projectCreationDateViewNotEmpty.setText(date);
+        projectCreationDateViewNotEmpty.setVisibility(View.VISIBLE);
     }
 }
