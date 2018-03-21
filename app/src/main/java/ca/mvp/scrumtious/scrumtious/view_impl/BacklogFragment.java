@@ -227,7 +227,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
     // Viewholder class to display user stories
     public static class BacklogViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView nameView, pointsView, descriptionView, assignedToNameView;
+        TextView nameView, pointsView, descriptionView, assignedToNameView, completedDateView;
         ImageButton completed;
         ImageButton delete;
         LinearLayout assignedToLayout;
@@ -247,6 +247,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
             pointsView = (TextView) mView.findViewById(R.id.userStoryRowPoints);
             descriptionView = (TextView) mView.findViewById(R.id.userStoryRowDesc);
             assignedToNameView = (TextView) mView.findViewById(R.id.userStoryAssignedToName);
+            completedDateView = (TextView) mView.findViewById(R.id.userStoryRowCompletedDate);
             completed = (ImageButton) mView.findViewById(R.id.userStoryRowCompleted);
             delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
             assignedToLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToLayout);
@@ -289,6 +290,11 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
             descriptionView.setText(displayDesc);
 
+        }
+
+        public void setCompletedDateDetails(String date){
+            completedDateView.setVisibility(View.VISIBLE);
+            completedDateView.setText(date);
         }
 
         public ImageButton getCompleted(){
