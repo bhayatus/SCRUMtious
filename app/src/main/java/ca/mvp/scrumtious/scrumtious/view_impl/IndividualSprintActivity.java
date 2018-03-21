@@ -1,5 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -51,6 +52,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
     private boolean projectAlreadyDeleted;
     private boolean sprintAlreadyDeleted;
+    private boolean cameFromOverviewScreen;
 
 
 
@@ -67,6 +69,13 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
         projectAlreadyDeleted = false; // Project isn't deleted yet
         sprintAlreadyDeleted = false; // Sprint isn't deleted yet
+
+        cameFromOverviewScreen = false; // By default, we assume we came from the sprint list screen
+
+        // If we came from project overview screen, intent should have this extra
+        if (getIntent().hasExtra("cameFromOverviewScreen")){
+            cameFromOverviewScreen = true;
+        }
 
         deleteBtn = findViewById(R.id.individualSprintDeleteBtn);
         logoutBtn = findViewById(R.id.individualSprintLogoutBtn);
@@ -234,11 +243,21 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(IndividualSprintActivity.this, SprintListActivity.class);
-        intent.putExtra("projectId", pid);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+        // Came from sprint list screen, go back there
+        if (!cameFromOverviewScreen) {
+            Intent intent = new Intent(IndividualSprintActivity.this, SprintListActivity.class);
+            intent.putExtra("projectId", pid);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+        // Came from overview screen, go back there
+        else{
+            Intent intent = new Intent(IndividualSprintActivity.this, IndividualProjectActivity.class);
+            intent.putExtra("projectId", pid);
+            startActivity(intent);
+            finish();
+        }
     }
 
     // Project was deleted by another user, or user was removed from the project

@@ -123,6 +123,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
                     Intent intent = new Intent(getActivity(), IndividualSprintActivity.class);
                     intent.putExtra("projectId", pid);
                     intent.putExtra("sprintId", currentSprintId);
+                    intent.putExtra("cameFromOverviewScreen", "true");
                     startActivity(intent);
             }
         });

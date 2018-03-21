@@ -31,10 +31,9 @@ public class AuthenticationHelper {
 
                             SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                            editor.remove("emailAddress");
-                            editor.apply();
-                            editor.remove("password");
-                            editor.apply();
+                            // Clear username and password from SharedPreferences
+                            editor.clear();
+                            editor.commit();
 
                             // Return to login screen
                             Intent intent = new Intent(context, LoginActivity.class);
