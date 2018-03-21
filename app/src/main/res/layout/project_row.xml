@@ -17,6 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginRight="4dp"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginBottom="3dp"
+            android:layout_marginLeft="4dp"
             android:fontFamily="@font/droid_sans"
             android:paddingBottom="5dp"
             android:text="WWWWWWWWWWWWWWWWWW"
@@ -38,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:layout_marginLeft="4dp"
             android:fontFamily="@font/droid_sans"
             android:text="Owner:"
             android:textColor="@color/black"
@@ -49,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/droid_sans"
             android:text="This is a description that explains what the sprint is about, and now I am running out of things to say, so I'll stop."
@@ -58,13 +62,18 @@
             android:id="@+id/projectRowMoreIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
-            android:padding="5dp"
+            android:scaleType="fitStart"
             android:src="@drawable/ic_more"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="5dp">
 
             <TextView
