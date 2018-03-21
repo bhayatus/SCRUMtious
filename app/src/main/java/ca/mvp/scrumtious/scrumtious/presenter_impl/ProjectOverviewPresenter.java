@@ -1,9 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.text.format.DateFormat;
-import android.util.Log;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

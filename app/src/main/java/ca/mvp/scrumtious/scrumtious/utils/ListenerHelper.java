@@ -15,7 +15,6 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ListenerInt;
 public class ListenerHelper {
 
     public static ValueEventListener setupProjectDeletedListener(final ListenerInt context, String pid){
-        //Log.e("Setup proj", "deletion listener");
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = mDatabase.getReference().child("projects");
         ValueEventListener projectListener = mRef.child(pid).addValueEventListener(new ValueEventListener() {
@@ -45,14 +44,12 @@ public class ListenerHelper {
     }
 
     public static void removeProjectDeletedListener(ValueEventListener listener, String pid){
-        //Log.e("Removed proj", "deletion listener");
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid);
         mRef.removeEventListener(listener);
     }
 
     public static ValueEventListener setupSprintDeletedListener(final ListenerInt context, String pid, String sid){
-        //Log.e("Setup sprint", "deletion listener");
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("sprints");
         ValueEventListener sprintListener = mRef.child(sid).addValueEventListener(new ValueEventListener() {
@@ -74,7 +71,6 @@ public class ListenerHelper {
     }
 
     public static void removeSprintDeletedListener(ValueEventListener listener, String pid, String sid){
-        //Log.e("Removed sprint", "deletion listener");
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("sprints").child(sid);
         mRef.removeEventListener(listener);

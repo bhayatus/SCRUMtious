@@ -1,8 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-import android.media.Image;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 

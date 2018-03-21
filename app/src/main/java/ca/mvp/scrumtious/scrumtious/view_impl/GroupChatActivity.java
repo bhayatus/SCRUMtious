@@ -53,10 +53,6 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     private ImageButton groupChatSendBtn, logoutBtn;
 
 
-    public GroupChatActivity(){
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

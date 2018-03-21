@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -45,13 +44,13 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     private boolean projectAlreadyDeleted;
 
     private TextView projectCreationDateView, numMembersView, numSprintsView, numUserStoriesView;
+    private TextView projectCreationDateViewNotEmpty, numMembersViewNotEmpty, numSprintsViewNotEmpty,
+            numUserStoriesViewNotEmpty;
     private LineChart burndownChart;
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
     private ImageButton logoutBtn, helpBtn, refreshBtn;
 
-    private TextView projectCreationDateViewNotEmpty, numMembersViewNotEmpty, numSprintsViewNotEmpty,
-            numUserStoriesViewNotEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +95,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(ProjectStatsActivity.this)
-                        .setTitle("Need Help?")
+                        .setTitle("About the Burndown Chart")
                         .setMessage("The burndown chart represents the progress your group has made through" +
                                 " completing user stories." + "\n" +
                                 "On the y-axis, the numbers represent the total amount of" +
@@ -319,7 +318,6 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         for(int i = 1; i < daysFromStart.size(); i++) {
             leftOverPoints = leftOverPoints - costs.get(i);
             entries.add(new Entry(daysFromStart.get(i), leftOverPoints));
-            Log.e(Long.toString(daysFromStart.get(i)), Long.toString(leftOverPoints));
         }
 
 
@@ -370,7 +368,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     @Override
     public void populateNumMembers(long numMembers) {
 
-        if (numMembers == 0){
+        if (numMembers == -1){
             numMembersViewNotEmpty.setVisibility(View.GONE);
             numMembersView.setVisibility(View.VISIBLE);
             numMembersView.setText("Unable to retrieve number of members data");
@@ -378,7 +376,6 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         }
         else if(numMembers == 1){
             numMembersView.setVisibility(View.GONE);
-//            numMembersView.setText("You are currently the only member in this project");
             numMembersViewNotEmpty.setText("1");
             numMembersViewNotEmpty.setVisibility(View.VISIBLE);
 
@@ -429,8 +426,6 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
             numUserStoriesView.setVisibility(View.VISIBLE);
         }
 
-//        numUserStoriesView.setVisibility(View.GONE);
-//        numUserStoriesViewNotEmpty.setText(String.valueOf(completed) + "/" + String.valueOf(total));
     }
 
     @Override

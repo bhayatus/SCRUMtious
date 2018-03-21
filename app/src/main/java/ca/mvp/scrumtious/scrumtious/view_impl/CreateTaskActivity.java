@@ -91,6 +91,58 @@ public class CreateTaskActivity extends AppCompatActivity implements
     }
 
 
+    // Setup listeners
+    @Override
+    protected void onResume() {
+        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
+        userStoryListener = ListenerHelper.setupUserStoryDeletedListener(this, pid, usid);
+        super.onResume();
+    }
+
+    // Remove listeners
+    @Override
+    protected void onPause() {
+        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
+        ListenerHelper.removeUserStoryDeletedListener(userStoryListener, pid, usid);
+        super.onPause();
+    }
+
+    @Override
+    public void onProjectDeleted() {
+        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
+        if (!projectAlreadyDeleted) {
+            projectAlreadyDeleted = true;
+
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(CreateTaskActivity.this, ProjectTabsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onSprintDeleted() {
+
+    }
+
+    // NEEDS TO BE IMPLEMENTED
+    @Override
+    public void onUserStoryDeleted() {
+        if (!userStoryAlreadyDeleted) {
+            userStoryAlreadyDeleted = true;
+
+            // Return to project list screen and make sure we can't go back by clearing the task stack
+            Intent intent = new Intent(CreateTaskActivity.this, ProductBacklogActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("projectId", pid);
+            startActivity(intent);
+            finish();
+        }
+
+    }
+
+
     @Override
     public void onBackPressed(){
 
@@ -193,57 +245,6 @@ public class CreateTaskActivity extends AppCompatActivity implements
             createTaskProgressDialog.show();
 
             createTaskPresenter.addTaskToDatabase(desc);
-        }
-
-    }
-
-    // Setup listeners
-    @Override
-    protected void onResume() {
-        projectListener = ListenerHelper.setupProjectDeletedListener(this, pid);
-        userStoryListener = ListenerHelper.setupUserStoryDeletedListener(this, pid, usid);
-        super.onResume();
-    }
-
-    // Remove listeners
-    @Override
-    protected void onPause() {
-        ListenerHelper.removeProjectDeletedListener(projectListener, pid);
-        ListenerHelper.removeUserStoryDeletedListener(userStoryListener, pid, usid);
-        super.onPause();
-    }
-
-    @Override
-    public void onProjectDeleted() {
-        // DELETED NORMALLY FLAG PREVENTS THIS FROM TRIGGERING AGAIN AFTER ALREADY BEING DELETED
-        if (!projectAlreadyDeleted) {
-            projectAlreadyDeleted = true;
-
-            // Return to project list screen and make sure we can't go back by clearing the task stack
-            Intent intent = new Intent(CreateTaskActivity.this, ProjectTabsActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    @Override
-    public void onSprintDeleted() {
-
-    }
-
-    // NEEDS TO BE IMPLEMENTED
-    @Override
-    public void onUserStoryDeleted() {
-        if (!userStoryAlreadyDeleted) {
-            userStoryAlreadyDeleted = true;
-
-            // Return to project list screen and make sure we can't go back by clearing the task stack
-            Intent intent = new Intent(CreateTaskActivity.this, ProductBacklogActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra("projectId", pid);
-            startActivity(intent);
-            finish();
         }
 
     }
