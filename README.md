@@ -16,7 +16,7 @@ An Android app that helps manage the logistics of remote teams working on projec
 1. Go to 'keystore-and-apk'
 2. Click on 'SCRUMtious-demo-signed.apk'
 3. Click on the download button
-4. Copy the apk onto your phone into
-5. On your phone move to where you copied the apk
+4. Copy the apk onto your phone into a directory
+5. On your phone move to the folder where you copied the apk
 6. Click on the apk to install 
 7. Launch the app after installation
