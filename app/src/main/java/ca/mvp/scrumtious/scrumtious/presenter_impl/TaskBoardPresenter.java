@@ -93,17 +93,6 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                     }
                 });
 
-                ImageButton moreBtn = viewHolder.getMoreIcon();
-
-                // When user clicks the button, toggle the description showing boolean and reset description
-                moreBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mViewHolder.switchShowFull(taskModel.getTaskDesc());
-
-                    }
-                });
-
                 viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {

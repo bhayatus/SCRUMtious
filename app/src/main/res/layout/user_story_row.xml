@@ -132,15 +132,6 @@
 
         </android.widget.LinearLayout>
 
-        <ImageButton
-            android:id="@+id/userStoryRowMoreIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:background="@android:color/transparent"
-            android:padding="3dp"
-            android:src="@drawable/ic_more_white"/>
-
         <android.widget.LinearLayout
             android:id="@+id/userStoryRowAssignedToLayout"
             android:layout_width="match_parent"

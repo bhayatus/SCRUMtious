@@ -143,16 +143,6 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 ImageButton delete = viewHolder.getDelete();
 
 
-                ImageButton moreBtn = viewHolder.getMoreIcon();
-                // When user clicks the button, toggle the description showing boolean and reset description
-                moreBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mViewHolder.switchShowFull(userStoryModel.getUserStoryDetails());
-                    }
-                });
-
-
                 // Show as in progress with icon
                 if (type.equals("SPRINT_IN_PROGRESS")) {
                     completed.setImageResource(R.drawable.ic_checkbox_not_checked);
