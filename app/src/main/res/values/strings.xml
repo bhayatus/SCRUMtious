@@ -61,4 +61,9 @@
     <string name="total_projects_members_count">Total Project \n Members</string>
     <string name="project_creation_date">Project Creation \n Date</string>
     <string name="total_user_stories_completed_for_current_sprint">Total User Stories \n Completed</string>
+    <string name="unable_to_retrieve_user_stories_data">Unable to retrieve user stories data</string>
+    <string name="unable_to_retrieve_number_of_sprints_data">Unable to retrieve number of sprints data</string>
+    <string name="unable_to_retrieve_project_creation_date">Unable to retrieve project creation date</string>
+    <string name="unable_to_retrieve_number_of_members_data">Unable to retrieve number of members data</string>
+    <string name="not_enough_data_to_show_burndown_chart">Not enough data to show Burndown Chart.</string>
 </resources>
