@@ -205,10 +205,6 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
         ImageButton taskDelete;
         CardView card;
 
-        ImageButton moreIcon;
-        // Don't show whole description by default
-        boolean showFull = false;
-
         public TaskBoardViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
@@ -218,37 +214,10 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             taskDelete = (ImageButton) mView.findViewById(R.id.taskDeleteBtn);
             taskSwitch = (ImageButton) mView.findViewById(R.id.taskSwitchStatesBtn);
             card = (CardView) mView.findViewById(R.id.taskRowCard);
-            moreIcon = (ImageButton) mView.findViewById(R.id.taskRowMoreIcon);
         }
         public void setDetails(String description, String assignedTo){
 
-            // Show whole description by default
-            String displayDesc = description;
-
-
-            // Shorten the description
-            if (!showFull){
-                displayDesc = StringHelper.shortenDescription(description);
-            }
-
-            // Description is showing entirely, hide show more icon
-            if (displayDesc.trim().equals(description)){
-                showOrHideMoreIcon(true);
-            }
-            // Description has been shortened, don't show more icon
-            else{
-                showOrHideMoreIcon(false);
-            }
-
-            // Not assigned to any member
-            if (assignedTo.equals("")){
-                assignedToView.setText("Not assigned to any member");
-            }
-            else{
-                assignedToView.setText("Assigned to " + assignedTo);
-            }
-
-            descriptionView.setText(displayDesc);
+            descriptionView.setText(description);
         }
         public ImageButton getTaskSwitch(){
             return this.taskSwitch;
@@ -276,43 +245,5 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
         }
 
-        // Either show or hide the more icon
-        public void showOrHideMoreIcon(boolean hide){
-            if (hide){
-                moreIcon.setVisibility(View.GONE);
-            }
-            else{
-                moreIcon.setVisibility(View.VISIBLE);
-            }
-        }
-
-        public ImageButton getMoreIcon(){
-            return moreIcon;
-        }
-
-        // User clicked on the show more icon, switch boolean state and reset description
-        public void switchShowFull(String description){
-            showFull = !showFull;
-
-            // Show whole description by default
-            String displayDesc = description;
-
-            // Shorten the description
-            if (!showFull){
-                displayDesc = StringHelper.shortenDescription(description);
-            }
-
-            // Description is showing entirely, hide show more icon
-            if (displayDesc.trim().equals(description)){
-                showOrHideMoreIcon(true);
-            }
-            // Description has been shortened, don't show more icon
-            else{
-                showOrHideMoreIcon(false);
-            }
-
-            // Reset the description
-            descriptionView.setText(displayDesc);
-        }
     }
 }

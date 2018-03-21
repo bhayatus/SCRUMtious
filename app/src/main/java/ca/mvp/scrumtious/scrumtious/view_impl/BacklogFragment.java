@@ -233,12 +233,6 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
         LinearLayout assignedToLayout;
         CardView card;
 
-        ImageButton moreIcon;
-
-        // Don't show whole description by default
-        boolean showFull = false;
-
-
         public BacklogViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
@@ -252,7 +246,6 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
             delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
             assignedToLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToLayout);
             card = (CardView) mView.findViewById(R.id.userStoryRowCardView);
-            moreIcon = (ImageButton) mView.findViewById(R.id.userStoryRowMoreIcon);
         }
 
 
@@ -260,23 +253,6 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
         public void setDetails(String name, String points, String assignedToName, String description){
             nameView.setText(name);
 
-            // Show whole description by default
-            String displayDesc = description;
-
-
-            // Shorten the description
-            if (!showFull){
-                displayDesc = StringHelper.shortenDescription(description);
-            }
-
-            // Description is showing entirely, hide show more icon
-            if (displayDesc.trim().equals(description)){
-                showOrHideMoreIcon(true);
-            }
-            // Description has been shortened, don't show more icon
-            else{
-                showOrHideMoreIcon(false);
-            }
 
             // If only 1 point, don't display as plural
             if (Integer.parseInt(points) == 1){
@@ -288,7 +264,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
             assignedToNameView.setText(assignedToName);
 
-            descriptionView.setText(displayDesc);
+            descriptionView.setText(description);
 
         }
 
@@ -323,45 +299,6 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
         public void setCardGreen(){
             card.setCardBackgroundColor(Color.parseColor("#8BC34A"));
-        }
-
-        // Either show or hide the more icon
-        public void showOrHideMoreIcon(boolean hide){
-            if (hide){
-                moreIcon.setVisibility(View.GONE);
-            }
-            else{
-                moreIcon.setVisibility(View.VISIBLE);
-            }
-        }
-
-        public ImageButton getMoreIcon(){
-            return moreIcon;
-        }
-
-        // User clicked on the show more icon, switch boolean state and reset description
-        public void switchShowFull(String description){
-            showFull = !showFull;
-
-            // Show whole description by default
-            String displayDesc = description;
-
-            // Shorten the description
-            if (!showFull){
-                displayDesc = StringHelper.shortenDescription(description);
-            }
-
-            // Description is showing entirely, hide show more icon
-            if (displayDesc.trim().equals(description)){
-                showOrHideMoreIcon(true);
-            }
-            // Description has been shortened, don't show more icon
-            else{
-                showOrHideMoreIcon(false);
-            }
-
-            // Reset the description
-            descriptionView.setText(displayDesc);
         }
 
     }
