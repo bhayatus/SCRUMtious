@@ -6,5 +6,4 @@ public interface ProjectStatsPresenterInt {
     void getNumMembers();
     void getNumSprints();
     void getProjectCreationDate();
-
 }

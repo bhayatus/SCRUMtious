@@ -7,5 +7,14 @@ public interface ProjectOverviewPresenterInt {
     void setupCurrentSprintListener();
     void removeCurrentSprintListener();
 
+    void setupCurrentVelocityListener();
+    void removeCurrentVelocityListener();
+
+    void setupDaysListener();
+    void removeDaysListener();
+
     void getUserStoryProgress();
+
+    void changeCurrentVelocity(long newVelocity);
+
 }
