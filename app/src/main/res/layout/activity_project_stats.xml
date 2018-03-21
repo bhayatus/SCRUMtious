@@ -90,7 +90,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:textColor="@color/cardview_dark_background"
-                        android:text="Not enough data to show Burndown Chart."
+                        android:text="Not enough data to show Burndown Chart"
                         android:textSize="18sp" />
 
                     <LinearLayout
