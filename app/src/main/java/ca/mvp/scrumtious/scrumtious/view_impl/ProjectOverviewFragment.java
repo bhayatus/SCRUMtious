@@ -246,6 +246,12 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         EditText velocityET = (EditText) alertView.findViewById(R.id.alert_dialogue_change_velocity_field);
+
+                        if (velocityET.getText().toString().equals("") || velocityET.getText().toString() == null){
+                            showMessage("Please enter a velocity.", false);
+                            return;
+                        }
+
                         long newVelocity = Long.parseLong(velocityET.getText().toString());
 
                         if (newVelocity < 1 || newVelocity > 9999){
