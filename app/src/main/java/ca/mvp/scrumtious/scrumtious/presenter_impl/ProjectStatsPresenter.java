@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
@@ -57,8 +58,8 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
                     createdTime = (long) dataSnapshot.child("creationTimeStamp").getValue();
 
                     mDatabase = FirebaseDatabase.getInstance();
-                    mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
-                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    Query mQuery = mDatabase.getReference().child("projects").child(pid).child("user_stories").orderByChild("completedDate");
+                    mQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()){
