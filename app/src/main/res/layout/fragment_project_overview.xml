@@ -151,30 +151,34 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/projectOverviewSprintCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/project_overview_user_story_row_card_margin"
-                app:cardCornerRadius="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/projectOverviewSprintCard"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="3dp"
                 app:cardElevation="2dp"
+                app:contentPadding="5dp"
                 card_view:cardBackgroundColor="@color/cardview_light_background">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
                     android:orientation="vertical"
-                    >
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/sprintRowNameProjectOverview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="8dp"
                         android:fontFamily="@font/droid_sans"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingTop="20dp"
-                        android:text="Sprint 1"
+                        android:paddingBottom="5dp"
+                        android:text="Name of Sprint"
                         android:textColor="#d10f0f"
                         android:textSize="20dp"
                         android:textStyle="bold"/>
@@ -183,21 +187,22 @@
                         android:id="@+id/sprintRowDescriptionProjectOverview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:fontFamily="@font/droid_sans"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="@string/one_hundred_fourty_char_string"
-                        android:textSize="14sp" />
+                        android:paddingBottom="2dp"
+                        android:paddingTop="5dp"
+                        android:text="This is a description that explains what the sprint is about, and now I am running out of things to say,
+so I'll stop."
+                        android:textSize="16sp"/>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
-                        android:padding="10dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp">
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:id="@+id/sprintRowClockIconProjectOverview"
@@ -214,20 +219,9 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="7dp"
                             android:fontFamily="@font/droid_sans"
-                            android:text="@string/project_overview_sprint_time_not_available"
+                            android:text="01/01/2018 to 01/25/2018"
                             android:textColor="#09c2ff"
                             android:textSize="14sp"/>
-
-                        <TextView
-                            android:id="@+id/sprintRowCurrentSprintProjectOverview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:fontFamily="@font/droid_sans"
-                            android:text="(In Progress)"
-                            android:textColor="#09c2ff"
-                            android:textSize="14sp"
-                            android:visibility="gone"/>
 
                     </LinearLayout>
 
