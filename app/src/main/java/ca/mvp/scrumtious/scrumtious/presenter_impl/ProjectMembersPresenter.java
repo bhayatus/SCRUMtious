@@ -106,6 +106,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 }
                 @Override
                 public void onDataChanged() {
+                    projectMembersView.setEmptyStateView();
                 }
             };
             return membersListAdapter;

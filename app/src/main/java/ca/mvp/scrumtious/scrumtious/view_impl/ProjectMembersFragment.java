@@ -17,9 +17,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+
+import org.w3c.dom.Text;
+
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
+import ca.mvp.scrumtious.scrumtious.model.User;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.ProjectMembersPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
@@ -27,7 +32,9 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     private ProjectMembersPresenterInt projectMembersPresenter;
 
+    private TextView emptyStateView;
     private RecyclerView membersList;
+    private FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> membersListAdapter;
     private FloatingActionButton addMemberBtn;
     private ProgressDialog invitingProgressDialog, deletingMemberProgressDialog;
 
@@ -48,6 +55,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
+        emptyStateView = view.findViewById(R.id.projectMembersEmptyView);
         membersList = view.findViewById(R.id.projectMembersRecyclerView);
         setupRecyclerView();
         addMemberBtn = view.findViewById(R.id.projectMembersAddMemberBtn);
@@ -76,8 +84,20 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         mLayoutManager.setStackFromEnd(true);
 
         membersList.setLayoutManager(mLayoutManager);
-        membersList.setAdapter(projectMembersPresenter.setupMemberListAdapter());
+        membersListAdapter = projectMembersPresenter.setupMemberListAdapter();
+        membersList.setAdapter(membersListAdapter);
 
+    }
+
+    // Sets the view to show if you are the only member
+    @Override
+    public void setEmptyStateView(){
+        if (membersListAdapter.getItemCount() == 1){
+            emptyStateView.setVisibility(View.VISIBLE);
+        }
+        else{
+            emptyStateView.setVisibility(View.GONE);
+        }
     }
 
     // Owner clicked on the invite member button
