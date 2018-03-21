@@ -218,6 +218,12 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
         public void setDetails(String description, String assignedTo){
 
             descriptionView.setText(description);
+            if (assignedTo.equals("")){
+                assignedToView.setText("Not currently assigned to a member");
+            }
+            else {
+                assignedToView.setText("Assigned to " + assignedTo);
+            }
         }
         public ImageButton getTaskSwitch(){
             return this.taskSwitch;
