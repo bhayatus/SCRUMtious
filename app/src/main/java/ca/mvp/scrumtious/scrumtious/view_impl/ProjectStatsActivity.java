@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -43,7 +44,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     private boolean projectAlreadyDeleted;
 
-    private TextView projectCreationDateView, numMembersView, numSprintsView, numUserStoriesView;
+    private TextView projectCreationDateView, numMembersView, numSprintsView, numUserStoriesView, daysPassedView,
+    totalPointsView, emptyChartView;
     private TextView projectCreationDateViewNotEmpty, numMembersViewNotEmpty, numSprintsViewNotEmpty,
             numUserStoriesViewNotEmpty;
     private LineChart burndownChart;
@@ -70,6 +72,10 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         this.numMembersView = (TextView) findViewById(R.id.projectStatsNumMembers);
         this.numSprintsView = (TextView) findViewById(R.id.projectStatsNumSprints);
         this.numUserStoriesView = (TextView) findViewById(R.id.projectStatsNumUserStories);
+
+        this.totalPointsView = (TextView) findViewById(R.id.projectStatsTotalPoints);
+        this.daysPassedView = (TextView) findViewById(R.id.projectStatsDaysPassed);
+        this.emptyChartView = (TextView) findViewById(R.id.projectStatsEmptyChartView);
 
         this.projectCreationDateViewNotEmpty = findViewById(R.id.projectStatsCreationDateNotEmptyStateCount);
         this.numMembersViewNotEmpty = findViewById(R.id.projectStatsNumMemebersNotEmptyStateCount);
@@ -101,7 +107,9 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
                                 "On the y-axis, the numbers represent the total amount of" +
                                 " user story points left that need to be completed. " + "\n" +
                                 "On the x-axis, the numbers represent" +
-                                " the number of days that have passed since the project was created.")
+                                " the number of days that have passed since the project was created." +
+                                "\n" +
+                                "You can change the scale of either axis by pinching in or pinching out on the chart.")
                         .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -326,6 +334,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         dataSet.setValueTextColor(0);
         dataSet.setCircleColor(Color.RED);
         dataSet.setCircleColorHole(Color.RED);
+        dataSet.setCircleRadius(4f);
+        dataSet.setLineWidth(3f);
 
         List<Entry> finalPoint = new ArrayList<Entry>();
         finalPoint.add(new Entry(daysFromStart.get(daysFromStart.size()-1)+1, 0));
@@ -363,6 +373,13 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         burndownChart.setHighlightPerDragEnabled(false);
 
         burndownChart.invalidate(); // refresh
+
+        if (!burndownChart.isEmpty()){
+        burndownChart.setVisibility(View.VISIBLE);
+        daysPassedView.setVisibility(View.VISIBLE);
+        totalPointsView.setVisibility(View.VISIBLE);
+        emptyChartView.setVisibility(View.GONE);
+        }
     }
 
     @Override

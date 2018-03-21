@@ -79,17 +79,36 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/projectStatsEmptyChartView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid_sans"
+                        android:gravity="center_horizontal"
+                        android:textStyle="italic"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/cardview_dark_background"
+                        android:text="Not enough data to show Burndown Chart."
+                        android:textSize="18sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="10dp">
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="5dp">
 
                         <TextView
+                            android:id="@+id/projectStatsTotalPoints"
                             android:layout_width="40dp"
                             android:layout_height="300dp"
                             android:layout_alignParentLeft="true"
                             android:ems="10"
                             android:fontFamily="@font/droid_sans"
+                            android:visibility="gone"
                             android:gravity="center"
                             android:rotation="-90"
                             android:text="Total Points"
@@ -98,15 +117,17 @@
                             />
 
                         <com.github.mikephil.charting.charts.LineChart
+                            android:visibility="gone"
                             android:id="@+id/burndownGraph"
                             android:layout_width="320dp"
                             android:layout_height="300dp"
-                            android:layout_alignParentRight="true"
                             />
 
                     </LinearLayout>
 
                     <TextView
+                        android:visibility="gone"
+                        android:id="@+id/projectStatsDaysPassed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
