@@ -192,7 +192,7 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String dateFormatted = DateFormat.format("MM/dd/yyyy", (long) dataSnapshot.getValue()).toString()
-                            + "\n @ " + DateFormat.format("KK:mm a", (long) dataSnapshot.getValue()).toString();
+                            + "\n@ " + DateFormat.format("KK:mm a", (long) dataSnapshot.getValue()).toString();
 
                     projectStatsView.populateProjectCreationDate(dateFormatted);
                 }

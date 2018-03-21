@@ -366,12 +366,13 @@
                             android:id="@+id/projectStatsCreationDateNotEmptyStateCount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
                             android:text="TextView"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
-                            tools:text="03/19/2018 \n @ 11:00 PM"/>
+                            tools:text="03/19/2018\n@ 11:00 PM"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
