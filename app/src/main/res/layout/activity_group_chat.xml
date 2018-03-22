@@ -64,6 +64,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:background="@color/group_chat_message_input_bg_color"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/group_chat_message_input_padding"
@@ -77,10 +78,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/message_edit_text_border"
                 android:ems="10"
+                android:fontFamily="@font/droid_sans"
                 android:hint="@string/group_chat_message_hint"
                 android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="3"
-                android:fontFamily="@font/droid_sans"
                 android:minHeight="@dimen/group_chat_message_input_field_height"
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
@@ -88,7 +89,7 @@
                 android:scrollbars="vertical"
                 android:textAlignment="viewStart"
                 android:textSize="14sp"
-          />
+                />
 
             <ImageButton
                 android:id="@+id/groupChatSendBtn"
