@@ -16,14 +16,6 @@ public class UserInvite {
         return projectTitle;
     }
 
-    public String getInvitingUid() {
-        return invitingUid;
-    }
-
-    public String getInvitedUid() {
-        return invitedUid;
-    }
-
     public String getInvitingEmail() {
         return invitingEmail;
     }

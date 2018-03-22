@@ -1,8 +1,20 @@
 package ca.mvp.scrumtious.scrumtious.interfaces.presenter_int;
 
-import com.google.firebase.database.ValueEventListener;
-
 public interface ProjectOverviewPresenterInt {
-    ValueEventListener getProjectDetailsListener();
-    void removeProjectDetailsListener(ValueEventListener projectDetailsListener);
+    void setupProjectDetailsListener();
+    void removeProjectDetailsListener();
+
+    void setupCurrentSprintListener();
+    void removeCurrentSprintListener();
+
+    void setupCurrentVelocityListener();
+    void removeCurrentVelocityListener();
+
+    void setupDaysListener();
+    void removeDaysListener();
+
+    void getUserStoryProgress();
+
+    void changeCurrentVelocity(long newVelocity);
+
 }

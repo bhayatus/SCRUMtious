@@ -1,8 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,23 +16,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.firebase.database.ValueEventListener;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.IndividualSprintPresenterInt;
-import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualSprintViewInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualUserStoryViewInt;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.IndividualSprintPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
-import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class IndividualUserStoryActivity extends AppCompatActivity implements IndividualUserStoryViewInt {
 
@@ -46,7 +37,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-    private ImageButton logoutBtn;
+    private ImageButton logoutBtn, helpBtn;
 
     private boolean projectAlreadyDeleted;
     private boolean userStoryAlreadyDeleted;
@@ -69,6 +60,30 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(IndividualUserStoryActivity.this);
+            }
+        });
+
+        // Displays a help popup
+        helpBtn = findViewById(R.id.individualUserStoryHelpBtn);
+        helpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(IndividualUserStoryActivity.this)
+                        .setTitle("Need Help?")
+                        .setMessage("Welcome to the task board! You can start by creating a task below. Once you have done that," +
+                                " you will be able to see the task in the \"Not Started\" tab. " + "\n" +
+                                "From there, you can assign a task to a " +
+                                " team member by holding down on it for a few seconds. A dialog will then pop up, allowing you " +
+                                "to assign the task to a member, or no one." + "\n" +
+                                "You can also switch the status of the task by clicking on the toolbar icon, or delete the task" +
+                                " entirely by selecting the trash can icon.")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -150,8 +165,40 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                                 },delayMilliseconds);
                                 break;
 
-                            // TODO
+                            // User chooses to go to chat room
+                            case R.id.nav_chat:
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(IndividualUserStoryActivity.this, GroupChatActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
+                                break;
+
+                            // User chooses to go to project stats
                             case R.id.nav_stats:
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(IndividualUserStoryActivity.this, ProjectStatsActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
                                 break;
                         }
 

@@ -6,16 +6,16 @@ import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
@@ -99,6 +99,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 final String usid = getRef(position).getKey().toString();
 
                 final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
+
                 final UserStory userStoryModel = model;
 
                 String nameOfSprint = model.getAssignedToName();
@@ -111,6 +112,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 // User story is completed
                 else{
                     viewHolder.setCardGreen();
+                    String dateFormatted = "Completed on " +
+                            android.text.format.DateFormat.format("MM/dd/yyyy", model.getCompletedDate()).toString()
+                            + " at " + android.text.format.DateFormat.format("KK:mm a", model.getCompletedDate()).toString();
+                    viewHolder.setCompletedDateDetails(dateFormatted);
                 }
 
                 // Not assigned to a sprint, don't bother showing assigned to icon
@@ -127,23 +132,19 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     viewHolder.setAssignedToLayoutInvisible();
                 }
 
+                // If in the product backlog, cannot change completed status
+                if (type.equals(pb_in_progress) || type.equals(pb_completed)){
+                    mViewHolder.setCompletedInvisible();
+                }
+
                 viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints(), assignedToName, model.getUserStoryDetails());
 
                 ImageButton completed = viewHolder.getCompleted();
                 ImageButton delete = viewHolder.getDelete();
 
 
-                ImageButton moreBtn = viewHolder.getMoreIcon();
-                // When user clicks the button, toggle the description showing boolean and reset description
-                moreBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mViewHolder.switchShowFull(userStoryModel.getUserStoryDetails());
-                    }
-                });
-
-                // Show as in progress with image
-                if (type.equals("PB_IN_PROGRESS") || type.equals("SPRINT_IN_PROGRESS")) {
+                // Show as in progress with icon
+                if (type.equals("SPRINT_IN_PROGRESS")) {
                     completed.setImageResource(R.drawable.ic_checkbox_not_checked);
                 }
                 // Show as completed with icon
@@ -156,23 +157,13 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     @Override
                     public void onClick(View v) {
 
-                        switch(type){
-                            case pb_in_progress:
-                                // on the pb in progress view, ask to switch status to completed
-                                backlogView.onClickChangeStatus(usid, true);
-                                break;
-                            case pb_completed:
-                                // on the pb completed view, ask to switch status to in progress
-                                backlogView.onClickChangeStatus(usid, false);
-                                break;
-                            case sprint_in_progress:
-                                // on the sprint in progress view, ask to switch status to completed
-                                backlogView.onClickChangeStatus(usid, true);
-                                break;
-                            case sprint_completed:
-                                // on the sprint completed view, ask to switch status to in progress
-                                backlogView.onClickChangeStatus(usid, false);
-                                break;
+                        // Check if current date falls within duration of sprint
+                        if (type.equals(sprint_in_progress)){
+                            checkWithinSprint(usid, true);
+                        }
+                        else if(type.equals(sprint_completed)){
+                            checkWithinSprint(usid, false);
+
                         }
 
 
@@ -211,8 +202,14 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        backlogView.onLongClickUserStory(usid);
-                        return false;
+                        // Not allowed to re-assign
+                        if (type.equals(pb_completed) || type.equals(sprint_completed)){
+                            backlogView.showMessage("Cannot re-assign a completed user story.", false);
+                        }
+                        else {
+                            backlogView.onLongClickUserStory(usid);
+                        }
+                        return true;
                     }
                 });
 
@@ -236,7 +233,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
     // Change the user story completed flag from either true to false, or false to true
     @Override
-    public void changeCompletedStatus(String usid, boolean newStatus){
+    public void changeCompletedStatus(String usid, final boolean newStatus){
         final String completed = Boolean.toString(newStatus);
         final String userStoryId = usid;
 
@@ -252,6 +249,15 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                 Map statusMap = new HashMap();
 
+                // Marking as completed, get current timestamp
+                if (newStatus){
+                    statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completedDate", System.currentTimeMillis());
+                }
+                // Marking as in progress
+                else{
+                    statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completedDate", 0);
+                }
+
                 // Both changes need to happen to ensure atomicity
                 statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completed", completed);
                 statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "assignedTo_completed", assignedTo_completed);
@@ -262,12 +268,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                         if (task.isSuccessful()){
                             switch(type){
-                                case pb_in_progress:
-                                    backlogView.showMessage("Marked the user story as \"Completed\".", false);
-                                    break;
-                                case pb_completed:
-                                    backlogView.showMessage("Marked the user story as \"In Progress\".", false);
-                                    break;
+
                                 case sprint_in_progress:
                                     backlogView.showMessage("Marked the user story as \"Completed\".", false);
                                     break;
@@ -279,13 +280,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                         else{
 
                             switch(type){
-                                case pb_in_progress:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as \"Completed\".", false);
-                                    break;
-                                case pb_completed:
-                                    backlogView.showMessage("An error occurred, failed to mark the user story as \"In Progress\".", false);
 
-                                    break;
                                 case sprint_in_progress:
                                     backlogView.showMessage("An error occurred, failed to mark the user story as \"Completed\".", false);
 
@@ -323,5 +318,56 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 }
             }
         });
+    }
+
+    // Cannot mark a user story as completed within a sprint, unless the current date falls within the sprint's
+    // lifespan
+    private void checkWithinSprint(final String usid, final boolean newStatus){
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();
+
+        mRef.child("projects").child(pid).child("sprints").child(sprintId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // converts the longs to timestamp for the snapshot
+                Timestamp snapshotStartDateTimestamp = new Timestamp((long) dataSnapshot.child("sprintStartDate")
+                        .getValue());
+                Timestamp snapshotEndDateTimestamp = new Timestamp((long) dataSnapshot.child("sprintEndDate")
+                        .getValue());
+
+                Calendar cal = Calendar.getInstance();
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                int month = cal.get(Calendar.MONTH);
+                int year = cal.get(Calendar.YEAR);
+
+                Calendar currentCalender = new GregorianCalendar(year,month,day);
+
+                Timestamp currentTimestamp = new Timestamp(currentCalender.getTimeInMillis());
+
+
+                // On edges
+                if (currentTimestamp.equals(snapshotStartDateTimestamp) || currentTimestamp.equals(snapshotEndDateTimestamp)){
+                    backlogView.onClickChangeStatus(usid, newStatus);
+                }
+                // In between
+                else if (currentTimestamp.after(snapshotStartDateTimestamp) && currentTimestamp.before(snapshotEndDateTimestamp)){
+                    backlogView.onClickChangeStatus(usid, newStatus);
+                }
+                // Not within
+                else{
+                    backlogView.showMessage("Cannot change completed status as you must be within the sprint duration.", false);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

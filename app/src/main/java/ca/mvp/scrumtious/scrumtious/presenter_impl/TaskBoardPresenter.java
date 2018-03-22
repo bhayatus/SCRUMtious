@@ -1,8 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
-import android.media.Image;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -57,16 +55,16 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
 
             @Override
-            protected void populateViewHolder(TaskBoardFragment.TaskBoardViewHolder viewHolder, ca.mvp.scrumtious.scrumtious.model.Task model, int position) {
+            protected void populateViewHolder(final TaskBoardFragment.TaskBoardViewHolder viewHolder, ca.mvp.scrumtious.scrumtious.model.Task model, int position) {
                 final String tid = getRef(position).getKey().toString();
                 final TaskBoardFragment.TaskBoardViewHolder mViewHolder = viewHolder;
                 final ca.mvp.scrumtious.scrumtious.model.Task taskModel = model;
 
 
                 String status = model.getStatus().toString();
+                String assignedTo = model.getAssignedTo();
 
-
-                viewHolder.setDetails(model.getTaskDesc());
+                viewHolder.setDetails(model.getTaskDesc(), assignedTo);
 
                 ImageButton deleteTaskBtn = viewHolder.getTaskDelete();
                 ImageButton switchTaskBtn = viewHolder.getTaskSwitch();
@@ -95,14 +93,14 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                     }
                 });
 
-                ImageButton moreBtn = viewHolder.getMoreIcon();
-
-                // When user clicks the button, toggle the description showing boolean and reset description
-                moreBtn.setOnClickListener(new View.OnClickListener() {
+                viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mViewHolder.switchShowFull(taskModel.getTaskDesc());
+                    public boolean onLongClick(View v) {
 
+                        // Open up the dialog to choose a member
+                        taskBoardView.onLongClickTask(tid);
+
+                        return true;
                     }
                 });
 

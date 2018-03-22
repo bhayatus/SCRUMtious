@@ -47,6 +47,7 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         projectMap.put("/projects/" + projectId + "/" + "creationTimeStamp", currentTimeInMilliseconds);
         projectMap.put("/projects/" + projectId + "/" + "numMembers", 1);
         projectMap.put("/projects/" + projectId + "/" + "numSprints", 0);
+        projectMap.put("/projects/" + projectId + "/" + "currentVelocity", 0);
         projectMap.put("/projects/" + projectId + "/" + projectOwnerUid, "member");
         projectMap.put("/users/" + projectOwnerUid + "/" + projectId, "member");
 

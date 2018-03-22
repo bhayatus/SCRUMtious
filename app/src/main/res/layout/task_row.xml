@@ -6,11 +6,14 @@
     android:id="@+id/taskRowCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:paddingTop="10dp"
     app:cardBackgroundColor="#F44336"
     app:cardCornerRadius="2dp"
-    app:cardElevation="4dp"
+    app:cardElevation="3dp"
     app:cardUseCompatPadding="true"
-    android:paddingTop="10dp">
+    app:contentPadding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,56 +25,60 @@
             android:id="@+id/taskDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/task_desc_padding"
+            android:fontFamily="@font/droid_sans"
+            android:paddingLeft="15dp"
             android:paddingRight="@dimen/task_desc_padding"
             android:text="@string/one_hundred_fourty_char_string"
             android:textColor="@color/white"
             android:textSize="14sp"/>
 
-        <RelativeLayout
+
+
+        <LinearLayout
+            android:id="@+id/taskRowIconLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:layout_margin="2dp"
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/taskRowMoreIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_more_white"
-            android:layout_marginLeft="20dp"
-            android:background="@android:color/transparent"
-            android:layout_alignParentStart="true"/>
-
-
-            <LinearLayout
-                android:id="@+id/taskRowIconLayout"
+            <ImageButton
+                android:id="@+id/taskAssignedToIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="true"
-                android:layout_margin="2dp">
+                android:adjustViewBounds="true"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_member_white"/>
 
-                <ImageButton
-                    android:id="@+id/taskSwitchStatesBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/transparent"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_task_switch_state_white_24dp"/>
+            <TextView
+                android:id="@+id/taskAssignedTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/droid_sans"
+                android:text="Assigned to usaimbhayat@gmail.com"
+                android:textColor="@color/white"
+                android:textSize="11sp"/>
 
-                <ImageButton
-                    android:id="@+id/taskDeleteBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/transparent"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_delete_white"/>
+            <ImageButton
+                android:id="@+id/taskSwitchStatesBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_task_switch_state_white_24dp"/>
+
+            <ImageButton
+                android:id="@+id/taskDeleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_delete_white"/>
 
 
-            </LinearLayout>
-
-        </RelativeLayout>
-
+        </LinearLayout>
 
     </LinearLayout>
 

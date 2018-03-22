@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -158,8 +157,40 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                             case R.id.nav_sprints:
                                break;
 
-                            // TODO
+                            // User chooses to go to chat room
+                            case R.id.nav_chat:
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(SprintListActivity.this, GroupChatActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
+                                break;
+
+                            // User chooses to go to project stats
                             case R.id.nav_stats:
+                                // Allow nav drawer to close smoothly before switching activities
+                                handler = new Handler();
+                                delayMilliseconds = 250;
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(SprintListActivity.this, ProjectStatsActivity.class);
+                                        intent.putExtra("projectId", pid);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },delayMilliseconds);
+
                                 break;
                         }
 
@@ -208,7 +239,9 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SprintListActivity.this, ProjectTabsActivity.class);
+        Intent intent = new Intent(SprintListActivity.this, IndividualProjectActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("projectId", pid);
         startActivity(intent);
         finish();
     }

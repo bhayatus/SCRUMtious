@@ -63,8 +63,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/create_user_story_name"
+            android:fontFamily="@font/droid_sans"
             android:importantForAutofill="noExcludeDescendants"
-            android:inputType="text"
+            android:inputType="text|textCapSentences"
             android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
@@ -83,8 +84,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/create_user_story_desc"
+            android:fontFamily="@font/droid_sans"
             android:importantForAutofill="noExcludeDescendants"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textCapSentences"
             android:lines="5"
             android:scrollbars="vertical"
             android:maxLength="280"/>
@@ -108,6 +110,7 @@
             android:ems="4"
             android:hint="@string/create_user_story_points"
             android:maxLength="4"
+            android:fontFamily="@font/droid_sans"
             android:importantForAutofill="noExcludeDescendants"
             android:inputType="number"
             android:maxEms="4"

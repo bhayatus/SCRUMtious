@@ -13,6 +13,19 @@
         >
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/projectMembersEmptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:textColor="#9B9B9B"
+        android:layout_margin="40dp"
+        android:text="Looks like you're the only member in this project."
+        android:textSize="24sp" />
+
     <RelativeLayout
         android:id="@+id/projectMembersRelativeLayout"
         android:layout_width="match_parent"

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/message_container_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/message_timestamp_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="5dp"
+                android:text="Dec 20, 2018 @ 2:15PM"
+                android:textAlignment="viewEnd"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/message_content_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@drawable/message_row_rounded_rect_red"
+                android:padding="15dp"
+                android:text="@string/one_hundred_fourty_char_string"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/message_container_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <LinearLayout
+            android:id="@+id/message_left_details_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/message_timestamp_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dec 20, 2018 @ 2:15PM"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/message_sent_by_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Louis George Maurice Adolphe Roche Albert"
+            android:textSize="12sp"/>
+
+
+        <TextView
+            android:id="@+id/message_content_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_row_rounded_rect_gray"
+            android:padding="15dp"
+            android:text="@string/one_hundred_fourty_char_string"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

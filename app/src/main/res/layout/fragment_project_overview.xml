@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectOverviewFragment">
 
     <ScrollView
@@ -16,63 +17,404 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:ems="10"
+                android:fontFamily="@font/droid_sans"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingTop="20dp"
-                android:textSize="20sp"
-                android:fontFamily="@font/droid_sans"
-                android:text="Welcome to: "
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp" />
+                android:paddingTop="15dp"
+                android:text="@string/welcome_to"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/projectOverviewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:ems="10"
+                android:fontFamily="@font/droid_sans"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:textSize="16sp"
+                android:text="SCRUMtious"
+                android:textAllCaps="false"
+                android:textColor="@color/group_chat_right_message_bg_color"
+                android:textSize="30sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/droid_sans"
-                android:text="Insert Project Name"
-                android:textColor="@color/colorAccent"
-                android:layout_marginBottom="20dp" />
+                />
 
             <TextView
+                android:id="@+id/projectOverviewDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:ems="10"
+                android:fontFamily="@font/droid_sans"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:textSize="20sp"
-                android:fontFamily="@font/droid_sans"
-                android:text="About this project:"
-                android:textStyle="bold"/>
+                android:text="@string/app_summary"
+                android:textAlignment="textStart"
+                android:textSize="14sp"
+                android:textStyle="italic"/>
 
             <LinearLayout
-                android:layout_margin="10dp"
-                android:background="@drawable/overview_desc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/projectOverviewDesc"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/projectOverviewVelocityCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/droid_sans"
-                    android:text="Lorem ipsum dolor sit amet, te sit erat movet mandamus. Nulla noster audiam eos cu, summo facilis repudiare duo eu. Cu nobis dicam luptatum vix. Brute reformidans usu ea, graeco noluisse laboramus has ex. Ad per porro expetenda maiestatis, ex stet nominavi urbanitas vel.
+                    android:layout_margin="@dimen/stats_card_margin"
+                    android:layout_weight="0.50"
+                    android:layout_gravity="center_vertical"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="2dp"
+                    app:contentPadding="10dp">
 
-Suas stet probatus no eos, ne sed movet regione. At mollis suavitate his. Has ei patrioque torquatos accommodare, sea no sint movet omittam, esse impedit facilisis ex pri. Mel ei epicuri mentitum repudiandae. Mei doming denique consectetuer ex, delenit salutandi at per."
-                    />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
+                        <ImageView
+                            android:id="@+id/projectOverviewVelocityImage"
+                            android:layout_width="@dimen/state_image_size"
+                            android:layout_height="@dimen/state_image_size"
+                            android:layout_gravity="center_horizontal"
+                            android:adjustViewBounds="true"
+                            android:cropToPadding="true"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/velocity"/>
+
+                        <TextView
+                            android:id="@+id/projectOverviewVelocityTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Current Velocity"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/projectOverviewVelocity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:fontFamily="@font/droid_sans"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="Unable to retrieve current velocity data"
+                            android:textAlignment="center"
+                            android:textColor="@color/cardview_dark_background"
+                            android:textSize="16sp"
+                            android:textStyle="italic"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/projectOverviewVelocityNotEmptyStateView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="TextView"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                tools:text="24" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/stats_card_margin"
+                    android:layout_weight="0.50"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="2dp"
+                    app:contentPadding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/projectOverviewDaysImage"
+                            android:layout_width="@dimen/state_image_size"
+                            android:layout_height="@dimen/state_image_size"
+                            android:layout_gravity="center_horizontal"
+                            android:adjustViewBounds="true"
+                            android:cropToPadding="true"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_day"/>
+
+                        <TextView
+                            android:id="@+id/projectOverviewDaysTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Days Since Start"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:textStyle="bold"/>
+
+
+                        <TextView
+                            android:id="@+id/projectOverviewDays"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:ems="10"
+                            android:fontFamily="@font/droid_sans"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text="Unable to retrieve number of days data"
+                            android:textAlignment="center"
+                            android:textColor="@color/cardview_dark_background"
+                            android:textSize="16sp"
+                            android:textStyle="italic"/>
+
+                        <TextView
+                            android:id="@+id/projectOverviewDaysNotEmptyStateView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="TextView"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            tools:text="3"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
 
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/projectOverviewUserStoryCard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp">
+
+                        <ProgressBar
+                            android:id="@+id/projectOverviewProgressBar"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/progress_circle"
+                            android:indeterminate="false"
+                            android:max="100"
+                            android:progress="65"
+                            android:progressDrawable="@drawable/progress_bar"/>
+
+                        <TextView
+                            android:id="@+id/projectOverviewProgressBarText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/projectOverviewProgressBar"
+                            android:layout_alignLeft="@+id/projectOverviewProgressBar"
+                            android:layout_alignRight="@+id/projectOverviewProgressBar"
+                            android:layout_alignTop="@+id/projectOverviewProgressBar"
+                            android:fontFamily="@font/droid_sans"
+                            android:gravity="center"
+                            android:text="60%"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/current_user_story_progress"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:ems="10"
+                        android:fontFamily="@font/droid_sans"
+                        android:padding="15dp"
+                        android:text="@string/current_user_story_progress"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/projectOverviewEmptyProgressView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:ems="10"
+                android:fontFamily="@font/droid_sans"
+                android:padding="20dp"
+                android:text="@string/unable_to_display_user_story_completion_progress"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:id="@+id/projectOverviewSprintCard"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                card_view:cardBackgroundColor="@color/cardview_light_background">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/sprintRowNameProjectOverview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/droid_sans"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Name of Sprint"
+                        android:textColor="#d10f0f"
+                        android:textSize="20dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/sprintRowDescriptionProjectOverview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/droid_sans"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="2dp"
+                        android:paddingTop="5dp"
+                        android:text="This is a description that explains what the sprint is about, and now I am running out of things to say,
+so I'll stop."
+                        android:textSize="16sp"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/sprintRowClockIconProjectOverview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingRight="5dp"
+                            android:src="@drawable/ic_clock"/>
+
+                        <TextView
+                            android:id="@+id/sprintRowStartToEndProjectOverview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="7dp"
+                            android:fontFamily="@font/droid_sans"
+                            android:text="01/01/2018 to 01/25/2018"
+                            android:textColor="#09c2ff"
+                            android:textSize="14sp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/current_sprint_progress_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:ems="10"
+                        android:fontFamily="@font/droid_sans"
+                        android:padding="15dp"
+                        android:text="@string/current_sprint_progress"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/projectOverviewEmptyCurrentSprint"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:ems="10"
+                android:fontFamily="@font/droid_sans"
+                android:padding="20dp"
+                android:text="@string/no_current_sprint_to_show"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
         </LinearLayout>
+
 
     </ScrollView>
 

@@ -47,4 +47,23 @@
     <string name="create_task_desc_hint">Task Description</string>
     <string name="one_hundred_fourty_char_string">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pharetra rutrum dui in aliquam. Curabitur efficitur lorem nec eros pulvinar, quis volutpat nisl rutrum. Nullam sit amet est accumsan, condimentum odio in, tristique lectus. Fusce molestie nulla ac vulputate mattis. Sed in mi ac leo vestibulum placerat in at risus. Nullam accumsan, diam at iaculis aliquam, leo orci dapibus tortor, accumsan iaculis ipsum nisi ut quam. Sed quis ipsum metus. Proin augue lorem, hendrerit quis nibh sit amet, mollis consequat odio. Phasellus ultrices vitae diam mollis fermentum. Praesent tempus, arcu id varius ultrices, tellus libero dictum lectus, vitae commodo arcu lacus nec turpis. Aliquam at lectus vel sapien elementum mollis vel non felis. Nunc imperdiet justo sit amet porttitor lacinia. Sed rutrum ultricies tincidunt. Nullam rutrum fermentum diam ac mattis. Aliquam in metus eu magna vestibulum vulputate. Etiam dolor odio.</string>
     <string name="task_assigned_to_prompt">Assigned To:</string>
+    <string name="group_chat_message_hint">Your Response...</string>
+    <string name="project_overview_sprint_name_not_available">No Sprint to Show</string>
+    <string name="project_overview_sprint_time_not_available">time not available</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="current_user_story_progress">User Story Completion</string>
+    <string name="no_current_sprint_to_show">No current sprint to show</string>
+    <string name="current_sprint_progress">Current Sprint</string>
+    <string name="unable_to_display_user_story_completion_progress">Unable to display user story completion progress</string>
+    <string name="burndown_chart">Burndown Chart</string>
+    <string name="other_information">Other Information</string>
+    <string name="total_sprints_count">Total Sprints \n Count</string>
+    <string name="total_projects_members_count">Total Project \n Members</string>
+    <string name="project_creation_date">Project Creation \n Date</string>
+    <string name="total_user_stories_completed_for_current_sprint">Total User Stories \n Completed</string>
+    <string name="unable_to_retrieve_user_stories_data">Unable to retrieve user stories data</string>
+    <string name="unable_to_retrieve_number_of_sprints_data">Unable to retrieve number of sprints data</string>
+    <string name="unable_to_retrieve_project_creation_date">Unable to retrieve project creation date</string>
+    <string name="unable_to_retrieve_number_of_members_data">Unable to retrieve number of members data</string>
+    <string name="not_enough_data_to_show_burndown_chart">Not enough data to show Burndown Chart.</string>
 </resources>

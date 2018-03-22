@@ -170,7 +170,7 @@ public class SendToFragment extends DialogFragment {
                             }
 
                             else{
-                                backlogView.showMessage("An error occurred, failed to move the user story.", false);
+                                backlogView.showMessage("An error occurred, failed to assign the user story.", false);
                             }
                         }
                     });

@@ -4,10 +4,10 @@
                              xmlns:tools="http://schemas.android.com/tools"
                              android:layout_width="match_parent"
                              android:layout_height="wrap_content"
+                             android:layout_margin="10dp"
                              android:layout_weight="1"
                              android:baselineAligned="false"
                              android:orientation="vertical"
-                             android:layout_margin="3dp"
                              android:paddingLeft="5dp"
                              android:paddingRight="5dp">
 
@@ -15,8 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingLeft="5dp"
         android:fontFamily="@font/droid_sans"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
         android:text="@string/user_invite_row_title"/>
 
     <android.widget.LinearLayout
@@ -68,8 +69,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingLeft="5dp"
         android:fontFamily="@font/droid_sans"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
         android:text="from usaimbhayat@gmail.com"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e0e0e0"/>
 
 </android.widget.LinearLayout>
