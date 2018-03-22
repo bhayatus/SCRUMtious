@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp">
 
     <RelativeLayout
         android:id="@+id/message_container_right"
@@ -11,8 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:paddingRight="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,8 +50,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:paddingRight="10dp">
 
         <LinearLayout
             android:id="@+id/message_left_details_content"
