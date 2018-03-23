@@ -19,7 +19,7 @@
             android:background="?attr/colorPrimary"
             android:theme="@style/IndividualProjectToolbar"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Create Sprint">
+            app:title="@string/create_sprint_app_title">
 
             <ImageButton
                 android:id="@+id/createTaskLogoutImageButton"

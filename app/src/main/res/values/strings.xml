@@ -89,4 +89,15 @@
     <string name="test_invited_by">from john.doe@gmail.com</string>
     <string name="test_name_of_user_story">Name of User Story</string>
     <string name="test_completed_date">Completed on 01/01/2018 at 04:30 PM</string>
+    <string name="select_sprint_end_date">Select End Date</string>
+    <string name="select_sprint_start_date">Select Start Date</string>
+    <string name="create_sprint_app_title">Create Sprint</string>
+    <string name="add_task">Add Task</string>
+    <string name="total_points">Total Points</string>
+    <string name="days_passed">Days Passed</string>
+    <string name="test_ratio_8_10">8/10</string>
+    <string name="test_num_13">TextView</string>
+    <string name="project_list_title">Project List</string>
+    <string name="add_sprint">Add Sprint</string>
+    <string name="looks_like_you_have_no_sprints">Looks like you have no sprints.</string>
 </resources>

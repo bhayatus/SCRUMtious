@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:fontFamily="@font/harley_script_regular"
-            android:text="SCRUMtious"
+            android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="90sp"/>
 

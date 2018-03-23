@@ -23,7 +23,7 @@
         android:fontFamily="@font/harley_script_regular"
         android:gravity="center"
         android:paddingBottom="@dimen/login_signup_center_logo_padding_bottom"
-        android:text="SCRUMtious"
+        android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="64sp">
 

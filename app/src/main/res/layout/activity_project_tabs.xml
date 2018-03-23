@@ -22,7 +22,7 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:theme="@style/IndividualProjectToolbar"
-            app:title="Project List">
+            app:title="@string/project_list_title">
 
             <ImageButton
                 android:id="@+id/projectTabsLogoutImageButton"

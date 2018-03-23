@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="Add Task"
+                android:text="@string/add_task"
                 android:textColor="@color/white"
                 android:onClick="onClickAddTask"
                 />
