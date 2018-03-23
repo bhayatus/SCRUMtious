@@ -178,7 +178,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         messageList = (RecyclerView) findViewById(R.id.groupChatRecyclerView);
         setupRecyclerView();
-        groupChatSendBtn = (ImageButton) findViewById(R.id.groupChatSendImageButton);
+        groupChatSendBtn = (ImageButton) findViewById(R.id.groupChatSendBtn);
     }
 
     @Override
@@ -252,7 +252,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     public void onClickSendMessage(View view){
 
-        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
+        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
         String messageInput = groupChatMessageInput.getText().toString();
         if (isValidMessage(messageInput)){
             groupChatPresenter.addMessagesToDatabase(messageInput);
@@ -376,7 +376,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     @Override
     public void onSuccessfulSent() {
-        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
+        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
         groupChatMessageInput.setText("");
     }
 
