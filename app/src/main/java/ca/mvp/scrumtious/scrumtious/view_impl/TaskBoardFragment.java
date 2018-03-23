@@ -203,7 +203,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             this.mView = itemView;
 
             descriptionView = (TextView) mView.findViewById(R.id.taskRowTaskDescTextView);
-            assignedToView = (TextView) mView.findViewById(R.id.taskRowAssignedToTextView);
+            assignedToView = (TextView) mView.findViewById(R.id.taskRowTaskAssignedToTextView);
             taskDelete = (ImageButton) mView.findViewById(R.id.taskRowDeleteTaskImageButton);
             taskSwitch = (ImageButton) mView.findViewById(R.id.taskRowSwitchTaskStatesImageButton);
             card = (CardView) mView.findViewById(R.id.taskRowCardView);
