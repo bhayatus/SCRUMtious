@@ -26,61 +26,61 @@ import ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment;
 
 public class BacklogPresenter implements BacklogPresenterInt {
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private Query mQuery;
+    private FirebaseDatabase firebaseDatabse;
+    private DatabaseReference firebaseRootRef;
+    private Query databaseQuery;
 
     private BacklogViewInt backlogView;
-    private String pid;
 
-    private final String type; // Tells the presenter what type of info to grab
-    private final String sprintId; // "null" if in product backlog, regular id if part of sprint
+    private final String BACKLOG_STATUS_TYPE; // Tells the presenter what BACKLOG_STATUS_TYPE of info to grab
+    private final String SPRINT_ID; // "null" if in product backlog, regular id if part of sprint
+    private final String PROJECT_ID;
 
     // Different types of backlogs
-    private final String pb_in_progress = "PB_IN_PROGRESS";
-    private final String pb_completed = "PB_COMPLETED";
-    private final String sprint_in_progress = "SPRINT_IN_PROGRESS";
-    private final String sprint_completed = "SPRINT_COMPLETED";
+    private final String PB_IN_PROGRESS = "PB_IN_PROGRESS";
+    private final String PB_COMPLETED = "PB_COMPLETED";
+    private final String SPRINT_IN_PROGRESS = "SPRINT_IN_PROGRESS";
+    private final String SPRINT_COMPLETED = "SPRINT_COMPLETED";
 
-    public BacklogPresenter(BacklogViewInt backlogView, String pid, String type, String sprintId){
+    public BacklogPresenter(BacklogViewInt backlogView, String projectId, String backlogStatusType, String sprintId){
         this.backlogView = backlogView;
-        this.pid = pid;
-        this.type = type;
-        this.sprintId = sprintId;
+        this.PROJECT_ID = projectId;
+        this.BACKLOG_STATUS_TYPE = backlogStatusType;
+        this.SPRINT_ID = sprintId;
     }
 
 
     @Override
     public FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupBacklogAdapter() {
-        mRef = FirebaseDatabase.getInstance().getReference();
+        firebaseRootRef = FirebaseDatabase.getInstance().getReference();
 
         String typeQuery = "";
 
         // Sets the equalTo string that the query needs to use to search for user stories
-        switch(type){
-            case pb_in_progress:
+        switch(BACKLOG_STATUS_TYPE){
+            case PB_IN_PROGRESS:
                 typeQuery = "false";
                 break;
-            case pb_completed:
+            case PB_COMPLETED:
                 typeQuery = "true";
                 break;
-            case sprint_in_progress:
-                typeQuery = this.sprintId + "_" + "false";
+            case SPRINT_IN_PROGRESS:
+                typeQuery = this.SPRINT_ID + "_" + "false";
                 break;
-            case sprint_completed:
-                typeQuery = this.sprintId + "_" + "true";
+            case SPRINT_COMPLETED:
+                typeQuery = this.SPRINT_ID + "_" + "true";
                 break;
         }
 
         // Dealing with sprint backlog
-        if (type.equals(sprint_completed) || type.equals(sprint_in_progress)) {
-            mQuery = mRef.child("projects").child(pid).child("user_stories").orderByChild("assignedTo_completed")
+        if (BACKLOG_STATUS_TYPE.equals(SPRINT_COMPLETED) || BACKLOG_STATUS_TYPE.equals(SPRINT_IN_PROGRESS)) {
+            databaseQuery = firebaseRootRef.child("projects").child(PROJECT_ID).child("user_stories").orderByChild("assignedTo_completed")
                     .equalTo(typeQuery);
         }
 
         // Product backlog situation
-        if (type.equals(pb_completed) || type.equals(pb_in_progress)){
-            mQuery = mRef.child("projects").child(pid).child("user_stories").orderByChild("completed")
+        if (BACKLOG_STATUS_TYPE.equals(PB_COMPLETED) || BACKLOG_STATUS_TYPE.equals(PB_IN_PROGRESS)){
+            databaseQuery = firebaseRootRef.child("projects").child(PROJECT_ID).child("user_stories").orderByChild("completed")
                     .equalTo(typeQuery);
         }
 
@@ -89,7 +89,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 UserStory.class,
                 R.layout.user_story_row,
                 BacklogFragment.BacklogViewHolder.class,
-                mQuery
+                databaseQuery
         ) {
 
 
@@ -97,10 +97,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
             protected void populateViewHolder(final BacklogFragment.BacklogViewHolder viewHolder, UserStory model, int position) {
                 // The id of the user story
                 final String usid = getRef(position).getKey().toString();
-
                 final BacklogFragment.BacklogViewHolder mViewHolder = viewHolder;
-
-                final UserStory userStoryModel = model;
 
                 String nameOfSprint = model.getAssignedToName();
                 String assignedToName;
@@ -128,12 +125,12 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 }
 
                 // If in a sprint, don't show the assigned to layout
-                if (type.equals(sprint_completed) || type.equals(sprint_in_progress)){
+                if (BACKLOG_STATUS_TYPE.equals(SPRINT_COMPLETED) || BACKLOG_STATUS_TYPE.equals(SPRINT_IN_PROGRESS)){
                     viewHolder.setAssignedToLayoutInvisible();
                 }
 
                 // If in the product backlog, cannot change completed status
-                if (type.equals(pb_in_progress) || type.equals(pb_completed)){
+                if (BACKLOG_STATUS_TYPE.equals(PB_IN_PROGRESS) || BACKLOG_STATUS_TYPE.equals(PB_COMPLETED)){
                     mViewHolder.setCompletedInvisible();
                 }
 
@@ -144,7 +141,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
 
                 // Show as in progress with icon
-                if (type.equals("SPRINT_IN_PROGRESS")) {
+                if (BACKLOG_STATUS_TYPE.equals("SPRINT_IN_PROGRESS")) {
                     completed.setImageResource(R.drawable.ic_checkbox_not_checked);
                 }
                 // Show as completed with icon
@@ -158,10 +155,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     public void onClick(View v) {
 
                         // Check if current date falls within duration of sprint
-                        if (type.equals(sprint_in_progress)){
+                        if (BACKLOG_STATUS_TYPE.equals(SPRINT_IN_PROGRESS)){
                             checkWithinSprint(usid, true);
                         }
-                        else if(type.equals(sprint_completed)){
+                        else if(BACKLOG_STATUS_TYPE.equals(SPRINT_COMPLETED)){
                             checkWithinSprint(usid, false);
 
                         }
@@ -179,8 +176,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 });
 
                 // The following checks if the current user is the project owner
-                mDatabase = FirebaseDatabase.getInstance();
-                mDatabase.getReference().child("projects").child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+                firebaseDatabse = FirebaseDatabase.getInstance();
+                firebaseDatabse.getReference().child("projects").child(PROJECT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
@@ -203,7 +200,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                     @Override
                     public boolean onLongClick(View v) {
                         // Not allowed to re-assign
-                        if (type.equals(pb_completed) || type.equals(sprint_completed)){
+                        if (BACKLOG_STATUS_TYPE.equals(PB_COMPLETED) || BACKLOG_STATUS_TYPE.equals(SPRINT_COMPLETED)){
                             backlogView.showMessage("Cannot re-assign a completed user story.", false);
                         }
                         else {
@@ -237,10 +234,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
         final String completed = Boolean.toString(newStatus);
         final String userStoryId = usid;
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabse = FirebaseDatabase.getInstance();
+        firebaseRootRef = firebaseDatabse.getReference();
         // Gets the current user story
-        mRef.child("projects").child(pid).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootRef.child("projects").child(PROJECT_ID).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get the assigned to variable, whether it be the product backlog or a specific sprint backlog
@@ -251,41 +248,41 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                 // Marking as completed, get current timestamp
                 if (newStatus){
-                    statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completedDate", System.currentTimeMillis());
+                    statusMap.put("/projects/" + PROJECT_ID + "/user_stories/" + userStoryId + "/" + "completedDate", System.currentTimeMillis());
                 }
                 // Marking as in progress
                 else{
-                    statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completedDate", 0);
+                    statusMap.put("/projects/" + PROJECT_ID + "/user_stories/" + userStoryId + "/" + "completedDate", 0);
                 }
 
                 // Both changes need to happen to ensure atomicity
-                statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "completed", completed);
-                statusMap.put("/projects/" + pid + "/user_stories/" + userStoryId + "/" + "assignedTo_completed", assignedTo_completed);
+                statusMap.put("/projects/" + PROJECT_ID + "/user_stories/" + userStoryId + "/" + "completed", completed);
+                statusMap.put("/projects/" + PROJECT_ID + "/user_stories/" + userStoryId + "/" + "assignedTo_completed", assignedTo_completed);
 
-                mRef.updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener() {
+                firebaseRootRef.updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
 
                         if (task.isSuccessful()){
-                            switch(type){
+                            switch(BACKLOG_STATUS_TYPE){
 
-                                case sprint_in_progress:
+                                case SPRINT_IN_PROGRESS:
                                     backlogView.showMessage("Marked the user story as \"Completed\".", false);
                                     break;
-                                case sprint_completed:
+                                case SPRINT_COMPLETED:
                                     backlogView.showMessage("Marked the user story as \"In Progress\".", false);
                                     break;
                             }
                         }
                         else{
 
-                            switch(type){
+                            switch(BACKLOG_STATUS_TYPE){
 
-                                case sprint_in_progress:
+                                case SPRINT_IN_PROGRESS:
                                     backlogView.showMessage("An error occurred, failed to mark the user story as \"Completed\".", false);
 
                                     break;
-                                case sprint_completed:
+                                case SPRINT_COMPLETED:
                                     backlogView.showMessage("An error occurred, failed to mark the user story as \"In Progress\".", false);
                                     break;
                             }
@@ -304,9 +301,9 @@ public class BacklogPresenter implements BacklogPresenterInt {
     // Deletes the user story from the database
     @Override
     public void deleteUserStory(String usid) {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories");
-        mRef.child(usid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseDatabse = FirebaseDatabase.getInstance();
+        firebaseRootRef = firebaseDatabse.getReference().child("projects").child(PROJECT_ID).child("user_stories");
+        firebaseRootRef.child(usid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully
@@ -324,10 +321,10 @@ public class BacklogPresenter implements BacklogPresenterInt {
     // lifespan
     private void checkWithinSprint(final String usid, final boolean newStatus){
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabse = FirebaseDatabase.getInstance();
+        firebaseRootRef = firebaseDatabse.getReference();
 
-        mRef.child("projects").child(pid).child("sprints").child(sprintId).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootRef.child("projects").child(PROJECT_ID).child("sprints").child(SPRINT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
