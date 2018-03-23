@@ -86,11 +86,11 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
 
     private void setupFormWatcher(){
-        titleField = (EditText) findViewById(R.id.createProjectTitleField);
-        descriptionField = (EditText) findViewById(R.id.createProjectDescField);
-        titleFieldLayout = (TextInputLayout) findViewById(R.id.createProjectTitleFieldLayout);
+        titleField = (EditText) findViewById(R.id.createProjectTitleEditText);
+        descriptionField = (EditText) findViewById(R.id.createProjectDescEditText);
+        titleFieldLayout = (TextInputLayout) findViewById(R.id.createProjectTitleTextInputLayout);
         descriptionFieldLayout = (TextInputLayout)
-                findViewById(R.id.createProjectDescFieldLayout);
+                findViewById(R.id.createProjectDescTextInputLayout);
 
         titleFieldLayout.setError(null);
         descriptionFieldLayout.setError(null);

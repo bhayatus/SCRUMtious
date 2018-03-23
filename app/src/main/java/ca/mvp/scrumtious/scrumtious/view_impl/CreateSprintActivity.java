@@ -76,7 +76,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
         createSprintPresenter = new CreateSprintPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.createSprintLogoutBtn);
+        logoutBtn = findViewById(R.id.createSprintLogoutImageButton);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,13 +165,13 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     }
 
     public void setupFormWatcher(){
-        titleField = (EditText)findViewById(R.id.createSprintTitleField);
-        descriptionField = (EditText)findViewById(R.id.createSprintDescField);
-        displayStartDate = (TextView) findViewById(R.id.createSprintStartDate);
-        displayEndDate = (TextView) findViewById(R.id.createSprintEndDate);
+        titleField = (EditText)findViewById(R.id.createSprintTitleEditText);
+        descriptionField = (EditText)findViewById(R.id.createSprintEditText);
+        displayStartDate = (TextView) findViewById(R.id.createSprintStartDateTextView);
+        displayEndDate = (TextView) findViewById(R.id.createSprintEndDateTextView);
 
-        titleFieldLayout = (TextInputLayout)findViewById(R.id.createSprintTitleFieldLayout);
-        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createSprintDescFieldLayout);
+        titleFieldLayout = (TextInputLayout)findViewById(R.id.createSprintTitleTextInputLayout);
+        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createSprintDescTextInputLayout);
 
         titleFieldLayout.setError(null);
         descriptionFieldLayout.setError(null);

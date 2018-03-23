@@ -61,14 +61,14 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
         createTaskPresenter = new CreateTaskPresenter(this, pid, usid);
 
-        createBtn = findViewById(R.id.createTaskCreateBtn);
+        createBtn = findViewById(R.id.createTaskCreateButton);
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickCreateTaskSubmit(v);
             }
         });
-        logoutBtn = findViewById(R.id.createTaskLogoutBtn);
+        logoutBtn = findViewById(R.id.createTaskLogoutImageButton);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,8 +169,8 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
     private void setupFormWatcher(){
 
-        descriptionField = (EditText) findViewById (R.id.createTaskDescField);
-        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createTaskDescFieldLayout);
+        descriptionField = (EditText) findViewById (R.id.createTaskDescEditText);
+        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createTaskDescTextInputLayout);
 
         descriptionFieldLayout.setErrorEnabled(true);
         descriptionFieldLayout.setError(null);

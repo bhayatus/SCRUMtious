@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
+    android:id="@+id/individualSprintDrawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/individualSprintNavDrawer"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.IndividualSprintActivity"
@@ -32,7 +32,7 @@
                 app:title="Sprint Backlog">
 
                 <ImageButton
-                    android:id="@+id/individualSprintLogoutBtn"
+                    android:id="@+id/individualSprintLogoutImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -44,7 +44,7 @@
                     android:src="@drawable/ic_logout"/>
 
                 <ImageButton
-                    android:id="@+id/individualSprintDeleteBtn"
+                    android:id="@+id/individualSprintDeleteImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -59,7 +59,7 @@
             </android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout
-                android:id="@+id/individualSprintTabs"
+                android:id="@+id/individualSprintTabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:tabMode="fixed"
@@ -83,7 +83,7 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/individualSprintNavView"
+        android:id="@+id/individualSprintNavigationView"
         app:menu="@menu/project_drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

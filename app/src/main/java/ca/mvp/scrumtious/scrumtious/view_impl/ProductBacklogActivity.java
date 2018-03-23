@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,7 +54,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         pid = data.getString("projectId");
         this.productBacklogPresenter = new ProductBacklogPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.productBacklogLogoutBtn);
+        logoutBtn = findViewById(R.id.productBacklogLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +63,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         });
 
         // Displays a help popup
-        helpBtn = findViewById(R.id.productBacklogHelpBtn);
+        helpBtn = findViewById(R.id.productBacklogHelpImageButton);
         helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,14 +93,14 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         mViewPager = (ViewPager) findViewById(R.id.productBacklogViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.productBacklogTabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.productBacklogTabLayout);
         tabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.productBacklogNavDrawer);
-        navigationView = findViewById(R.id.productBacklogNavView);
+        mDrawerLayout = findViewById(R.id.productBacklogDrawerLayout);
+        navigationView = findViewById(R.id.productBacklogNavigationView);
 
         // By default, should highlight product backlog option to indicate that is where the user is
         navigationView.setCheckedItem(R.id.nav_product_backlog);

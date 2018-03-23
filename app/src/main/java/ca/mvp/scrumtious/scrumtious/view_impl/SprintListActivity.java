@@ -58,7 +58,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         pid = data.getString("projectId");
         this.sprintListPresenter = new SprintListPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.sprintListLogoutBtn);
+        logoutBtn = findViewById(R.id.sprintListLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +66,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             }
         });
 
-        sortBtn = (findViewById(R.id.sprintListSortBtn));
+        sortBtn = (findViewById(R.id.sprintListSortImageButton));
         sortBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,11 +99,11 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             }
         });
 
-        emptyStateView = (LinearLayout) findViewById(R.id.sprintListEmptyStateView);
+        emptyStateView = (LinearLayout) findViewById(R.id.sprintListActivityNoSprintsEmptyStateView);
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.sprintListNavDrawer);
-        navigationView = findViewById(R.id.sprintListNavView);
+        mDrawerLayout = findViewById(R.id.sprintListDrawerLayout);
+        navigationView = findViewById(R.id.sprintListNavigationView);
 
         // By default, should highlight sprint list option to indicate that is where the user is
         navigationView.setCheckedItem(R.id.nav_sprints);

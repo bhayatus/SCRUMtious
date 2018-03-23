@@ -26,7 +26,7 @@ public class ProjectTabsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_tabs);
 
-        logoutBtn = findViewById(R.id.projectTabsLogoutBtn);
+        logoutBtn = findViewById(R.id.projectTabsLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,7 +42,7 @@ public class ProjectTabsActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.projectTabsViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout mainTabs = (TabLayout) findViewById(R.id.projectTabsMainTabs);
+        TabLayout mainTabs = (TabLayout) findViewById(R.id.projectTabsTabLayout);
         mainTabs.setupWithViewPager(mViewPager);
 
     }
