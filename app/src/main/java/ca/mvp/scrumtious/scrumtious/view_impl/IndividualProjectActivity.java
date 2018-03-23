@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -63,8 +62,8 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         individualProjectPresenter = new IndividualProjectPresenter(this, pid);
         individualProjectPresenter.checkIfOwner();
 
-        deleteBtn = findViewById(R.id.individualProjectDeleteBtn);
-        logoutBtn = findViewById(R.id.individualProjectLogoutBtn);
+        deleteBtn = findViewById(R.id.individualProjectDeleteImageButton);
+        logoutBtn = findViewById(R.id.individualProjectLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,12 +79,12 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         mViewPager = (ViewPager) findViewById(R.id.individualProjectViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.individualProjectTabs);
+        TabLayout tabs = (TabLayout) findViewById(R.id.individualProjectTabLayout);
         tabs.setupWithViewPager(mViewPager);
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.individualProjectNavDrawer);
-        navigationView = findViewById(R.id.individualProjectNavView);
+        mDrawerLayout = findViewById(R.id.individualProjectDrawerLayout);
+        navigationView = findViewById(R.id.individualProjectNavigationView);
 
         // By default, should highlight project overview option to indicate that is where the user is
         navigationView.setCheckedItem(R.id.nav_overview);

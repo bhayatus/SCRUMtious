@@ -55,7 +55,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
         projectAlreadyDeleted = false; // Project isn't deleted yet
         userStoryAlreadyDeleted = false; // User story isn't deleted yet
 
-        logoutBtn = findViewById(R.id.individualUserStoryLogoutBtn);
+        logoutBtn = findViewById(R.id.individualUserStoryLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
         });
 
         // Displays a help popup
-        helpBtn = findViewById(R.id.individualUserStoryHelpBtn);
+        helpBtn = findViewById(R.id.individualUserStoryHelpImageButton);
         helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,9 +87,9 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
             }
         });
 
-        tabLayout = (TabLayout) findViewById(R.id.individualUserStoryTabs);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.individualUserStoryNavDrawer);
-        navigationView = (NavigationView) findViewById(R.id.individualUserStoryNavView);
+        tabLayout = (TabLayout) findViewById(R.id.individualUserStoryTabLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.individualUserStoryDrawerLayout);
+        navigationView = (NavigationView) findViewById(R.id.individualUserStoryNavigationView);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

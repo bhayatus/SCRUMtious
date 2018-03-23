@@ -49,7 +49,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
         createUserStoryPresenter = new CreateUserStoryPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.createUserStoryLogoutBtn);
+        logoutBtn = findViewById(R.id.createUserStoryLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,13 +135,13 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     }
 
     public void setupFormWatcher() {
-        titleField = (EditText) findViewById(R.id.createUserStoryNameField);
-        descriptionField = (EditText) findViewById(R.id.createUserStoryDescField);
-        pointField = (EditText) findViewById(R.id.createUserStoryPointsField);
+        titleField = (EditText) findViewById(R.id.createUserStoryNameEditText);
+        descriptionField = (EditText) findViewById(R.id.createUserStoryDescEditText);
+        pointField = (EditText) findViewById(R.id.createUserStoryPointsEditText);
 
-        titleFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryTitleFieldLayout);
-        descriptionFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryDescFieldLayout);
-        pointFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryPointsFieldLayout);
+        titleFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryTitleTextInputLayout);
+        descriptionFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryDescTextInputLayout);
+        pointFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryPointsTextInputLayout);
 
         titleFieldLayout.setError(null);
         descriptionFieldLayout.setError(null);

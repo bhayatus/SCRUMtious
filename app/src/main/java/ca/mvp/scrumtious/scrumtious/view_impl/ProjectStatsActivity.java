@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -66,28 +65,28 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         this.projectAlreadyDeleted = false;
 
-        this.burndownChart = (LineChart) findViewById(R.id.burndownGraph);
+        this.burndownChart = (LineChart) findViewById(R.id.projectStatsBurndownChart);
 
-        this.projectCreationDateView = (TextView) findViewById(R.id.projectStatsCreationDate);
-        this.numMembersView = (TextView) findViewById(R.id.projectStatsNumMembers);
-        this.numSprintsView = (TextView) findViewById(R.id.projectStatsNumSprints);
-        this.numUserStoriesView = (TextView) findViewById(R.id.projectStatsNumUserStories);
+        this.projectCreationDateView = (TextView) findViewById(R.id.projectStatsCreationDateErrorTextView);
+        this.numMembersView = (TextView) findViewById(R.id.projectStatsNumMembersErrorTextView);
+        this.numSprintsView = (TextView) findViewById(R.id.projectStatsNumSprintsErrorTextView);
+        this.numUserStoriesView = (TextView) findViewById(R.id.projectStatsNumUserStoriesErrorTextView);
 
-        this.totalPointsView = (TextView) findViewById(R.id.projectStatsTotalPoints);
-        this.daysPassedView = (TextView) findViewById(R.id.projectStatsDaysPassed);
-        this.emptyChartView = (TextView) findViewById(R.id.projectStatsEmptyChartView);
+        this.totalPointsView = (TextView) findViewById(R.id.projectStatsTotalPointsTextView);
+        this.daysPassedView = (TextView) findViewById(R.id.projectStatsDaysPassedTextView);
+        this.emptyChartView = (TextView) findViewById(R.id.projectStatsEmptyChartTextView);
 
-        this.projectCreationDateViewNotEmpty = findViewById(R.id.projectStatsCreationDateNotEmptyStateCount);
-        this.numMembersViewNotEmpty = findViewById(R.id.projectStatsNumMemebersNotEmptyStateCount);
-        this.numSprintsViewNotEmpty = findViewById(R.id.projectStatsNumSprintsNotEmptyStateCount);
-        this.numUserStoriesViewNotEmpty = findViewById(R.id.projectStatsNumUserStoriesNotEmptyStateCount);
+        this.projectCreationDateViewNotEmpty = findViewById(R.id.projectStatsCreationDateValueTextView);
+        this.numMembersViewNotEmpty = findViewById(R.id.projectStatsNumMembersValueTextView);
+        this.numSprintsViewNotEmpty = findViewById(R.id.projectStatsNumSprintsValueTextView);
+        this.numUserStoriesViewNotEmpty = findViewById(R.id.projectStatsNumUserStoriesValueTextView);
 
         this.projectCreationDateViewNotEmpty.setVisibility(View.GONE);
         this.numMembersViewNotEmpty.setVisibility(View.GONE);
         this.numMembersViewNotEmpty.setVisibility(View.GONE);
         this.numUserStoriesViewNotEmpty.setVisibility(View.GONE);
 
-        logoutBtn = findViewById(R.id.projectStatsLogoutBtn);
+        logoutBtn = findViewById(R.id.projectStatsLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +94,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
             }
         });
 
-        helpBtn = findViewById(R.id.projectStatsHelpBtn);
+        helpBtn = findViewById(R.id.projectStatsHelpImageButton);
         // Displays a help popup
         helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +119,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
             }
         });
 
-        refreshBtn = findViewById(R.id.projectStatsRefreshBtn);
+        refreshBtn = findViewById(R.id.projectStatsRefreshImageButton);
         // Displays a help popup
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,8 +145,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.projectStatsNavDrawer);
-        navigationView = findViewById(R.id.projectStatsNavView);
+        mDrawerLayout = findViewById(R.id.projectStatsDrawerLayout);
+        navigationView = findViewById(R.id.projectStatsNavigationView);
 
         // By default, should highlight chat option to indicate that is where the user is
         navigationView.setCheckedItem(R.id.nav_stats);

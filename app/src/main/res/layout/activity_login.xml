@@ -30,7 +30,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/loginEmailFieldLayout"
+        android:id="@+id/loginEmailTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -40,7 +40,7 @@
         app:errorTextAppearance="@style/SignupErrorText">
 
         <EditText
-            android:id="@+id/loginEmailField"
+            android:id="@+id/loginEmailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -53,7 +53,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/loginPasswordFieldLayout"
+        android:id="@+id/loginPasswordTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -65,7 +65,7 @@
 
 
         <EditText
-            android:id="@+id/loginPasswordField"
+            android:id="@+id/loginPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"

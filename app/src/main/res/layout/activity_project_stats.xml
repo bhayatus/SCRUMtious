@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
+    android:id="@+id/projectStatsDrawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/projectStatsNavDrawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectStatsActivity"
@@ -36,7 +36,7 @@
                     app:title="Project Stats">
 
                     <ImageButton
-                        android:id="@+id/projectStatsLogoutBtn"
+                        android:id="@+id/projectStatsLogoutImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
@@ -48,7 +48,7 @@
                         android:src="@drawable/ic_logout"/>
 
                     <ImageButton
-                        android:id="@+id/projectStatsRefreshBtn"
+                        android:id="@+id/projectStatsRefreshImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
@@ -80,7 +80,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/projectStatsEmptyChartView"
+                        android:id="@+id/projectStatsEmptyChartTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -103,7 +103,7 @@
                         android:layout_marginTop="5dp">
 
                         <TextView
-                            android:id="@+id/projectStatsTotalPoints"
+                            android:id="@+id/projectStatsTotalPointsTextView"
                             android:layout_width="40dp"
                             android:layout_height="300dp"
                             android:layout_alignParentLeft="true"
@@ -119,7 +119,7 @@
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:visibility="gone"
-                            android:id="@+id/burndownGraph"
+                            android:id="@+id/projectStatsBurndownChart"
                             android:layout_width="320dp"
                             android:layout_height="300dp"
                             />
@@ -128,7 +128,7 @@
 
                     <TextView
                         android:visibility="gone"
-                        android:id="@+id/projectStatsDaysPassed"
+                        android:id="@+id/projectStatsDaysPassedTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -150,7 +150,7 @@
                         android:padding="20dp">
 
                         <TextView
-                            android:id="@+id/burndownGraphTitle"
+                            android:id="@+id/projectStatsBurndownChartTitleTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/burndown_chart"
@@ -160,7 +160,7 @@
                             android:textStyle="bold"/>
 
                         <ImageButton
-                            android:id="@+id/projectStatsHelpBtn"
+                            android:id="@+id/projectStatsHelpImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
@@ -197,7 +197,7 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:id="@+id/projectStatsNumUserStoriesImage"
+                            android:id="@+id/projectStatsNumUserStoriesImageView"
                             android:layout_width="@dimen/state_image_size"
                             android:layout_height="@dimen/state_image_size"
                             android:layout_gravity="center_horizontal"
@@ -207,7 +207,7 @@
                             app:srcCompat="@drawable/ic_product_backlog_red"/>
 
                         <TextView
-                            android:id="@+id/projectStatsNumSprintCount"
+                            android:id="@+id/projectStatsNumUserStoriesTitleTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="false"
@@ -218,7 +218,7 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/projectStatsNumUserStories"
+                            android:id="@+id/projectStatsNumUserStoriesErrorTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
@@ -237,7 +237,7 @@
                             android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/projectStatsNumUserStoriesNotEmptyStateCount"
+                            android:id="@+id/projectStatsNumUserStoriesValueTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -268,7 +268,7 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:id="@+id/projectStatsNumSprintsImage"
+                            android:id="@+id/projectStatsNumSprintsImageView"
                             android:layout_width="@dimen/state_image_size"
                             android:layout_height="@dimen/state_image_size"
                             android:layout_gravity="center_horizontal"
@@ -278,7 +278,7 @@
                             app:srcCompat="@drawable/ic_sprint_red"/>
 
                         <TextView
-                            android:id="@+id/projectStatsNumSprintsCount"
+                            android:id="@+id/projectStatsNumSprintsTitleTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="false"
@@ -290,7 +290,7 @@
 
 
                         <TextView
-                            android:id="@+id/projectStatsNumSprints"
+                            android:id="@+id/projectStatsNumSprintsErrorTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
@@ -306,7 +306,7 @@
                             android:textStyle="italic"/>
 
                         <TextView
-                            android:id="@+id/projectStatsNumSprintsNotEmptyStateCount"
+                            android:id="@+id/projectStatsNumSprintsValueTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -348,7 +348,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/projectStatsCreationDateImage"
+                            android:id="@+id/projectStatsCreationDateImageView"
                             android:layout_width="@dimen/state_image_size"
                             android:layout_height="@dimen/state_image_size"
                             android:layout_gravity="center_horizontal"
@@ -359,7 +359,7 @@
 
 
                         <TextView
-                            android:id="@+id/projectStatsCreationDateTitle"
+                            android:id="@+id/projectStatsCreationDateTitleTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="false"
@@ -370,7 +370,7 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/projectStatsCreationDate"
+                            android:id="@+id/projectStatsCreationDateErrorTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
@@ -385,7 +385,7 @@
                             android:textStyle="italic"/>
 
                         <TextView
-                            android:id="@+id/projectStatsCreationDateNotEmptyStateCount"
+                            android:id="@+id/projectStatsCreationDateValueTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="5dp"
@@ -416,7 +416,7 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:id="@+id/projectStatsNumMembersImage"
+                            android:id="@+id/projectStatsNumMembersImageView"
                             android:layout_width="@dimen/state_image_size"
                             android:layout_height="@dimen/state_image_size"
                             android:layout_gravity="center_horizontal"
@@ -426,7 +426,7 @@
                             app:srcCompat="@drawable/ic_member_red"/>
 
                         <TextView
-                            android:id="@+id/projectStatsNumMembersCount"
+                            android:id="@+id/projectStatsNumMembersTitleTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="false"
@@ -437,7 +437,7 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/projectStatsNumMembers"
+                            android:id="@+id/projectStatsNumMembersErrorTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
@@ -452,7 +452,7 @@
                             android:textStyle="italic"/>
 
                         <TextView
-                            android:id="@+id/projectStatsNumMemebersNotEmptyStateCount"
+                            android:id="@+id/projectStatsNumMembersValueTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="10dp"
@@ -470,7 +470,7 @@
     </ScrollView>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/projectStatsNavView"
+        android:id="@+id/projectStatsNavigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

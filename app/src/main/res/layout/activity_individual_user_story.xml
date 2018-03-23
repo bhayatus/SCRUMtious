@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
+    android:id="@+id/individualUserStoryDrawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/individualUserStoryNavDrawer"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.IndividualUserStoryActivity"
@@ -32,7 +32,7 @@
                 app:title="Task Board">
 
                 <ImageButton
-                    android:id="@+id/individualUserStoryLogoutBtn"
+                    android:id="@+id/individualUserStoryLogoutImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -44,7 +44,7 @@
                     android:src="@drawable/ic_logout"/>
 
                 <ImageButton
-                    android:id="@+id/individualUserStoryHelpBtn"
+                    android:id="@+id/individualUserStoryHelpImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -58,7 +58,7 @@
             </android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout
-                android:id="@+id/individualUserStoryTabs"
+                android:id="@+id/individualUserStoryTabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:tabMode="fixed"
@@ -99,7 +99,7 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/individualUserStoryNavView"
+        android:id="@+id/individualUserStoryNavigationView"
         app:menu="@menu/project_drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

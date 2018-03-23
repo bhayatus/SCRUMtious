@@ -31,7 +31,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupEmailFieldLayout"
+        android:id="@+id/signupEmailTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -41,7 +41,7 @@
         app:errorTextAppearance="@style/SignupErrorText">
 
         <EditText
-            android:id="@+id/signupEmailField"
+            android:id="@+id/signupEmailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -55,7 +55,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupPasswordFieldLayout"
+        android:id="@+id/signupPasswordTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -67,7 +67,7 @@
         >
 
         <EditText
-            android:id="@+id/signupPasswordField"
+            android:id="@+id/signupPasswordEditText"
             android:layout_width="match_parent" 
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -81,7 +81,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/signupRetypePasswordFieldLayout"
+        android:id="@+id/signupRetypePasswordTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -93,7 +93,7 @@
         >
 
         <EditText
-            android:id="@+id/signupRetypePasswordField"
+            android:id="@+id/signupRetypePasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -107,7 +107,7 @@
 
 
     <Button
-        android:id="@+id/signupSubmit"
+        android:id="@+id/signupRegisterButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

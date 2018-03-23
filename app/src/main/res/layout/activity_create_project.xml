@@ -48,7 +48,7 @@
         android:focusable="true">
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createProjectTitleFieldLayout"
+        android:id="@+id/createProjectTitleTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -58,7 +58,7 @@
 
 
         <EditText
-            android:id="@+id/createProjectTitleField"
+            android:id="@+id/createProjectTitleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -70,7 +70,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createProjectDescFieldLayout"
+        android:id="@+id/createProjectDescTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -78,7 +78,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createProjectDescField"
+            android:id="@+id/createProjectDescEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/droid_sans"

@@ -62,7 +62,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         this.projectAlreadyDeleted = false;
 
-        logoutBtn = (ImageButton) findViewById(R.id.groupChatLogoutBtn);
+        logoutBtn = (ImageButton) findViewById(R.id.groupChatLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,8 +71,8 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         });
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.groupChatNavDrawer);
-        navigationView = findViewById(R.id.groupChatNavView);
+        mDrawerLayout = findViewById(R.id.groupChatDrawerLayout);
+        navigationView = findViewById(R.id.groupChatNavigationView);
 
         // By default, should highlight chat option to indicate that is where the user is
         navigationView.setCheckedItem(R.id.nav_chat);
@@ -178,7 +178,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         messageList = (RecyclerView) findViewById(R.id.groupChatRecyclerView);
         setupRecyclerView();
-        groupChatSendBtn = (ImageButton) findViewById(R.id.groupChatSendBtn);
+        groupChatSendBtn = (ImageButton) findViewById(R.id.groupChatSendImageButton);
     }
 
     @Override
@@ -252,7 +252,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     public void onClickSendMessage(View view){
 
-        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
+        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
         String messageInput = groupChatMessageInput.getText().toString();
         if (isValidMessage(messageInput)){
             groupChatPresenter.addMessagesToDatabase(messageInput);
@@ -376,7 +376,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     @Override
     public void onSuccessfulSent() {
-        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
+        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
         groupChatMessageInput.setText("");
         groupChatMessageInput.clearFocus();
     }

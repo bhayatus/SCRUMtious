@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
+    android:id="@+id/individualProjectDrawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/individualProjectNavDrawer"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.IndividualProjectActivity"
@@ -30,7 +30,7 @@
             app:title="Project Dashboard">
 
             <ImageButton
-                android:id="@+id/individualProjectLogoutBtn"
+                android:id="@+id/individualProjectLogoutImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
@@ -42,7 +42,7 @@
                 android:src="@drawable/ic_logout"/>
 
             <ImageButton
-                android:id="@+id/individualProjectDeleteBtn"
+                android:id="@+id/individualProjectDeleteImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
@@ -56,7 +56,7 @@
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/individualProjectTabs"
+            android:id="@+id/individualProjectTabLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:tabMode="fixed"
@@ -75,7 +75,7 @@
 </android.support.design.widget.CoordinatorLayout>
     
     <android.support.design.widget.NavigationView
-        android:id="@+id/individualProjectNavView"
+        android:id="@+id/individualProjectNavigationView"
         app:menu="@menu/project_drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

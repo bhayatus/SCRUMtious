@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -77,8 +76,8 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
             cameFromOverviewScreen = true;
         }
 
-        deleteBtn = findViewById(R.id.individualSprintDeleteBtn);
-        logoutBtn = findViewById(R.id.individualSprintLogoutBtn);
+        deleteBtn = findViewById(R.id.individualSprintDeleteImageButton);
+        logoutBtn = findViewById(R.id.individualSprintLogoutImageButton);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,9 +85,9 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
             }
         });
 
-        tabLayout = (TabLayout) findViewById(R.id.individualSprintTabs);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.individualSprintNavDrawer);
-        navigationView = (NavigationView) findViewById(R.id.individualSprintNavView);
+        tabLayout = (TabLayout) findViewById(R.id.individualSprintTabLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.individualSprintDrawerLayout);
+        navigationView = (NavigationView) findViewById(R.id.individualSprintNavigationView);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

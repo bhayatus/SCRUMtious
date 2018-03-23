@@ -22,7 +22,7 @@
             app:title="Create User Story">
 
             <ImageButton
-                android:id="@+id/createUserStoryLogoutBtn"
+                android:id="@+id/createUserStoryLogoutImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
@@ -48,7 +48,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createUserStoryTitleFieldLayout"
+        android:id="@+id/createUserStoryTitleTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -58,7 +58,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createUserStoryNameField"
+            android:id="@+id/createUserStoryNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -70,7 +70,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createUserStoryDescFieldLayout"
+        android:id="@+id/createUserStoryDescTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:layout_gravity="center"
@@ -79,7 +79,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createUserStoryDescField"
+            android:id="@+id/createUserStoryDescEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -93,7 +93,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/createUserStoryPointsFieldLayout"
+        android:id="@+id/createUserStoryPointsTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -104,7 +104,7 @@
         app:errorEnabled="true">
 
         <EditText
-            android:id="@+id/createUserStoryPointsField"
+            android:id="@+id/createUserStoryPointsEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="4"

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
+    android:id="@+id/sprintListDrawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sprintListNavDrawer"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.SprintListActivity"
@@ -30,7 +30,7 @@
                 app:title="Sprint List">
 
                 <ImageButton
-                    android:id="@+id/sprintListLogoutBtn"
+                    android:id="@+id/sprintListLogoutImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -42,7 +42,7 @@
                     android:src="@drawable/ic_logout"/>
 
                 <ImageButton
-                    android:id="@+id/sprintListSortBtn"
+                    android:id="@+id/sprintListSortImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -94,7 +94,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/sprintListEmptyStateView"
+            android:id="@+id/sprintListActivityNoSprintsEmptyStateView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
@@ -126,7 +126,7 @@
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/sprintListNavView"
+        android:id="@+id/sprintListNavigationView"
         app:menu="@menu/project_drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
