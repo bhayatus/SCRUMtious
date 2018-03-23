@@ -5,7 +5,7 @@
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.InvitationsFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/invitationsRecyclerView"
+        android:id="@+id/invitationsFragmentRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -14,7 +14,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
-        android:id="@+id/invitationsEmptyStateView"
+        android:id="@+id/invitationsFragmentNoInvitationsEmptyStateView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"
@@ -31,7 +31,7 @@
             android:textStyle="bold"
             android:textColor="#9B9B9B"
             android:layout_marginBottom="50dp"
-            android:text="No invitations to show."
+            android:text="@string/no_invitations_to_show"
             android:textSize="24sp" />
     </LinearLayout>
 

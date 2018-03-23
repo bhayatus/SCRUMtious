@@ -3,12 +3,8 @@ package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +12,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.TaskBoardPresenterInt;
@@ -36,7 +30,6 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.TaskBoardViewInt;
 import ca.mvp.scrumtious.scrumtious.model.Task;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.TaskBoardPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
-import ca.mvp.scrumtious.scrumtious.utils.StringHelper;
 
 public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
@@ -70,8 +63,8 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_board, container, false);
-        taskBoardList = view.findViewById(R.id.taskBoardRecyclerView);
-        emptyStateView = view.findViewById(R.id.taskBoardEmptyStateView);
+        taskBoardList = view.findViewById(R.id.taskBoardFragmentRecyclerView);
+        emptyStateView = view.findViewById(R.id.taskBoardFragmentNoTasksEmptyStateView);
         setupRecyclerView();
         return view;
     }
@@ -209,11 +202,11 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             super(itemView);
             this.mView = itemView;
 
-            descriptionView = (TextView) mView.findViewById(R.id.taskDescription);
-            assignedToView = (TextView) mView.findViewById(R.id.taskAssignedTo);
-            taskDelete = (ImageButton) mView.findViewById(R.id.taskDeleteBtn);
-            taskSwitch = (ImageButton) mView.findViewById(R.id.taskSwitchStatesBtn);
-            card = (CardView) mView.findViewById(R.id.taskRowCard);
+            descriptionView = (TextView) mView.findViewById(R.id.taskRowTaskDescTextView);
+            assignedToView = (TextView) mView.findViewById(R.id.taskRowAssignedToTextView);
+            taskDelete = (ImageButton) mView.findViewById(R.id.taskRowDeleteTaskImageButton);
+            taskSwitch = (ImageButton) mView.findViewById(R.id.taskRowSwitchTaskStatesImageButton);
+            card = (CardView) mView.findViewById(R.id.taskRowCardView);
         }
         public void setDetails(String description, String assignedTo){
 

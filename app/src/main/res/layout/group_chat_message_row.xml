@@ -7,7 +7,7 @@
     android:layout_marginBottom="10dp">
 
     <RelativeLayout
-        android:id="@+id/message_container_right"
+        android:id="@+id/groupChatMessageRowContainerRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -21,17 +21,17 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/message_timestamp_right"
+                android:id="@+id/groupChatMessageRowTimestampRightTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginBottom="5dp"
-                android:text="Dec 20, 2018 @ 2:15PM"
+                android:text="@string/test_date_dec_20_2018_2_15pm"
                 android:textAlignment="viewEnd"
                 android:textSize="12sp"/>
 
             <TextView
-                android:id="@+id/message_content_right"
+                android:id="@+id/groupChatMessageRowContentRightTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -45,7 +45,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/message_container_left"
+        android:id="@+id/groupChatMessageRowContainerLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -53,31 +53,31 @@
         android:paddingRight="10dp">
 
         <LinearLayout
-            android:id="@+id/message_left_details_content"
+            android:id="@+id/groupChatMessageRowLeftDetailsContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/message_timestamp_left"
+                android:id="@+id/groupChatMessageRowTimestampLeftTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dec 20, 2018 @ 2:15PM"
+                android:text="@string/test_date_dec_20_2018_2_15pm"
                 android:textSize="12sp"/>
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/message_sent_by_left"
+            android:id="@+id/groupChatMessageRowSentByLeftTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="Louis George Maurice Adolphe Roche Albert"
+            android:text="@string/test_name_louis_george_maurice_adolphe_roche_albert"
             android:textSize="12sp"/>
 
 
         <TextView
-            android:id="@+id/message_content_left"
+            android:id="@+id/groupChatMessageRowContentLeftTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/message_row_rounded_rect_gray"

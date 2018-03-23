@@ -7,12 +7,12 @@
              android:background="@color/project_list_screen_bg_color"
              tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment">
             <LinearLayout
-                android:id="@+id/projectListLinearLayout"
+                android:id="@+id/projectListFragmentLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">
             <TextView
-                android:id="@+id/projectListOwnedProjectsText"
+                android:id="@+id/projectListFragmentOwnedProjectsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingRight="10dp"
@@ -24,7 +24,7 @@
                 />
 
             <Switch
-                android:id="@+id/projectListSwitch"
+                android:id="@+id/projectListFragmentOwnedProjectsSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="false"
@@ -32,19 +32,19 @@
             </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/projectListRecyclerView"
+            android:id="@+id/projectListFragmentRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/projectListAddProjectBtn"
+            android:layout_above="@id/projectListFragmentAddProjectButton"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/projectListLinearLayout"
+            android:layout_below="@+id/projectListFragmentLinearLayout"
             android:paddingTop="@dimen/project_list_top_padding"
             >
 
         </android.support.v7.widget.RecyclerView>
 
         <LinearLayout
-            android:id="@+id/projectListEmptyStateView"
+            android:id="@+id/projectListFragmentNoProjectsEmptyStateView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
@@ -69,14 +69,14 @@
                 android:textStyle="bold"
                 android:textColor="#9B9B9B"
                 android:layout_marginBottom="50dp"
-                android:text="Looks like you have no projects."
+                android:text="@string/looks_like_you_have_no_projects"
                 android:textSize="24sp" />
         </LinearLayout>
 
 
 
     <Button
-        android:id="@+id/projectListAddProjectBtn"
+        android:id="@+id/projectListFragmentAddProjectButton"
         style="@style/Widget.AppCompat.Button"
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/white"

@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SCRUMtious"
+        android:text="@string/app_name"
         android:gravity="center"
         android:fontFamily="@font/harley_script_regular"
         android:textColor="@color/white"
@@ -25,6 +25,6 @@
         android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:text="Project Navigation"/>
+        android:text="@string/project_navigation"/>
 
 </LinearLayout>

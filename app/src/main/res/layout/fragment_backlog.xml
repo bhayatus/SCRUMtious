@@ -6,7 +6,7 @@ tools:context="ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment">
 
 
 <android.support.v7.widget.RecyclerView
-    android:id="@+id/backlogRecyclerView"
+    android:id="@+id/backlogFragmentRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentStart="true"
@@ -15,7 +15,7 @@ tools:context="ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment">
 </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
-        android:id="@+id/backlogEmptyStateView"
+        android:id="@+id/backlogFragmentNoUserStoriesEmptyStateView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"
@@ -30,7 +30,7 @@ tools:context="ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment">
             android:textStyle="bold"
             android:textColor="#9B9B9B"
             android:layout_marginBottom="50dp"
-            android:text="No user stories to show here."
+            android:text="@string/no_user_stories_to_show_here"
             android:textSize="24sp" />
     </LinearLayout>
 

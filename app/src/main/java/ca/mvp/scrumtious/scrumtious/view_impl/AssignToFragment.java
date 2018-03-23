@@ -13,18 +13,14 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.model.Sprint;
 import ca.mvp.scrumtious.scrumtious.model.User;
 
 public class AssignToFragment extends DialogFragment {
@@ -59,8 +55,8 @@ public class AssignToFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_assign_to, container, false);
 
-        assignToList = (RecyclerView) view.findViewById(R.id.assignToRecyclerView);
-        noneView = view.findViewById(R.id.assignToNone);
+        assignToList = (RecyclerView) view.findViewById(R.id.assignToFragmentRecyclerView);
+        noneView = view.findViewById(R.id.assignToFragmentNoneTextView);
 
         noneView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +172,7 @@ public class AssignToFragment extends DialogFragment {
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.sendToRowName);
+            nameView = (TextView) mView.findViewById(R.id.sendToRowNameTextView);
         }
 
         // Populates each row of the recycler view with the user name

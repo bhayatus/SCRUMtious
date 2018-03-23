@@ -22,28 +22,27 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/sprintRowName"
+            android:id="@+id/sprintRowSprintNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
             android:layout_marginLeft="8dp"
             android:fontFamily="@font/droid_sans"
             android:paddingBottom="5dp"
-            android:text="Name of Sprint"
+            android:text="@string/test_name_of_sprint"
             android:textColor="#d10f0f"
             android:textSize="20dp"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/sprintRowDescription"
+            android:id="@+id/sprintRowSprintDescTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:fontFamily="@font/droid_sans"
             android:paddingBottom="2dp"
             android:paddingTop="5dp"
-            android:text="This is a description that explains what the sprint is about, and now I am running out of things to say,
-so I'll stop."
+            android:text="@string/test_desc"
             android:textSize="16sp"/>
 
         <ImageButton

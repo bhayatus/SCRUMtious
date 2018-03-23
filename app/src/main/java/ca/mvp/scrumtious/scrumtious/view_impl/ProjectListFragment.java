@@ -58,11 +58,11 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
-        ownedProjectsText = (TextView) view.findViewById(R.id.projectListOwnedProjectsText);
-        projectList = (RecyclerView) view.findViewById(R.id.projectListRecyclerView);
-        showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListSwitch);
+        ownedProjectsText = (TextView) view.findViewById(R.id.projectListFragmentOwnedProjectsTextView);
+        projectList = (RecyclerView) view.findViewById(R.id.projectListFragmentRecyclerView);
+        showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListFragmentOwnedProjectsSwitch);
         setupRecyclerView();
-        addProjectBtn = (Button) view.findViewById(R.id.projectListAddProjectBtn);
+        addProjectBtn = (Button) view.findViewById(R.id.projectListFragmentAddProjectButton);
 
         addProjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +71,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             }
         });
 
-        emptyStateView = (LinearLayout) view.findViewById(R.id.projectListEmptyStateView);
+        emptyStateView = (LinearLayout) view.findViewById(R.id.projectListFragmentNoProjectsEmptyStateView);
 
         return view;
 
@@ -176,15 +176,15 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             super(itemView);
             this.mView = itemView;
 
-            titleView = (TextView) mView.findViewById(R.id.projectRowTitle);
-            ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddress);
-            descriptionView = (TextView) mView.findViewById(R.id.projectRowDescription);
-            creationDateView = (TextView) mView.findViewById(R.id.projectRowCreatedDate);
-            numMembersView = (TextView) mView.findViewById(R.id.projectRowNumberOfMembers);
-            numSprintsView = (TextView) mView.findViewById(R.id.projectRowNumberOfSprints);
-            membersIcon = (ImageView) mView.findViewById(R.id.projectRowNumberOfMembersIcon);
-            sprintsIcon = (ImageView) mView.findViewById(R.id.projectRowNumberOfSprintsIcon);
-            moreIcon = (ImageButton) mView.findViewById(R.id.projectRowMoreIcon);
+            titleView = (TextView) mView.findViewById(R.id.projectRowTitleTextView);
+            ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddressTextView);
+            descriptionView = (TextView) mView.findViewById(R.id.projectRowProjectDescTextView);
+            creationDateView = (TextView) mView.findViewById(R.id.projectRowProjectCreatedDateTextView);
+            numMembersView = (TextView) mView.findViewById(R.id.projectRowProjectNumberOfMembersTextView);
+            numSprintsView = (TextView) mView.findViewById(R.id.projectRowProjectNumberOfSprintsTextView);
+            membersIcon = (ImageView) mView.findViewById(R.id.projectRowProjectNumberOfMembersImageView);
+            sprintsIcon = (ImageView) mView.findViewById(R.id.projectRowProjectNumberOfSprintsImageView);
+            moreIcon = (ImageButton) mView.findViewById(R.id.projectRowExpandDescIconImageButton);
 
             membersIcon.setOnClickListener(new View.OnClickListener() {
                 @Override

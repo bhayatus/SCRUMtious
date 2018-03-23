@@ -284,14 +284,14 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
             super(itemView);
             this.mView = itemView;
 
-            messageContentRight = (TextView) mView.findViewById(R.id.message_content_right);
-            messageContentLeft = (TextView) mView.findViewById(R.id.message_content_left);
-            messageTimestampRight= (TextView) mView.findViewById(R.id.message_timestamp_right);
-            messageTimestampLeft= (TextView) mView.findViewById(R.id.message_timestamp_left);
-            messageSentByLeft = (TextView) mView.findViewById(R.id.message_sent_by_left);
-            leftContainer = (LinearLayout) mView.findViewById(R.id.message_container_left);
-            rightContainer = (RelativeLayout) mView.findViewById(R.id.message_container_right);
-            messageLeftDetailsContent = mView.findViewById(R.id.message_left_details_content);
+            messageContentRight = (TextView) mView.findViewById(R.id.groupChatMessageRowContentRightTextView);
+            messageContentLeft = (TextView) mView.findViewById(R.id.groupChatMessageRowContentLeftTextView);
+            messageTimestampRight= (TextView) mView.findViewById(R.id.groupChatMessageRowTimestampRightTextView);
+            messageTimestampLeft= (TextView) mView.findViewById(R.id.groupChatMessageRowTimestampLeftTextView);
+            messageSentByLeft = (TextView) mView.findViewById(R.id.groupChatMessageRowSentByLeftTextView);
+            leftContainer = (LinearLayout) mView.findViewById(R.id.groupChatMessageRowContainerLeft);
+            rightContainer = (RelativeLayout) mView.findViewById(R.id.groupChatMessageRowContainerRight);
+            messageLeftDetailsContent = mView.findViewById(R.id.groupChatMessageRowLeftDetailsContent);
 
             autoTransition = new AutoTransition();
             autoTransition.setDuration(MESSAGE_FADE_IN_DURATION_SEC);

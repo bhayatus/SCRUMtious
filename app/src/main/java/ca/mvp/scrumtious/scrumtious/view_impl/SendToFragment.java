@@ -57,8 +57,8 @@ public class SendToFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_send_to, container, false);
 
-        sendToList = (RecyclerView) view.findViewById(R.id.sendToRecyclerView);
-        pbView = view.findViewById(R.id.sendToPB);
+        sendToList = (RecyclerView) view.findViewById(R.id.sendToFragmentRecyclerView);
+        pbView = view.findViewById(R.id.sendToFragmentSendToProductBacklogTextView);
 
         pbView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +195,7 @@ public class SendToFragment extends DialogFragment {
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.sendToRowName);
+            nameView = (TextView) mView.findViewById(R.id.sendToRowNameTextView);
         }
 
         // Populates each row of the recycler view with the sprint name

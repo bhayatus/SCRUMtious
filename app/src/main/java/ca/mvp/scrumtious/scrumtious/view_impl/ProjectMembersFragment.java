@@ -19,8 +19,6 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
-import org.w3c.dom.Text;
-
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProjectMembersPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectMembersViewInt;
@@ -55,10 +53,10 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
-        emptyStateView = view.findViewById(R.id.projectMembersEmptyView);
-        membersList = view.findViewById(R.id.projectMembersRecyclerView);
+        emptyStateView = view.findViewById(R.id.projectMembersFragmentNoMembersEmptyView);
+        membersList = view.findViewById(R.id.projectMembersFragmentRecyclerView);
         setupRecyclerView();
-        addMemberBtn = view.findViewById(R.id.projectMembersAddMemberBtn);
+        addMemberBtn = view.findViewById(R.id.projectMembersFragmentAddMemberButton);
 
         addMemberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +110,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password before inviting member
-                        EditText emailET = (EditText) alertView.findViewById(R.id.alert_dialogue_add_member_email_text_field);
+                        EditText emailET = (EditText) alertView.findViewById(R.id.alertDialogueAddMemberEmailEditText);
                         String emailAddress = emailET.getText().toString().trim();
 
                         // Cannot send null email address
@@ -163,7 +161,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password and delete member
-                        EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
+                        EditText passwordET = (EditText) alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
                         String password = passwordET.getText().toString().trim();
 
                         // Cannot send null password
@@ -238,9 +236,9 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             super(itemView);
             this.mView = itemView;
 
-            emailView = (TextView) mView.findViewById(R.id.memberRowEmail);
-            deleteView = (ImageButton) mView.findViewById(R.id.memberRowDeleteBtn);
-            owner = (ImageButton) mView.findViewById(R.id.memberRowOwner);
+            emailView = (TextView) mView.findViewById(R.id.memberRowEmailTextView);
+            deleteView = (ImageButton) mView.findViewById(R.id.memberRowDeleteImageButton);
+            owner = (ImageButton) mView.findViewById(R.id.memberRowOwnerImageButton);
         }
 
         // Populates each row of the recycler view with the member details

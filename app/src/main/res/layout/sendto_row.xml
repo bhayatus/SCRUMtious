@@ -4,13 +4,13 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/sendToRowName"
+        android:id="@+id/sendToRowNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textSize="18sp"
         android:padding="10dp"
-        android:text="Placeholder"
+        android:text="@string/test_email_john_doe_gmail_com"
         android:fontFamily="@font/droid_sans"/>
 
     <View

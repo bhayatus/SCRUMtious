@@ -22,7 +22,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/projectRowTitle"
+            android:id="@+id/projectRowTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -30,36 +30,36 @@
             android:layout_marginLeft="4dp"
             android:fontFamily="@font/droid_sans"
             android:paddingBottom="5dp"
-            android:text="WWWWWWWWWWWWWWWWWW"
+            android:text="@string/app_name"
             android:textColor="#d10f0f"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/projectRowEmailAddress"
+            android:id="@+id/projectRowEmailAddressTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="4dp"
             android:fontFamily="@font/droid_sans"
-            android:text="Owner:"
+            android:text="@string/owner"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/projectRowDescription"
+            android:id="@+id/projectRowProjectDescTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/droid_sans"
-            android:text="This is a description that explains what the sprint is about, and now I am running out of things to say, so I'll stop."
+            android:text="@string/test_desc"
             android:textSize="16sp"/>
 
         <ImageButton
-            android:id="@+id/projectRowMoreIcon"
+            android:id="@+id/projectRowExpandDescIconImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -77,13 +77,13 @@
             android:layout_marginTop="5dp">
 
             <TextView
-                android:id="@+id/projectRowCreatedDate"
+                android:id="@+id/projectRowProjectCreatedDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/droid_sans"
-                android:text="Date Created: 02/24/18"
+                android:text="@string/test_date_dec_20_2018_2_15pm"
                 android:textColor="#757575"
                 android:textSize="14sp"
                 />
@@ -96,13 +96,13 @@
 
 
                 <ImageView
-                    android:id="@+id/projectRowNumberOfMembersIcon"
+                    android:id="@+id/projectRowProjectNumberOfMembersImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_member"/>
 
                 <TextView
-                    android:id="@+id/projectRowNumberOfMembers"
+                    android:id="@+id/projectRowProjectNumberOfMembersTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -113,14 +113,14 @@
                     android:textSize="14sp"/>
 
                 <ImageView
-                    android:id="@+id/projectRowNumberOfSprintsIcon"
+                    android:id="@+id/projectRowProjectNumberOfSprintsImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_sprint_row"
                     />
 
                 <TextView
-                    android:id="@+id/projectRowNumberOfSprints"
+                    android:id="@+id/projectRowProjectNumberOfSprintsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

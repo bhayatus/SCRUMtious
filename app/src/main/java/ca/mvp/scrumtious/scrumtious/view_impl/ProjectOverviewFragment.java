@@ -1,7 +1,6 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,16 +78,16 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
 
         currentSprintCard = view.findViewById(R.id.projectOverviewSprintCard);
         currentUserStoryCard = view.findViewById(R.id.projectOverviewUserStoryCard);
-        currentVelocityCard = view.findViewById(R.id.projectOverviewVelocityCard);
+        currentVelocityCard = view.findViewById(R.id.projectOverviewFragmentVelocityCardView);
         emptySprintView = view.findViewById(R.id.projectOverviewEmptyCurrentSprint);
         emptyProgressView = view.findViewById(R.id.projectOverviewEmptyProgressView);
-        projectTitle = view.findViewById(R.id.projectOverviewTitle);
-        projectDescription = view.findViewById(R.id.projectOverviewDesc);
+        projectTitle = view.findViewById(R.id.projectOverviewFragmentTitleTextView);
+        projectDescription = view.findViewById(R.id.projectOverviewFragmentDescTextView);
         sprintName = view.findViewById(R.id.sprintRowNameProjectOverview);
         sprintDescription = view.findViewById(R.id.sprintRowDescriptionProjectOverview);
         sprintDates = view.findViewById(R.id.sprintRowStartToEndProjectOverview);
         velocityView = view.findViewById(R.id.projectOverviewVelocityNotEmptyStateView);
-        emptyVelocityView = view.findViewById(R.id.projectOverviewVelocity);
+        emptyVelocityView = view.findViewById(R.id.projectOverviewFragmentVelocityTextView);
         daysView = view.findViewById(R.id.projectOverviewDaysNotEmptyStateView);
         emptyDaysView = view.findViewById(R.id.projectOverviewDays);
 
@@ -245,7 +243,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
                 .setPositiveButton("Change", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText velocityET = (EditText) alertView.findViewById(R.id.alert_dialogue_change_velocity_field);
+                        EditText velocityET = (EditText) alertView.findViewById(R.id.alertDialogueChangeVelocityEditText);
 
                         if (velocityET.getText().toString().equals("") || velocityET.getText().toString() == null){
                             showMessage("Please enter a velocity.", false);

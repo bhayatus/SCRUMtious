@@ -6,7 +6,7 @@
     tools:context="ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/projectMembersRecyclerView"
+        android:id="@+id/projectMembersFragmentRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/projectMembersRelativeLayout"
@@ -14,7 +14,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/projectMembersEmptyView"
+        android:id="@+id/projectMembersFragmentNoMembersEmptyView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
@@ -23,7 +23,7 @@
         android:layout_centerInParent="true"
         android:textColor="#9B9B9B"
         android:layout_margin="40dp"
-        android:text="Looks like you're the only member in this project."
+        android:text="@string/looks_like_you_re_the_only_member_in_this_project"
         android:textSize="24sp" />
 
     <RelativeLayout
@@ -33,7 +33,7 @@
         android:layout_alignParentBottom="true">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/projectMembersAddMemberBtn"
+            android:id="@+id/projectMembersFragmentAddMemberButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

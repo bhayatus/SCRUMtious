@@ -66,4 +66,27 @@
     <string name="unable_to_retrieve_project_creation_date">Unable to retrieve project creation date</string>
     <string name="unable_to_retrieve_number_of_members_data">Unable to retrieve number of members data</string>
     <string name="not_enough_data_to_show_burndown_chart">Not enough data to show Burndown Chart.</string>
+    <string name="assign_task_to">Assign task to:</string>
+    <string name="no_invitations_to_show">No invitations to show.</string>
+    <string name="looks_like_you_have_no_projects">Looks like you have no projects.</string>
+    <string name="no_user_stories_to_show_here">No user stories to show here.</string>
+    <string name="looks_like_you_re_the_only_member_in_this_project">Looks like you\'re the only member in this project.</string>
+    <string name="current_velocity">Current Velocity</string>
+    <string name="unable_to_retrieve_current_velocity_data">Unable to retrieve current velocity data</string>
+    <string name="unable_to_retrieve_number_of_days_data">Unable to retrieve number of days data</string>
+    <string name="this_is_a_description_that_explains_what_the_sprint_is_about_and_now_i_am_running_out_of_things_to_say_so_i_ll_stop">This is a description that explains what the sprint is about, and now I am running out of things to say, so I\'ll stop.</string>
+    <string name="assign_user_story_to">Assign user story to:</string>
+    <string name="product_backlog">Product Backlog</string>
+    <string name="no_tasks_to_show_here">No tasks to show here.</string>
+    <string name="test_date_dec_20_2018_2_15pm">Dec 20, 2018 @ 2:15PM</string>
+    <string name="test_name_louis_george_maurice_adolphe_roche_albert">Louis George Maurice Adolphe Roche Albert</string>
+    <string name="test_email_john_doe_gmail_com">john.doe@gmail.com</string>
+    <string name="project_navigation">Project Navigation</string>
+    <string name="owner">Owner:</string>
+    <string name="test_name_of_sprint">Name of Sprint</string>
+    <string name="test_desc">This is a description that explains what the sprint is about, and now I am running out of things to say, so I\'ll stop.</string>
+    <string name="test_assigned_to">Assigned to john.doe@gmail.com</string>
+    <string name="test_invited_by">from john.doe@gmail.com</string>
+    <string name="test_name_of_user_story">Name of User Story</string>
+    <string name="test_completed_date">Completed on 01/01/2018 at 04:30 PM</string>
 </resources>

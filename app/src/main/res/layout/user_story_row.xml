@@ -31,21 +31,21 @@
             android:paddingLeft="15dp">
 
             <TextView
-                android:id="@+id/userStoryRowName"
+                android:id="@+id/userStoryRowUserStoryNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/droid_sans"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:text="Name of User Story"
+                android:text="@string/test_name_of_user_story"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 />
 
             <ImageButton
-                android:id="@+id/userStoryRowCompleted"
+                android:id="@+id/userStoryRowCompletedUserStoryImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
@@ -56,7 +56,7 @@
                 />
 
             <ImageButton
-                android:id="@+id/userStoryRowDelete"
+                android:id="@+id/userStoryRowDeleteUserStoryImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
@@ -94,7 +94,7 @@
                 />
 
             <TextView
-                android:id="@+id/userStoryRowPoints"
+                android:id="@+id/userStoryRowPointsUserStoryPointsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="-1"
@@ -118,14 +118,14 @@
             android:paddingRight="10dp">
 
             <TextView
-                android:id="@+id/userStoryRowDesc"
+                android:id="@+id/userStoryRowUserStoryDescTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="-1"
                 android:fontFamily="@font/droid_sans"
                 android:paddingLeft="2dp"
                 android:paddingRight="5dp"
-                android:text="Lorem Ipsum hahahahahahahahahahahahahajshhdjhdjdhjdhjdhjdhdj sjhsjshsjshjsjhsjshjshsjh"
+                android:text="@string/test_desc"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 />
@@ -133,7 +133,7 @@
         </android.widget.LinearLayout>
 
         <android.widget.LinearLayout
-            android:id="@+id/userStoryRowAssignedToLayout"
+            android:id="@+id/userStoryRowAssignedToRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -153,7 +153,7 @@
                 android:src="@drawable/ic_sprint_row_white"/>
 
             <TextView
-                android:id="@+id/userStoryAssignedToName"
+                android:id="@+id/userStoryAssignedUserStoryAssignedToMemberNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -170,7 +170,7 @@
         </android.widget.LinearLayout>
 
         <TextView
-            android:id="@+id/userStoryRowCompletedDate"
+            android:id="@+id/userStoryRowUserStoryCompletedDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -179,7 +179,7 @@
             android:paddingLeft="21dp"
             android:paddingRight="5dp"
             android:paddingTop="5dp"
-            android:text="Completed on 01/01/2018 at 04:30 PM"
+            android:text="@string/test_completed_date"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"

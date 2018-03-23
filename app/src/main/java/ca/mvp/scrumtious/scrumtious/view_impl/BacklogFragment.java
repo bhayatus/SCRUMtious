@@ -15,9 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +26,6 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.BacklogViewInt;
 import ca.mvp.scrumtious.scrumtious.model.UserStory;
 import ca.mvp.scrumtious.scrumtious.presenter_impl.BacklogPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
-import ca.mvp.scrumtious.scrumtious.utils.StringHelper;
 
 public class BacklogFragment extends Fragment implements BacklogViewInt{
 
@@ -73,8 +70,8 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_backlog, container, false);
-        backlogList = view.findViewById(R.id.backlogRecyclerView);
-        emptyStateView = view.findViewById(R.id.backlogEmptyStateView);
+        backlogList = view.findViewById(R.id.backlogFragmentRecyclerView);
+        emptyStateView = view.findViewById(R.id.backlogFragmentNoUserStoriesEmptyStateView);
         setupRecyclerView();
 
         return view;
@@ -237,14 +234,14 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.userStoryRowName);
-            pointsView = (TextView) mView.findViewById(R.id.userStoryRowPoints);
-            descriptionView = (TextView) mView.findViewById(R.id.userStoryRowDesc);
-            assignedToNameView = (TextView) mView.findViewById(R.id.userStoryAssignedToName);
-            completedDateView = (TextView) mView.findViewById(R.id.userStoryRowCompletedDate);
-            completed = (ImageButton) mView.findViewById(R.id.userStoryRowCompleted);
-            delete = (ImageButton) mView.findViewById(R.id.userStoryRowDelete);
-            assignedToLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToLayout);
+            nameView = (TextView) mView.findViewById(R.id.userStoryRowUserStoryNameTextView);
+            pointsView = (TextView) mView.findViewById(R.id.userStoryRowPointsUserStoryPointsTextView);
+            descriptionView = (TextView) mView.findViewById(R.id.userStoryRowUserStoryDescTextView);
+            assignedToNameView = (TextView) mView.findViewById(R.id.userStoryAssignedUserStoryAssignedToMemberNameTextView);
+            completedDateView = (TextView) mView.findViewById(R.id.userStoryRowUserStoryCompletedDateTextView);
+            completed = (ImageButton) mView.findViewById(R.id.userStoryRowCompletedUserStoryImageButton);
+            delete = (ImageButton) mView.findViewById(R.id.userStoryRowDeleteUserStoryImageButton);
+            assignedToLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToRelativeLayout);
             card = (CardView) mView.findViewById(R.id.userStoryRowCardView);
         }
 

@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -294,7 +293,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password before deleting
-                        EditText passwordET = (EditText) alertView.findViewById(R.id.alert_dialogue_delete_password_text_field);
+                        EditText passwordET = (EditText) alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
                         String password = passwordET.getText().toString().trim();
 
                         // Cannot send null password

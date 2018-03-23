@@ -48,8 +48,8 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_invitations, container, false);
-        invitationList = view.findViewById(R.id.invitationsRecyclerView);
-        emptyStateView = view.findViewById(R.id.invitationsEmptyStateView);
+        invitationList = view.findViewById(R.id.invitationsFragmentRecyclerView);
+        emptyStateView = view.findViewById(R.id.invitationsFragmentNoInvitationsEmptyStateView);
         setupRecyclerView();
         return view;
     }
@@ -141,10 +141,10 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
             super(itemView);
             this.mView = itemView;
 
-            projectTitleView = (TextView) mView.findViewById(R.id.userInviteRowProject);
-            emailView = (TextView) mView.findViewById(R.id.userInviteRowInvitee);
-            acceptInvite = (ImageButton) mView.findViewById(R.id.userInviteRowAcceptBtn);
-            declineInvite = (ImageButton) mView.findViewById(R.id.userInviteRowDeclineButton);
+            projectTitleView = (TextView) mView.findViewById(R.id.userInviteRowProjectTitleTextView);
+            emailView = (TextView) mView.findViewById(R.id.userInviteRowInviteeNameTextView);
+            acceptInvite = (ImageButton) mView.findViewById(R.id.userInviteRowAcceptInviteImageButton);
+            declineInvite = (ImageButton) mView.findViewById(R.id.userInviteRowDeclineInviteImageButton);
 
         }
 

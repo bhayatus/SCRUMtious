@@ -343,8 +343,8 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.sprintRowName);
-            descriptionView = (TextView) mView.findViewById(R.id.sprintRowDescription);
+            nameView = (TextView) mView.findViewById(R.id.sprintRowSprintNameTextView);
+            descriptionView = (TextView) mView.findViewById(R.id.sprintRowSprintDescTextView);
             startToEndDateView = (TextView) mView.findViewById(R.id.sprintRowStartToEnd);
             currentSprintView = (TextView) mView.findViewById(R.id.sprintRowCurrentSprint);
 

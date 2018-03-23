@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/taskRowCard"
+    android:id="@+id/taskRowCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
@@ -22,20 +22,18 @@
         android:paddingTop="15dp">
 
         <TextView
-            android:id="@+id/taskDescription"
+            android:id="@+id/taskRowTaskDescTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/droid_sans"
             android:paddingLeft="15dp"
             android:paddingRight="@dimen/task_desc_padding"
-            android:text="@string/one_hundred_fourty_char_string"
+            android:text="@string/test_desc"
             android:textColor="@color/white"
             android:textSize="14sp"/>
 
 
-
         <LinearLayout
-            android:id="@+id/taskRowIconLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
@@ -51,18 +49,18 @@
                 app:srcCompat="@drawable/ic_member_white"/>
 
             <TextView
-                android:id="@+id/taskAssignedTo"
+                android:id="@+id/taskRowTaskAssignedToTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/droid_sans"
-                android:text="Assigned to usaimbhayat@gmail.com"
+                android:text="@string/test_assigned_to"
                 android:textColor="@color/white"
                 android:textSize="11sp"/>
 
             <ImageButton
-                android:id="@+id/taskSwitchStatesBtn"
+                android:id="@+id/taskRowSwitchTaskStatesImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
@@ -70,7 +68,7 @@
                 app:srcCompat="@drawable/ic_task_switch_state_white_24dp"/>
 
             <ImageButton
-                android:id="@+id/taskDeleteBtn"
+                android:id="@+id/taskRowDeleteTaskImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"

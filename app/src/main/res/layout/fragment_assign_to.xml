@@ -18,7 +18,7 @@
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:padding="10dp"
-        android:text="Assign task to:"/>
+        android:text="@string/assign_task_to"/>
 
 
        <View
@@ -28,7 +28,7 @@
            android:background="#e0e0e0" />
 
            <TextView
-               android:id="@+id/assignToNone"
+               android:id="@+id/assignToFragmentNoneTextView"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:fontFamily="@font/droid_sans"
@@ -40,7 +40,7 @@
 
 
        <android.support.v7.widget.RecyclerView
-           android:id="@+id/assignToRecyclerView"
+           android:id="@+id/assignToFragmentRecyclerView"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content" />
    </LinearLayout>

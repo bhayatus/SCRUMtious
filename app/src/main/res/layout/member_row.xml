@@ -18,20 +18,20 @@
         android:orientation="horizontal"
         android:padding="5dp">
         <TextView
-            android:id="@+id/memberRowEmail"
+            android:id="@+id/memberRowEmailTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/droid_sans"
             android:padding="5dp"
-            android:text="badshah.shabaz@gmail.com"
+            android:text="@string/test_email_john_doe_gmail_com"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp"/>
 
         <ImageButton
-            android:id="@+id/memberRowOwner"
+            android:id="@+id/memberRowOwnerImageButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -44,7 +44,7 @@
             />
 
         <ImageButton
-            android:id="@+id/memberRowDeleteBtn"
+            android:id="@+id/memberRowDeleteImageButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"

@@ -29,12 +29,12 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/userInviteRowProject"
+            android:id="@+id/userInviteRowProjectTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/droid_sans"
-            android:text="SCRUMtious"
+            android:text="@string/app_name"
             android:textColor="@color/black"
             android:textSize="18sp"
             tools:layout_editor_absoluteX="0dp"
@@ -42,7 +42,7 @@
 
 
         <ImageButton
-            android:id="@+id/userInviteRowAcceptBtn"
+            android:id="@+id/userInviteRowAcceptInviteImageButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
@@ -53,7 +53,7 @@
             app:srcCompat="@drawable/ic_checkmark"/>
 
         <ImageButton
-            android:id="@+id/userInviteRowDeclineButton"
+            android:id="@+id/userInviteRowDeclineInviteImageButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -65,14 +65,14 @@
     </android.widget.LinearLayout>
 
     <TextView
-        android:id="@+id/userInviteRowInvitee"
+        android:id="@+id/userInviteRowInviteeNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="@font/droid_sans"
         android:paddingBottom="5dp"
         android:paddingLeft="5dp"
-        android:text="from usaimbhayat@gmail.com"/>
+        android:text="@string/test_invited_by"/>
 
     <View
         android:layout_width="match_parent"
