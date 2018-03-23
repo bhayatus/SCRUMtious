@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -412,7 +413,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         else if (numSprints == 0){
             projectStatsNumSprintsValueTextView.setVisibility(View.GONE);
             projectStatsNumSprintsErrorTextView.setVisibility(View.VISIBLE);
-            projectStatsNumSprintsErrorTextView.setText("You currently have no sprints in this project");
+            projectStatsNumSprintsErrorTextView.setText("This project currently has no sprints");
             return;
         }
         else if(numSprints == 1){
@@ -430,12 +431,11 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     @Override
     public void populateNumUserStories(long total, long completed) {
-
-        if (completed != 0) {
+        if (total != 0) {
             projectStatsNumUserStoriesErrorTextView.setVisibility(View.GONE);
             projectStatsNumUserStoriesValueTextView.setText(String.valueOf(completed) + "/" + String.valueOf(total));
             projectStatsNumUserStoriesValueTextView.setVisibility(View.VISIBLE);
-        } else if (completed <= 0 || total <= 0) {
+        } else{
             projectStatsNumUserStoriesValueTextView.setVisibility(View.GONE);
             projectStatsNumUserStoriesErrorTextView.setVisibility(View.VISIBLE);
         }
