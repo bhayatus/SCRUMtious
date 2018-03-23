@@ -378,7 +378,6 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
     public void onSuccessfulSent() {
         EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
         groupChatMessageInput.setText("");
-        groupChatMessageInput.clearFocus();
     }
 
     @Override
