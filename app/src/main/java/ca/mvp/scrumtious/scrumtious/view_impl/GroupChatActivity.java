@@ -252,7 +252,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     public void onClickSendMessage(View view){
 
-        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInput);
+        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
         String messageInput = groupChatMessageInput.getText().toString();
         if (isValidMessage(messageInput)){
             groupChatPresenter.addMessagesToDatabase(messageInput);
