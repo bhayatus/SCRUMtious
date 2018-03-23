@@ -310,7 +310,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete Sprint?")
                 .setView(alertView)
-                .setMessage("Are you sure you want to delete this sprint? Enter your password below to confirm.")
+                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this sprint? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -320,12 +320,12 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not delete the sprint.", false);
+                            showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton the sprint.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not delete the sprint.", false);
+                                showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton the sprint.", false);
                             }
                             else {
 
@@ -333,7 +333,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                                 deleteSprintProgressDialog = new ProgressDialog(IndividualSprintActivity.this);
                                 deleteSprintProgressDialog.setTitle("Delete Sprint");
                                 deleteSprintProgressDialog.setCancelable(false);
-                                deleteSprintProgressDialog.setMessage("Attempting to delete sprint...");
+                                deleteSprintProgressDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton sprint...");
                                 deleteSprintProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deleteSprintProgressDialog.show();
 
@@ -353,7 +353,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
     }
 
-    // Only project owner can view the sprint delete button
+    // Only project owner can view the sprint userStoryRowDeleteUserStoryImageButton button
     @Override
     public void setDeleteInvisible() {
         deleteBtn.setVisibility(View.GONE);
@@ -406,7 +406,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                 case 1:
                     data = new Bundle();
                     data.putString("projectId", pid);
-                    // This fragment will display info for product backlog completed user stories
+                    // This fragment will display info for product backlog userStoryRowCompletedUserStoryImageButton user stories
                     data.putString("type", "SPRINT_COMPLETED");
 
                     // Passes in null, to tell fragment and presenter that this is a pb user story

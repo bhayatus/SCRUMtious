@@ -126,7 +126,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     public void onClickDeleteTask(final String tid){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Task")
-                .setMessage("Are you sure you want to delete this task?")
+                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this task?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -134,7 +134,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                         deletingTaskDialog = new ProgressDialog(getContext());
                         deletingTaskDialog.setTitle("Delete Task");
                         deletingTaskDialog.setCancelable(false);
-                        deletingTaskDialog.setMessage("Attempting to delete task...");
+                        deletingTaskDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton task...");
                         deletingTaskDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                         deletingTaskDialog.show();
 
@@ -171,7 +171,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                         return true;
 
                     case R.id.task_completed:
-                        taskBoardPresenter.changeStatus(tid,"completed");
+                        taskBoardPresenter.changeStatus(tid,"userStoryRowCompletedUserStoryImageButton");
                         return true;
                 }
 
@@ -226,7 +226,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
             return this.taskDelete;
         }
 
-        // Only owner should be able to delete user stories
+        // Only owner should be able to userStoryRowDeleteUserStoryImageButton user stories
         public void setDeleteInvisible(){
             this.taskDelete.setVisibility(View.GONE);
         }

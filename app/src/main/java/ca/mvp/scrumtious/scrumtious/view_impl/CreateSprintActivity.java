@@ -119,7 +119,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0) {
             new AlertDialog.Builder(this)
                     .setTitle("Discard Sprint?")
-                    .setMessage("Are you sure you want to delete the sprint?")
+                    .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton the sprint?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

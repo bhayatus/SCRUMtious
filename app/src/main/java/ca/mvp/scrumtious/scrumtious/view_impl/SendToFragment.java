@@ -95,7 +95,7 @@ public class SendToFragment extends DialogFragment {
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
-        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild("completed");
+        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild("userStoryRowCompletedUserStoryImageButton");
 
         // Generates the adapter to grab the list of sprints we can assign the user story to
         sendToListAdapter = new FirebaseRecyclerAdapter<Sprint, SendToSprintViewHolder>(
@@ -146,12 +146,12 @@ public class SendToFragment extends DialogFragment {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
 
-        // Grab the completed status of the user story
+        // Grab the userStoryRowCompletedUserStoryImageButton status of the user story
         mRef.child("projects").child(pid).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String completed = dataSnapshot.child("completed").getValue().toString();
+                    String completed = dataSnapshot.child("userStoryRowCompletedUserStoryImageButton").getValue().toString();
                     String assignedTo_completed = sid + "_" + completed;
                     Map sendToMap = new HashMap();
 

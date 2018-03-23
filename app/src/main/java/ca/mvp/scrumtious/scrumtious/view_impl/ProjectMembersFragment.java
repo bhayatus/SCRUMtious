@@ -149,30 +149,30 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     }
 
 
-    // When the delete member button is clicked for an individual member
+    // When the userStoryRowDeleteUserStoryImageButton member button is clicked for an individual member
     public void onClickDelete(final String uid){
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Member?")
                 .setView(alertView)
-                .setMessage("Are you sure you want to delete this member? Enter your password below to confirm.")
+                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this member? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Validate password and delete member
+                        // Validate password and userStoryRowDeleteUserStoryImageButton member
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
                         String password = passwordET.getText().toString().trim();
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Incorrect password, could not delete member.", false);
+                            showMessage("Incorrect password, could not userStoryRowDeleteUserStoryImageButton member.", false);
                         }
 
                         else {
                             // Cannot send empty string
                             if(password.length() == 0) {
-                                showMessage("Incorrect password, could not delete member.", false);
+                                showMessage("Incorrect password, could not userStoryRowDeleteUserStoryImageButton member.", false);
                             }
                             else {
 
@@ -180,7 +180,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                                 deletingMemberProgressDialog = new ProgressDialog(getContext());
                                 deletingMemberProgressDialog.setTitle("Delete Member");
                                 deletingMemberProgressDialog.setCancelable(false);
-                                deletingMemberProgressDialog.setMessage("Attempting to delete member...");
+                                deletingMemberProgressDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton member...");
                                 deletingMemberProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deletingMemberProgressDialog.show();
 
@@ -246,7 +246,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
             emailView.setText(emailAddress);
         }
 
-        // Gets the delete button
+        // Gets the userStoryRowDeleteUserStoryImageButton button
         public ImageButton getDeleteView(){
             return deleteView;
         }

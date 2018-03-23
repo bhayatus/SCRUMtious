@@ -75,7 +75,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                                 "From there, you can assign a task to a " +
                                 " team member by holding down on it for a few seconds. A dialog will then pop up, allowing you " +
                                 "to assign the task to a member, or no one." + "\n" +
-                                "You can also switch the status of the task by clicking on the toolbar icon, or delete the task" +
+                                "You can also switch the status of the task by clicking on the toolbar icon, or userStoryRowDeleteUserStoryImageButton the task" +
                                 " entirely by selecting the trash can icon.")
                         .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
@@ -321,7 +321,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                     data = new Bundle();
                     data.putString("projectId", pid);
                     data.putString("userStoryId", usid);
-                    data.putString("type", "completed");
+                    data.putString("type", "userStoryRowCompletedUserStoryImageButton");
                     TaskBoardFragment completedFragment = new TaskBoardFragment();
                     completedFragment.setArguments(data);
                     return completedFragment;

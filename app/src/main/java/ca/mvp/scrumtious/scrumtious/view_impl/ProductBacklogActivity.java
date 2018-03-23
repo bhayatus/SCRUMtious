@@ -72,7 +72,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                         .setTitle("Need Help?")
                         .setMessage("To get started, you can add a new user story to the product backlog with the button " +
                                 "below. " + "\n" +
-                                "User stories can then be deleted, or marked as completed/in progress with their respective " +
+                                "User stories can then be deleted, or marked as userStoryRowCompletedUserStoryImageButton/in progress with their respective " +
                                 "buttons. " + "\n" +
                                 "To assign a user story to a sprint or the product backlog, click down it " +
                                 "for a few seconds. A dialog will pop up, allowing you to make your selection.")
@@ -314,7 +314,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                     data = new Bundle();
                     data.putString("projectId", pid);
 
-                    // This fragment will display info for product backlog completed user stories
+                    // This fragment will display info for product backlog userStoryRowCompletedUserStoryImageButton user stories
                     data.putString("type", "PB_COMPLETED");
 
                     // Passes in null, to tell fragment and presenter that this is a pb user story
