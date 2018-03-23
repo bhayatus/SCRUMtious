@@ -104,7 +104,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
                         .setMessage("The burndown chart represents the progress your group has made through" +
                                 " completing user stories." + "\n" +
                                 "On the y-axis, the numbers represent the total amount of" +
-                                " user story points left that need to be completed. " + "\n" +
+                                " user story points left that need to be userStoryRowCompletedUserStoryImageButton. " + "\n" +
                                 "On the x-axis, the numbers represent" +
                                 " the number of days that have passed since the project was created." +
                                 "\n" +

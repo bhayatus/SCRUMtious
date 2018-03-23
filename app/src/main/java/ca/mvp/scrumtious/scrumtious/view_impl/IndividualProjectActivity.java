@@ -259,7 +259,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
 
     // Called when current user isn't the owner of the project, they should not be
-    // able to see the delete project button
+    // able to see the userStoryRowDeleteUserStoryImageButton project button
     public void setDeleteInvisible(){
         deleteBtn.setVisibility(View.GONE);
     }
@@ -288,7 +288,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete Project?")
                 .setView(alertView)
-                .setMessage("Are you sure you want to delete this project? Enter your password below to confirm.") 
+                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this project? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -298,12 +298,12 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not delete project.", false);
+                            showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton project.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not delete project.", false);
+                                showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton project.", false);
                             }
                             else {
 
@@ -311,7 +311,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                 deleteProjectProgressDialog = new ProgressDialog(IndividualProjectActivity.this);
                                 deleteProjectProgressDialog.setTitle("Delete Project");
                                 deleteProjectProgressDialog.setCancelable(false);
-                                deleteProjectProgressDialog.setMessage("Attempting to delete project...");
+                                deleteProjectProgressDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton project...");
                                 deleteProjectProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deleteProjectProgressDialog.show();
 

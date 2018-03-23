@@ -32,9 +32,9 @@ public class AssignToFragment extends DialogFragment {
     private DatabaseReference mRef;
     private Query mQuery;
 
-    private TextView noneView;
+    private TextView assignToFragmentNoneTextView;
     private TaskBoardFragment taskBoardView;
-    private RecyclerView assignToList;
+    private RecyclerView assignToFragmentRecyclerView;
 
     public AssignToFragment() {
         // Required empty public constructor
@@ -55,10 +55,10 @@ public class AssignToFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_assign_to, container, false);
 
-        assignToList = (RecyclerView) view.findViewById(R.id.assignToFragmentRecyclerView);
-        noneView = view.findViewById(R.id.assignToFragmentNoneTextView);
+        assignToFragmentRecyclerView = (RecyclerView) view.findViewById(R.id.assignToFragmentRecyclerView);
+        assignToFragmentNoneTextView = view.findViewById(R.id.assignToFragmentNoneTextView);
 
-        noneView.setOnClickListener(new View.OnClickListener() {
+        assignToFragmentNoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Assigning task to no one
@@ -90,7 +90,7 @@ public class AssignToFragment extends DialogFragment {
 
     private void setupRecyclerView(){
 
-        assignToList.setLayoutManager(new LinearLayoutManager(taskBoardView.getContext()));
+        assignToFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(taskBoardView.getContext()));
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
@@ -123,17 +123,17 @@ public class AssignToFragment extends DialogFragment {
 
                 // Don't bother showing recycler view if no items
                 if (getItemCount() == 0){
-                    assignToList.setVisibility(View.GONE);
+                    assignToFragmentRecyclerView.setVisibility(View.GONE);
                 }
                 // Items to show, display recycler view
                 else{
-                    assignToList.setVisibility(View.VISIBLE);
+                    assignToFragmentRecyclerView.setVisibility(View.VISIBLE);
                 }
 
             }
         };
 
-        assignToList.setAdapter(assignToListAdapter);
+        assignToFragmentRecyclerView.setAdapter(assignToListAdapter);
     }
 
 

@@ -139,8 +139,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
                 viewHolder.setDetails(model.getUserStoryName(), model.getUserStoryPoints(), assignedToName, model.getUserStoryDetails());
 
-                ImageButton completed = viewHolder.getCompleted();
-                ImageButton delete = viewHolder.getDelete();
+                ImageButton completed = viewHolder.getUserStoryRowCompletedUserStoryImageButton();
+                ImageButton delete = viewHolder.getUserStoryRowDeleteUserStoryImageButton();
 
 
                 // Show as in progress with icon
