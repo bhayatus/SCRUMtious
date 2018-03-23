@@ -17,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import ca.mvp.scrumtious.scrumtious.R;
@@ -63,7 +62,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 protected void populateViewHolder(ProjectMembersFragment.MembersViewHolder viewHolder, User model, int position) {
                     viewHolder.setDetails(model.getEmailAddress());
                     final String uid = getRef(position).getKey();
-                    ImageButton delete = viewHolder.getDeleteView();
+                    ImageButton delete = viewHolder.getMemberRowDeleteImageButton();
                     final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
 

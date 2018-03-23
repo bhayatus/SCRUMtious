@@ -29,10 +29,10 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     private String pid;
     private ValueEventListener projectListener;
 
-    private EditText titleField, descriptionField, pointField;
-    private TextInputLayout titleFieldLayout, descriptionFieldLayout, pointFieldLayout;
-    private ImageButton logoutBtn;
-    private Toolbar toolbar;
+    private EditText createUserStoryNameEditText, createUserStoryDescEditText, createUserStoryPointsEditText;
+    private TextInputLayout createUserStoryTitleTextInputLayout, createUserStoryDescTextInputLayout, createUserStoryPointsTextInputLayout;
+    private ImageButton createUserStoryLogoutImageButton;
+    private Toolbar createUserStoryToolbar;
     private ProgressDialog createUserStoryProgressDialog;
 
     private boolean projectAlreadyDeleted;
@@ -49,18 +49,19 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
         createUserStoryPresenter = new CreateUserStoryPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.createUserStoryLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        createUserStoryLogoutImageButton = findViewById(R.id.createUserStoryLogoutImageButton);
+        createUserStoryToolbar = findViewById(R.id.createUserStoryToolbar);
+
+        createUserStoryLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(CreateUserStoryActivity.this);
             }
         });
 
-        toolbar = findViewById(R.id.createUserStoryToolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        createUserStoryToolbar.setNavigationIcon(R.drawable.ic_back);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        createUserStoryToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed(); // Should do the same as the user pressing back
@@ -87,8 +88,8 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     // Prevent user from accidentally leaving if form is filled in
     @Override
     public void onBackPressed() {
-        if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0 ||
-                pointField.getText().toString().trim().length() > 0){
+        if(createUserStoryNameEditText.getText().toString().trim().length() > 0 || createUserStoryDescEditText.getText().toString().trim().length() > 0 ||
+                createUserStoryPointsEditText.getText().toString().trim().length() > 0){
             new AlertDialog.Builder(this)
                     .setTitle("Discard User Story?")
                     .setMessage("Are you sure you to discard this new user story?")
@@ -135,25 +136,25 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     }
 
     public void setupFormWatcher() {
-        titleField = (EditText) findViewById(R.id.createUserStoryNameEditText);
-        descriptionField = (EditText) findViewById(R.id.createUserStoryDescEditText);
-        pointField = (EditText) findViewById(R.id.createUserStoryPointsEditText);
+        createUserStoryNameEditText = findViewById(R.id.createUserStoryNameEditText);
+        createUserStoryDescEditText = findViewById(R.id.createUserStoryDescEditText);
+        createUserStoryPointsEditText = findViewById(R.id.createUserStoryPointsEditText);
 
-        titleFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryTitleTextInputLayout);
-        descriptionFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryDescTextInputLayout);
-        pointFieldLayout = (TextInputLayout) findViewById(R.id.createUserStoryPointsTextInputLayout);
+        createUserStoryTitleTextInputLayout = findViewById(R.id.createUserStoryTitleTextInputLayout);
+        createUserStoryDescTextInputLayout = findViewById(R.id.createUserStoryDescTextInputLayout);
+        createUserStoryPointsTextInputLayout = findViewById(R.id.createUserStoryPointsTextInputLayout);
 
-        titleFieldLayout.setError(null);
-        descriptionFieldLayout.setError(null);
-        pointFieldLayout.setError(null);
+        createUserStoryTitleTextInputLayout.setError(null);
+        createUserStoryDescTextInputLayout.setError(null);
+        createUserStoryPointsTextInputLayout.setError(null);
 
-        titleFieldLayout.setErrorEnabled(true);
-        pointFieldLayout.setErrorEnabled(true);
-        descriptionFieldLayout.setErrorEnabled(true);
+        createUserStoryTitleTextInputLayout.setErrorEnabled(true);
+        createUserStoryPointsTextInputLayout.setErrorEnabled(true);
+        createUserStoryDescTextInputLayout.setErrorEnabled(true);
 
         //Create a watcher for titleField
         //Create a listener for titleField and validate it
-        titleField.addTextChangedListener(new TextWatcher() {
+        createUserStoryNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -165,25 +166,25 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
             @Override
             public void afterTextChanged(Editable editable) {
 
-                String titleText = titleField.getText().toString();
+                String titleText = createUserStoryNameEditText.getText().toString();
 
                 if(titleText == null || (titleText.trim().length() <= 0
                         )) {
-                    titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Please enter a user story name.");
+                    createUserStoryTitleTextInputLayout.setErrorEnabled(true);
+                    createUserStoryTitleTextInputLayout.setError("Please enter a user story name.");
                 }
                 else if (titleText.trim().length() > 28){
-                    titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("User story name is too long.");
+                    createUserStoryTitleTextInputLayout.setErrorEnabled(true);
+                    createUserStoryTitleTextInputLayout.setError("User story name is too long.");
                 }
                 else{
-                    titleFieldLayout.setErrorEnabled(false);
-                    titleFieldLayout.setError(null);
+                    createUserStoryTitleTextInputLayout.setErrorEnabled(false);
+                    createUserStoryTitleTextInputLayout.setError(null);
                 }
             }
         });
 
-        descriptionField.addTextChangedListener(new TextWatcher() {
+        createUserStoryDescEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -196,20 +197,20 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String descText = descriptionField.getText().toString();
+                String descText = createUserStoryDescEditText.getText().toString();
                 if(descText == null || (descText.trim().length() <= 0)){
-                    descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a user story description.");
+                    createUserStoryDescTextInputLayout.setErrorEnabled(true);
+                    createUserStoryDescTextInputLayout.setError("Please enter a user story description.");
                 }
                     else{
-                    descriptionFieldLayout.setErrorEnabled(false);
-                    descriptionFieldLayout.setError(null);
+                    createUserStoryDescTextInputLayout.setErrorEnabled(false);
+                    createUserStoryDescTextInputLayout.setError(null);
                 }
 
             }
         });
 
-        pointField.addTextChangedListener(new TextWatcher() {
+        createUserStoryPointsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -222,21 +223,21 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String pointsText = pointField.getText().toString().trim();
+                String pointsText = createUserStoryPointsEditText.getText().toString().trim();
 
                 if (pointsText == null || (pointsText.trim().length() <= 0)) {
-                    pointFieldLayout.setErrorEnabled(true);
-                    pointFieldLayout.setError("Please enter a user story priority.");
+                    createUserStoryPointsTextInputLayout.setErrorEnabled(true);
+                    createUserStoryPointsTextInputLayout.setError("Please enter a user story priority.");
                 }
                 else{
 
                 int pointsVal = Integer.valueOf(pointsText);
                 if (pointsVal <= 0 || pointsVal > 9999) {
-                    pointFieldLayout.setErrorEnabled(true);
-                    pointFieldLayout.setError("Please enter an amount between 0 and 9999.");
+                    createUserStoryPointsTextInputLayout.setErrorEnabled(true);
+                    createUserStoryPointsTextInputLayout.setError("Please enter an amount between 0 and 9999.");
                 } else {
-                    pointFieldLayout.setErrorEnabled(false);
-                    pointFieldLayout.setError(null);
+                    createUserStoryPointsTextInputLayout.setErrorEnabled(false);
+                    createUserStoryPointsTextInputLayout.setError(null);
                 }
             }
             }
@@ -263,14 +264,14 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     public void onClickCreateUserStory(View view) {
 
         // If any of the errors are showing, cannot proceed
-        if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled()
-                || pointFieldLayout.isErrorEnabled()) {
+        if(createUserStoryTitleTextInputLayout.isErrorEnabled() || createUserStoryDescTextInputLayout.isErrorEnabled()
+                || createUserStoryPointsTextInputLayout.isErrorEnabled()) {
             showMessage("Cannot create user story until fields are filled out properly.", false);
         } else {
 
-            String title = titleField.getText().toString().trim();
-            String desc = descriptionField.getText().toString().trim();
-            int points = Integer.valueOf(pointField.getText().toString().trim());
+            String title = createUserStoryNameEditText.getText().toString().trim();
+            String desc = createUserStoryDescEditText.getText().toString().trim();
+            int points = Integer.valueOf(createUserStoryPointsEditText.getText().toString().trim());
 
             // Creates a dialog that appears to tell the user that the user story is being created
             createUserStoryProgressDialog = new ProgressDialog(this);

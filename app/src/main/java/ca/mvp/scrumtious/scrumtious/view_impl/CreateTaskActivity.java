@@ -31,12 +31,12 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
     private CreateTaskPresenter createTaskPresenter;
 
-    private android.support.v7.widget.Toolbar toolbar;
+    private android.support.v7.widget.Toolbar createTaskToolbar;
     private ProgressDialog createTaskProgressDialog;
-    private EditText descriptionField;
-    private TextInputLayout descriptionFieldLayout;
-    private ImageButton logoutBtn;
-    private Button createBtn;
+    private EditText createTaskDescEditText;
+    private TextInputLayout createTaskDescTextInputLayout;
+    private ImageButton createTaskLogoutImageButton;
+    private Button createTaskCreateButton;
 
     private String pid, usid;
 
@@ -61,26 +61,26 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
         createTaskPresenter = new CreateTaskPresenter(this, pid, usid);
 
-        createBtn = findViewById(R.id.createTaskCreateButton);
-        createBtn.setOnClickListener(new View.OnClickListener() {
+        createTaskCreateButton = findViewById(R.id.createTaskCreateButton);
+        createTaskLogoutImageButton = findViewById(R.id.createTaskLogoutImageButton);
+        createTaskToolbar = findViewById(R.id.createTaskToolbar);
+        createTaskCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickCreateTaskSubmit(v);
             }
         });
-        logoutBtn = findViewById(R.id.createTaskLogoutImageButton);
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        createTaskLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AuthenticationHelper.logout(CreateTaskActivity.this);
             }
         });
 
-        toolbar = findViewById(R.id.createTaskToolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        createTaskToolbar.setNavigationIcon(R.drawable.ic_back);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        createTaskToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed(); // This should do the same as pressing back
@@ -146,7 +146,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed(){
 
-        if(descriptionField.getText().toString().trim().length() > 0){
+        if(createTaskDescEditText.getText().toString().trim().length() > 0){
             new AlertDialog.Builder(this)
                     .setTitle("Discard Task?")
                     .setMessage("Are you sure you want to discard the task?")
@@ -169,13 +169,13 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
     private void setupFormWatcher(){
 
-        descriptionField = (EditText) findViewById (R.id.createTaskDescEditText);
-        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createTaskDescTextInputLayout);
+        createTaskDescEditText = findViewById (R.id.createTaskDescEditText);
+        createTaskDescTextInputLayout = findViewById(R.id.createTaskDescTextInputLayout);
 
-        descriptionFieldLayout.setErrorEnabled(true);
-        descriptionFieldLayout.setError(null);
+        createTaskDescTextInputLayout.setErrorEnabled(true);
+        createTaskDescTextInputLayout.setError(null);
 
-        descriptionField.addTextChangedListener(new TextWatcher() {
+        createTaskDescEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -188,15 +188,15 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String descFieldText = descriptionField.getText().toString();
+                String descFieldText = createTaskDescEditText.getText().toString();
 
                 if((descFieldText == null) || (descFieldText.trim().length() <= 0)){
-                    descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a task description.");
+                    createTaskDescTextInputLayout.setErrorEnabled(true);
+                    createTaskDescTextInputLayout.setError("Please enter a task description.");
 
                 }else{
-                    descriptionFieldLayout.setErrorEnabled(false);
-                    descriptionFieldLayout.setError(null);
+                    createTaskDescTextInputLayout.setErrorEnabled(false);
+                    createTaskDescTextInputLayout.setError(null);
                 }
             }
 
@@ -233,8 +233,8 @@ public class CreateTaskActivity extends AppCompatActivity implements
     // User clicks on create task button
     public void onClickCreateTaskSubmit(View view){
 
-        String desc = descriptionField.getText().toString().trim();
-        if(descriptionFieldLayout.isErrorEnabled()){
+        String desc = createTaskDescEditText.getText().toString().trim();
+        if(createTaskDescTextInputLayout.isErrorEnabled()){
             showMessage("Cannot create task without a description.", false);
         }else{
             createTaskProgressDialog = new ProgressDialog(this);

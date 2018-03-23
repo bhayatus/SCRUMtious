@@ -29,8 +29,8 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
     private InvitationsPresenterInt invitationsPresenter;
     private FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> invitationListAdapter;
 
-    private RecyclerView invitationList;
-    private LinearLayout emptyStateView;
+    private RecyclerView invitationsFragmentRecyclerView;
+    private LinearLayout invitationsFragmentNoInvitationsEmptyStateView;
 
 
     public InvitationsFragment() {
@@ -48,28 +48,28 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_invitations, container, false);
-        invitationList = view.findViewById(R.id.invitationsFragmentRecyclerView);
-        emptyStateView = view.findViewById(R.id.invitationsFragmentNoInvitationsEmptyStateView);
+        invitationsFragmentRecyclerView = view.findViewById(R.id.invitationsFragmentRecyclerView);
+        invitationsFragmentNoInvitationsEmptyStateView = view.findViewById(R.id.invitationsFragmentNoInvitationsEmptyStateView);
         setupRecyclerView();
         return view;
     }
 
     private void setupRecyclerView(){
-        invitationList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        invitationsFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         invitationListAdapter = invitationsPresenter.setupInvitationListAdapter();
-        invitationList.setAdapter(invitationListAdapter);
+        invitationsFragmentRecyclerView.setAdapter(invitationListAdapter);
     }
 
     // Sets the view to either show the list of invitations, or nothing
     @Override
     public void setEmptyStateView(){
         if (invitationListAdapter.getItemCount() == 0){
-            emptyStateView.setVisibility(View.VISIBLE);
-            invitationList.setVisibility(View.GONE);
+            invitationsFragmentNoInvitationsEmptyStateView.setVisibility(View.VISIBLE);
+            invitationsFragmentRecyclerView.setVisibility(View.GONE);
         }
         else{
-            emptyStateView.setVisibility(View.GONE);
-            invitationList.setVisibility(View.VISIBLE);
+            invitationsFragmentNoInvitationsEmptyStateView.setVisibility(View.GONE);
+            invitationsFragmentRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -135,31 +135,31 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
     // Viewholder class to display invitations
     public static class InvitationsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView projectTitleView, emailView;
-        ImageButton acceptInvite, declineInvite;
+        TextView userInviteRowProjectTitleTextView, userInviteRowInviteeNameTextView;
+        ImageButton userInviteRowAcceptInviteImageButton, userInviteRowDeclineInviteImageButton;
         public InvitationsViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
 
-            projectTitleView = (TextView) mView.findViewById(R.id.userInviteRowProjectTitleTextView);
-            emailView = (TextView) mView.findViewById(R.id.userInviteRowInviteeNameTextView);
-            acceptInvite = (ImageButton) mView.findViewById(R.id.userInviteRowAcceptInviteImageButton);
-            declineInvite = (ImageButton) mView.findViewById(R.id.userInviteRowDeclineInviteImageButton);
+            userInviteRowProjectTitleTextView = mView.findViewById(R.id.userInviteRowProjectTitleTextView);
+            userInviteRowInviteeNameTextView = mView.findViewById(R.id.userInviteRowInviteeNameTextView);
+            userInviteRowAcceptInviteImageButton = mView.findViewById(R.id.userInviteRowAcceptInviteImageButton);
+            userInviteRowDeclineInviteImageButton = mView.findViewById(R.id.userInviteRowDeclineInviteImageButton);
 
         }
 
         // Populates each row of the recycler view with the invitation details
         public void setDetails(String projectTitle, String emailAddress){
-            projectTitleView.setText(projectTitle);
-            emailView.setText("from " + emailAddress);
+            userInviteRowProjectTitleTextView.setText(projectTitle);
+            userInviteRowInviteeNameTextView.setText("from " + emailAddress);
         }
 
         public ImageButton getAcceptButton(){
-            return acceptInvite;
+            return userInviteRowAcceptInviteImageButton;
         }
 
         public ImageButton getDeclineButton(){
-            return declineInvite;
+            return userInviteRowDeclineInviteImageButton;
         }
     }
 

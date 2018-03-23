@@ -50,7 +50,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
         pid = getArguments().getString("projectId");
         String type = getArguments().getString("type");
         String sprintId = getArguments().getString("sprintId");
-        this.backlogPresenter = new BacklogPresenter(this, pid, type, sprintId);
+        backlogPresenter = new BacklogPresenter(this, pid, type, sprintId);
     }
 
     @Override
@@ -108,19 +108,19 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
         startActivity(intent);
     }
 
-    // User wants to mark user story as userStoryRowCompletedUserStoryImageButton or in progress
+    // User wants to mark user story as completed or in progress
     @Override
     public void onClickChangeStatus(final String usid, final boolean newStatus) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        // User wants to change to userStoryRowCompletedUserStoryImageButton
+        // User wants to change to completed
         if (newStatus){
             builder.setTitle("Mark As Completed?")
-                    .setMessage("Are you sure you want to mark this user story as userStoryRowCompletedUserStoryImageButton?")
+                    .setMessage("Are you sure you want to mark this user story as completed?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Change status to userStoryRowCompletedUserStoryImageButton
+                            // Change status to completed
                             backlogPresenter.changeCompletedStatus(usid, newStatus);
                         }
                     })
@@ -139,7 +139,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Change userStoryRowCompletedUserStoryImageButton status of user story to in progress
+                            // Change completed status of user story to in progress
                             backlogPresenter.changeCompletedStatus(usid, newStatus);
                         }
                     })
@@ -155,12 +155,12 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
     }
 
-    // Owner wants to userStoryRowDeleteUserStoryImageButton the user story
+    // Owner wants to delete the user story
     @Override
     public void onClickDeleteUserStory(final String usid){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete User Story")
-                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this user story?")
+                .setMessage("Are you sure you want to delete this user story?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -168,11 +168,11 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
                                 deletingUserStoryDialog = new ProgressDialog(getContext());
                                 deletingUserStoryDialog.setTitle("Delete User Story");
                                 deletingUserStoryDialog.setCancelable(false);
-                                deletingUserStoryDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton user story...");
+                                deletingUserStoryDialog.setMessage("Attempting to delete user story...");
                                 deletingUserStoryDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deletingUserStoryDialog.show();
 
-                                // Now actually userStoryRowDeleteUserStoryImageButton it
+                                // Now actually delete it
                                 backlogPresenter.deleteUserStory(usid);
                             }
 
@@ -224,10 +224,10 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
     // Viewholder class to display user stories
     public static class BacklogViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView userStoryRowUserStoryNameTextView, userStoryRowPointsUserStoryPointsTextView,
-                userStoryRowUserStoryDescTextView, userStoryAssignedUserStoryAssignedToMemberNameTextView, userStoryRowUserStoryCompletedDateTextView;
-        ImageButton userStoryRowCompletedUserStoryImageButton;
-        ImageButton userStoryRowDeleteUserStoryImageButton;
+        TextView userStoryRowNameTextView, userStoryRowPointsTextView,
+                userStoryRowDescTextView, userStoryRowAssignedToMemberTextView,
+                userStoryCompletedDateTextView;
+        ImageButton userStoryRowCompletedImageButton, userStoryRowDeleteImageButton;
         LinearLayout userStoryRowAssignedToRelativeLayout;
         CardView userStoryRowCardView;
 
@@ -235,55 +235,55 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
             super(itemView);
             this.mView = itemView;
 
-            userStoryRowUserStoryNameTextView = (TextView) mView.findViewById(R.id.userStoryRowUserStoryNameTextView);
-            userStoryRowPointsUserStoryPointsTextView = (TextView) mView.findViewById(R.id.userStoryRowPointsUserStoryPointsTextView);
-            userStoryRowUserStoryDescTextView = (TextView) mView.findViewById(R.id.userStoryRowUserStoryDescTextView);
-            userStoryAssignedUserStoryAssignedToMemberNameTextView = (TextView) mView.findViewById(R.id.userStoryAssignedUserStoryAssignedToMemberNameTextView);
-            userStoryRowUserStoryCompletedDateTextView = (TextView) mView.findViewById(R.id.userStoryRowUserStoryCompletedDateTextView);
-            userStoryRowCompletedUserStoryImageButton = (ImageButton) mView.findViewById(R.id.userStoryRowCompletedUserStoryImageButton);
-            userStoryRowDeleteUserStoryImageButton = (ImageButton) mView.findViewById(R.id.userStoryRowDeleteUserStoryImageButton);
-            userStoryRowAssignedToRelativeLayout = (LinearLayout) mView.findViewById(R.id.userStoryRowAssignedToRelativeLayout);
-            userStoryRowCardView = (CardView) mView.findViewById(R.id.userStoryRowCardView);
+            userStoryRowNameTextView = mView.findViewById(R.id.userStoryRowNameTextView);
+            userStoryRowPointsTextView = mView.findViewById(R.id.userStoryRowPointsTextView);
+            userStoryRowDescTextView = mView.findViewById(R.id.userStoryRowDescTextView);
+            userStoryRowAssignedToMemberTextView = mView.findViewById(R.id.userStoryRowAssignedToMemberTextView);
+            userStoryCompletedDateTextView = mView.findViewById(R.id.userStoryCompletedDateTextView);
+            userStoryRowCompletedImageButton = mView.findViewById(R.id.userStoryRowCompletedImageButton);
+            userStoryRowDeleteImageButton = mView.findViewById(R.id.userStoryRowDeleteImageButton);
+            userStoryRowAssignedToRelativeLayout = mView.findViewById(R.id.userStoryRowAssignedToRelativeLayout);
+            userStoryRowCardView = mView.findViewById(R.id.userStoryRowCardView);
         }
 
 
         // Populates each row of the recycler view with the user story details
         public void setDetails(String name, String points, String assignedToName, String description){
-            userStoryRowUserStoryNameTextView.setText(name);
+            userStoryRowNameTextView.setText(name);
 
 
             // If only 1 point, don't display as plural
             if (Integer.parseInt(points) == 1){
-                userStoryRowPointsUserStoryPointsTextView.setText(points + " point");
+                userStoryRowPointsTextView.setText(points + " point");
             }
             else {
-                userStoryRowPointsUserStoryPointsTextView.setText(points + " points");
+                userStoryRowPointsTextView.setText(points + " points");
             }
 
-            userStoryAssignedUserStoryAssignedToMemberNameTextView.setText(assignedToName);
+            userStoryRowAssignedToMemberTextView.setText(assignedToName);
 
-            userStoryRowUserStoryDescTextView.setText(description);
+            userStoryRowDescTextView.setText(description);
 
         }
 
         public void setCompletedDateDetails(String date){
-            userStoryRowUserStoryCompletedDateTextView.setVisibility(View.VISIBLE);
-            userStoryRowUserStoryCompletedDateTextView.setText(date);
+            userStoryCompletedDateTextView.setVisibility(View.VISIBLE);
+            userStoryCompletedDateTextView.setText(date);
         }
 
-        public ImageButton getUserStoryRowCompletedUserStoryImageButton(){
-            return this.userStoryRowCompletedUserStoryImageButton;
+        public ImageButton getUserStoryRowCompletedImageButton(){
+            return this.userStoryRowCompletedImageButton;
         }
 
-        public ImageButton getUserStoryRowDeleteUserStoryImageButton(){
-            return this.userStoryRowDeleteUserStoryImageButton;
+        public ImageButton getUserStoryRowDeleteImageButton(){
+            return this.userStoryRowDeleteImageButton;
         }
 
-        public void setCompletedInvisible() { this.userStoryRowCompletedUserStoryImageButton.setVisibility(View.GONE);}
+        public void setCompletedInvisible() { this.userStoryRowCompletedImageButton.setVisibility(View.GONE);}
 
-        // Only owner should be able to userStoryRowDeleteUserStoryImageButton user stories
+        // Only owner should be able to userStoryRowDeleteImageButton user stories
         public void setDeleteInvisible(){
-            this.userStoryRowDeleteUserStoryImageButton.setVisibility(View.GONE);
+            this.userStoryRowDeleteImageButton.setVisibility(View.GONE);
         }
 
         // Called when user story isn't assigned to a sprint
@@ -301,3 +301,4 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
 
     }
 }
+

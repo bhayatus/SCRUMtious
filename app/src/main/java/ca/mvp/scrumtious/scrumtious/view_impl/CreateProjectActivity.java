@@ -26,10 +26,10 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
     private CreateProjectPresenter createProjectPresenter;
 
-    private EditText titleField, descriptionField;
-    private TextInputLayout titleFieldLayout, descriptionFieldLayout;
-    private ImageButton logoutBtn;
-    private android.support.v7.widget.Toolbar toolbar;
+    private EditText createProjectTitleEditText, createProjectDescEditText;
+    private TextInputLayout createProjectTitleTextInputLayout, createProjectDescTextInputLayout;
+    private ImageButton createProjectLogoutBtn;
+    private android.support.v7.widget.Toolbar createProjectToolbar;
     private ProgressDialog createProjectProgressDialog;
 
 
@@ -39,18 +39,20 @@ public class CreateProjectActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_create_project);
         createProjectPresenter = new CreateProjectPresenter(this);
 
-        logoutBtn = findViewById(R.id.createProjectLogoutBtn);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        createProjectLogoutBtn = findViewById(R.id.createProjectLogoutBtn);
+        createProjectToolbar = findViewById(R.id.createProjectToolbar);
+
+
+        createProjectLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(CreateProjectActivity.this);
             }
         });
 
-        toolbar = findViewById(R.id.createProjectToolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        createProjectToolbar.setNavigationIcon(R.drawable.ic_back);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        createProjectToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed(); // This should do the same as pressing back
@@ -64,7 +66,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed(){
 
-        if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0){
+        if(createProjectTitleEditText.getText().toString().trim().length() > 0 || createProjectDescEditText.getText().toString().trim().length() > 0){
             new AlertDialog.Builder(this)
                     .setTitle("Discard Project?")
                     .setMessage("Are you sure you to discard this new project?")
@@ -86,20 +88,19 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
 
     private void setupFormWatcher(){
-        titleField = (EditText) findViewById(R.id.createProjectTitleEditText);
-        descriptionField = (EditText) findViewById(R.id.createProjectDescEditText);
-        titleFieldLayout = (TextInputLayout) findViewById(R.id.createProjectTitleTextInputLayout);
-        descriptionFieldLayout = (TextInputLayout)
-                findViewById(R.id.createProjectDescTextInputLayout);
+        createProjectTitleEditText = findViewById(R.id.createProjectTitleEditText);
+        createProjectDescEditText = findViewById(R.id.createProjectDescEditText);
+        createProjectTitleTextInputLayout = findViewById(R.id.createProjectTitleTextInputLayout);
+        createProjectDescTextInputLayout = findViewById(R.id.createProjectDescTextInputLayout);
 
-        titleFieldLayout.setError(null);
-        descriptionFieldLayout.setError(null);
-        titleFieldLayout.setErrorEnabled(true);
-        descriptionFieldLayout.setErrorEnabled(true);
+        createProjectTitleTextInputLayout.setError(null);
+        createProjectDescTextInputLayout.setError(null);
+        createProjectTitleTextInputLayout.setErrorEnabled(true);
+        createProjectDescTextInputLayout.setErrorEnabled(true);
 
-        //Create a watcher for titleField
-        //Create a listener for titleField and validate it
-        titleField.addTextChangedListener(new TextWatcher() {
+        //Create a watcher for createProjectTitleEditText
+        //Create a listener for createProjectTitleEditText and validate it
+        createProjectTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -111,23 +112,23 @@ public class CreateProjectActivity extends AppCompatActivity implements
             @Override
             public void afterTextChanged(Editable editable) {
 
-                String titleText = titleField.getText().toString();
+                String titleText = createProjectTitleEditText.getText().toString();
 
                 if(titleText == null || (titleText.trim().length() <= 0)) {
-                    titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Please enter a project title.");
+                    createProjectTitleTextInputLayout.setErrorEnabled(true);
+                    createProjectTitleTextInputLayout.setError("Please enter a project title.");
                 }
                 else if (titleText.trim().length() > 18){
-                    titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Project title is too long.");
+                    createProjectTitleTextInputLayout.setErrorEnabled(true);
+                    createProjectTitleTextInputLayout.setError("Project title is too long.");
                 }
                 else{
-                    titleFieldLayout.setErrorEnabled(false);
+                    createProjectTitleTextInputLayout.setErrorEnabled(false);
                 }
             }
         });
 
-        descriptionField.addTextChangedListener(new TextWatcher() {
+        createProjectDescEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -140,13 +141,13 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String descText = descriptionField.getText().toString();
+                String descText = createProjectDescEditText.getText().toString();
                 if(descText == null || (descText.trim().length() <= 0)){
-                    descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a project description.");
+                    createProjectDescTextInputLayout.setErrorEnabled(true);
+                    createProjectDescTextInputLayout.setError("Please enter a project description.");
                 }
                 else{
-                    descriptionFieldLayout.setErrorEnabled(false);
+                    createProjectDescTextInputLayout.setErrorEnabled(false);
                 }
 
             }
@@ -186,10 +187,10 @@ public class CreateProjectActivity extends AppCompatActivity implements
 
     // User clicks on create project button
     public void onClickCreateProjectSubmit(View view){
-        String title = titleField.getText().toString().trim();
-        String description = descriptionField.getText().toString().trim();
+        String title = createProjectTitleEditText.getText().toString().trim();
+        String description = createProjectDescEditText.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
-        if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() ) {
+        if(createProjectTitleTextInputLayout.isErrorEnabled() || createProjectDescTextInputLayout.isErrorEnabled() ) {
             showMessage("Cannot create project until fields are filled out properly.", false);
         }
 

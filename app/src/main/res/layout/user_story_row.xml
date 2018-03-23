@@ -31,7 +31,7 @@
             android:paddingLeft="15dp">
 
             <TextView
-                android:id="@+id/userStoryRowUserStoryNameTextView"
+                android:id="@+id/userStoryRowNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -45,7 +45,7 @@
                 />
 
             <ImageButton
-                android:id="@+id/userStoryRowCompletedUserStoryImageButton"
+                android:id="@+id/userStoryRowCompletedImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
@@ -56,7 +56,7 @@
                 />
 
             <ImageButton
-                android:id="@+id/userStoryRowDeleteUserStoryImageButton"
+                android:id="@+id/userStoryRowDeleteImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
@@ -94,7 +94,7 @@
                 />
 
             <TextView
-                android:id="@+id/userStoryRowPointsUserStoryPointsTextView"
+                android:id="@+id/userStoryRowPointsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="-1"
@@ -118,7 +118,7 @@
             android:paddingRight="10dp">
 
             <TextView
-                android:id="@+id/userStoryRowUserStoryDescTextView"
+                android:id="@+id/userStoryRowDescTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="-1"
@@ -153,7 +153,7 @@
                 android:src="@drawable/ic_sprint_row_white"/>
 
             <TextView
-                android:id="@+id/userStoryAssignedUserStoryAssignedToMemberNameTextView"
+                android:id="@+id/userStoryRowAssignedToMemberTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -170,7 +170,7 @@
         </android.widget.LinearLayout>
 
         <TextView
-            android:id="@+id/userStoryRowUserStoryCompletedDateTextView"
+            android:id="@+id/userStoryCompletedDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

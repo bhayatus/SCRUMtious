@@ -37,8 +37,8 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     private String type;
 
     private TaskBoardPresenterInt taskBoardPresenter;
-    private RecyclerView taskBoardList;
-    private LinearLayout emptyStateView;
+    private RecyclerView taskBoardFragmentRecyclerView;
+    private LinearLayout taskBoardFragmentNoTasksEmptyStateView;
     private FirebaseRecyclerAdapter<Task, TaskBoardViewHolder> taskBoardAdapter;
     private ProgressDialog deletingTaskDialog;
 
@@ -52,10 +52,10 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.pid = getArguments().getString("projectId");
-        this. usid = getArguments().getString("userStoryId");
+        pid = getArguments().getString("projectId");
+        usid = getArguments().getString("userStoryId");
         type = getArguments().getString("type");
-        this.taskBoardPresenter = new TaskBoardPresenter(this,pid,usid);
+        taskBoardPresenter = new TaskBoardPresenter(this,pid,usid);
     }
 
     @Override
@@ -63,8 +63,8 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_board, container, false);
-        taskBoardList = view.findViewById(R.id.taskBoardFragmentRecyclerView);
-        emptyStateView = view.findViewById(R.id.taskBoardFragmentNoTasksEmptyStateView);
+        taskBoardFragmentRecyclerView = view.findViewById(R.id.taskBoardFragmentRecyclerView);
+        taskBoardFragmentNoTasksEmptyStateView = view.findViewById(R.id.taskBoardFragmentNoTasksEmptyStateView);
         setupRecyclerView();
         return view;
     }
@@ -81,10 +81,10 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     }
 
     public void setupRecyclerView(){
-        taskBoardList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        taskBoardFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // Sets up the specified type of adapter
         taskBoardAdapter = taskBoardPresenter.setupTaskBoardAdapter(type);
-        taskBoardList.setAdapter(taskBoardAdapter);
+        taskBoardFragmentRecyclerView.setAdapter(taskBoardAdapter);
     }
     @Override
     public void showMessage(String message, boolean showAsToast) {
@@ -113,12 +113,12 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     @Override
     public void setEmptyStateView() {
         if(taskBoardAdapter.getItemCount() == 0){
-            emptyStateView.setVisibility(View.VISIBLE);
-            taskBoardList.setVisibility(View.GONE);
+            taskBoardFragmentNoTasksEmptyStateView.setVisibility(View.VISIBLE);
+            taskBoardFragmentRecyclerView.setVisibility(View.GONE);
         }
         else{
-            emptyStateView.setVisibility(View.GONE);
-            taskBoardList.setVisibility(View.VISIBLE);
+            taskBoardFragmentNoTasksEmptyStateView.setVisibility(View.GONE);
+            taskBoardFragmentRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -126,7 +126,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
     public void onClickDeleteTask(final String tid){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Task")
-                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this task?")
+                .setMessage("Are you sure you want to delete this task?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -134,7 +134,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                         deletingTaskDialog = new ProgressDialog(getContext());
                         deletingTaskDialog.setTitle("Delete Task");
                         deletingTaskDialog.setCancelable(false);
-                        deletingTaskDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton task...");
+                        deletingTaskDialog.setMessage("Attempting to delete task...");
                         deletingTaskDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                         deletingTaskDialog.show();
 
@@ -171,7 +171,7 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
                         return true;
 
                     case R.id.task_completed:
-                        taskBoardPresenter.changeStatus(tid,"userStoryRowCompletedUserStoryImageButton");
+                        taskBoardPresenter.changeStatus(tid,"completed");
                         return true;
                 }
 
@@ -193,54 +193,54 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
     public static class TaskBoardViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView descriptionView, assignedToView;
-        ImageButton taskSwitch;
-        ImageButton taskDelete;
-        CardView card;
+        TextView taskRowTaskDescTextView, taskRowTaskAssignedToTextView;
+        ImageButton taskRowSwitchTaskStatesImageButton;
+        ImageButton taskRowDeleteTaskImageButton;
+        CardView taskRowCardView;
 
         public TaskBoardViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
 
-            descriptionView = (TextView) mView.findViewById(R.id.taskRowTaskDescTextView);
-            assignedToView = (TextView) mView.findViewById(R.id.taskRowTaskAssignedToTextView);
-            taskDelete = (ImageButton) mView.findViewById(R.id.taskRowDeleteTaskImageButton);
-            taskSwitch = (ImageButton) mView.findViewById(R.id.taskRowSwitchTaskStatesImageButton);
-            card = (CardView) mView.findViewById(R.id.taskRowCardView);
+            taskRowTaskDescTextView = mView.findViewById(R.id.taskRowTaskDescTextView);
+            taskRowTaskAssignedToTextView = mView.findViewById(R.id.taskRowTaskAssignedToTextView);
+            taskRowDeleteTaskImageButton = mView.findViewById(R.id.taskRowDeleteTaskImageButton);
+            taskRowSwitchTaskStatesImageButton = mView.findViewById(R.id.taskRowSwitchTaskStatesImageButton);
+            taskRowCardView = mView.findViewById(R.id.taskRowCardView);
         }
         public void setDetails(String description, String assignedTo){
 
-            descriptionView.setText(description);
+            taskRowTaskDescTextView.setText(description);
             if (assignedTo.equals("")){
-                assignedToView.setText("Not currently assigned to a member");
+                taskRowTaskAssignedToTextView.setText("Not currently assigned to a member");
             }
             else {
-                assignedToView.setText("Assigned to " + assignedTo);
+                taskRowTaskAssignedToTextView.setText("Assigned to " + assignedTo);
             }
         }
-        public ImageButton getTaskSwitch(){
-            return this.taskSwitch;
+        public ImageButton getTaskRowSwitchTaskStatesImageButton(){
+            return this.taskRowSwitchTaskStatesImageButton;
         }
 
-        public ImageButton getTaskDelete(){
-            return this.taskDelete;
+        public ImageButton getTaskRowDeleteTaskImageButton(){
+            return this.taskRowDeleteTaskImageButton;
         }
 
-        // Only owner should be able to userStoryRowDeleteUserStoryImageButton user stories
+        // Only owner should be able to delete user stories
         public void setDeleteInvisible(){
-            this.taskDelete.setVisibility(View.GONE);
+            this.taskRowDeleteTaskImageButton.setVisibility(View.GONE);
         }
 
         public void setCardRed(){
-            card.setCardBackgroundColor(Color.parseColor("#F44336"));
+            taskRowCardView.setCardBackgroundColor(Color.parseColor("#F44336"));
         }
 
         public void setCardYellow(){
-            card.setCardBackgroundColor(Color.parseColor("#F5BA0A"));
+            taskRowCardView.setCardBackgroundColor(Color.parseColor("#F5BA0A"));
         }
 
         public void setCardGreen(){
-            card.setCardBackgroundColor(Color.parseColor("#8BC34A"));
+            taskRowCardView.setCardBackgroundColor(Color.parseColor("#8BC34A"));
 
         }
 

@@ -80,7 +80,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                     }
                 });
 
-                ImageButton moreBtn = viewHolder.getMoreIcon();
+                ImageButton moreBtn = viewHolder.getProjectRowExpandDescIconImageButton();
 
                 // When user clicks the button, toggle the description showing boolean and reset description
                 moreBtn.setOnClickListener(new View.OnClickListener() {

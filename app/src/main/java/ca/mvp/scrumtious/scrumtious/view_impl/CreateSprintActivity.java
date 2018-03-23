@@ -36,15 +36,15 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     private String pid;
     private ValueEventListener projectListener;
 
-    private EditText titleField, descriptionField;
-    private TextView displayStartDate, displayEndDate;
-    private TextInputLayout titleFieldLayout, descriptionFieldLayout;
+    private EditText createSprintTitleEditText, createSprintEditText;
+    private TextView createSprintStartDateTextView, createSprintEndDateTextView;
+    private TextInputLayout createSprintTitleTextInputLayout, createSprintDescTextInputLayout;
     private DatePickerDialog startDialog, endDialog;
     private DatePickerDialog.OnDateSetListener startDateSetListener;
     private DatePickerDialog.OnDateSetListener endDateSetListener;
     private ProgressDialog createSprintProgressDialog;
-    private ImageButton logoutBtn;
-    private android.support.v7.widget.Toolbar toolbar;
+    private ImageButton createSprintLogoutImageButton;
+    private android.support.v7.widget.Toolbar createSprintToolbar;
 
     private boolean projectAlreadyDeleted;
 
@@ -76,19 +76,19 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
         createSprintPresenter = new CreateSprintPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.createSprintLogoutImageButton);
+        createSprintLogoutImageButton = findViewById(R.id.createSprintLogoutImageButton);
+        createSprintToolbar = findViewById(R.id.createSprintToolbar);
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        createSprintLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AuthenticationHelper.logout(CreateSprintActivity.this);
             }
         });
 
-        toolbar = findViewById(R.id.createSprintToolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        createSprintToolbar.setNavigationIcon(R.drawable.ic_back);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        createSprintToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -116,10 +116,10 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     @Override
     public void onBackPressed(){
 
-        if(titleField.getText().toString().trim().length() > 0 || descriptionField.getText().toString().trim().length() > 0) {
+        if(createSprintTitleEditText.getText().toString().trim().length() > 0 || createSprintEditText.getText().toString().trim().length() > 0) {
             new AlertDialog.Builder(this)
                     .setTitle("Discard Sprint?")
-                    .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton the sprint?")
+                    .setMessage("Are you sure you want to delete the sprint?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -165,19 +165,19 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     }
 
     public void setupFormWatcher(){
-        titleField = (EditText)findViewById(R.id.createSprintTitleEditText);
-        descriptionField = (EditText)findViewById(R.id.createSprintEditText);
-        displayStartDate = (TextView) findViewById(R.id.createSprintStartDateTextView);
-        displayEndDate = (TextView) findViewById(R.id.createSprintEndDateTextView);
+        createSprintTitleEditText = findViewById(R.id.createSprintTitleEditText);
+        createSprintEditText = findViewById(R.id.createSprintEditText);
+        createSprintStartDateTextView = findViewById(R.id.createSprintStartDateTextView);
+        createSprintEndDateTextView = findViewById(R.id.createSprintEndDateTextView);
 
-        titleFieldLayout = (TextInputLayout)findViewById(R.id.createSprintTitleTextInputLayout);
-        descriptionFieldLayout = (TextInputLayout)findViewById(R.id.createSprintDescTextInputLayout);
+        createSprintTitleTextInputLayout = findViewById(R.id.createSprintTitleTextInputLayout);
+        createSprintDescTextInputLayout = findViewById(R.id.createSprintDescTextInputLayout);
 
-        titleFieldLayout.setError(null);
-        descriptionFieldLayout.setError(null);
+        createSprintTitleTextInputLayout.setError(null);
+        createSprintDescTextInputLayout.setError(null);
 
-        titleFieldLayout.setErrorEnabled(true);
-        descriptionFieldLayout.setErrorEnabled(true);
+        createSprintTitleTextInputLayout.setErrorEnabled(true);
+        createSprintDescTextInputLayout.setErrorEnabled(true);
 
         // Current year, month, day for start date
         Calendar cal = Calendar.getInstance();
@@ -203,7 +203,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         defaultEndMonth = endCalender.get(Calendar.MONTH);
         defaultEndDay = endCalender.get(Calendar.DAY_OF_MONTH);
 
-        displayStartDate.setOnClickListener(new View.OnClickListener(){
+        createSprintStartDateTextView.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
@@ -219,7 +219,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             }
 
         });
-        displayEndDate.setOnClickListener(new View.OnClickListener() {
+        createSprintEndDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -239,7 +239,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
                 String date = month + "/" + day + "/" + year;
-                displayStartDate.setText(date);
+                createSprintStartDateTextView.setText(date);
                 startYear[0] = year;
                 startMonth[0] = month;
                 startDay[0] = day;
@@ -259,7 +259,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
                 String date = month + "/" + day + "/" + year;
-                displayEndDate.setText(date);
+                createSprintEndDateTextView.setText(date);
                 endYear[0] = year;
                 endMonth[0] = month;
                 endDay[0] = day;
@@ -275,9 +275,9 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             }
         };
 
-        //Create watcher and listener for titleField
+        //Create watcher and listener for createSprintTitleEditText
 
-        titleField.addTextChangedListener(new TextWatcher() {
+        createSprintTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -291,22 +291,22 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             @Override
             public void afterTextChanged(Editable editable) {
 
-                String titleFieldText = titleField.getText().toString();
+                String titleFieldText = createSprintTitleEditText.getText().toString();
 
                 if((titleFieldText == null) || (titleFieldText.trim().length() <= 0)){
-                    titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Please enter a title for your sprint.");
+                    createSprintTitleTextInputLayout.setErrorEnabled(true);
+                    createSprintTitleTextInputLayout.setError("Please enter a title for your sprint.");
                 }else if(titleFieldText.trim().length() > 18){
-                    titleFieldLayout.setErrorEnabled(true);
-                    titleFieldLayout.setError("Sprint name is too long.");
+                    createSprintTitleTextInputLayout.setErrorEnabled(true);
+                    createSprintTitleTextInputLayout.setError("Sprint name is too long.");
                 }else{
-                    titleFieldLayout.setErrorEnabled(false);
-                    titleFieldLayout.setError(null);
+                    createSprintTitleTextInputLayout.setErrorEnabled(false);
+                    createSprintTitleTextInputLayout.setError(null);
                 }
             }
         });
 
-        descriptionField.addTextChangedListener(new TextWatcher() {
+        createSprintEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -319,13 +319,13 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String descriptionFieldText = descriptionField.getText().toString();
+                String descriptionFieldText = createSprintEditText.getText().toString();
                 if(descriptionFieldText == null || (descriptionFieldText.trim().length() <= 0)){
-                    descriptionFieldLayout.setErrorEnabled(true);
-                    descriptionFieldLayout.setError("Please enter a sprint description.");
+                    createSprintDescTextInputLayout.setErrorEnabled(true);
+                    createSprintDescTextInputLayout.setError("Please enter a sprint description.");
                 }else{
-                    descriptionFieldLayout.setErrorEnabled(false);
-                    descriptionFieldLayout.setError(null);
+                    createSprintDescTextInputLayout.setErrorEnabled(false);
+                    createSprintDescTextInputLayout.setError(null);
                 }
             }
         });
@@ -352,15 +352,15 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     }
 
     public void onClickCreateSprint(View view){
-        if(titleFieldLayout.isErrorEnabled() || descriptionFieldLayout.isErrorEnabled() || !choseStart || !choseEnd){
+        if(createSprintTitleTextInputLayout.isErrorEnabled() || createSprintDescTextInputLayout.isErrorEnabled() || !choseStart || !choseEnd){
             showMessage("Cannot create sprint until fields are filled out properly.", false);
         }
         else if(startDate>=endDate){
             showMessage("Cannot have start date on, or after end date.", false);
         }
         else{
-            String name = titleField.getText().toString().trim();
-            String desc = descriptionField.getText().toString().trim();
+            String name = createSprintTitleEditText.getText().toString().trim();
+            String desc = createSprintEditText.getText().toString().trim();
 
             // Creates a progress dialog to let the user know that the sprint is being created
             createSprintProgressDialog = new ProgressDialog(this);
@@ -387,6 +387,5 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
         startActivity(intent);
         finish();
     }
-
 
 }

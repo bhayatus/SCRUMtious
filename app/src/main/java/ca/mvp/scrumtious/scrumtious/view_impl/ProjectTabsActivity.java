@@ -17,8 +17,8 @@ import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 public class ProjectTabsActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private ImageButton logoutBtn;
+    private ViewPager projectTabsViewPager;
+    private ImageButton projectTabsLogoutImageButton;
 
 
     @Override
@@ -26,8 +26,8 @@ public class ProjectTabsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_tabs);
 
-        logoutBtn = findViewById(R.id.projectTabsLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        projectTabsLogoutImageButton = findViewById(R.id.projectTabsLogoutImageButton);
+        projectTabsLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(ProjectTabsActivity.this);
@@ -39,11 +39,11 @@ public class ProjectTabsActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.projectTabsViewPager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        projectTabsViewPager = findViewById(R.id.projectTabsViewPager);
+        projectTabsViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout mainTabs = (TabLayout) findViewById(R.id.projectTabsTabLayout);
-        mainTabs.setupWithViewPager(mViewPager);
+        TabLayout projectTabsTabLayout = findViewById(R.id.projectTabsTabLayout);
+        projectTabsTabLayout.setupWithViewPager(projectTabsViewPager);
 
     }
 

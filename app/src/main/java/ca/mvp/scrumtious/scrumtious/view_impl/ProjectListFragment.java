@@ -35,11 +35,11 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     private FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> allProjectsAdapter;
     private FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> myProjectsAdapter;
 
-    private LinearLayout emptyStateView;
-    private TextView ownedProjectsText;
-    private Switch showOnlyMyProjects;
-    private Button addProjectBtn;
-    private RecyclerView projectList;
+    private LinearLayout projectListFragmentNoProjectsEmptyStateView;
+    private TextView projectListFragmentOwnedProjectsTextView;
+    private Switch projectListFragmentOwnedProjectsSwitch;
+    private Button projectListFragmentAddProjectButton;
+    private RecyclerView projectListFragmentRecyclerView;
     private ProgressDialog loadingProjectsDialog;
 
     public ProjectListFragment() {
@@ -58,20 +58,20 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
-        ownedProjectsText = (TextView) view.findViewById(R.id.projectListFragmentOwnedProjectsTextView);
-        projectList = (RecyclerView) view.findViewById(R.id.projectListFragmentRecyclerView);
-        showOnlyMyProjects = (Switch) view.findViewById(R.id.projectListFragmentOwnedProjectsSwitch);
+        projectListFragmentOwnedProjectsTextView = view.findViewById(R.id.projectListFragmentOwnedProjectsTextView);
+        projectListFragmentRecyclerView = view.findViewById(R.id.projectListFragmentRecyclerView);
+        projectListFragmentOwnedProjectsSwitch = view.findViewById(R.id.projectListFragmentOwnedProjectsSwitch);
         setupRecyclerView();
-        addProjectBtn = (Button) view.findViewById(R.id.projectListFragmentAddProjectButton);
+        projectListFragmentAddProjectButton = view.findViewById(R.id.projectListFragmentAddProjectButton);
 
-        addProjectBtn.setOnClickListener(new View.OnClickListener() {
+        projectListFragmentAddProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickAddNewProject(view);
             }
         });
 
-        emptyStateView = (LinearLayout) view.findViewById(R.id.projectListFragmentNoProjectsEmptyStateView);
+        projectListFragmentNoProjectsEmptyStateView = view.findViewById(R.id.projectListFragmentNoProjectsEmptyStateView);
 
         return view;
 
@@ -87,7 +87,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
         loadingProjectsDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loadingProjectsDialog.show();
 
-        projectList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        projectListFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // The adapter that displays only projects owned by the user
         myProjectsAdapter = projectListPresenterInt.setupProjectListAdapter(loadingProjectsDialog, true);
@@ -96,20 +96,20 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
         allProjectsAdapter = projectListPresenterInt.setupProjectListAdapter(loadingProjectsDialog, false);
 
         // Show all projects by default
-        projectList.setAdapter(allProjectsAdapter);
+        projectListFragmentRecyclerView.setAdapter(allProjectsAdapter);
 
-        showOnlyMyProjects.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        projectListFragmentOwnedProjectsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 // User only wants to see the projects that they own
                 if (isChecked){
 
-                    projectList.setAdapter(myProjectsAdapter);
+                    projectListFragmentRecyclerView.setAdapter(myProjectsAdapter);
                 }
                 // User wants to see all projects
                 else{
-                    projectList.setAdapter(allProjectsAdapter);
+                    projectListFragmentRecyclerView.setAdapter(allProjectsAdapter);
                 }
             }
         });
@@ -119,16 +119,16 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     @Override
     public void setEmptyStateView(){
         if (allProjectsAdapter.getItemCount() == 0 && myProjectsAdapter.getItemCount() == 0){
-            emptyStateView.setVisibility(View.VISIBLE);
-            showOnlyMyProjects.setVisibility(View.GONE);
-            ownedProjectsText.setVisibility(View.GONE);
-            projectList.setVisibility(View.GONE);
+            projectListFragmentNoProjectsEmptyStateView.setVisibility(View.VISIBLE);
+            projectListFragmentOwnedProjectsSwitch.setVisibility(View.GONE);
+            projectListFragmentOwnedProjectsTextView.setVisibility(View.GONE);
+            projectListFragmentRecyclerView.setVisibility(View.GONE);
         }
         else{
-            emptyStateView.setVisibility(View.GONE);
-            projectList.setVisibility(View.VISIBLE);
-            ownedProjectsText.setVisibility(View.VISIBLE);
-            showOnlyMyProjects.setVisibility(View.VISIBLE);
+            projectListFragmentNoProjectsEmptyStateView.setVisibility(View.GONE);
+            projectListFragmentRecyclerView.setVisibility(View.VISIBLE);
+            projectListFragmentOwnedProjectsTextView.setVisibility(View.VISIBLE);
+            projectListFragmentOwnedProjectsSwitch.setVisibility(View.VISIBLE);
         }
     }
 
@@ -165,9 +165,9 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     // Viewholder class to display the project list
     public static class ProjectsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView titleView, ownerEmailAddressView, descriptionView, creationDateView, numMembersView, numSprintsView;
-        ImageView membersIcon, sprintsIcon;
-        ImageButton moreIcon;
+        TextView projectRowTitleTextView, projectRowEmailAddressTextView, projectRowProjectDescTextView, projectRowProjectCreatedDateTextView, projectRowProjectNumberOfMembersTextView, projectRowProjectNumberOfSprintsTextView;
+        ImageView projectRowProjectNumberOfMembersImageView, projectRowProjectNumberOfSprintsImageView;
+        ImageButton projectRowExpandDescIconImageButton;
 
         // Don't show whole description by default
         boolean showFull = false;
@@ -176,30 +176,15 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             super(itemView);
             this.mView = itemView;
 
-            titleView = (TextView) mView.findViewById(R.id.projectRowTitleTextView);
-            ownerEmailAddressView = (TextView) mView.findViewById(R.id.projectRowEmailAddressTextView);
-            descriptionView = (TextView) mView.findViewById(R.id.projectRowProjectDescTextView);
-            creationDateView = (TextView) mView.findViewById(R.id.projectRowProjectCreatedDateTextView);
-            numMembersView = (TextView) mView.findViewById(R.id.projectRowProjectNumberOfMembersTextView);
-            numSprintsView = (TextView) mView.findViewById(R.id.projectRowProjectNumberOfSprintsTextView);
-            membersIcon = (ImageView) mView.findViewById(R.id.projectRowProjectNumberOfMembersImageView);
-            sprintsIcon = (ImageView) mView.findViewById(R.id.projectRowProjectNumberOfSprintsImageView);
-            moreIcon = (ImageButton) mView.findViewById(R.id.projectRowExpandDescIconImageButton);
-
-            membersIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TooltipCompat.setTooltipText(v, "Total number of members within this project");
-                }
-            });
-
-            sprintsIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TooltipCompat.setTooltipText(v, "Total number of sprints within this project");
-
-                }
-            });
+            projectRowTitleTextView = mView.findViewById(R.id.projectRowTitleTextView);
+            projectRowEmailAddressTextView = mView.findViewById(R.id.projectRowEmailAddressTextView);
+            projectRowProjectDescTextView = mView.findViewById(R.id.projectRowProjectDescTextView);
+            projectRowProjectCreatedDateTextView = mView.findViewById(R.id.projectRowProjectCreatedDateTextView);
+            projectRowProjectNumberOfMembersTextView = mView.findViewById(R.id.projectRowProjectNumberOfMembersTextView);
+            projectRowProjectNumberOfSprintsTextView = mView.findViewById(R.id.projectRowProjectNumberOfSprintsTextView);
+            projectRowProjectNumberOfMembersImageView = mView.findViewById(R.id.projectRowProjectNumberOfMembersImageView);
+            projectRowProjectNumberOfSprintsImageView = mView.findViewById(R.id.projectRowProjectNumberOfSprintsImageView);
+            projectRowExpandDescIconImageButton = mView.findViewById(R.id.projectRowExpandDescIconImageButton);
 
         }
 
@@ -225,26 +210,26 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
                 showOrHideMoreIcon(false);
             }
 
-            titleView.setText(title);
-            ownerEmailAddressView.setText("Owner: "+ ownerEmailAddress);
-            descriptionView.setText(displayDesc);
-            creationDateView.setText(creationDate);
-            numMembersView.setText(numMembers);
-            numSprintsView.setText(numSprints);
+            projectRowTitleTextView.setText(title);
+            projectRowEmailAddressTextView.setText("Owner: "+ ownerEmailAddress);
+            projectRowProjectDescTextView.setText(displayDesc);
+            projectRowProjectCreatedDateTextView.setText(creationDate);
+            projectRowProjectNumberOfMembersTextView.setText(numMembers);
+            projectRowProjectNumberOfSprintsTextView.setText(numSprints);
         }
 
         // Either show or hide the more icon
         public void showOrHideMoreIcon(boolean hide){
             if (hide){
-                moreIcon.setVisibility(View.GONE);
+                projectRowExpandDescIconImageButton.setVisibility(View.GONE);
             }
             else{
-                moreIcon.setVisibility(View.VISIBLE);
+                projectRowExpandDescIconImageButton.setVisibility(View.VISIBLE);
             }
         }
 
-        public ImageButton getMoreIcon(){
-            return moreIcon;
+        public ImageButton getProjectRowExpandDescIconImageButton(){
+            return projectRowExpandDescIconImageButton;
         }
 
         // User clicked on the show more icon, switch boolean state and reset description
@@ -269,7 +254,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
             }
 
             // Reset the description
-            descriptionView.setText(displayDesc);
+            projectRowProjectDescTextView.setText(displayDesc);
         }
 
 

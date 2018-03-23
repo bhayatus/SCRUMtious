@@ -39,11 +39,11 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     private String pid;
     private ValueEventListener projectListener;
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
+    private DrawerLayout individualProjectDrawerLayout;
+    private NavigationView individualProjectNavigationView;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private ImageButton deleteBtn, logoutBtn;
+    private ViewPager individualProjectViewPager;
+    private ImageButton individualProjectDeleteImageButton, individualProjectLogoutImageButton;
     private ProgressDialog deleteProjectProgressDialog;
 
     private boolean projectAlreadyDeleted;
@@ -62,9 +62,9 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         individualProjectPresenter = new IndividualProjectPresenter(this, pid);
         individualProjectPresenter.checkIfOwner();
 
-        deleteBtn = findViewById(R.id.individualProjectDeleteImageButton);
-        logoutBtn = findViewById(R.id.individualProjectLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        individualProjectDeleteImageButton = findViewById(R.id.individualProjectDeleteImageButton);
+        individualProjectLogoutImageButton = findViewById(R.id.individualProjectLogoutImageButton);
+        individualProjectLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(IndividualProjectActivity.this);
@@ -76,26 +76,26 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.individualProjectViewPager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        individualProjectViewPager = findViewById(R.id.individualProjectViewPager);
+        individualProjectViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.individualProjectTabLayout);
-        tabs.setupWithViewPager(mViewPager);
+        TabLayout individualProjectTabLayout = findViewById(R.id.individualProjectTabLayout);
+        individualProjectTabLayout.setupWithViewPager(individualProjectViewPager);
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.individualProjectDrawerLayout);
-        navigationView = findViewById(R.id.individualProjectNavigationView);
+        individualProjectDrawerLayout = findViewById(R.id.individualProjectDrawerLayout);
+        individualProjectNavigationView = findViewById(R.id.individualProjectNavigationView);
 
         // By default, should highlight project overview option to indicate that is where the user is
-        navigationView.setCheckedItem(R.id.nav_overview);
-        navigationView.setNavigationItemSelectedListener(
+        individualProjectNavigationView.setCheckedItem(R.id.nav_overview);
+        individualProjectNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+                        individualProjectDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
                             // User chooses project overview in menu, do nothing as we are already there
@@ -181,8 +181,8 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                 });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.individualProjectToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar individualProjectToolbar = findViewById(R.id.individualProjectToolbar);
+        setSupportActionBar(individualProjectToolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -216,7 +216,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         switch (item.getItemId()) {
             // User clicks on the menu icon on the top left
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                individualProjectDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -259,9 +259,9 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
 
     // Called when current user isn't the owner of the project, they should not be
-    // able to see the userStoryRowDeleteUserStoryImageButton project button
+    // able to see the delete project button
     public void setDeleteInvisible(){
-        deleteBtn.setVisibility(View.GONE);
+        individualProjectDeleteImageButton.setVisibility(View.GONE);
     }
 
     public void showMessage(String message, boolean showAsToast) {
@@ -288,7 +288,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete Project?")
                 .setView(alertView)
-                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this project? Enter your password below to confirm.")
+                .setMessage("Are you sure you want to delete this project? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -298,12 +298,12 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton project.", false);
+                            showMessage("Password incorrect, could not delete project.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton project.", false);
+                                showMessage("Password incorrect, could not delete project.", false);
                             }
                             else {
 
@@ -311,7 +311,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                                 deleteProjectProgressDialog = new ProgressDialog(IndividualProjectActivity.this);
                                 deleteProjectProgressDialog.setTitle("Delete Project");
                                 deleteProjectProgressDialog.setCancelable(false);
-                                deleteProjectProgressDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton project...");
+                                deleteProjectProgressDialog.setMessage("Attempting to delete project...");
                                 deleteProjectProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deleteProjectProgressDialog.show();
 

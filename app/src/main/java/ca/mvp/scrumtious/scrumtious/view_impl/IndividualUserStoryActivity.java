@@ -32,17 +32,15 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
     private String pid, usid;
     private ValueEventListener projectListener, userStoryListener;
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
+    private DrawerLayout individualUserStoryDrawerLayout;
+    private NavigationView individualUserStoryNavigationView;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private TabLayout tabLayout;
-    private ImageButton logoutBtn, helpBtn;
+    private ViewPager individualUserStoryViewPager;
+    private TabLayout individualUserStoryTabLayout;
+    private ImageButton individualUserStoryLogoutImageButton, individualUserStoryHelpImageButton;
 
     private boolean projectAlreadyDeleted;
     private boolean userStoryAlreadyDeleted;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +53,8 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
         projectAlreadyDeleted = false; // Project isn't deleted yet
         userStoryAlreadyDeleted = false; // User story isn't deleted yet
 
-        logoutBtn = findViewById(R.id.individualUserStoryLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        individualUserStoryLogoutImageButton = findViewById(R.id.individualUserStoryLogoutImageButton);
+        individualUserStoryLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(IndividualUserStoryActivity.this);
@@ -64,8 +62,8 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
         });
 
         // Displays a help popup
-        helpBtn = findViewById(R.id.individualUserStoryHelpImageButton);
-        helpBtn.setOnClickListener(new View.OnClickListener() {
+        individualUserStoryHelpImageButton = findViewById(R.id.individualUserStoryHelpImageButton);
+        individualUserStoryHelpImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(IndividualUserStoryActivity.this)
@@ -75,7 +73,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                                 "From there, you can assign a task to a " +
                                 " team member by holding down on it for a few seconds. A dialog will then pop up, allowing you " +
                                 "to assign the task to a member, or no one." + "\n" +
-                                "You can also switch the status of the task by clicking on the toolbar icon, or userStoryRowDeleteUserStoryImageButton the task" +
+                                "You can also switch the status of the task by clicking on the toolbar icon, or delete the task" +
                                 " entirely by selecting the trash can icon.")
                         .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
@@ -87,9 +85,9 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
             }
         });
 
-        tabLayout = (TabLayout) findViewById(R.id.individualUserStoryTabLayout);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.individualUserStoryDrawerLayout);
-        navigationView = (NavigationView) findViewById(R.id.individualUserStoryNavigationView);
+        individualUserStoryTabLayout = findViewById(R.id.individualUserStoryTabLayout);
+        individualUserStoryDrawerLayout = findViewById(R.id.individualUserStoryDrawerLayout);
+        individualUserStoryNavigationView = findViewById(R.id.individualUserStoryNavigationView);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -97,21 +95,21 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.individualUserStoryViewPager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        individualUserStoryViewPager = findViewById(R.id.individualUserStoryViewPager);
+        individualUserStoryViewPager.setAdapter(mSectionsPagerAdapter);
 
-        tabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        individualUserStoryTabLayout.setupWithViewPager(individualUserStoryViewPager);
+        individualUserStoryViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(individualUserStoryTabLayout));
+        individualUserStoryTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(individualUserStoryViewPager));
 
-        navigationView.setNavigationItemSelectedListener(
+        individualUserStoryNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+                        individualUserStoryDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
                             // User chooses Project Overview in menu, go there
@@ -207,8 +205,8 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                 });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.individualUserStoryToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar individualUserStoryToolbar = findViewById(R.id.individualUserStoryToolbar);
+        setSupportActionBar(individualUserStoryToolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -236,7 +234,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
         switch (item.getItemId()) {
             // User clicks on the menu icon on the top left
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                individualUserStoryDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -265,8 +263,8 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
     // User story was deleted
     @Override
     public void onUserStoryDeleted() {
-        if (!projectAlreadyDeleted){
-            projectAlreadyDeleted = true;
+        if (!userStoryAlreadyDeleted){
+            userStoryAlreadyDeleted = true;
 
             // Return to product backlog
             Intent intent = new Intent(IndividualUserStoryActivity.this, ProductBacklogActivity.class);
@@ -321,7 +319,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
                     data = new Bundle();
                     data.putString("projectId", pid);
                     data.putString("userStoryId", usid);
-                    data.putString("type", "userStoryRowCompletedUserStoryImageButton");
+                    data.putString("type", "completed");
                     TaskBoardFragment completedFragment = new TaskBoardFragment();
                     completedFragment.setArguments(data);
                     return completedFragment;

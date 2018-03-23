@@ -44,11 +44,10 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     private boolean projectAlreadyDeleted;
 
-    private RecyclerView messageList;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
-    private ProgressDialog loadingMessagesDialog;
-    private ImageButton groupChatSendBtn, logoutBtn;
+    private RecyclerView groupChatRecyclerView;
+    private DrawerLayout groupChatDrawerLayout;
+    private NavigationView groupChatNavigationView;
+    private ImageButton groupChatSendImageButton, groupChatLogoutImageButton;
 
 
     @Override
@@ -62,8 +61,8 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         this.projectAlreadyDeleted = false;
 
-        logoutBtn = (ImageButton) findViewById(R.id.groupChatLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        groupChatLogoutImageButton = findViewById(R.id.groupChatLogoutImageButton);
+        groupChatLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(GroupChatActivity.this);
@@ -71,19 +70,19 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         });
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.groupChatDrawerLayout);
-        navigationView = findViewById(R.id.groupChatNavigationView);
+        groupChatDrawerLayout = findViewById(R.id.groupChatDrawerLayout);
+        groupChatNavigationView = findViewById(R.id.groupChatNavigationView);
 
         // By default, should highlight chat option to indicate that is where the user is
-        navigationView.setCheckedItem(R.id.nav_chat);
-        navigationView.setNavigationItemSelectedListener(
+        groupChatNavigationView.setCheckedItem(R.id.nav_chat);
+        groupChatNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+                        groupChatDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
                             // User chooses project overview in menu, do nothing as we are already there
@@ -170,15 +169,15 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
                 });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.groupChatToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar groupChatToolbar = findViewById(R.id.groupChatToolbar);
+        setSupportActionBar(groupChatToolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        messageList = (RecyclerView) findViewById(R.id.groupChatRecyclerView);
+        groupChatRecyclerView = findViewById(R.id.groupChatRecyclerView);
         setupRecyclerView();
-        groupChatSendBtn = (ImageButton) findViewById(R.id.groupChatSendImageButton);
+        groupChatSendImageButton = findViewById(R.id.groupChatSendImageButton);
     }
 
     @Override
@@ -187,7 +186,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         switch (item.getItemId()) {
             // User clicks on the menu icon on the top left
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                groupChatDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -245,15 +244,15 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     private void setupRecyclerView(){
 
-        messageList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        groupChatRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         groupChatAdapter = groupChatPresenter.setupMessageAdapter();
-        messageList.setAdapter(groupChatAdapter);
+        groupChatRecyclerView.setAdapter(groupChatAdapter);
     }
 
     public void onClickSendMessage(View view){
 
-        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
-        String messageInput = groupChatMessageInput.getText().toString();
+        EditText groupChatMessageInputEditText = findViewById(R.id.groupChatMessageInputEditText);
+        String messageInput = groupChatMessageInputEditText.getText().toString();
         if (isValidMessage(messageInput)){
             groupChatPresenter.addMessagesToDatabase(messageInput);
         }
@@ -273,10 +272,10 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         private static final int MESSAGE_FADE_IN_DURATION_SEC = 250;
         View mView;
 
-        TextView messageContentRight, messageContentLeft,messageTimestampRight, messageTimestampLeft, messageSentByLeft;
-        LinearLayout leftContainer;
-        RelativeLayout rightContainer;
-        LinearLayout messageLeftDetailsContent;
+        TextView groupChatMessageRowContentRightTextView, groupChatMessageRowContentLeftTextView, groupChatMessageRowTimestampRightTextView, groupChatMessageRowTimestampLeftTextView, groupChatMessageRowSentByLeftTextView;
+        LinearLayout groupChatMessageRowContainerLeft;
+        RelativeLayout groupChatMessageRowContainerRight;
+        LinearLayout groupChatMessageRowLeftDetailsContent;
         AutoTransition autoTransition;
 
         public MessagesViewHolder(View itemView){
@@ -284,14 +283,14 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
             super(itemView);
             this.mView = itemView;
 
-            messageContentRight = (TextView) mView.findViewById(R.id.groupChatMessageRowContentRightTextView);
-            messageContentLeft = (TextView) mView.findViewById(R.id.groupChatMessageRowContentLeftTextView);
-            messageTimestampRight= (TextView) mView.findViewById(R.id.groupChatMessageRowTimestampRightTextView);
-            messageTimestampLeft= (TextView) mView.findViewById(R.id.groupChatMessageRowTimestampLeftTextView);
-            messageSentByLeft = (TextView) mView.findViewById(R.id.groupChatMessageRowSentByLeftTextView);
-            leftContainer = (LinearLayout) mView.findViewById(R.id.groupChatMessageRowContainerLeft);
-            rightContainer = (RelativeLayout) mView.findViewById(R.id.groupChatMessageRowContainerRight);
-            messageLeftDetailsContent = mView.findViewById(R.id.groupChatMessageRowLeftDetailsContent);
+            groupChatMessageRowContentRightTextView = mView.findViewById(R.id.groupChatMessageRowContentRightTextView);
+            groupChatMessageRowContentLeftTextView = mView.findViewById(R.id.groupChatMessageRowContentLeftTextView);
+            groupChatMessageRowTimestampRightTextView = mView.findViewById(R.id.groupChatMessageRowTimestampRightTextView);
+            groupChatMessageRowTimestampLeftTextView = mView.findViewById(R.id.groupChatMessageRowTimestampLeftTextView);
+            groupChatMessageRowSentByLeftTextView = mView.findViewById(R.id.groupChatMessageRowSentByLeftTextView);
+            groupChatMessageRowContainerLeft = mView.findViewById(R.id.groupChatMessageRowContainerLeft);
+            groupChatMessageRowContainerRight = mView.findViewById(R.id.groupChatMessageRowContainerRight);
+            groupChatMessageRowLeftDetailsContent = mView.findViewById(R.id.groupChatMessageRowLeftDetailsContent);
 
             autoTransition = new AutoTransition();
             autoTransition.setDuration(MESSAGE_FADE_IN_DURATION_SEC);
@@ -303,59 +302,59 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
         }
 
         public void showLeftDetails(){
-            TransitionManager.beginDelayedTransition(leftContainer, autoTransition);
-            messageLeftDetailsContent.setVisibility(View.VISIBLE);
+            TransitionManager.beginDelayedTransition(groupChatMessageRowContainerLeft, autoTransition);
+            groupChatMessageRowLeftDetailsContent.setVisibility(View.VISIBLE);
         }
 
 
         public void hideLeftDetails(){
-            TransitionManager.beginDelayedTransition(leftContainer, autoTransition);
-            messageLeftDetailsContent.setVisibility(View.INVISIBLE);
+            TransitionManager.beginDelayedTransition(groupChatMessageRowContainerLeft, autoTransition);
+            groupChatMessageRowLeftDetailsContent.setVisibility(View.INVISIBLE);
         }
 
         public void showRightDetails(){
-            TransitionManager.beginDelayedTransition(rightContainer, autoTransition);
-            messageTimestampRight.setVisibility(View.VISIBLE);
+            TransitionManager.beginDelayedTransition(groupChatMessageRowContainerRight, autoTransition);
+            groupChatMessageRowTimestampRightTextView.setVisibility(View.VISIBLE);
         }
 
         public void hideRightDetails(){
-            TransitionManager.beginDelayedTransition(rightContainer, autoTransition);
-            messageTimestampRight.setVisibility(View.INVISIBLE);
+            TransitionManager.beginDelayedTransition(groupChatMessageRowContainerRight, autoTransition);
+            groupChatMessageRowTimestampRightTextView.setVisibility(View.INVISIBLE);
         }
 
 
         // Current user matches sender of current message
         public void showLeftSide(){
-            leftContainer.setVisibility(View.VISIBLE);
-            rightContainer.setVisibility(View.GONE);
-            messageSentByLeft.setVisibility(View.VISIBLE);
+            groupChatMessageRowContainerLeft.setVisibility(View.VISIBLE);
+            groupChatMessageRowContainerRight.setVisibility(View.GONE);
+            groupChatMessageRowSentByLeftTextView.setVisibility(View.VISIBLE);
         }
 
         // Current user does not match current sender of message
         public void showRightSide(){
-            leftContainer.setVisibility(View.GONE);
-            rightContainer.setVisibility(View.VISIBLE);
+            groupChatMessageRowContainerLeft.setVisibility(View.GONE);
+            groupChatMessageRowContainerRight.setVisibility(View.VISIBLE);
         }
 
 
         public void setDetails(String messageText, long timeStamp, String senderEmail){
-            messageContentLeft.setText(messageText);
+            groupChatMessageRowContentLeftTextView.setText(messageText);
             final String dateFormatted = "Sent: " + DateFormat.format("MM/dd/yyyy", timeStamp).toString() +
                     " @ " + DateFormat.format("KK:mm a", timeStamp).toString();
-            messageTimestampLeft.setText(dateFormatted);
-            messageSentByLeft.setText(senderEmail);
-            messageContentRight.setText(messageText);
-            messageTimestampRight.setText(dateFormatted);
+            groupChatMessageRowTimestampLeftTextView.setText(dateFormatted);
+            groupChatMessageRowSentByLeftTextView.setText(senderEmail);
+            groupChatMessageRowContentRightTextView.setText(messageText);
+            groupChatMessageRowTimestampRightTextView.setText(dateFormatted);
 
         }
 
 
-        public TextView getMessageTimestampRight() {
-            return messageTimestampRight;
+        public TextView getGroupChatMessageRowTimestampRightTextView() {
+            return groupChatMessageRowTimestampRightTextView;
         }
 
-        public TextView getMessageTimestampLeft() {
-            return messageTimestampLeft;
+        public TextView getGroupChatMessageRowTimestampLeftTextView() {
+            return groupChatMessageRowTimestampLeftTextView;
         }
 
     }
@@ -376,13 +375,13 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     @Override
     public void onSuccessfulSent() {
-        EditText groupChatMessageInput = (EditText) findViewById(R.id.groupChatMessageInputEditText);
-        groupChatMessageInput.setText("");
+        EditText groupChatMessageInputEditText = findViewById(R.id.groupChatMessageInputEditText);
+        groupChatMessageInputEditText.setText("");
     }
 
     @Override
     public void scrollToBottom() {
-        messageList.smoothScrollToPosition(groupChatAdapter.getItemCount());
+        groupChatRecyclerView.smoothScrollToPosition(groupChatAdapter.getItemCount());
     }
 
 

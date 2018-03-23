@@ -40,20 +40,18 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
     private String pid, sid;
     private ValueEventListener projectListener, sprintListener;
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
+    private DrawerLayout individualSprintDrawerLayout;
+    private NavigationView individualSprintNavigationView;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private TabLayout tabLayout;
-    private ImageButton logoutBtn;
-    private ImageButton deleteBtn;
+    private ViewPager individualSprintViewPager;
+    private TabLayout individualSprintTabLayout;
+    private ImageButton individualSprintLogoutImageButton;
+    private ImageButton individualSprintDeleteImageButton;
     private ProgressDialog deleteSprintProgressDialog;
 
     private boolean projectAlreadyDeleted;
     private boolean sprintAlreadyDeleted;
     private boolean cameFromOverviewScreen;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +61,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         pid = data.getString("projectId");
         sid = data.getString("sprintId");
 
-        this.individualSprintPresenter = new IndividualSprintPresenter(this, pid, sid);
+        individualSprintPresenter = new IndividualSprintPresenter(this, pid, sid);
         individualSprintPresenter.checkIfOwner();
 
         projectAlreadyDeleted = false; // Project isn't deleted yet
@@ -76,18 +74,18 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
             cameFromOverviewScreen = true;
         }
 
-        deleteBtn = findViewById(R.id.individualSprintDeleteImageButton);
-        logoutBtn = findViewById(R.id.individualSprintLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        individualSprintDeleteImageButton = findViewById(R.id.individualSprintDeleteImageButton);
+        individualSprintLogoutImageButton = findViewById(R.id.individualSprintLogoutImageButton);
+        individualSprintLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(IndividualSprintActivity.this);
             }
         });
 
-        tabLayout = (TabLayout) findViewById(R.id.individualSprintTabLayout);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.individualSprintDrawerLayout);
-        navigationView = (NavigationView) findViewById(R.id.individualSprintNavigationView);
+        individualSprintTabLayout = findViewById(R.id.individualSprintTabLayout);
+        individualSprintDrawerLayout = findViewById(R.id.individualSprintDrawerLayout);
+        individualSprintNavigationView = findViewById(R.id.individualSprintNavigationView);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -95,21 +93,21 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.individualSprintViewPager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        individualSprintViewPager = findViewById(R.id.individualSprintViewPager);
+        individualSprintViewPager.setAdapter(mSectionsPagerAdapter);
 
-        tabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        individualSprintTabLayout.setupWithViewPager(individualSprintViewPager);
+        individualSprintViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(individualSprintTabLayout));
+        individualSprintTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(individualSprintViewPager));
 
-        navigationView.setNavigationItemSelectedListener(
+        individualSprintNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+                        individualSprintDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
                             // User chooses Project Overview in menu, go there
@@ -205,8 +203,8 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                 });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.individualSprintToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar individualSprintToolbar = findViewById(R.id.individualSprintToolbar);
+        setSupportActionBar(individualSprintToolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -234,7 +232,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         switch (item.getItemId()) {
             // User clicks on the menu icon on the top left
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                individualSprintDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -308,9 +306,9 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete Sprint?")
+        builder.setTitle("Delete Sprint")
                 .setView(alertView)
-                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this sprint? Enter your password below to confirm.")
+                .setMessage("Are you sure you want to delete this sprint? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -320,12 +318,12 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton the sprint.", false);
+                            showMessage("Password incorrect, could not delete the sprint.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not userStoryRowDeleteUserStoryImageButton the sprint.", false);
+                                showMessage("Password incorrect, could not delete the sprint.", false);
                             }
                             else {
 
@@ -333,7 +331,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                                 deleteSprintProgressDialog = new ProgressDialog(IndividualSprintActivity.this);
                                 deleteSprintProgressDialog.setTitle("Delete Sprint");
                                 deleteSprintProgressDialog.setCancelable(false);
-                                deleteSprintProgressDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton sprint...");
+                                deleteSprintProgressDialog.setMessage("Attempting to delete sprint...");
                                 deleteSprintProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deleteSprintProgressDialog.show();
 
@@ -353,10 +351,10 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
     }
 
-    // Only project owner can view the sprint userStoryRowDeleteUserStoryImageButton button
+    // Only project owner can view the sprint delete button
     @Override
     public void setDeleteInvisible() {
-        deleteBtn.setVisibility(View.GONE);
+        individualSprintDeleteImageButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -406,7 +404,7 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
                 case 1:
                     data = new Bundle();
                     data.putString("projectId", pid);
-                    // This fragment will display info for product backlog userStoryRowCompletedUserStoryImageButton user stories
+                    // This fragment will display info for product backlog completed user stories
                     data.putString("type", "SPRINT_COMPLETED");
 
                     // Passes in null, to tell fragment and presenter that this is a pb user story

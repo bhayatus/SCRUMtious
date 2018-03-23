@@ -29,8 +29,8 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
     private LoginPresenter loginPresenter;
 
     private LinearLayout loginLayout;
-    private EditText emailField, passwordField;
-    private TextInputLayout emailFieldLayout, passwordFieldLayout;
+    private EditText loginEmailEditText, loginPasswordEditText;
+    private TextInputLayout loginEmailTextInputLayout, loginPasswordTextInputLayout;
     private ProgressDialog signingInProgressDialog;
 
     @Override
@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginPresenter = new LoginPresenter(this);
-        loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
+        loginLayout = findViewById(R.id.loginLayout);
         setupFormWatcher();
     }
 
@@ -53,11 +53,11 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
                     public void onClick(DialogInterface dialog, int which) {
 
                         // Remove text from fields
-                        emailField.setText("");
-                        passwordField.setText("");
+                        loginEmailEditText.setText("");
+                        loginPasswordEditText.setText("");
 
-                        emailFieldLayout.setError(null);
-                        passwordFieldLayout.setError(null);
+                        loginEmailTextInputLayout.setError(null);
+                        loginPasswordTextInputLayout.setError(null);
 
                         loginLayout.requestFocus();
 
@@ -79,20 +79,20 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
     // Set up listeners for the text fields
     private void setupFormWatcher() {
-        emailField = (EditText) findViewById(R.id.loginEmailEditText);
-        passwordField = (EditText) findViewById(R.id.loginPasswordEditText);
-        emailFieldLayout = (TextInputLayout) findViewById(R.id.loginEmailTextInputLayout);
-        passwordFieldLayout = (TextInputLayout) findViewById(R.id.loginPasswordTextInputLayout);
+        loginEmailEditText = findViewById(R.id.loginEmailEditText);
+        loginPasswordEditText = findViewById(R.id.loginPasswordEditText);
+        loginEmailTextInputLayout = findViewById(R.id.loginEmailTextInputLayout);
+        loginPasswordTextInputLayout = findViewById(R.id.loginPasswordTextInputLayout);
 
         // By default, errors should not show until user clicks a field and types, but this
         // also prevents the user from trying to submit an empty form
-        emailFieldLayout.setError(null);
-        passwordFieldLayout.setError(null);
-        emailFieldLayout.setErrorEnabled(true);
-        passwordFieldLayout.setErrorEnabled(true);
+        loginEmailTextInputLayout.setError(null);
+        loginPasswordTextInputLayout.setError(null);
+        loginEmailTextInputLayout.setErrorEnabled(true);
+        loginPasswordTextInputLayout.setErrorEnabled(true);
 
         // Watch email address field for changes
-        emailField.addTextChangedListener(new TextWatcher() {
+        loginEmailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -106,30 +106,30 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
             @Override
             public void afterTextChanged(Editable s) {
 
-                int isValidEmail = UserInputValidator.isValidEmail(emailField.getText().toString().trim());
+                int isValidEmail = UserInputValidator.isValidEmail(loginEmailEditText.getText().toString().trim());
 
                 if (isValidEmail < 0) {
-                    emailFieldLayout.setErrorEnabled(true);
+                    loginEmailTextInputLayout.setErrorEnabled(true);
 
                     // Email field not set
                     if (isValidEmail == -1)
-                        emailFieldLayout.setError("Please enter an e-mail address.");
+                        loginEmailTextInputLayout.setError("Please enter an e-mail address.");
 
                         // Email length is 0 or more than max email length
                     else if (isValidEmail == -2)
-                        emailFieldLayout.setError("Please enter a valid length e-mail address.");
+                        loginEmailTextInputLayout.setError("Please enter a valid length e-mail address.");
 
                         // Email does not match regex
                     else if (isValidEmail == -3)
-                        emailFieldLayout.setError("Must provide a valid e-mail address.");
+                        loginEmailTextInputLayout.setError("Must provide a valid e-mail address.");
 
                 } else {
-                    emailFieldLayout.setError(null);
-                    emailFieldLayout.setErrorEnabled(false);
+                    loginEmailTextInputLayout.setError(null);
+                    loginEmailTextInputLayout.setErrorEnabled(false);
                 }
             }
         });
-        passwordField.addTextChangedListener(new TextWatcher() {
+        loginPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -143,13 +143,13 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
             @Override
             public void afterTextChanged(Editable s) {
                 // Cannot have an empty password
-                if (TextUtils.isEmpty(passwordField.getText())) {
-                    passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("Must enter a password.");
+                if (TextUtils.isEmpty(loginPasswordEditText.getText())) {
+                    loginPasswordTextInputLayout.setErrorEnabled(true);
+                    loginPasswordTextInputLayout.setError("Must enter a password.");
 
                 } else {
-                    passwordFieldLayout.setError(null);
-                    passwordFieldLayout.setErrorEnabled(false);
+                    loginPasswordTextInputLayout.setError(null);
+                    loginPasswordTextInputLayout.setErrorEnabled(false);
                 }
             }
         });
@@ -159,11 +159,11 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
     // When user clicks login button
     public void onSubmitLogin(View view) {
 
-        String emailAddress = emailField.getText().toString().trim();
-        String password = passwordField.getText().toString().trim();
+        String emailAddress = loginEmailEditText.getText().toString().trim();
+        String password = loginPasswordEditText.getText().toString().trim();
 
         // If either field has an error, cannot submit the form
-        if (passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled()) {
+        if (loginPasswordTextInputLayout.isErrorEnabled() || loginEmailTextInputLayout.isErrorEnabled()) {
             showMessage("Cannot submit until the fields are filled out properly.", false);
             return;
         }

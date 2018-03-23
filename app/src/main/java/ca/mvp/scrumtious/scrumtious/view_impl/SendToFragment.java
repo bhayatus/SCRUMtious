@@ -35,9 +35,9 @@ public class SendToFragment extends DialogFragment {
     private DatabaseReference mRef;
     private Query mQuery;
 
-    private TextView pbView;
+    private TextView sendToFragmentSendToProductBacklogTextView;
     private BacklogFragment backlogView;
-    private RecyclerView sendToList;
+    private RecyclerView sendToFragmentRecyclerView;
 
     public SendToFragment() {
         // Required empty public constructor
@@ -57,10 +57,10 @@ public class SendToFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_send_to, container, false);
 
-        sendToList = (RecyclerView) view.findViewById(R.id.sendToFragmentRecyclerView);
-        pbView = view.findViewById(R.id.sendToFragmentSendToProductBacklogTextView);
+        sendToFragmentRecyclerView = view.findViewById(R.id.sendToFragmentRecyclerView);
+        sendToFragmentSendToProductBacklogTextView = view.findViewById(R.id.sendToFragmentSendToProductBacklogTextView);
 
-        pbView.setOnClickListener(new View.OnClickListener() {
+        sendToFragmentSendToProductBacklogTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Assigning user story back to product backlog
@@ -91,11 +91,11 @@ public class SendToFragment extends DialogFragment {
 
     private void setupRecyclerView(){
 
-        sendToList.setLayoutManager(new LinearLayoutManager(backlogView.getContext()));
+        sendToFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(backlogView.getContext()));
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
-        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild("userStoryRowCompletedUserStoryImageButton");
+        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild("completed");
 
         // Generates the adapter to grab the list of sprints we can assign the user story to
         sendToListAdapter = new FirebaseRecyclerAdapter<Sprint, SendToSprintViewHolder>(
@@ -125,17 +125,17 @@ public class SendToFragment extends DialogFragment {
 
                 // Don't bother showing recycler view if no items
                 if (getItemCount() == 0){
-                    sendToList.setVisibility(View.GONE);
+                    sendToFragmentRecyclerView.setVisibility(View.GONE);
                 }
                 // Items to show, display recycler view
                 else{
-                    sendToList.setVisibility(View.VISIBLE);
+                    sendToFragmentRecyclerView.setVisibility(View.VISIBLE);
                 }
 
             }
         };
 
-        sendToList.setAdapter(sendToListAdapter);
+        sendToFragmentRecyclerView.setAdapter(sendToListAdapter);
     }
 
 
@@ -146,12 +146,12 @@ public class SendToFragment extends DialogFragment {
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference();
 
-        // Grab the userStoryRowCompletedUserStoryImageButton status of the user story
+        // Grab the completed status of the user story
         mRef.child("projects").child(pid).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String completed = dataSnapshot.child("userStoryRowCompletedUserStoryImageButton").getValue().toString();
+                    String completed = dataSnapshot.child("completed").getValue().toString();
                     String assignedTo_completed = sid + "_" + completed;
                     Map sendToMap = new HashMap();
 

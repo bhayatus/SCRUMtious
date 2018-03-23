@@ -43,14 +43,14 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
     private boolean projectAlreadyDeleted;
 
-    private TextView projectCreationDateView, numMembersView, numSprintsView, numUserStoriesView, daysPassedView,
-    totalPointsView, emptyChartView;
-    private TextView projectCreationDateViewNotEmpty, numMembersViewNotEmpty, numSprintsViewNotEmpty,
-            numUserStoriesViewNotEmpty;
-    private LineChart burndownChart;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
-    private ImageButton logoutBtn, helpBtn, refreshBtn;
+    private TextView projectStatsCreationDateErrorTextView, projectStatsNumMembersErrorTextView, projectStatsNumSprintsErrorTextView, projectStatsNumUserStoriesErrorTextView, projectStatsDaysPassedTextView,
+            projectStatsTotalPointsTextView, projectStatsEmptyChartTextView;
+    private TextView projectStatsCreationDateValueTextView, projectStatsNumMembersValueTextView, projectStatsNumSprintsValueTextView,
+            projectStatsNumUserStoriesValueTextView;
+    private LineChart projectStatsBurndownChart;
+    private DrawerLayout projectStatsDrawerLayout;
+    private NavigationView projectStatsNavigationView;
+    private ImageButton projectStatsLogoutImageButton, projectStatsHelpImageButton, projectStatsRefreshImageButton;
 
 
     @Override
@@ -60,43 +60,41 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
+        projectStatsPresenter = new ProjectStatsPresenter(this, pid);
+        projectAlreadyDeleted = false;
 
-        this.projectStatsPresenter = new ProjectStatsPresenter(this, pid);
+        projectStatsBurndownChart = (LineChart) findViewById(R.id.projectStatsBurndownChart);
 
-        this.projectAlreadyDeleted = false;
+        projectStatsCreationDateErrorTextView = findViewById(R.id.projectStatsCreationDateErrorTextView);
+        projectStatsNumMembersErrorTextView = findViewById(R.id.projectStatsNumMembersErrorTextView);
+        projectStatsNumSprintsErrorTextView = findViewById(R.id.projectStatsNumSprintsErrorTextView);
+        projectStatsNumUserStoriesErrorTextView = findViewById(R.id.projectStatsNumUserStoriesErrorTextView);
 
-        this.burndownChart = (LineChart) findViewById(R.id.projectStatsBurndownChart);
+        projectStatsTotalPointsTextView = findViewById(R.id.projectStatsTotalPointsTextView);
+        projectStatsDaysPassedTextView = findViewById(R.id.projectStatsDaysPassedTextView);
+        projectStatsEmptyChartTextView = findViewById(R.id.projectStatsEmptyChartTextView);
 
-        this.projectCreationDateView = (TextView) findViewById(R.id.projectStatsCreationDateErrorTextView);
-        this.numMembersView = (TextView) findViewById(R.id.projectStatsNumMembersErrorTextView);
-        this.numSprintsView = (TextView) findViewById(R.id.projectStatsNumSprintsErrorTextView);
-        this.numUserStoriesView = (TextView) findViewById(R.id.projectStatsNumUserStoriesErrorTextView);
+        projectStatsCreationDateValueTextView = findViewById(R.id.projectStatsCreationDateValueTextView);
+        projectStatsNumMembersValueTextView = findViewById(R.id.projectStatsNumMembersValueTextView);
+        projectStatsNumSprintsValueTextView = findViewById(R.id.projectStatsNumSprintsValueTextView);
+        projectStatsNumUserStoriesValueTextView = findViewById(R.id.projectStatsNumUserStoriesValueTextView);
 
-        this.totalPointsView = (TextView) findViewById(R.id.projectStatsTotalPointsTextView);
-        this.daysPassedView = (TextView) findViewById(R.id.projectStatsDaysPassedTextView);
-        this.emptyChartView = (TextView) findViewById(R.id.projectStatsEmptyChartTextView);
+        projectStatsCreationDateValueTextView.setVisibility(View.GONE);
+        projectStatsNumMembersValueTextView.setVisibility(View.GONE);
+        projectStatsNumMembersValueTextView.setVisibility(View.GONE);
+        projectStatsNumUserStoriesValueTextView.setVisibility(View.GONE);
 
-        this.projectCreationDateViewNotEmpty = findViewById(R.id.projectStatsCreationDateValueTextView);
-        this.numMembersViewNotEmpty = findViewById(R.id.projectStatsNumMembersValueTextView);
-        this.numSprintsViewNotEmpty = findViewById(R.id.projectStatsNumSprintsValueTextView);
-        this.numUserStoriesViewNotEmpty = findViewById(R.id.projectStatsNumUserStoriesValueTextView);
-
-        this.projectCreationDateViewNotEmpty.setVisibility(View.GONE);
-        this.numMembersViewNotEmpty.setVisibility(View.GONE);
-        this.numMembersViewNotEmpty.setVisibility(View.GONE);
-        this.numUserStoriesViewNotEmpty.setVisibility(View.GONE);
-
-        logoutBtn = findViewById(R.id.projectStatsLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        projectStatsLogoutImageButton = findViewById(R.id.projectStatsLogoutImageButton);
+        projectStatsLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(ProjectStatsActivity.this);
             }
         });
 
-        helpBtn = findViewById(R.id.projectStatsHelpImageButton);
+        projectStatsHelpImageButton = findViewById(R.id.projectStatsHelpImageButton);
         // Displays a help popup
-        helpBtn.setOnClickListener(new View.OnClickListener() {
+        projectStatsHelpImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(ProjectStatsActivity.this)
@@ -104,7 +102,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
                         .setMessage("The burndown chart represents the progress your group has made through" +
                                 " completing user stories." + "\n" +
                                 "On the y-axis, the numbers represent the total amount of" +
-                                " user story points left that need to be userStoryRowCompletedUserStoryImageButton. " + "\n" +
+                                " user story points left that need to be completed. " + "\n" +
                                 "On the x-axis, the numbers represent" +
                                 " the number of days that have passed since the project was created." +
                                 "\n" +
@@ -119,9 +117,9 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
             }
         });
 
-        refreshBtn = findViewById(R.id.projectStatsRefreshImageButton);
+        projectStatsRefreshImageButton = findViewById(R.id.projectStatsRefreshImageButton);
         // Displays a help popup
-        refreshBtn.setOnClickListener(new View.OnClickListener() {
+        projectStatsRefreshImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(ProjectStatsActivity.this)
@@ -145,19 +143,19 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.projectStatsDrawerLayout);
-        navigationView = findViewById(R.id.projectStatsNavigationView);
+        projectStatsDrawerLayout = findViewById(R.id.projectStatsDrawerLayout);
+        projectStatsNavigationView = findViewById(R.id.projectStatsNavigationView);
 
         // By default, should highlight chat option to indicate that is where the user is
-        navigationView.setCheckedItem(R.id.nav_stats);
-        navigationView.setNavigationItemSelectedListener(
+        projectStatsNavigationView.setCheckedItem(R.id.nav_stats);
+        projectStatsNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+                        projectStatsDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
                             // User chooses project overview in menu, do nothing as we are already there
@@ -243,8 +241,8 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
                 });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.projectStatsToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar projectStatsToolbar = findViewById(R.id.projectStatsToolbar);
+        setSupportActionBar(projectStatsToolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -275,7 +273,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         switch (item.getItemId()) {
             // User clicks on the menu icon on the top left
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                projectStatsDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -348,36 +346,36 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         LineData lineData = new LineData(sets);
 
-        burndownChart.setData(lineData);
+        projectStatsBurndownChart.setData(lineData);
 
-        XAxis xAxis = burndownChart.getXAxis();
+        XAxis xAxis = projectStatsBurndownChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(10f);
         xAxis.setTextColor(Color.BLACK);
 
         xAxis.setGranularity(1f);
 
-        YAxis yAxisLeft = burndownChart.getAxisLeft();
+        YAxis yAxisLeft = projectStatsBurndownChart.getAxisLeft();
         yAxisLeft.setTextSize(10f);
         yAxisLeft.setTextColor(Color.BLACK);
 
-        YAxis yAxisRight = burndownChart.getAxisRight();
+        YAxis yAxisRight = projectStatsBurndownChart.getAxisRight();
         yAxisRight.setDrawLabels(false);
 
-        burndownChart.getLegend().setEnabled(false);
-        burndownChart.getDescription().setEnabled(false);
-        burndownChart.setDragEnabled(true);
-        burndownChart.setScaleEnabled(true);
-        burndownChart.setHighlightPerTapEnabled(false);
-        burndownChart.setHighlightPerDragEnabled(false);
+        projectStatsBurndownChart.getLegend().setEnabled(false);
+        projectStatsBurndownChart.getDescription().setEnabled(false);
+        projectStatsBurndownChart.setDragEnabled(true);
+        projectStatsBurndownChart.setScaleEnabled(true);
+        projectStatsBurndownChart.setHighlightPerTapEnabled(false);
+        projectStatsBurndownChart.setHighlightPerDragEnabled(false);
 
-        burndownChart.invalidate(); // refresh
+        projectStatsBurndownChart.invalidate(); // refresh
 
-        if (!burndownChart.isEmpty()){
-        burndownChart.setVisibility(View.VISIBLE);
-        daysPassedView.setVisibility(View.VISIBLE);
-        totalPointsView.setVisibility(View.VISIBLE);
-        emptyChartView.setVisibility(View.GONE);
+        if (!projectStatsBurndownChart.isEmpty()){
+        projectStatsBurndownChart.setVisibility(View.VISIBLE);
+        projectStatsDaysPassedTextView.setVisibility(View.VISIBLE);
+        projectStatsTotalPointsTextView.setVisibility(View.VISIBLE);
+        projectStatsEmptyChartTextView.setVisibility(View.GONE);
         }
     }
 
@@ -385,48 +383,48 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     public void populateNumMembers(long numMembers) {
 
         if (numMembers == -1){
-            numMembersViewNotEmpty.setVisibility(View.GONE);
-            numMembersView.setVisibility(View.VISIBLE);
-            numMembersView.setText("Unable to retrieve number of members data");
+            projectStatsNumMembersValueTextView.setVisibility(View.GONE);
+            projectStatsNumMembersErrorTextView.setVisibility(View.VISIBLE);
+            projectStatsNumMembersErrorTextView.setText("Unable to retrieve number of members data");
             return;
         }
         else if(numMembers == 1){
-            numMembersView.setVisibility(View.GONE);
-            numMembersViewNotEmpty.setText("1");
-            numMembersViewNotEmpty.setVisibility(View.VISIBLE);
+            projectStatsNumMembersErrorTextView.setVisibility(View.GONE);
+            projectStatsNumMembersValueTextView.setText("1");
+            projectStatsNumMembersValueTextView.setVisibility(View.VISIBLE);
 
             return;
         }
 
-        numMembersView.setVisibility(View.GONE);
-        numMembersViewNotEmpty.setText(String.valueOf(numMembers));
-        numMembersViewNotEmpty.setVisibility(View.VISIBLE);
+        projectStatsNumMembersErrorTextView.setVisibility(View.GONE);
+        projectStatsNumMembersValueTextView.setText(String.valueOf(numMembers));
+        projectStatsNumMembersValueTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void populateNumSprints(long numSprints) {
         if (numSprints == -1){
-            numSprintsViewNotEmpty.setVisibility(View.GONE);
-            numSprintsView.setVisibility(View.VISIBLE);
-            numSprintsView.setText("Unable to retrieve number of sprints data");
+            projectStatsNumSprintsValueTextView.setVisibility(View.GONE);
+            projectStatsNumSprintsErrorTextView.setVisibility(View.VISIBLE);
+            projectStatsNumSprintsErrorTextView.setText("Unable to retrieve number of sprints data");
             return;
         }
         else if (numSprints == 0){
-            numSprintsViewNotEmpty.setVisibility(View.GONE);
-            numSprintsView.setVisibility(View.VISIBLE);
-            numSprintsView.setText("You currently have no sprints in this project");
+            projectStatsNumSprintsValueTextView.setVisibility(View.GONE);
+            projectStatsNumSprintsErrorTextView.setVisibility(View.VISIBLE);
+            projectStatsNumSprintsErrorTextView.setText("You currently have no sprints in this project");
             return;
         }
         else if(numSprints == 1){
-            numSprintsView.setVisibility(View.GONE);
-            numSprintsViewNotEmpty.setText(String.valueOf(numSprints));
-            numSprintsViewNotEmpty.setVisibility(View.VISIBLE);
+            projectStatsNumSprintsErrorTextView.setVisibility(View.GONE);
+            projectStatsNumSprintsValueTextView.setText(String.valueOf(numSprints));
+            projectStatsNumSprintsValueTextView.setVisibility(View.VISIBLE);
             return;
         }
 
-        numSprintsView.setVisibility(View.GONE);
-        numSprintsViewNotEmpty.setText(String.valueOf(numSprints));
-        numSprintsViewNotEmpty.setVisibility(View.VISIBLE);
+        projectStatsNumSprintsErrorTextView.setVisibility(View.GONE);
+        projectStatsNumSprintsValueTextView.setText(String.valueOf(numSprints));
+        projectStatsNumSprintsValueTextView.setVisibility(View.VISIBLE);
 
     }
 
@@ -434,12 +432,12 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     public void populateNumUserStories(long total, long completed) {
 
         if (completed != 0) {
-            numUserStoriesView.setVisibility(View.GONE);
-            numUserStoriesViewNotEmpty.setText(String.valueOf(completed) + "/" + String.valueOf(total));
-            numUserStoriesViewNotEmpty.setVisibility(View.VISIBLE);
+            projectStatsNumUserStoriesErrorTextView.setVisibility(View.GONE);
+            projectStatsNumUserStoriesValueTextView.setText(String.valueOf(completed) + "/" + String.valueOf(total));
+            projectStatsNumUserStoriesValueTextView.setVisibility(View.VISIBLE);
         } else if (completed <= 0 || total <= 0) {
-            numUserStoriesViewNotEmpty.setVisibility(View.GONE);
-            numUserStoriesView.setVisibility(View.VISIBLE);
+            projectStatsNumUserStoriesValueTextView.setVisibility(View.GONE);
+            projectStatsNumUserStoriesErrorTextView.setVisibility(View.VISIBLE);
         }
 
     }
@@ -447,14 +445,14 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
     @Override
     public void populateProjectCreationDate(String date) {
         if (date.equals("")){
-            projectCreationDateViewNotEmpty.setVisibility(View.GONE);
-            projectCreationDateView.setVisibility(View.VISIBLE);
-            projectCreationDateView.setText("Unable to retrieve project creation date");
+            projectStatsCreationDateValueTextView.setVisibility(View.GONE);
+            projectStatsCreationDateErrorTextView.setVisibility(View.VISIBLE);
+            projectStatsCreationDateErrorTextView.setText("Unable to retrieve project creation date");
             return;
         }
 
-        projectCreationDateView.setVisibility(View.GONE);
-        projectCreationDateViewNotEmpty.setText(date);
-        projectCreationDateViewNotEmpty.setVisibility(View.VISIBLE);
+        projectStatsCreationDateErrorTextView.setVisibility(View.GONE);
+        projectStatsCreationDateValueTextView.setText(date);
+        projectStatsCreationDateValueTextView.setVisibility(View.VISIBLE);
     }
 }

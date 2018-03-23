@@ -24,8 +24,8 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
 
     private SignupPresenter signUpPresenter;
 
-    private EditText emailField, passwordField, retypePasswordField;
-    private TextInputLayout emailFieldLayout, passwordFieldLayout, retypePasswordFieldLayout;
+    private EditText signupEmailEditText, signupPasswordEditText, signupRetypePasswordEditText;
+    private TextInputLayout signupEmailTextInputLayout, signupPasswordTextInputLayout, signupRetypePasswordTextInputLayout;
     private ProgressDialog signingInProgressDialog;
 
 
@@ -41,9 +41,9 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
     public void onBackPressed(){
 
         // Make sure user doesn't accidentally leave the screen with text filled in
-        if(emailField.getText().toString().trim().length() > 0 ||
-                passwordField.getText().toString().trim().length() > 0 ||
-                retypePasswordField.getText().toString().trim().length() > 0){
+        if(signupEmailEditText.getText().toString().trim().length() > 0 ||
+                signupPasswordEditText.getText().toString().trim().length() > 0 ||
+                signupRetypePasswordEditText.getText().toString().trim().length() > 0){
 
             new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
                     .setTitle("Leave The Screen?")
@@ -67,24 +67,23 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
     }
 
     private void setupFormWatcher() {
-        emailField = (EditText) findViewById(R.id.signupEmailEditText);
-        passwordField = (EditText) findViewById(R.id.signupPasswordEditText);
-        retypePasswordField = (EditText) findViewById(R.id.signupRetypePasswordEditText);
-        emailFieldLayout = (TextInputLayout) findViewById(R.id.signupEmailTextInputLayout);
-        passwordFieldLayout = (TextInputLayout) findViewById(R.id.signupPasswordTextInputLayout);
-        retypePasswordFieldLayout = (TextInputLayout)
-                findViewById(R.id.signupRetypePasswordTextInputLayout);
+        signupEmailEditText = findViewById(R.id.signupEmailEditText);
+        signupPasswordEditText = findViewById(R.id.signupPasswordEditText);
+        signupRetypePasswordEditText = findViewById(R.id.signupRetypePasswordEditText);
+        signupEmailTextInputLayout = findViewById(R.id.signupEmailTextInputLayout);
+        signupPasswordTextInputLayout = findViewById(R.id.signupPasswordTextInputLayout);
+        signupRetypePasswordTextInputLayout = findViewById(R.id.signupRetypePasswordTextInputLayout);
 
-        emailFieldLayout.setError(null);
-        passwordFieldLayout.setError(null);
-        retypePasswordFieldLayout.setError(null);
-        emailFieldLayout.setErrorEnabled(true);
-        passwordFieldLayout.setErrorEnabled(true);
-        retypePasswordFieldLayout.setErrorEnabled(true);
+        signupEmailTextInputLayout.setError(null);
+        signupPasswordTextInputLayout.setError(null);
+        signupRetypePasswordTextInputLayout.setError(null);
+        signupEmailTextInputLayout.setErrorEnabled(true);
+        signupPasswordTextInputLayout.setErrorEnabled(true);
+        signupRetypePasswordTextInputLayout.setErrorEnabled(true);
 
         //create a watcher for emailField
         //create a listener for email field and validate it
-        emailField.addTextChangedListener(new TextWatcher() {
+        signupEmailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -97,25 +96,25 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                int isValidEmail = UserInputValidator.isValidEmail(emailField.getText().toString().trim());
+                int isValidEmail = UserInputValidator.isValidEmail(signupEmailEditText.getText().toString().trim());
 
                 if (isValidEmail < 0) {
-                    emailFieldLayout.setErrorEnabled(true);
+                    signupEmailTextInputLayout.setErrorEnabled(true);
                     if (isValidEmail == -1)
-                        emailFieldLayout.setError("Please enter an e-mail address.");
+                        signupEmailTextInputLayout.setError("Please enter an e-mail address.");
                     else if (isValidEmail == -2)
-                        emailFieldLayout.setError("Please enter a valid length e-mail address.");
+                        signupEmailTextInputLayout.setError("Please enter a valid length e-mail address.");
                     else if (isValidEmail == -3)
-                        emailFieldLayout.setError("Must provide a valid e-mail address.");
+                        signupEmailTextInputLayout.setError("Must provide a valid e-mail address.");
                 } else {
-                    emailFieldLayout.setError(null);
-                    emailFieldLayout.setErrorEnabled(false);
+                    signupEmailTextInputLayout.setError(null);
+                    signupEmailTextInputLayout.setErrorEnabled(false);
                 }
             }
         });
         //create a watcher for password
         //create a listener for password
-        passwordField.addTextChangedListener(new TextWatcher() {
+        signupPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -129,30 +128,29 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
             @Override
             public void afterTextChanged(Editable editable) {
                 // Cannot have an empty password
-                int isValidPassword = UserInputValidator.meetsPasswordCriteria(passwordField.getText().toString().trim());
+                int isValidPassword = UserInputValidator.meetsPasswordCriteria(signupPasswordEditText.getText().toString().trim());
                 //-1 on null password, -2 on invalid password length, -3 for invalid password (including* length), 0 for valid password
                 if(isValidPassword == -1){
-                    passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("Please enter a password.");
+                    signupPasswordTextInputLayout.setErrorEnabled(true);
+                    signupPasswordTextInputLayout.setError("Please enter a password.");
 
                 }
                 else if(isValidPassword == -2){
-                    passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("Password has to be at least 8 characters.");
+                    signupPasswordTextInputLayout.setErrorEnabled(true);
+                    signupPasswordTextInputLayout.setError("Password has to be at least 8 characters.");
                 }
                 else if(isValidPassword == -3){
-                    passwordFieldLayout.setErrorEnabled(true);
-                    passwordFieldLayout.setError("Password must contain at least 1 letter and 1 digit.");
+                    signupPasswordTextInputLayout.setErrorEnabled(true);
+                    signupPasswordTextInputLayout.setError("Password must contain at least 1 letter and 1 digit.");
                 }
                 else{
-                    passwordFieldLayout.setError(null);
-                    passwordFieldLayout.setErrorEnabled(false);
+                    signupPasswordTextInputLayout.setError(null);
+                    signupPasswordTextInputLayout.setErrorEnabled(false);
                 }
             }
         });
-        //create a watcher for retypePassword
-        //create a listener for retypePassword
-        retypePasswordField.addTextChangedListener(new TextWatcher() {
+
+        signupRetypePasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -165,14 +163,14 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!passwordField.getText().toString().trim().equals
-                        (retypePasswordField.getText().toString().trim())){
-                    retypePasswordFieldLayout.setErrorEnabled(true);
-                    retypePasswordFieldLayout.setError("This does not match the password above.");
+                if (!signupPasswordEditText.getText().toString().trim().equals
+                        (signupRetypePasswordEditText.getText().toString().trim())){
+                    signupRetypePasswordTextInputLayout.setErrorEnabled(true);
+                    signupRetypePasswordTextInputLayout.setError("This does not match the password above.");
                 }
                 else{
-                    retypePasswordFieldLayout.setError(null);
-                    retypePasswordFieldLayout.setErrorEnabled(false);
+                    signupRetypePasswordTextInputLayout.setError(null);
+                    signupRetypePasswordTextInputLayout.setErrorEnabled(false);
                 }
             }
         });
@@ -182,10 +180,10 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
     // User clicks the sign up button
     public void onClickSignUpSubmit(View view){
 
-        String emailAddress = emailField.getText().toString().trim();
-        String password = passwordField.getText().toString().trim();
+        String emailAddress = signupEmailEditText.getText().toString().trim();
+        String password = signupPasswordEditText.getText().toString().trim();
         // If any error message is displaying, that means the form can't be submitted properly
-        if(passwordFieldLayout.isErrorEnabled() || emailFieldLayout.isErrorEnabled() || retypePasswordFieldLayout.isErrorEnabled()) {
+        if(signupPasswordTextInputLayout.isErrorEnabled() || signupEmailTextInputLayout.isErrorEnabled() || signupRetypePasswordTextInputLayout.isErrorEnabled()) {
             showMessage("Cannot submit until the fields are filled out properly.", false);
             return;
         }

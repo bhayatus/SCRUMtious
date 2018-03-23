@@ -39,11 +39,11 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
     private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListNameAdapter;
     private FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListStartDateAdapter;
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
-    private ImageButton logoutBtn, sortBtn;
-    private LinearLayout emptyStateView;
-    private RecyclerView sprintList;
+    private DrawerLayout sprintListDrawerLayout;
+    private NavigationView sprintListNavigationView;
+    private ImageButton sprintListLogoutImageButton, sprintListSortImageButton;
+    private LinearLayout sprintListActivityNoSprintsEmptyStateView;
+    private RecyclerView sprintListRecyclerView;
 
     private boolean projectAlreadyDeleted;
 
@@ -56,22 +56,22 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
-        this.sprintListPresenter = new SprintListPresenter(this, pid);
+        sprintListPresenter = new SprintListPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.sprintListLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        sprintListLogoutImageButton = findViewById(R.id.sprintListLogoutImageButton);
+        sprintListLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(SprintListActivity.this);
             }
         });
 
-        sortBtn = (findViewById(R.id.sprintListSortImageButton));
-        sortBtn.setOnClickListener(new View.OnClickListener() {
+        sprintListSortImageButton = (findViewById(R.id.sprintListSortImageButton));
+        sprintListSortImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Open up menu with two choices to sort by either date or name
-                PopupMenu popup = new PopupMenu(SprintListActivity.this, sortBtn);
+                PopupMenu popup = new PopupMenu(SprintListActivity.this, sprintListSortImageButton);
                 MenuInflater inflate = popup.getMenuInflater();
                 inflate.inflate(R.menu.sprint_sort_view, popup.getMenu());
 
@@ -81,12 +81,12 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                         switch (item.getItemId()) {
                             // User wants to sort sprints by name
                             case R.id.sprint_sort_name:
-                                sprintList.setAdapter(sprintListNameAdapter);
+                                sprintListRecyclerView.setAdapter(sprintListNameAdapter);
                                 return true;
 
                             // User wants to sort sprints by start date
                             case R.id.sprint_sort_start_date:
-                                sprintList.setAdapter(sprintListStartDateAdapter);
+                                sprintListRecyclerView.setAdapter(sprintListStartDateAdapter);
                                 return true;
                         }
 
@@ -99,22 +99,22 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             }
         });
 
-        emptyStateView = (LinearLayout) findViewById(R.id.sprintListActivityNoSprintsEmptyStateView);
+        sprintListActivityNoSprintsEmptyStateView = findViewById(R.id.sprintListActivityNoSprintsEmptyStateView);
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.sprintListDrawerLayout);
-        navigationView = findViewById(R.id.sprintListNavigationView);
+        sprintListDrawerLayout = findViewById(R.id.sprintListDrawerLayout);
+        sprintListNavigationView = findViewById(R.id.sprintListNavigationView);
 
         // By default, should highlight sprint list option to indicate that is where the user is
-        navigationView.setCheckedItem(R.id.nav_sprints);
-        navigationView.setNavigationItemSelectedListener(
+        sprintListNavigationView.setCheckedItem(R.id.nav_sprints);
+        sprintListNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+                        sprintListDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
 
@@ -198,13 +198,13 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                     }
                 });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.sprintListToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar sprintListToolbar = findViewById(R.id.sprintListToolbar);
+        setSupportActionBar(sprintListToolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        sprintList = (RecyclerView) findViewById(R.id.sprintListRecyclerView);
+        sprintListRecyclerView = findViewById(R.id.sprintListRecyclerView);
 
         setupRecyclerView();
 
@@ -231,7 +231,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         switch (item.getItemId()) {
             // User clicks on the menu icon on the top left
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                sprintListDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -274,27 +274,27 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
 
     private void setupRecyclerView(){
 
-        sprintList.setLayoutManager(new LinearLayoutManager(this));
+        sprintListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Sets up the two adapters, which sort by name and start date respectively
         sprintListNameAdapter = sprintListPresenter.setupSprintListAdapter("sprintName");
         sprintListStartDateAdapter = sprintListPresenter.setupSprintListAdapter("sprintStartDate");
 
-        sprintList.setAdapter(sprintListStartDateAdapter);
+        sprintListRecyclerView.setAdapter(sprintListStartDateAdapter);
     }
 
     // If no sprints to display, should show empty view
     @Override
     public void setEmptyStateView(){
         if (sprintListNameAdapter.getItemCount() == 0){
-            emptyStateView.setVisibility(View.VISIBLE);
-            sprintList.setVisibility(View.GONE);
-            sortBtn.setVisibility(View.GONE);
+            sprintListActivityNoSprintsEmptyStateView.setVisibility(View.VISIBLE);
+            sprintListRecyclerView.setVisibility(View.GONE);
+            sprintListSortImageButton.setVisibility(View.GONE);
         }
         else{
-            emptyStateView.setVisibility(View.GONE);
-            sprintList.setVisibility(View.VISIBLE);
-            sortBtn.setVisibility(View.VISIBLE);
+            sprintListActivityNoSprintsEmptyStateView.setVisibility(View.GONE);
+            sprintListRecyclerView.setVisibility(View.VISIBLE);
+            sprintListSortImageButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -332,9 +332,9 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
     // Viewholder class to display list of sprints
     public static class SprintsViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView nameView, descriptionView, startToEndDateView, currentSprintView;
+        TextView sprintRowSprintNameTextView, sprintRowSprintDescTextView, sprintRowStartToEnd, sprintRowCurrentSprint;
 
-        ImageButton moreIcon;
+        ImageButton sprintRowMoreIcon;
 
         // Don't show whole description by default
         boolean showFull = false;
@@ -343,18 +343,18 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.sprintRowSprintNameTextView);
-            descriptionView = (TextView) mView.findViewById(R.id.sprintRowSprintDescTextView);
-            startToEndDateView = (TextView) mView.findViewById(R.id.sprintRowStartToEnd);
-            currentSprintView = (TextView) mView.findViewById(R.id.sprintRowCurrentSprint);
+            sprintRowSprintNameTextView = mView.findViewById(R.id.sprintRowSprintNameTextView);
+            sprintRowSprintDescTextView = mView.findViewById(R.id.sprintRowSprintDescTextView);
+            sprintRowStartToEnd = mView.findViewById(R.id.sprintRowStartToEnd);
+            sprintRowCurrentSprint = mView.findViewById(R.id.sprintRowCurrentSprint);
 
-            moreIcon = (ImageButton) mView.findViewById(R.id.sprintRowMoreIcon);
+            sprintRowMoreIcon = mView.findViewById(R.id.sprintRowMoreIcon);
 
         }
 
         // Display message indicating that the current date falls within a sprint
         public void setCurrentSprintViewVisible(){
-            currentSprintView.setVisibility(View.VISIBLE);
+            sprintRowCurrentSprint.setVisibility(View.VISIBLE);
         }
 
 
@@ -379,23 +379,23 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
                 showOrHideMoreIcon(false);
             }
 
-            nameView.setText(name);
-            descriptionView.setText(displayDesc);
-            startToEndDateView.setText(startToEndDate);
+            sprintRowSprintNameTextView.setText(name);
+            sprintRowSprintDescTextView.setText(displayDesc);
+            sprintRowStartToEnd.setText(startToEndDate);
         }
 
         // Either show or hide the more icon
         public void showOrHideMoreIcon(boolean hide){
             if (hide){
-                moreIcon.setVisibility(View.GONE);
+                sprintRowMoreIcon.setVisibility(View.GONE);
             }
             else{
-                moreIcon.setVisibility(View.VISIBLE);
+                sprintRowMoreIcon.setVisibility(View.VISIBLE);
             }
         }
 
-        public ImageButton getMoreIcon(){
-            return moreIcon;
+        public ImageButton getSprintRowMoreIcon(){
+            return sprintRowMoreIcon;
         }
 
         // User clicked on the show more icon, switch boolean state and reset description
@@ -420,7 +420,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
             }
 
             // Reset the description
-            descriptionView.setText(displayDesc);
+            sprintRowSprintDescTextView.setText(displayDesc);
         }
 
 

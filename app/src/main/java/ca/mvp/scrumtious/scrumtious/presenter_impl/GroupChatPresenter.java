@@ -109,13 +109,13 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
                     @Override
                     public void onClick(View v) {
                         // Details are shown currently, hide them
-                        if (mViewHolder.getMessageTimestampLeft().isShown()){
+                        if (mViewHolder.getGroupChatMessageRowTimestampLeftTextView().isShown()){
                             mViewHolder.hideLeftDetails();
                         }
                         else{
                             mViewHolder.showLeftDetails();
                         }
-                        if (mViewHolder.getMessageTimestampRight().isShown()){
+                        if (mViewHolder.getGroupChatMessageRowTimestampRightTextView().isShown()){
                             mViewHolder.hideRightDetails();
                         }
                         else{

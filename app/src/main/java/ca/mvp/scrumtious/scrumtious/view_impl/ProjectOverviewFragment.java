@@ -27,11 +27,12 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     private ProjectOverviewPresenterInt projectOverviewPresenter;
     private String pid;
 
-    public CardView currentSprintCard, currentUserStoryCard, currentVelocityCard;
-    private TextView projectTitle, projectDescription, sprintName, sprintDescription, sprintDates, emptySprintView,
-    emptyProgressView, velocityView, emptyVelocityView, daysView, emptyDaysView;
-    private ProgressBar userStoryProgressCircle;
-    private TextView userStoryProgressPercent;
+    public CardView projectOverviewSprintCard, projectOverviewUserStoryCard, projectOverviewFragmentVelocityCardView;
+    private TextView projectOverviewFragmentTitleTextView, projectOverviewFragmentDescTextView, sprintRowNameProjectOverview,
+            sprintRowDescriptionProjectOverview, sprintRowStartToEndProjectOverview, projectOverviewEmptyCurrentSprint, projectOverviewEmptyProgressView,
+            projectOverviewVelocityNotEmptyStateView, projectOverviewFragmentVelocityTextView, projectOverviewDaysNotEmptyStateView, projectOverviewDays;
+    private ProgressBar projectOverviewProgressBar;
+    private TextView projectOverviewProgressBarText;
 
     private Handler refreshProgressHandler;
     private Runnable refreshRunnable;
@@ -44,8 +45,7 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pid = getArguments().getString("projectId");
-
-        this.projectOverviewPresenter = new ProjectOverviewPresenter(this, pid);
+        projectOverviewPresenter = new ProjectOverviewPresenter(this, pid);
     }
 
     @Override
@@ -76,37 +76,37 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_overview, container, false);
 
-        currentSprintCard = view.findViewById(R.id.projectOverviewSprintCard);
-        currentUserStoryCard = view.findViewById(R.id.projectOverviewUserStoryCard);
-        currentVelocityCard = view.findViewById(R.id.projectOverviewFragmentVelocityCardView);
-        emptySprintView = view.findViewById(R.id.projectOverviewEmptyCurrentSprint);
-        emptyProgressView = view.findViewById(R.id.projectOverviewEmptyProgressView);
-        projectTitle = view.findViewById(R.id.projectOverviewFragmentTitleTextView);
-        projectDescription = view.findViewById(R.id.projectOverviewFragmentDescTextView);
-        sprintName = view.findViewById(R.id.sprintRowNameProjectOverview);
-        sprintDescription = view.findViewById(R.id.sprintRowDescriptionProjectOverview);
-        sprintDates = view.findViewById(R.id.sprintRowStartToEndProjectOverview);
-        velocityView = view.findViewById(R.id.projectOverviewVelocityNotEmptyStateView);
-        emptyVelocityView = view.findViewById(R.id.projectOverviewFragmentVelocityTextView);
-        daysView = view.findViewById(R.id.projectOverviewDaysNotEmptyStateView);
-        emptyDaysView = view.findViewById(R.id.projectOverviewDays);
+        projectOverviewSprintCard = view.findViewById(R.id.projectOverviewSprintCard);
+        projectOverviewUserStoryCard = view.findViewById(R.id.projectOverviewUserStoryCard);
+        projectOverviewFragmentVelocityCardView = view.findViewById(R.id.projectOverviewFragmentVelocityCardView);
+        projectOverviewEmptyCurrentSprint = view.findViewById(R.id.projectOverviewEmptyCurrentSprint);
+        projectOverviewEmptyProgressView = view.findViewById(R.id.projectOverviewEmptyProgressView);
+        projectOverviewFragmentTitleTextView = view.findViewById(R.id.projectOverviewFragmentTitleTextView);
+        projectOverviewFragmentDescTextView = view.findViewById(R.id.projectOverviewFragmentDescTextView);
+        sprintRowNameProjectOverview = view.findViewById(R.id.sprintRowNameProjectOverview);
+        sprintRowDescriptionProjectOverview = view.findViewById(R.id.sprintRowDescriptionProjectOverview);
+        sprintRowStartToEndProjectOverview = view.findViewById(R.id.sprintRowStartToEndProjectOverview);
+        projectOverviewVelocityNotEmptyStateView = view.findViewById(R.id.projectOverviewVelocityNotEmptyStateView);
+        projectOverviewFragmentVelocityTextView = view.findViewById(R.id.projectOverviewFragmentVelocityTextView);
+        projectOverviewDaysNotEmptyStateView = view.findViewById(R.id.projectOverviewDaysNotEmptyStateView);
+        projectOverviewDays = view.findViewById(R.id.projectOverviewDays);
 
-        userStoryProgressCircle = view.findViewById(R.id.projectOverviewProgressBar);
-        userStoryProgressPercent = view.findViewById(R.id.projectOverviewProgressBarText);
+        projectOverviewProgressBar = view.findViewById(R.id.projectOverviewProgressBar);
+        projectOverviewProgressBarText = view.findViewById(R.id.projectOverviewProgressBarText);
 
-        currentSprintCard.setVisibility(View.GONE);
-        emptySprintView.setVisibility(View.VISIBLE);
+        projectOverviewSprintCard.setVisibility(View.GONE);
+        projectOverviewEmptyCurrentSprint.setVisibility(View.VISIBLE);
 
-        userStoryProgressCircle.setVisibility(View.GONE);
-        userStoryProgressPercent.setVisibility(View.GONE);
-        emptyProgressView.setVisibility(View.VISIBLE);
+        projectOverviewProgressBar.setVisibility(View.GONE);
+        projectOverviewProgressBarText.setVisibility(View.GONE);
+        projectOverviewEmptyProgressView.setVisibility(View.VISIBLE);
 
-        velocityView.setVisibility(View.GONE);
-        daysView.setVisibility(View.GONE);
-        emptyVelocityView.setVisibility(View.VISIBLE);
-        emptyDaysView.setVisibility(View.VISIBLE);
+        projectOverviewVelocityNotEmptyStateView.setVisibility(View.GONE);
+        projectOverviewDaysNotEmptyStateView.setVisibility(View.GONE);
+        projectOverviewFragmentVelocityTextView.setVisibility(View.VISIBLE);
+        projectOverviewDays.setVisibility(View.VISIBLE);
 
-        currentVelocityCard.setOnClickListener(null);
+        projectOverviewFragmentVelocityCardView.setOnClickListener(null);
 
         return view;
     }
@@ -127,8 +127,8 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     // Set the provided details into the respective views
     @Override
     public void setProjectDetails(String titleViewText, String descriptionViewText) {
-        projectTitle.setText(titleViewText);
-        projectDescription.setText(descriptionViewText);
+        projectOverviewFragmentTitleTextView.setText(titleViewText);
+        projectOverviewFragmentDescTextView.setText(descriptionViewText);
 
     }
 
@@ -136,19 +136,19 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     public void setCurrentSprintDetails(final String currentSprintId, String sprintTitle, String sprintDesc, String dates) {
 
         if (currentSprintId.equals("")){
-            currentSprintCard.setVisibility(View.GONE);
-            emptySprintView.setVisibility(View.VISIBLE);
+            projectOverviewSprintCard.setVisibility(View.GONE);
+            projectOverviewEmptyCurrentSprint.setVisibility(View.VISIBLE);
             return;
         }
 
-        currentSprintCard.setVisibility(View.VISIBLE);
-        emptySprintView.setVisibility(View.GONE);
-        sprintName.setText(sprintTitle);
-        sprintDescription.setText(sprintDesc);
-        sprintDates.setText(dates);
+        projectOverviewSprintCard.setVisibility(View.VISIBLE);
+        projectOverviewEmptyCurrentSprint.setVisibility(View.GONE);
+        sprintRowNameProjectOverview.setText(sprintTitle);
+        sprintRowDescriptionProjectOverview.setText(sprintDesc);
+        sprintRowStartToEndProjectOverview.setText(dates);
 
         // Go to current sprint
-        currentSprintCard.setOnClickListener(new View.
+        projectOverviewSprintCard.setOnClickListener(new View.
                 OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,21 +177,21 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
         refreshProgressHandler.postDelayed(refreshRunnable, 5000);
 
         if (total == 0){
-            currentUserStoryCard.setVisibility(View.GONE);
-            userStoryProgressCircle.setVisibility(View.GONE);
-            userStoryProgressPercent.setVisibility(View.GONE);
-            emptyProgressView.setVisibility(View.VISIBLE);
+            projectOverviewUserStoryCard.setVisibility(View.GONE);
+            projectOverviewProgressBar.setVisibility(View.GONE);
+            projectOverviewProgressBarText.setVisibility(View.GONE);
+            projectOverviewEmptyProgressView.setVisibility(View.VISIBLE);
             return;
         }
 
-        userStoryProgressCircle.setVisibility(View.VISIBLE);
-        userStoryProgressPercent.setVisibility(View.VISIBLE);
-        emptyProgressView.setVisibility(View.GONE);
+        projectOverviewProgressBar.setVisibility(View.VISIBLE);
+        projectOverviewProgressBarText.setVisibility(View.VISIBLE);
+        projectOverviewEmptyProgressView.setVisibility(View.GONE);
 
         long percent = (completed*100)/total;
 
-        userStoryProgressCircle.setProgress((int)percent);
-        userStoryProgressPercent.setText(percent+"%");
+        projectOverviewProgressBar.setProgress((int)percent);
+        projectOverviewProgressBarText.setText(percent+"%");
 
 
     }
@@ -200,18 +200,18 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     public void setCurrentVelocity(long currentVelocity) {
         // Error
         if (currentVelocity == -1){
-            emptyVelocityView.setVisibility(View.VISIBLE);
-            velocityView.setVisibility(View.GONE);
-            currentVelocityCard.setOnClickListener(null); // Don't let them change it
+            projectOverviewFragmentVelocityTextView.setVisibility(View.VISIBLE);
+            projectOverviewVelocityNotEmptyStateView.setVisibility(View.GONE);
+            projectOverviewFragmentVelocityCardView.setOnClickListener(null); // Don't let them change it
             return;
         }
 
-        velocityView.setText(String.valueOf(currentVelocity));
-        velocityView.setVisibility(View.VISIBLE);
-        emptyVelocityView.setVisibility(View.GONE);
+        projectOverviewVelocityNotEmptyStateView.setText(String.valueOf(currentVelocity));
+        projectOverviewVelocityNotEmptyStateView.setVisibility(View.VISIBLE);
+        projectOverviewFragmentVelocityTextView.setVisibility(View.GONE);
 
         // User wants to change velocity
-        currentVelocityCard.setOnClickListener(new View.OnClickListener() {
+        projectOverviewFragmentVelocityCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickChangeVelocity();
@@ -223,14 +223,14 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     public void setDays(long days) {
         // Error
         if (days == -1){
-            emptyDaysView.setVisibility(View.VISIBLE);
-            daysView.setVisibility(View.GONE);
+            projectOverviewDays.setVisibility(View.VISIBLE);
+            projectOverviewDaysNotEmptyStateView.setVisibility(View.GONE);
             return;
         }
 
-        daysView.setText(String.valueOf(days));
-        daysView.setVisibility(View.VISIBLE);
-        emptyDaysView.setVisibility(View.GONE);
+        projectOverviewDaysNotEmptyStateView.setText(String.valueOf(days));
+        projectOverviewDaysNotEmptyStateView.setVisibility(View.VISIBLE);
+        projectOverviewDays.setVisibility(View.GONE);
     }
 
     private void onClickChangeVelocity(){

@@ -35,11 +35,11 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
     private String pid;
     private ValueEventListener projectListener;
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
+    private DrawerLayout productBacklogDrawerLayout;
+    private NavigationView productBacklogNavigationView;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-    private ImageButton logoutBtn, helpBtn;
+    private ViewPager productBacklogViewPager;
+    private ImageButton productBacklogLogoutImageButton, productBacklogHelpImageButton;
 
     private boolean projectAlreadyDeleted;
 
@@ -52,10 +52,10 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
-        this.productBacklogPresenter = new ProductBacklogPresenter(this, pid);
+        productBacklogPresenter = new ProductBacklogPresenter(this, pid);
 
-        logoutBtn = findViewById(R.id.productBacklogLogoutImageButton);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        productBacklogLogoutImageButton = findViewById(R.id.productBacklogLogoutImageButton);
+        productBacklogLogoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuthenticationHelper.logout(ProductBacklogActivity.this);
@@ -63,17 +63,17 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         });
 
         // Displays a help popup
-        helpBtn = findViewById(R.id.productBacklogHelpImageButton);
-        helpBtn.setOnClickListener(new View.OnClickListener() {
+        productBacklogHelpImageButton = findViewById(R.id.productBacklogHelpImageButton);
+        productBacklogHelpImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(ProductBacklogActivity.this)
                         .setTitle("Need Help?")
                         .setMessage("To get started, you can add a new user story to the product backlog with the button " +
                                 "below. " + "\n" +
-                                "User stories can then be deleted, or marked as userStoryRowCompletedUserStoryImageButton/in progress with their respective " +
+                                "User stories can then be deleted, or marked as completed/in progress with their respective " +
                                 "buttons. " + "\n" +
-                                "To assign a user story to a sprint or the product backlog, click down it " +
+                                "To assign a user story to a sprint or the product backlog, hold down it " +
                                 "for a few seconds. A dialog will pop up, allowing you to make your selection.")
                         .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
@@ -90,28 +90,28 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.productBacklogViewPager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        productBacklogViewPager = findViewById(R.id.productBacklogViewPager);
+        productBacklogViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.productBacklogTabLayout);
-        tabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        TabLayout productBacklogTabLayout = findViewById(R.id.productBacklogTabLayout);
+        productBacklogTabLayout.setupWithViewPager(productBacklogViewPager);
+        productBacklogViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productBacklogTabLayout));
+        productBacklogTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(productBacklogViewPager));
 
         // The following sets up the navigation drawer
-        mDrawerLayout = findViewById(R.id.productBacklogDrawerLayout);
-        navigationView = findViewById(R.id.productBacklogNavigationView);
+        productBacklogDrawerLayout = findViewById(R.id.productBacklogDrawerLayout);
+        productBacklogNavigationView = findViewById(R.id.productBacklogNavigationView);
 
         // By default, should highlight product backlog option to indicate that is where the user is
-        navigationView.setCheckedItem(R.id.nav_product_backlog);
-        navigationView.setNavigationItemSelectedListener(
+        productBacklogNavigationView.setCheckedItem(R.id.nav_product_backlog);
+        productBacklogNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+                        productBacklogDrawerLayout.closeDrawers();
                         int item = menuItem.getItemId();
                         switch(item){
                             // User chooses project overview in menu, go there
@@ -193,8 +193,8 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                 });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.productBacklogToolbar);
-        setSupportActionBar(toolbar);
+        Toolbar productBacklogToolbar = findViewById(R.id.productBacklogToolbar);
+        setSupportActionBar(productBacklogToolbar);
         // Sets icon for menu on top left
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -221,7 +221,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         switch (item.getItemId()) {
             // User clicks on the menu icon on the top left
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                productBacklogDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -313,7 +313,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                     data = new Bundle();
                     data.putString("projectId", pid);
 
-                    // This fragment will display info for product backlog userStoryRowCompletedUserStoryImageButton user stories
+                    // This fragment will display info for product backlog completed user stories
                     data.putString("type", "PB_COMPLETED");
 
                     // Passes in null, to tell fragment and presenter that this is a pb user story

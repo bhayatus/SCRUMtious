@@ -30,10 +30,10 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
     private ProjectMembersPresenterInt projectMembersPresenter;
 
-    private TextView emptyStateView;
-    private RecyclerView membersList;
+    private TextView projectMembersFragmentNoMembersEmptyView;
+    private RecyclerView projectMembersFragmentRecyclerView;
     private FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> membersListAdapter;
-    private FloatingActionButton addMemberBtn;
+    private FloatingActionButton projectMembersFragmentAddMemberButton;
     private ProgressDialog invitingProgressDialog, deletingMemberProgressDialog;
 
     public ProjectMembersFragment() {
@@ -44,7 +44,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String pid = getArguments().getString("projectId");
-        this.projectMembersPresenter = new ProjectMembersPresenter(this, pid);
+        projectMembersPresenter = new ProjectMembersPresenter(this, pid);
         projectMembersPresenter.checkIfOwner(); // Only owner can invite users, check here
     }
 
@@ -53,12 +53,12 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_members, container, false);
-        emptyStateView = view.findViewById(R.id.projectMembersFragmentNoMembersEmptyView);
-        membersList = view.findViewById(R.id.projectMembersFragmentRecyclerView);
+        projectMembersFragmentNoMembersEmptyView = view.findViewById(R.id.projectMembersFragmentNoMembersEmptyView);
+        projectMembersFragmentRecyclerView = view.findViewById(R.id.projectMembersFragmentRecyclerView);
         setupRecyclerView();
-        addMemberBtn = view.findViewById(R.id.projectMembersFragmentAddMemberButton);
+        projectMembersFragmentAddMemberButton = view.findViewById(R.id.projectMembersFragmentAddMemberButton);
 
-        addMemberBtn.setOnClickListener(new View.OnClickListener() {
+        projectMembersFragmentAddMemberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickInviteMember(view);
@@ -71,7 +71,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     // Only owner of the project can view and click the add member floating action button
     @Override
     public void setAddMemberInvisible() {
-        addMemberBtn.setVisibility(View.GONE);
+        projectMembersFragmentAddMemberButton.setVisibility(View.GONE);
     }
 
     private void setupRecyclerView(){
@@ -81,9 +81,9 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
 
-        membersList.setLayoutManager(mLayoutManager);
+        projectMembersFragmentRecyclerView.setLayoutManager(mLayoutManager);
         membersListAdapter = projectMembersPresenter.setupMemberListAdapter();
-        membersList.setAdapter(membersListAdapter);
+        projectMembersFragmentRecyclerView.setAdapter(membersListAdapter);
 
     }
 
@@ -91,10 +91,10 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     @Override
     public void setEmptyStateView(){
         if (membersListAdapter.getItemCount() == 1){
-            emptyStateView.setVisibility(View.VISIBLE);
+            projectMembersFragmentNoMembersEmptyView.setVisibility(View.VISIBLE);
         }
         else{
-            emptyStateView.setVisibility(View.GONE);
+            projectMembersFragmentNoMembersEmptyView.setVisibility(View.GONE);
         }
     }
 
@@ -149,30 +149,30 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     }
 
 
-    // When the userStoryRowDeleteUserStoryImageButton member button is clicked for an individual member
+    // When the delete member button is clicked for an individual member
     public void onClickDelete(final String uid){
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Member?")
                 .setView(alertView)
-                .setMessage("Are you sure you want to userStoryRowDeleteUserStoryImageButton this member? Enter your password below to confirm.")
+                .setMessage("Are you sure you want to delete this member? Enter your password below to confirm.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Validate password and userStoryRowDeleteUserStoryImageButton member
+                        // Validate password and delete member
                         EditText passwordET = (EditText) alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
                         String password = passwordET.getText().toString().trim();
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Incorrect password, could not userStoryRowDeleteUserStoryImageButton member.", false);
+                            showMessage("Incorrect password, could not delete member.", false);
                         }
 
                         else {
                             // Cannot send empty string
                             if(password.length() == 0) {
-                                showMessage("Incorrect password, could not userStoryRowDeleteUserStoryImageButton member.", false);
+                                showMessage("Incorrect password, could not delete member.", false);
                             }
                             else {
 
@@ -180,7 +180,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                                 deletingMemberProgressDialog = new ProgressDialog(getContext());
                                 deletingMemberProgressDialog.setTitle("Delete Member");
                                 deletingMemberProgressDialog.setCancelable(false);
-                                deletingMemberProgressDialog.setMessage("Attempting to userStoryRowDeleteUserStoryImageButton member...");
+                                deletingMemberProgressDialog.setMessage("Attempting to delete member...");
                                 deletingMemberProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 deletingMemberProgressDialog.show();
 
@@ -228,36 +228,37 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     // Viewholder class to display members of a project
     public static class MembersViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView emailView;
-        ImageButton deleteView;
-        ImageButton owner;
+        TextView memberRowEmailTextView;
+        ImageButton memberRowDeleteImageButton;
+        ImageButton memberRowOwnerImageButton;
 
         public MembersViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
 
-            emailView = (TextView) mView.findViewById(R.id.memberRowEmailTextView);
-            deleteView = (ImageButton) mView.findViewById(R.id.memberRowDeleteImageButton);
-            owner = (ImageButton) mView.findViewById(R.id.memberRowOwnerImageButton);
+            memberRowEmailTextView = mView.findViewById(R.id.memberRowEmailTextView);
+            memberRowDeleteImageButton = mView.findViewById(R.id.memberRowDeleteImageButton);
+            memberRowOwnerImageButton = mView.findViewById(R.id.memberRowOwnerImageButton);
         }
 
         // Populates each row of the recycler view with the member details
         public void setDetails(String emailAddress){
-            emailView.setText(emailAddress);
+            memberRowEmailTextView.setText(emailAddress);
         }
 
-        // Gets the userStoryRowDeleteUserStoryImageButton button
-        public ImageButton getDeleteView(){
-            return deleteView;
+        // Gets the delete button
+        public ImageButton getMemberRowDeleteImageButton(){
+            return memberRowDeleteImageButton;
         }
 
         // Only owner should be able to view this button, with the exception of their own self
         public void setDeleteInvisible(){
-            deleteView.setVisibility(View.GONE);
+            memberRowDeleteImageButton.setVisibility(View.GONE);
         }
 
         // Only owner should have this icon displayed
-        public void setOwnerInvisible(){owner.setVisibility(View.GONE);}
+        public void setOwnerInvisible(){
+            memberRowOwnerImageButton.setVisibility(View.GONE);}
     }
 
 }

@@ -55,7 +55,7 @@ public class AssignToFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_assign_to, container, false);
 
-        assignToFragmentRecyclerView = (RecyclerView) view.findViewById(R.id.assignToFragmentRecyclerView);
+        assignToFragmentRecyclerView = view.findViewById(R.id.assignToFragmentRecyclerView);
         assignToFragmentNoneTextView = view.findViewById(R.id.assignToFragmentNoneTextView);
 
         assignToFragmentNoneTextView.setOnClickListener(new View.OnClickListener() {
@@ -166,18 +166,18 @@ public class AssignToFragment extends DialogFragment {
     // Viewholder class to display users that we can assign a task to
     public static class AssignToUserViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView nameView;
+        TextView sendToRowNameTextView;
 
         public AssignToUserViewHolder(View itemView) {
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.sendToRowNameTextView);
+            sendToRowNameTextView = mView.findViewById(R.id.sendToRowNameTextView);
         }
 
         // Populates each row of the recycler view with the user name
         public void setDetails(String name){
-            nameView.setText(name);
+            sendToRowNameTextView.setText(name);
         }
 
     }

@@ -66,8 +66,8 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
                 viewHolder.setDetails(model.getTaskDesc(), assignedTo);
 
-                ImageButton deleteTaskBtn = viewHolder.getTaskDelete();
-                ImageButton switchTaskBtn = viewHolder.getTaskSwitch();
+                ImageButton deleteTaskBtn = viewHolder.getTaskRowDeleteTaskImageButton();
+                ImageButton switchTaskBtn = viewHolder.getTaskRowSwitchTaskStatesImageButton();
 
                 if (status.equals("not_started")){
                     viewHolder.setCardRed();
