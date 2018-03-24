@@ -348,6 +348,14 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
         }
 
+        public TextView getGroupChatMessageRowContentRightTextView() {
+            return groupChatMessageRowContentRightTextView;
+        }
+
+        public TextView getGroupChatMessageRowContentLeftTextView() {
+            return groupChatMessageRowContentLeftTextView;
+        }
+
 
         public TextView getGroupChatMessageRowTimestampRightTextView() {
             return groupChatMessageRowTimestampRightTextView;

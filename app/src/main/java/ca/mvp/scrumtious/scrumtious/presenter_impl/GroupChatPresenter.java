@@ -99,30 +99,47 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
                 // Current message was from current user
                 if(sender.equals(userEmail)){
                     mViewHolder.showRightSide();
-                }else{
+                    // Set click listener for right side message
+                    viewHolder.getGroupChatMessageRowContentRightTextView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Details are shown currently, hide them
+                            if (mViewHolder.getGroupChatMessageRowTimestampRightTextView().isShown()){
+                                mViewHolder.hideRightDetails();
+                            }
+                            // Details are not shown currently, show them
+                            else{
+                                mViewHolder.showRightDetails();
+                            }
+                        }
+                    });
+
+                    // Remove left side listener
+                    viewHolder.getGroupChatMessageRowContentLeftTextView().setOnClickListener(null);
+                }
+                // Current message was not from current user
+                else{
                     mViewHolder.showLeftSide();
+                    // Set click listener for left side message
+                    viewHolder.getGroupChatMessageRowContentLeftTextView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Details are shown currently, hide them
+                            if (mViewHolder.getGroupChatMessageRowTimestampLeftTextView().isShown()){
+                                mViewHolder.hideLeftDetails();
+                            }
+                            // Details are not shown currently, show them
+                            else{
+                                mViewHolder.showLeftDetails();
+                            }
+                        }
+                    });
+                    // Remove right side listener
+                    viewHolder.getGroupChatMessageRowContentRightTextView().setOnClickListener(null);
+
                 }
 
                 viewHolder.setDetails(messageContent, timeStamp, sender);
-                // User clicked on the message
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Details are shown currently, hide them
-                        if (mViewHolder.getGroupChatMessageRowTimestampLeftTextView().isShown()){
-                            mViewHolder.hideLeftDetails();
-                        }
-                        else{
-                            mViewHolder.showLeftDetails();
-                        }
-                        if (mViewHolder.getGroupChatMessageRowTimestampRightTextView().isShown()){
-                            mViewHolder.hideRightDetails();
-                        }
-                        else{
-                            mViewHolder.showRightDetails();
-                        }
-                    }
-                });
 
             }
 
