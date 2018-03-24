@@ -22,42 +22,42 @@ import ca.mvp.scrumtious.scrumtious.view_impl.GroupChatActivity;
 
 public class GroupChatPresenter extends AppCompatActivity implements GroupChatPresenterInt {
 
-    private FirebaseDatabase mDatabase;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mRef;
-    private Query mQuery;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
+    private FirebaseAuth firebaseAuth;
+    private Query databaseQuery;
 
     private GroupChatViewInt groupChatView;
 
-    private String pid;
+    private final String PROJECT_ID;
 
     public GroupChatPresenter(GroupChatViewInt groupChatView, String pid) {
         this.groupChatView = groupChatView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
     public void addMessagesToDatabase(final String messageText) {
-        mAuth = FirebaseAuth.getInstance();
-        String senderEmail = mAuth.getCurrentUser().getEmail();
+        firebaseAuth = FirebaseAuth.getInstance();
+        String senderEmail = firebaseAuth.getCurrentUser().getEmail();
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("messages");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("messages");
 
-        final String messageId = mRef.push().getKey();
+        final String messageId = firebaseRootReference.push().getKey();
 
         // Get the current date long timeStamp = System.currentTimeMillis();
         long timeStamp = System.currentTimeMillis();
 
         Map messagesMap = new HashMap<>();
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
         //All changes made in one go, ensure atomicity
-        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/messageText", messageText);
-        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/senderEmail", senderEmail);
-        messagesMap.put("/projects/" + pid + "/messages/" + messageId + "/timeStamp", timeStamp);
+        messagesMap.put("/projects/" + PROJECT_ID + "/messages/" + messageId + "/messageText", messageText);
+        messagesMap.put("/projects/" + PROJECT_ID + "/messages/" + messageId + "/senderEmail", senderEmail);
+        messagesMap.put("/projects/" + PROJECT_ID + "/messages/" + messageId + "/timeStamp", timeStamp);
 
-        mRef.updateChildren(messagesMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseRootReference.updateChildren(messagesMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {
                     groupChatView.onSuccessfulSent();
@@ -70,17 +70,17 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
 
 
     public FirebaseRecyclerAdapter<Message, GroupChatActivity.MessagesViewHolder> setupMessageAdapter() {
-        mAuth = FirebaseAuth.getInstance();
-        mRef = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseRootReference = FirebaseDatabase.getInstance().getReference();
 
-        mQuery = mRef.child("projects").child(pid).child("messages").orderByChild("timeStamp");
+        databaseQuery = firebaseRootReference.child("projects").child(PROJECT_ID).child("messages").orderByChild("timeStamp");
 
         FirebaseRecyclerAdapter<Message, GroupChatActivity.MessagesViewHolder> messageListAdapter
                 = new FirebaseRecyclerAdapter<Message, GroupChatActivity.MessagesViewHolder>(
                         Message.class,
                         R.layout.group_chat_message_row,
                         GroupChatActivity.MessagesViewHolder.class,
-                        mQuery
+                databaseQuery
         ){
 
             @Override
@@ -91,8 +91,8 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
                 String messageContent = model.getMessageText();
                 String sender = model.getSenderEmail();
 
-                mAuth = FirebaseAuth.getInstance();
-                String userEmail = mAuth.getCurrentUser().getEmail();
+                firebaseAuth = FirebaseAuth.getInstance();
+                String userEmail = firebaseAuth.getCurrentUser().getEmail();
 
                 viewHolder.setDetails(messageContent, timeStamp, sender);
 

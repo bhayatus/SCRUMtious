@@ -27,7 +27,7 @@ import ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment;
 public class BacklogPresenter implements BacklogPresenterInt {
 
     private FirebaseDatabase firebaseDatabse;
-    private DatabaseReference firebaseRootRef;
+    private DatabaseReference firebaseRootReference;
     private Query databaseQuery;
 
     private BacklogViewInt backlogView;
@@ -52,7 +52,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
     @Override
     public FirebaseRecyclerAdapter<UserStory, BacklogFragment.BacklogViewHolder> setupBacklogAdapter() {
-        firebaseRootRef = FirebaseDatabase.getInstance().getReference();
+        firebaseRootReference = FirebaseDatabase.getInstance().getReference();
 
         String typeQuery = "";
 
@@ -74,13 +74,13 @@ public class BacklogPresenter implements BacklogPresenterInt {
 
         // Dealing with sprint backlog
         if (BACKLOG_STATUS_TYPE.equals(SPRINT_COMPLETED) || BACKLOG_STATUS_TYPE.equals(SPRINT_IN_PROGRESS)) {
-            databaseQuery = firebaseRootRef.child("projects").child(PROJECT_ID).child("user_stories").orderByChild("assignedTo_completed")
+            databaseQuery = firebaseRootReference.child("projects").child(PROJECT_ID).child("user_stories").orderByChild("assignedTo_completed")
                     .equalTo(typeQuery);
         }
 
         // Product backlog situation
         if (BACKLOG_STATUS_TYPE.equals(PB_COMPLETED) || BACKLOG_STATUS_TYPE.equals(PB_IN_PROGRESS)){
-            databaseQuery = firebaseRootRef.child("projects").child(PROJECT_ID).child("user_stories").orderByChild("completed")
+            databaseQuery = firebaseRootReference.child("projects").child(PROJECT_ID).child("user_stories").orderByChild("completed")
                     .equalTo(typeQuery);
         }
 
@@ -235,9 +235,9 @@ public class BacklogPresenter implements BacklogPresenterInt {
         final String userStoryId = usid;
 
         firebaseDatabse = FirebaseDatabase.getInstance();
-        firebaseRootRef = firebaseDatabse.getReference();
+        firebaseRootReference = firebaseDatabse.getReference();
         // Gets the current user story
-        firebaseRootRef.child("projects").child(PROJECT_ID).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get the assigned to variable, whether it be the product backlog or a specific sprint backlog
@@ -259,7 +259,7 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 statusMap.put("/projects/" + PROJECT_ID + "/user_stories/" + userStoryId + "/" + "completed", completed);
                 statusMap.put("/projects/" + PROJECT_ID + "/user_stories/" + userStoryId + "/" + "assignedTo_completed", assignedTo_completed);
 
-                firebaseRootRef.updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener() {
+                firebaseRootReference.updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
 
@@ -302,8 +302,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
     @Override
     public void deleteUserStory(String usid) {
         firebaseDatabse = FirebaseDatabase.getInstance();
-        firebaseRootRef = firebaseDatabse.getReference().child("projects").child(PROJECT_ID).child("user_stories");
-        firebaseRootRef.child(usid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseRootReference = firebaseDatabse.getReference().child("projects").child(PROJECT_ID).child("user_stories");
+        firebaseRootReference.child(usid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully
@@ -322,9 +322,9 @@ public class BacklogPresenter implements BacklogPresenterInt {
     private void checkWithinSprint(final String usid, final boolean newStatus){
 
         firebaseDatabse = FirebaseDatabase.getInstance();
-        firebaseRootRef = firebaseDatabse.getReference();
+        firebaseRootReference = firebaseDatabse.getReference();
 
-        firebaseRootRef.child("projects").child(PROJECT_ID).child("sprints").child(SPRINT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("sprints").child(SPRINT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

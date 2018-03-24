@@ -18,11 +18,12 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectStatsViewInt;
 
 public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
-    private ProjectStatsViewInt projectStatsView;
-    private String pid;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private ProjectStatsViewInt projectStatsView;
+
+    private final String PROJECT_ID;
 
     private long totalCost;
     private long createdTime;
@@ -36,7 +37,7 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
     public ProjectStatsPresenter(ProjectStatsViewInt projectStatsView, String pid){
         this.projectStatsView = projectStatsView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
     @Override
@@ -46,10 +47,10 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
         numTotalUserStories = 0;
         daysFromStart = new ArrayList<Long>();
         costs = new ArrayList<Long>();
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID);
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -57,9 +58,9 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
                     createdTime = (long) dataSnapshot.child("creationTimeStamp").getValue();
 
-                    mDatabase = FirebaseDatabase.getInstance();
-                    Query mQuery = mDatabase.getReference().child("projects").child(pid).child("user_stories").orderByChild("completedDate");
-                    mQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    Query databaseQuery = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("user_stories").orderByChild("completedDate");
+                    databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()){
@@ -139,10 +140,10 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
     @Override
     public void getNumMembers() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("numMembers");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("numMembers");
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
@@ -162,10 +163,10 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
     @Override
     public void getNumSprints() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("numSprints");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("numSprints");
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
@@ -185,10 +186,10 @@ public class ProjectStatsPresenter implements ProjectStatsPresenterInt{
 
     @Override
     public void getProjectCreationDate() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("creationTimeStamp");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("creationTimeStamp");
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){

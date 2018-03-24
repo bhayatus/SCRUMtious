@@ -17,37 +17,38 @@ import ca.mvp.scrumtious.scrumtious.view_impl.SprintListActivity;
 
 public class SprintListPresenter implements SprintListPresenterInt {
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private Query mQuery;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
+    private Query databaseQuery;
 
     private SprintListViewInt sprintListView;
-    private String pid;
+
+    private final String PROJECT_ID;
 
     public SprintListPresenter (SprintListViewInt sprintListView, String pid){
         this.sprintListView = sprintListView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
     @Override
     public FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> setupSprintListAdapter(String sortBy) {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
 
         // Grab the list of sprints within this project
-        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild(sortBy);
+        databaseQuery = firebaseRootReference.child("projects").child(PROJECT_ID).child("sprints").orderByChild(sortBy);
 
         FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder> sprintListAdapter
                 = new FirebaseRecyclerAdapter<Sprint, SprintListActivity.SprintsViewHolder>(
                 Sprint.class,
                 R.layout.sprint_row,
                 SprintListActivity.SprintsViewHolder.class,
-                mQuery
+                databaseQuery
         ) {
 
             @Override
             protected void populateViewHolder(SprintListActivity.SprintsViewHolder viewHolder, Sprint model, int position) {
-                final String sid = getRef(position).getKey();
+                final String sprintId = getRef(position).getKey();
                 final SprintListActivity.SprintsViewHolder mViewHolder = viewHolder;
                 final Sprint sprintModel = model;
 
@@ -84,7 +85,7 @@ public class SprintListPresenter implements SprintListPresenterInt {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        sprintListView.goToSprintScreen(sid);
+                        sprintListView.goToSprintScreen(sprintId);
                     }
                 });
 

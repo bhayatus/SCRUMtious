@@ -18,27 +18,28 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateSprintViewInt;
 
 public class CreateSprintPresenter extends AppCompatActivity implements CreateSprintPresenterInt {
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
 
     private CreateSprintViewInt createSprintView;
-    private final String pid;
+    
+    private final String PROJECT_ID;
 
     private boolean dateConflictExists = false;
 
 
     public CreateSprintPresenter(CreateSprintViewInt createSprintView, String pid) {
         this.createSprintView = createSprintView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
     private void addSprintToDatabase(final String sprintName, final String sprintDesc, final long sprintStartDate, final long sprintEndDate) {
-         mDatabase = FirebaseDatabase.getInstance();
-         mRef = mDatabase.getReference().child("projects").child(this.pid);
+         firebaseDatabase = FirebaseDatabase.getInstance();
+         firebaseRootReference = firebaseDatabase.getReference().child("projects").child(this.PROJECT_ID);
 
-         final String sprintId = mRef.push().getKey(); // generates unique key for sprint
+         final String sprintId = firebaseRootReference.push().getKey(); // generates unique key for sprint
 
-        mRef.child("numSprints").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.child("numSprints").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long numSprints = (long) dataSnapshot.getValue();
@@ -53,7 +54,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                 sprintMap.put("/sprints/" + sprintId + "/" + "sprintEndDate", sprintEndDate);
                 sprintMap.put("/" + "numSprints", numSprints);
 
-                mRef.updateChildren(sprintMap).addOnCompleteListener(new OnCompleteListener() {
+                firebaseRootReference.updateChildren(sprintMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
@@ -76,9 +77,9 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
     public void checkConflictingSprintDates(final String sprintName, final String sprintDesc,
                                               final long sprintStartDate, final long sprintEndDate) {
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mRef.child("projects").child(this.pid).child("sprints").addListenerForSingleValueEvent(
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseRootReference.child("projects").child(this.PROJECT_ID).child("sprints").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

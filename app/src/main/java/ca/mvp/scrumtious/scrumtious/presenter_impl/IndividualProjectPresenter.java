@@ -19,32 +19,33 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualProjectViewInt
 
 public class IndividualProjectPresenter implements IndividualProjectPresenterInt {
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private FirebaseAuth mAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
+    private FirebaseAuth firebaseAuth;
 
     private IndividualProjectViewInt individualProjectView;
-    private final String pid;
+
+    private final String PROJECT_ID;
 
     private Map removeProjectMap;
 
     public IndividualProjectPresenter(IndividualProjectViewInt individualProjectView, String pid){
         this.individualProjectView = individualProjectView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
     // Need to verify if the owner, if delete project button is to show
     @Override
     public void checkIfOwner(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser mUser = mAuth.getCurrentUser();
-        mRef.child("projects").child(pid).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Only owner should see delete button, should be invisible otherwise
-                if(!dataSnapshot.getValue().toString().equals(mUser.getUid())){
+                if(!dataSnapshot.getValue().toString().equals(user.getUid())){
                     individualProjectView.setDeleteInvisible();
                 }
             }
@@ -61,10 +62,10 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
     @Override
     public void validatePassword(String password){
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser mUser = mAuth.getCurrentUser();
-        AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
-        mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        AuthCredential userCredentials = EmailAuthProvider.getCredential(user.getEmail(), password);
+        user.reauthenticate(userCredentials).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
@@ -83,25 +84,25 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
     }
 
     private void deleteProject() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
 
         removeProjectMap = new HashMap();
 
         // Remove the project itself
-        removeProjectMap.put("/projects/" + pid, null);
+        removeProjectMap.put("/projects/" + PROJECT_ID, null);
 
         // Remove all users associated with this project
-        mRef.child("users").orderByChild(pid).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.child("users").orderByChild(PROJECT_ID).equalTo("member").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get all the users that were in the project, and remove them
                 for(DataSnapshot d: dataSnapshot.getChildren()){
-                    removeProjectMap.put("/users/" + d.getKey() + "/" + pid, null);
+                    removeProjectMap.put("/users/" + d.getKey() + "/" + PROJECT_ID, null);
                 }
 
                 // Remove all invites associated with this project
-                mRef.child("invites").orderByChild("projectId").equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+                firebaseRootReference.child("invites").orderByChild("projectId").equalTo(PROJECT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get all the invites that were in the project, and remove them
@@ -110,7 +111,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
                         }
 
                         // Remove all parts at the same time
-                        mRef.updateChildren(removeProjectMap).addOnCompleteListener(new OnCompleteListener() {
+                        firebaseRootReference.updateChildren(removeProjectMap).addOnCompleteListener(new OnCompleteListener() {
                             @Override
                             public void onComplete(@NonNull Task task) {
                                 // Successfully deleted project

@@ -24,25 +24,27 @@ import ca.mvp.scrumtious.scrumtious.view_impl.TaskBoardFragment;
 
 public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
-    private TaskBoardFragment taskBoardView;
-    private String pid, usid;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
+    private Query databaseQuery;
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private Query mQuery;
+    private TaskBoardFragment taskBoardView;
+
+    private final String PROJECT_ID;
+    private final String USER_STORY_ID;
 
     public TaskBoardPresenter(TaskBoardFragment taskBoardView, String pid, String usid){
         this.taskBoardView = taskBoardView;
-        this.pid = pid;
-        this.usid = usid;
+        this.PROJECT_ID = pid;
+        this.USER_STORY_ID = usid;
     }
 
     @Override
     public FirebaseRecyclerAdapter<ca.mvp.scrumtious.scrumtious.model.Task, TaskBoardFragment.TaskBoardViewHolder> setupTaskBoardAdapter(String type) {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
 
-        mQuery = mRef.child("projects").child(pid).child("user_stories").child(usid).child("tasks").orderByChild("status")
+        databaseQuery = firebaseRootReference.child("projects").child(PROJECT_ID).child("user_stories").child(USER_STORY_ID).child("tasks").orderByChild("status")
                 .equalTo(type);
 
         FirebaseRecyclerAdapter<ca.mvp.scrumtious.scrumtious.model.Task, TaskBoardFragment.TaskBoardViewHolder> taskBoardListAdapter
@@ -50,13 +52,13 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                 ca.mvp.scrumtious.scrumtious.model.Task.class,
                 R.layout.task_row,
                 TaskBoardFragment.TaskBoardViewHolder.class,
-                mQuery
+                databaseQuery
         ) {
 
 
             @Override
             protected void populateViewHolder(final TaskBoardFragment.TaskBoardViewHolder viewHolder, ca.mvp.scrumtious.scrumtious.model.Task model, int position) {
-                final String tid = getRef(position).getKey().toString();
+                final String taskId = getRef(position).getKey().toString();
                 final TaskBoardFragment.TaskBoardViewHolder mViewHolder = viewHolder;
                 final ca.mvp.scrumtious.scrumtious.model.Task taskModel = model;
 
@@ -82,14 +84,14 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                 switchTaskBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        taskBoardView.onClickSwitchTask(view,tid);
+                        taskBoardView.onClickSwitchTask(view, taskId);
                     }
                 });
                 // User wants to delete the task
                 deleteTaskBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        taskBoardView.onClickDeleteTask(tid);
+                        taskBoardView.onClickDeleteTask(taskId);
                     }
                 });
 
@@ -98,16 +100,16 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                     public boolean onLongClick(View v) {
 
                         // Open up the dialog to choose a member
-                        taskBoardView.onLongClickTask(tid);
+                        taskBoardView.onLongClickTask(taskId);
 
                         return true;
                     }
                 });
 
                 // The following checks if the current user is the project owner
-                mDatabase = FirebaseDatabase.getInstance();
-                mRef = mDatabase.getReference();
-                mRef.child("projects").child(pid)
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseRootReference = firebaseDatabase.getReference();
+                firebaseRootReference.child("projects").child(PROJECT_ID)
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,22 +142,22 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
     // Project owner wants to delete a task
     @Override
     public void deleteTask(final String tid) {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid).child("numTasks");
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("user_stories").child(USER_STORY_ID).child("numTasks");
+        firebaseRootReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     long oldNumTasks = (long) dataSnapshot.getValue();
 
-                    mDatabase = FirebaseDatabase.getInstance();
-                    mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("user_stories").child(USER_STORY_ID);
 
                     Map deleteTaskMap = new HashMap();
                     deleteTaskMap.put("/numTasks", oldNumTasks-1);
                     deleteTaskMap.put("/tasks/" + tid, null);
 
-                    mRef.updateChildren(deleteTaskMap).addOnCompleteListener(new OnCompleteListener() {
+                    firebaseRootReference.updateChildren(deleteTaskMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull com.google.android.gms.tasks.Task task) {
                             // Successfully deleted task
@@ -181,13 +183,13 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
 
     @Override
     public void changeStatus(String tid, final String newStatus) {
-        mRef = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("user_stories")
-                .child(usid).child("tasks")
+        firebaseRootReference = FirebaseDatabase.getInstance().getReference().child("projects").child(PROJECT_ID).child("user_stories")
+                .child(USER_STORY_ID).child("tasks")
                 .child(tid);
         Map changeStatusMap = new HashMap();
         changeStatusMap.put("/status", newStatus);
 
-        mRef.updateChildren(changeStatusMap).addOnCompleteListener(new OnCompleteListener() {
+        firebaseRootReference.updateChildren(changeStatusMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 // Successful task change

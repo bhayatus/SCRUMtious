@@ -12,7 +12,7 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.LoginViewInt;
 
 public class LoginPresenter implements LoginPresenterInt {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
     private LoginViewInt loginScreenView;
 
     public LoginPresenter(LoginViewInt loginScreenView) {
@@ -21,9 +21,9 @@ public class LoginPresenter implements LoginPresenterInt {
 
     @Override
     public void attemptLogin(Activity context, final String emailAddress, final String password) {
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         // Attempt the sign in
-        mAuth.signInWithEmailAndPassword(emailAddress, password).addOnCompleteListener(context,
+        firebaseAuth.signInWithEmailAndPassword(emailAddress, password).addOnCompleteListener(context,
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

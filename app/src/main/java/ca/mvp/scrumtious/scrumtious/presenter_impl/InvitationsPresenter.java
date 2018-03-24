@@ -23,12 +23,13 @@ import ca.mvp.scrumtious.scrumtious.view_impl.InvitationsFragment;
 
 public class InvitationsPresenter implements InvitationsPresenterInt {
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference mRef;
-    private Query mQuery;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
+    private FirebaseAuth firebaseAuth;
+
+    private Query databaseQuery;
 
     private InvitationsViewInt invitationsView;
-    private FirebaseDatabase mDatabase;
 
     public InvitationsPresenter(InvitationsViewInt invitationsView){
         this.invitationsView = invitationsView;
@@ -37,20 +38,20 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
 
     @Override
     public FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> setupInvitationListAdapter() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        mRef = mDatabase.getInstance().getReference();
-        String userID = mAuth.getCurrentUser().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseRootReference = firebaseDatabase.getInstance().getReference();
+        String userId = firebaseAuth.getCurrentUser().getUid();
 
         // Only display invites that were meant for the current user
-        mQuery = mRef.child("invites").orderByChild("invitedUid").equalTo(userID);
+        databaseQuery = firebaseRootReference.child("invites").orderByChild("invitedUid").equalTo(userId);
 
         FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder> invitationsAdapter
                 = new FirebaseRecyclerAdapter<UserInvite, InvitationsFragment.InvitationsViewHolder>(
                 UserInvite.class,
                 R.layout.user_invite_row,
                 InvitationsFragment.InvitationsViewHolder.class,
-                mQuery
+                databaseQuery
         ) {
 
             @Override
@@ -94,14 +95,14 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
     @Override
     public void acceptInvite(final String projectId, final String inviteId) {
 
-        mAuth = FirebaseAuth.getInstance();
-        final String invitedUid = mAuth.getCurrentUser().getUid();
+        firebaseAuth = FirebaseAuth.getInstance();
+        final String invitedUid = firebaseAuth.getCurrentUser().getUid();
 
         // Get the number of members
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mRef.child("projects").child(projectId).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseRootReference.child("projects").child(projectId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long numMembers = (long) dataSnapshot.child("numMembers").getValue();
@@ -115,10 +116,10 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
                 acceptInviteMap.put("/users/" + invitedUid + "/" + projectId, "member");
                 acceptInviteMap.put("/invites/" + inviteId, null);
 
-                mDatabase = FirebaseDatabase.getInstance();
-                mRef = mDatabase.getReference();
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseRootReference = firebaseDatabase.getReference();
 
-                mRef.updateChildren(acceptInviteMap).addOnCompleteListener(new OnCompleteListener() {
+                firebaseRootReference.updateChildren(acceptInviteMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (!task.isSuccessful()){
@@ -139,9 +140,9 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
     // Remove the invite from the database if user chooses to reject it
     @Override
     public void removeInvite(String inviteId) {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mRef.child("invites").child(inviteId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseRootReference.child("invites").child(inviteId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){

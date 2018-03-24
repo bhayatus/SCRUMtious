@@ -27,35 +27,36 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectMembersFragment;
 
 public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private Query mQuery;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
+    private FirebaseAuth firebaseAuth;
+    private Query databaseQuery;
 
-    private final String pid;
     private ProjectMembersViewInt projectMembersView;
+
+    private final String PROJECT_ID;
 
     public ProjectMembersPresenter (ProjectMembersViewInt projectMembersView, String pid){
         this.projectMembersView = projectMembersView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
 
     @Override
     public FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> setupMemberListAdapter() {
-            mDatabase = FirebaseDatabase.getInstance();
-            mAuth = FirebaseAuth.getInstance();
-            mRef = mDatabase.getReference();
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseRootReference = firebaseDatabase.getReference();
 
             // Only query users who are in the project
-            mQuery = mRef.child("users").orderByChild(pid).equalTo("member");
+            databaseQuery = firebaseRootReference.child("users").orderByChild(PROJECT_ID).equalTo("member");
 
             FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder> membersListAdapter
                     = new FirebaseRecyclerAdapter<User, ProjectMembersFragment.MembersViewHolder>(
                     User.class,
                     R.layout.member_row,
                     ProjectMembersFragment.MembersViewHolder.class,
-                    mQuery
+                    databaseQuery
             ) {
 
                 @Override
@@ -66,13 +67,13 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     final ProjectMembersFragment.MembersViewHolder mViewHolder = viewHolder;
                     final User userModel = model;
 
-                    mRef = FirebaseDatabase.getInstance().getReference().child("projects").child(pid).child("projectOwnerUid");
-                            mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    firebaseRootReference = FirebaseDatabase.getInstance().getReference().child("projects").child(PROJECT_ID).child("projectOwnerUid");
+                            firebaseRootReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             // Only owner can delete members, anyone else should not be able to
-                            if ((dataSnapshot.getValue().toString().trim()).equals(mAuth.getCurrentUser().getUid()) == false){
+                            if ((dataSnapshot.getValue().toString().trim()).equals(firebaseAuth.getCurrentUser().getUid()) == false){
                                 mViewHolder.setDeleteInvisible();
                             }
 
@@ -115,25 +116,25 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     private void deleteMember(final String uid){
 
         // Grab the number of members
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mRef.child("projects").child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseRootReference.child("projects").child(PROJECT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long numMembers = (long) dataSnapshot.child("numMembers").getValue();
                 numMembers--; // User is being removed, decrease member count
 
-                mDatabase = FirebaseDatabase.getInstance();
-                mRef = mDatabase.getReference();
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseRootReference = firebaseDatabase.getReference();
 
                 Map removeMemberMap = new HashMap();
 
                 // Following changes need to occur to ensure atomicity
-                removeMemberMap.put("/users/" + uid + "/" + pid, null);
-                removeMemberMap.put("/projects/" + pid + "/" + uid, null);
-                removeMemberMap.put("/projects/" + pid + "/" + "numMembers", numMembers);
+                removeMemberMap.put("/users/" + uid + "/" + PROJECT_ID, null);
+                removeMemberMap.put("/projects/" + PROJECT_ID + "/" + uid, null);
+                removeMemberMap.put("/projects/" + PROJECT_ID + "/" + "numMembers", numMembers);
 
-                mRef.updateChildren(removeMemberMap).addOnCompleteListener(new OnCompleteListener() {
+                firebaseRootReference.updateChildren(removeMemberMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
@@ -157,8 +158,8 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     @Override
     public void validatePassword(String password, final String uid) {
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser mUser = mAuth.getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mUser = firebaseAuth.getCurrentUser();
         AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
         mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -182,11 +183,11 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     // Need to verify if the owner if add member button is to show
     @Override
     public void checkIfOwner(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser mUser = mAuth.getCurrentUser();
-        mRef.child("projects").child(pid).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser mUser = firebaseAuth.getCurrentUser();
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Only owner should see invite member button, should be invisible otherwise
@@ -207,9 +208,9 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
     public void checkBeforeInvite(String emailAddress) {
 
         // First check if user even exists
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("users");
-        mRef.orderByChild("emailAddress").equalTo(emailAddress).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("users");
+        firebaseRootReference.orderByChild("emailAddress").equalTo(emailAddress).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -229,9 +230,9 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                         final String invitedUid = id;
 
                     // Check if user is already in project
-                    mDatabase = FirebaseDatabase.getInstance();
-                    mRef = mDatabase.getReference().child("projects");
-                    mRef.child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    firebaseRootReference = firebaseDatabase.getReference().child("projects");
+                    firebaseRootReference.child(PROJECT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             boolean checkMore = true; // flag to ensure the rest of the checks happen
@@ -241,7 +242,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                             if (dataSnapshot.exists()){
                                     String id = dataSnapshot.getKey().toString();
 
-                                    if(id.equals(pid) && dataSnapshot.hasChild(invitedUid)){
+                                    if(id.equals(PROJECT_ID) && dataSnapshot.hasChild(invitedUid)){
                                         projectMembersView.showMessage("Cannot invite member as they are already" +
                                                 " part of this project.", false);
                                         checkMore = false;
@@ -253,9 +254,9 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                                 // Proceed with checking if user has already been invited
 
-                                mDatabase = FirebaseDatabase.getInstance();
-                                mRef = mDatabase.getReference().child("invites");
-                                mRef.orderByChild("projectId").equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                firebaseDatabase = FirebaseDatabase.getInstance();
+                                firebaseRootReference = firebaseDatabase.getReference().child("invites");
+                                firebaseRootReference.orderByChild("projectId").equalTo(PROJECT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()){
@@ -304,9 +305,9 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
     // Actually send the invite to the user at this point
     private void inviteMember(final String invitedUid){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects");
-        mRef.child(pid).child("projectTitle").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects");
+        firebaseRootReference.child(PROJECT_ID).child("projectTitle").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final String projectTitle = dataSnapshot.getValue().toString();
@@ -314,25 +315,25 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                 // Get uid and password of me, the person inviting
                 String invitingUid;
                 String invitingEmail;
-                mAuth = FirebaseAuth.getInstance();
-                invitingUid = mAuth.getCurrentUser().getUid();
-                invitingEmail = mAuth.getCurrentUser().getEmail();
+                firebaseAuth = FirebaseAuth.getInstance();
+                invitingUid = firebaseAuth.getCurrentUser().getUid();
+                invitingEmail = firebaseAuth.getCurrentUser().getEmail();
 
                 // Generating a unique push id
-                mDatabase = FirebaseDatabase.getInstance();
-                mRef = mDatabase.getReference();
-                final String inviteId = mRef.push().getKey();
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseRootReference = firebaseDatabase.getReference();
+                final String inviteId = firebaseRootReference.push().getKey();
 
                 Map inviteMap = new HashMap();
 
                 // All of the following have to occur, to ensure atomicity
-                inviteMap.put("/invites/" + inviteId + "/" + "projectId", pid);
+                inviteMap.put("/invites/" + inviteId + "/" + "projectId", PROJECT_ID);
                 inviteMap.put("/invites/" + inviteId + "/" + "projectTitle", projectTitle);
                 inviteMap.put("/invites/" + inviteId + "/" + "invitingUid", invitingUid);
                 inviteMap.put("/invites/" + inviteId + "/" + "invitingEmail", invitingEmail);
                 inviteMap.put("/invites/" + inviteId + "/" + "invitedUid", invitedUid);
 
-                mRef.updateChildren(inviteMap).addOnCompleteListener(new OnCompleteListener() {
+                firebaseRootReference.updateChildren(inviteMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()){

@@ -2,7 +2,6 @@ package ca.mvp.scrumtious.scrumtious.presenter_impl;
 
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,13 +21,15 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProjectOverviewViewInt;
 
 public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
 
     ValueEventListener projectDetailsListener, currentSprintListener, currentVelocityListener, daysListener;
 
     private ProjectOverviewViewInt projectOverviewView;
-    private String pid;
+
+    private final String PROJECT_ID;
+
     private String currentSprintId = "";
 
     private long totalStories = 0;
@@ -39,17 +40,17 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     public ProjectOverviewPresenter(ProjectOverviewViewInt projectOverviewView, String pid){
         this.projectOverviewView = projectOverviewView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
     // Grabs the info for the project
     @Override
     public void setupProjectDetailsListener() {
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID);
 
-        projectDetailsListener = mRef.addValueEventListener(new ValueEventListener() {
+        projectDetailsListener = firebaseRootReference.addValueEventListener(new ValueEventListener() {
 
             // Grab the new title and description, and display it
             @Override
@@ -72,10 +73,10 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
     // Listener should be removed if user is no longer viewing the fragment
     @Override
     public void removeProjectDetailsListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID);
         if (projectDetailsListener != null) {
-            mRef.removeEventListener(projectDetailsListener);
+            firebaseRootReference.removeEventListener(projectDetailsListener);
         }
     }
 
@@ -84,12 +85,12 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
         currentSprintId = "";
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
 
         // Grab current sprint
 
-        mRef.child("projects").child(pid).child("sprints").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("sprints").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d: dataSnapshot.getChildren()){
@@ -119,7 +120,7 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
                 if (!currentSprintId.equals("")) {
 
 
-                    currentSprintListener = FirebaseDatabase.getInstance().getReference().child("projects").child(pid)
+                    currentSprintListener = FirebaseDatabase.getInstance().getReference().child("projects").child(PROJECT_ID)
                             .child("sprints").child(currentSprintId).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -163,18 +164,18 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     @Override
     public void removeCurrentSprintListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
         if (currentSprintListener != null) {
-            mRef.child("projects").child(pid).child("sprints").child(currentSprintId).removeEventListener(currentSprintListener);
+            firebaseRootReference.child("projects").child(PROJECT_ID).child("sprints").child(currentSprintId).removeEventListener(currentSprintListener);
         }
     }
 
     @Override
     public void setupCurrentVelocityListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("currentVelocity");
-        currentVelocityListener = mRef.addValueEventListener(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("currentVelocity");
+        currentVelocityListener = firebaseRootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -194,18 +195,18 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     @Override
     public void removeCurrentVelocityListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
         if (currentVelocityListener != null) {
-            mRef.child("projects").child(pid).child("currentVelocity").removeEventListener(currentVelocityListener);
+            firebaseRootReference.child("projects").child(PROJECT_ID).child("currentVelocity").removeEventListener(currentVelocityListener);
         }
     }
 
     @Override
     public void setupDaysListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("creationTimeStamp");
-        daysListener = mRef.addValueEventListener(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("creationTimeStamp");
+        daysListener = firebaseRootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -249,10 +250,10 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     @Override
     public void removeDaysListener() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
         if (daysListener != null) {
-            mRef.child("projects").child(pid).child("creationTimeStamp").removeEventListener(daysListener);
+            firebaseRootReference.child("projects").child(PROJECT_ID).child("creationTimeStamp").removeEventListener(daysListener);
         }
     }
 
@@ -262,10 +263,10 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
         totalStories = 0;
         completedStories = 0;
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
 
-        mRef.child("projects").child(pid).child("user_stories").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("user_stories").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
@@ -295,13 +296,13 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
 
     @Override
     public void changeCurrentVelocity(long newVelocity) {
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
 
         Map changeVelocityMap = new HashMap();
-        changeVelocityMap.put("/projects/" + pid + "/currentVelocity", newVelocity);
+        changeVelocityMap.put("/projects/" + PROJECT_ID + "/currentVelocity", newVelocity);
 
-        mRef.updateChildren(changeVelocityMap).addOnCompleteListener(new OnCompleteListener() {
+        firebaseRootReference.updateChildren(changeVelocityMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 // Success

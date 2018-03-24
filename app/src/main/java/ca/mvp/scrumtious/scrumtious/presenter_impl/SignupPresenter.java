@@ -16,8 +16,9 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.SignupViewInt;
 
 public class SignupPresenter implements SignupPresenterInt {
 
+    private FirebaseAuth firebaseAuth;
+
     private SignupViewInt signupView;
-    private FirebaseAuth mAuth;
 
     public SignupPresenter(SignupViewInt signupView){
         this.signupView = signupView;
@@ -25,8 +26,8 @@ public class SignupPresenter implements SignupPresenterInt {
 
     @Override
     public void attemptSignUp(String emailAddress, String password) {
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.createUserWithEmailAndPassword(emailAddress, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
@@ -45,9 +46,9 @@ public class SignupPresenter implements SignupPresenterInt {
     }
 
     private void sendEmailVerification(){
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser mUser = mAuth.getCurrentUser();
-        mUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
@@ -56,8 +57,8 @@ public class SignupPresenter implements SignupPresenterInt {
                 }
                 // Failed to send verification e-mail, remove user from authentication and let them know
                 else{
-                    mAuth = FirebaseAuth.getInstance();
-                    mAuth.getCurrentUser().delete();
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    firebaseAuth.getCurrentUser().delete();
                     signupView.showMessage("An error occurred during the registration process, please try again.", false);
                 }
 
@@ -69,22 +70,22 @@ public class SignupPresenter implements SignupPresenterInt {
 
     // Add user to our Firebase database, outside of the authentication
     private void setupUserDatabase(){
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // Create the user object to store in Firebase after creating an account
-        String emailAddress = mAuth.getCurrentUser().getEmail();
-        String userID = mAuth.getCurrentUser().getUid();
+        String emailAddress = firebaseAuth.getCurrentUser().getEmail();
+        String userID = firebaseAuth.getCurrentUser().getUid();
 
         // Adds new user to database using their unique UserID as the key (instead
         // of the usual push ID that Firebase uses)
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference firebaseRootReference = firebaseDatabase.getReference();
 
         Map userMap = new HashMap<>();
         userMap.put("/users/" + userID + "/" + "emailAddress", emailAddress);
         userMap.put("/users/" + userID + "/" + "userID", userID);
 
-        mRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+        firebaseRootReference.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()) {
@@ -92,8 +93,8 @@ public class SignupPresenter implements SignupPresenterInt {
                 }
                 else{
                     // Failed to sign up user, remove them from authentication and tell them
-                    mAuth = FirebaseAuth.getInstance();
-                    mAuth.getCurrentUser().delete();
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    firebaseAuth.getCurrentUser().delete();
                     signupView.showMessage("An error occurred during the registration process, please try again.", false);
                 }
             }

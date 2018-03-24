@@ -19,33 +19,35 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.IndividualSprintViewInt;
 
 public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
 
-    private FirebaseDatabase mDatabase;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
+    private FirebaseAuth firebaseAuth;
 
     private IndividualSprintViewInt individualSprintView;
-    private String pid, sid;
+
+    private final String PROJECT_ID;
+    private final String SPRINT_ID;
 
     private Map deleteSprintMap;
 
     public IndividualSprintPresenter(IndividualSprintViewInt individualSprintView, String pid, String sid){
         this.individualSprintView = individualSprintView;
-        this.pid = pid;
-        this.sid = sid;
+        this.PROJECT_ID = pid;
+        this.SPRINT_ID = sid;
     }
 
     // Need to verify if the owner if delete sprint button is to show
     @Override
     public void checkIfOwner(){
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser mUser = mAuth.getCurrentUser();
-        mRef.child("projects").child(pid).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("projectOwnerUid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Only owner should see delete button, should be invisible otherwise
-                if(!dataSnapshot.getValue().toString().equals(mUser.getUid())){
+                if(!dataSnapshot.getValue().toString().equals(user.getUid())){
                     individualSprintView.setDeleteInvisible();
                 }
             }
@@ -61,10 +63,10 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
     @Override
     public void validatePassword(String password){
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser mUser = mAuth.getCurrentUser();
-        AuthCredential mCredential = EmailAuthProvider.getCredential(mUser.getEmail(), password);
-        mUser.reauthenticate(mCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        AuthCredential userCredentials = EmailAuthProvider.getCredential(user.getEmail(), password);
+        user.reauthenticate(userCredentials).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
@@ -87,41 +89,41 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
 
         deleteSprintMap = new HashMap();
 
-        deleteSprintMap.put("/projects/" + pid + "/" + "sprints" + "/" + sid, null);
+        deleteSprintMap.put("/projects/" + PROJECT_ID + "/" + "sprints" + "/" + SPRINT_ID, null);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mRef.child("projects").child(pid).child("user_stories").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        firebaseRootReference.child("projects").child(PROJECT_ID).child("user_stories").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot d: dataSnapshot.getChildren()){
-                    if (d.child("assignedTo").getValue().toString().equals(sid)){
+                    if (d.child("assignedTo").getValue().toString().equals(SPRINT_ID)){
                         String usid = d.getKey().toString();
                         String completed = d.child("completed").getValue().toString();
 
                         String assignedTo_completed = "null" + "_" + completed;
 
-                        deleteSprintMap.put("/projects/" + pid + "/" + "user_stories" + "/" + usid + "/" + "assignedTo", "null");
-                        deleteSprintMap.put("/projects/" + pid + "/" + "user_stories" + "/" + usid + "/" + "assignedToName", "");
-                        deleteSprintMap.put("/projects/" + pid + "/" + "user_stories" + "/" + usid + "/" + "assignedTo_completed", assignedTo_completed);
+                        deleteSprintMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + usid + "/" + "assignedTo", "null");
+                        deleteSprintMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + usid + "/" + "assignedToName", "");
+                        deleteSprintMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + usid + "/" + "assignedTo_completed", assignedTo_completed);
                     }
                 }
 
                 // Grab the old number of sprints
 
-                mDatabase = FirebaseDatabase.getInstance();
-                mRef = mDatabase.getReference();
-                mRef.child("projects").child(pid).child("numSprints").addListenerForSingleValueEvent(new ValueEventListener() {
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseRootReference = firebaseDatabase.getReference();
+                firebaseRootReference.child("projects").child(PROJECT_ID).child("numSprints").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         long numSprints = (long) dataSnapshot.getValue();
 
                         numSprints--;
 
-                        deleteSprintMap.put("/projects/" + pid + "/" + "numSprints", numSprints);
+                        deleteSprintMap.put("/projects/" + PROJECT_ID + "/" + "numSprints", numSprints);
 
                         // Update database at this point
-                        mRef.updateChildren(deleteSprintMap).addOnCompleteListener(new OnCompleteListener() {
+                        firebaseRootReference.updateChildren(deleteSprintMap).addOnCompleteListener(new OnCompleteListener() {
                             @Override
                             public void onComplete(@NonNull Task task) {
                                 // Successfully deleted sprint

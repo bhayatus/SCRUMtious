@@ -11,15 +11,16 @@ import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.CreateUserStoryPres
 
 public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
 
     private CreateUserStoryViewInt createUserStoryView;
-    private String pid;
+
+    private final String PROJECT_ID;
 
     public CreateUserStoryPresenter (CreateUserStoryViewInt createUserStoryView, String pid){
         this.createUserStoryView = createUserStoryView;
-        this.pid = pid;
+        this.PROJECT_ID = pid;
     }
 
     @Override
@@ -27,24 +28,24 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
 
         String stringPoints = Integer.toString(points);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        final String userStoryID = mRef.push().getKey();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        final String userStoryID = firebaseRootReference.push().getKey();
 
         HashMap userStoryMap = new HashMap<>();
 
         // All the changes that need to be made in one go, to ensure atomicity
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryName", name);
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryPoints", stringPoints);
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryDetails", details);
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "completed", "false");
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "completedDate", 0);
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo", "null");
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo_completed", "null_false");
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedToName", "");
-        userStoryMap.put("/projects/" + pid + "/" + "user_stories" + "/" + userStoryID + "/" + "numTasks", 0);
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryName", name);
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryPoints", stringPoints);
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "userStoryDetails", details);
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "completed", "false");
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "completedDate", 0);
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo", "null");
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedTo_completed", "null_false");
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "assignedToName", "");
+        userStoryMap.put("/projects/" + PROJECT_ID + "/" + "user_stories" + "/" + userStoryID + "/" + "numTasks", 0);
 
-        mRef.updateChildren(userStoryMap).addOnCompleteListener(new OnCompleteListener() {
+        firebaseRootReference.updateChildren(userStoryMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()){

@@ -18,30 +18,30 @@ import ca.mvp.scrumtious.scrumtious.view_impl.ProjectListFragment;
 
 public class ProjectListPresenter implements ProjectListPresenterInt {
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference mRef;
-    private Query mQuery;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference firebaseRootReference;
+    private Query databaseQuery;
 
     private ProjectListViewInt projectListView;
 
     public ProjectListPresenter(ProjectListViewInt projectListView){
         this.projectListView = projectListView;
-        this.mAuth = FirebaseAuth.getInstance();
+        this.firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> setupProjectListAdapter(final ProgressDialog progressDialog, boolean ownedOnly) {
-        mAuth = FirebaseAuth.getInstance();
-        mRef = FirebaseDatabase.getInstance().getReference();
-        String userID = mAuth.getCurrentUser().getUid();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseRootReference = FirebaseDatabase.getInstance().getReference();
+        String userID = firebaseAuth.getCurrentUser().getUid();
 
         // User only wants to view the projects that they own
         if (ownedOnly) {
-            mQuery = mRef.child("projects").orderByChild("projectOwnerUid").equalTo(userID);
+            databaseQuery = firebaseRootReference.child("projects").orderByChild("projectOwnerUid").equalTo(userID);
         }
         // User wants to see all projects that they are part of
         else{
-            mQuery = mRef.child("projects").orderByChild(userID).equalTo("member");
+            databaseQuery = firebaseRootReference.child("projects").orderByChild(userID).equalTo("member");
         }
 
         FirebaseRecyclerAdapter<Project, ProjectListFragment.ProjectsViewHolder> projectListAdapter
@@ -49,7 +49,7 @@ public class ProjectListPresenter implements ProjectListPresenterInt {
                 Project.class,
                 R.layout.project_row,
                 ProjectListFragment.ProjectsViewHolder.class,
-                mQuery
+                databaseQuery
         ) {
 
             @Override

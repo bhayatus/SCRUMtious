@@ -14,8 +14,8 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateProjectViewInt;
 public class CreateProjectPresenter implements CreateProjectPresenterInt {
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
 
     private CreateProjectViewInt createProjectView;
 
@@ -30,9 +30,9 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         final String projectOwnerUid = firebaseAuth.getCurrentUser().getUid();
         String projectOwnerEmail = firebaseAuth.getCurrentUser().getEmail();
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        final String projectId = mRef.push().getKey();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
+        final String projectId = firebaseRootReference.push().getKey();
 
         // Get the current date
         long currentTimeInMilliseconds = System.currentTimeMillis();
@@ -52,7 +52,7 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
         projectMap.put("/users/" + projectOwnerUid + "/" + projectId, "member");
 
 
-        mRef.updateChildren(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseRootReference.updateChildren(projectMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // All changes to database were successful, tell user

@@ -21,26 +21,29 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.CreateTaskViewInt;
 public class CreateTaskPresenter extends AppCompatActivity implements CreateTaskPresenterInt {
 
     private CreateTaskViewInt createTaskView;
-    private String pid, usid;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+
+    private final String PROJECT_ID;
+    private final String USER_STORY_ID;
+
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference firebaseRootReference;
 
     public CreateTaskPresenter(CreateTaskViewInt createTaskView, String pid, String usid){
         this.createTaskView = createTaskView;
-        this.pid = pid;
-        this.usid = usid;
+        this.PROJECT_ID = pid;
+        this.USER_STORY_ID = usid;
     }
 
     public void addTaskToDatabase(final String taskDesc){
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories")
-                .child(usid);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("user_stories")
+                .child(USER_STORY_ID);
 
         // Unique key for tasks
-        final String taskId = mRef.push().getKey();
+        final String taskId = firebaseRootReference.push().getKey();
 
-        mRef.child("numTasks").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRootReference.child("numTasks").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long numTasks = (long) dataSnapshot.getValue();
@@ -53,7 +56,7 @@ public class CreateTaskPresenter extends AppCompatActivity implements CreateTask
 
                 taskMap.put("/numTasks", numTasks);
 
-                mRef.updateChildren(taskMap).addOnCompleteListener(new OnCompleteListener() {
+                firebaseRootReference.updateChildren(taskMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
