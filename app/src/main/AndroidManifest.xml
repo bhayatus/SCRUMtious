@@ -86,7 +86,6 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_individual_sprint"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view_impl.CreateTaskActivity"
