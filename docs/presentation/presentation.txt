@@ -1,0 +1,75 @@
+Final Presentation
+
+The goals of this phase are to complete the work, and present (different aspects of) your finished project.
+Please note there is no new development during this phase, however you can do some bug fixing/polishing that will improve 
+the quality of your presentation.
+
+
+## Deliverables
+
+ * [Live presentation]
+ * [Class Participation - ask questions to other teams]
+ * Reflection.md (on Github, doc/presentation)
+
+
+----
+ 
+### Live presentation
+
+To be presented in class according to the schedule you have signed up for
+
+Your presentation should include the following items (in any order you see fit):
+
+ * Product (3-4 minutes)
+   * Introduce your product.
+   * Highlight the feature(s) that make it unique as opposed to the competition
+   * Short live demo.
+ * Process (2-3 minutes)
+   * Introduce the team - Each member should say 2-3 sentences about their individual contribution to the team.
+   * Mention some of the highlights of your process(es).     
+     For example: Using GitHub, communicating, scheduling, any standards/conventions you have developed.
+   * Tell us about difficulties you faced, working together as a team (i.e. identify some of the team's decisions that, in hindsight, caused the team to be inefficient).
+   * Tell us about standards/conventions/techniques that worked well for your team (i.e. identify some of the team's decisions that, in hindsight, helped the team work efficiently).
+ * Software Architecture (2-3 minutes)
+   * Run us through the way your software is built - What are its main components? What are their responsibilities? How do they interact with one another?
+   * Tell us about the technologies and tools that you used.
+   * Mention interesting technical challenges you faced, and/or interesting software techniques that you used. 
+
+Other instructions:
+ * Suggestion: Prepare the presentation in two steps:
+   1. Decide _what_ content you want to present.
+   2. Decide _how_ to organize the content to create a presentation with a natural flow.
+ * The total time of the presentation (including questions) is __at most 15 minutes__.
+   * The time limit is strict.
+   * During your presentation, we might ask you a question or two. Make sure you leave some time for that.     
+     That is, you should be able to present all of the content in 12 minutes.
+ * It is up to you to decide which team member(s) get to present.
+
+### Participation 
+ * Specify your team name and the question to the presenter clearly (examle: Team1 here, my question to Team2 is ....)
+ * The question must be relevant to the topic being presented 
+
+### `presentation/Reflection.md`
+
+A reflection on the software development processes your team ended up using.
+
+ * Max' 500 words.
+ * Tell us about tools/techniques/conventions that worked well for your team. Explain why.
+ * Tell us about tools/techniques/conventions that didn't work well for your team. Explain why.
+ * If you had to continue working as a team, and design your process, what would your process look like?     
+   In other words, describe an ideal process __for your team__, based on your experience working together.
+
+
+
+ 
+
+-----
+
+## Marking Scheme
+
+ * Team Mark (45 marks) [ worth 5% of your final mark]
+   * Live presentation (30 marks) [Due as scheduled]
+   * presentation/Reflection.md (10 marks [Due July 26 midnight on Github]
+   * Participation (5 marks) [Due as scheduled]
+
+
