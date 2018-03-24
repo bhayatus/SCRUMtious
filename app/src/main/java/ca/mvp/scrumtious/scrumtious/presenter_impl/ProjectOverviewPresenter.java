@@ -307,11 +307,11 @@ public class ProjectOverviewPresenter implements ProjectOverviewPresenterInt{
             public void onComplete(@NonNull Task task) {
                 // Success
                 if (task.isSuccessful()){
-                    projectOverviewView.showMessage("Successfully changed velocity.", false);
+                    projectOverviewView.showMessage("Successfully changed the velocity.", false);
                 }
                 // Failure
                 else{
-                    projectOverviewView.showMessage("an error occurred, failed to change the velocity.", false);
+                    projectOverviewView.showMessage("An error occurred, failed to change the velocity.", false);
                 }
             }
         });

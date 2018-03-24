@@ -318,12 +318,12 @@ public class IndividualSprintActivity extends AppCompatActivity implements Indiv
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not delete the sprint.", false);
+                            showMessage("Incorrect password, could not delete the sprint.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not delete the sprint.", false);
+                                showMessage("Incorrect password, could not delete the sprint.", false);
                             }
                             else {
 

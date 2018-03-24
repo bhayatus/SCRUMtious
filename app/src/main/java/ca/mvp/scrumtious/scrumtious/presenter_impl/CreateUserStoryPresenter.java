@@ -51,7 +51,7 @@ public class CreateUserStoryPresenter implements CreateUserStoryPresenterInt{
                 if (task.isSuccessful()){
                     createUserStoryView.onSuccessfulCreateUserStory();
                 }else{
-                    createUserStoryView.showMessage("An error occurred, failed to create user story.", false);
+                    createUserStoryView.showMessage("An error occurred, failed to create the user story.", false);
                 }
             }
         });

@@ -123,7 +123,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (!task.isSuccessful()){
-                            invitationsView.showMessage("An error occurred, failed to accept invite.", false);
+                            invitationsView.showMessage("An error occurred, failed to accept the invite.", false);
                         }
                     }
                 });
@@ -146,7 +146,7 @@ public class InvitationsPresenter implements InvitationsPresenterInt {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){
-                    invitationsView.showMessage("An error occurred, failed to decline invite.", false);
+                    invitationsView.showMessage("An error occurred, failed to decline the invite.", false);
                 }
             }
         });

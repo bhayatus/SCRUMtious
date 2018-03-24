@@ -60,7 +60,7 @@ public class CreateSprintPresenter extends AppCompatActivity implements CreateSp
                         if (task.isSuccessful()) {
                             createSprintView.onSuccessfulCreateSprint();
                         } else {
-                            createSprintView.showMessage("An error occurred, failed to create sprint.", false);
+                            createSprintView.showMessage("An error occurred, failed to create the sprint.", false);
                         }
                     }
                 });

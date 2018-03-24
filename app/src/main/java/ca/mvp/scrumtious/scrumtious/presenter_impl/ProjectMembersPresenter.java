@@ -138,10 +138,10 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
-                            projectMembersView.showMessage("Deleted member from project.", false);
+                            projectMembersView.showMessage("Successfully deleted member from the project.", false);
                         }
                         else{
-                            projectMembersView.showMessage("An error occurred, failed to delete member from project.", false);
+                            projectMembersView.showMessage("An error occurred, failed to delete member from the project.", false);
                         }
                     }
                 });
@@ -172,7 +172,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
 
                 // Password didn't match, tell user
                 else {
-                    projectMembersView.showMessage("Incorrect password, could not delete member.", false);
+                    projectMembersView.showMessage("Incorrect password, could not delete the member.", false);
                 }
             }
         });
@@ -215,7 +215,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (!dataSnapshot.exists()){
-                    projectMembersView.showMessage("Cannot invite user with that e-mail address " +
+                    projectMembersView.showMessage("Cannot invite the user with that e-mail address " +
                             "as they do not exist.", false);
                     return;
                 }
@@ -243,7 +243,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                     String id = dataSnapshot.getKey().toString();
 
                                     if(id.equals(PROJECT_ID) && dataSnapshot.hasChild(invitedUid)){
-                                        projectMembersView.showMessage("Cannot invite member as they are already" +
+                                        projectMembersView.showMessage("Cannot invite that user as they are already" +
                                                 " part of this project.", false);
                                         checkMore = false;
                                         return;
@@ -263,7 +263,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                                             for (DataSnapshot d: dataSnapshot.getChildren()){
                                                 // If invitedUid matches, meaning the user has already been invited
                                                 if (d.child("invitedUid").getValue().toString().equals(invitedUid)){
-                                                    projectMembersView.showMessage("This user has already been invited to the project.", false);
+                                                    projectMembersView.showMessage("That user has already been invited to the project.", false);
                                                     return;
                                                 }
                                             }
@@ -337,7 +337,7 @@ public class ProjectMembersPresenter implements ProjectMembersPresenterInt {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()){
-                            projectMembersView.showMessage("Sent an invite.", false);
+                            projectMembersView.showMessage("Successfully sent an invite.", false);
                         }
                         else{
                             projectMembersView.showMessage("An error occurred, failed to send an invite.", false);

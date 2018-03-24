@@ -61,7 +61,7 @@ public class CreateProjectPresenter implements CreateProjectPresenterInt {
                 }
                 // Failed at some point, roll back changes and tell user
                 else{
-                    createProjectView.showMessage("An error occurred, failed to create project", false);
+                    createProjectView.showMessage("An error occurred, failed to create the project.", false);
                 }
             }
         });

@@ -298,12 +298,12 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Password incorrect, could not delete project.", false);
+                            showMessage("Incorrect password, could not delete the project.", false);
                         }
                         else {
                             // Cannot send empty string
                             if(password.length() == 0){
-                                showMessage("Password incorrect, could not delete project.", false);
+                                showMessage("Incorrect password, could not delete the project.", false);
                             }
                             else {
 

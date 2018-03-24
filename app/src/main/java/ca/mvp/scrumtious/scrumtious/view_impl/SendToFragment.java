@@ -31,8 +31,8 @@ public class SendToFragment extends DialogFragment {
     private String pid, usid;
     private FirebaseRecyclerAdapter<Sprint, SendToSprintViewHolder> sendToListAdapter;
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     private Query mQuery;
 
     private TextView sendToFragmentSendToProductBacklogTextView;
@@ -93,9 +93,9 @@ public class SendToFragment extends DialogFragment {
 
         sendToFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(backlogView.getContext()));
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mQuery = mRef.child("projects").child(pid).child("sprints").orderByChild("completed");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        mQuery = databaseReference.child("projects").child(pid).child("sprints").orderByChild("completed");
 
         // Generates the adapter to grab the list of sprints we can assign the user story to
         sendToListAdapter = new FirebaseRecyclerAdapter<Sprint, SendToSprintViewHolder>(
@@ -143,11 +143,11 @@ public class SendToFragment extends DialogFragment {
     // If assigning to the product backlog, sid is "null", and name is ""
     private void assignUserStory(final String sid, final String name){
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
 
         // Grab the completed status of the user story
-        mRef.child("projects").child(pid).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("projects").child(pid).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
@@ -159,14 +159,14 @@ public class SendToFragment extends DialogFragment {
                     sendToMap.put("/projects/" + pid + "/user_stories/" + usid + "/" + "assignedToName", name);
                     sendToMap.put("/projects/" + pid + "/user_stories/" + usid + "/" + "assignedTo_completed", assignedTo_completed);
 
-                    mDatabase = FirebaseDatabase.getInstance();
-                    mRef = mDatabase.getReference();
-                    mRef.updateChildren(sendToMap).addOnCompleteListener(new OnCompleteListener() {
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    databaseReference = firebaseDatabase.getReference();
+                    databaseReference.updateChildren(sendToMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
 
                             if (task.isSuccessful()){
-                                backlogView.showMessage("Successfully assigned user story.", false);
+                                backlogView.showMessage("Successfully assigned the user story.", false);
                             }
 
                             else{

@@ -22,9 +22,9 @@ public class AuthenticationHelper {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                        if (mAuth.getCurrentUser() != null){
-                            mAuth.signOut();
+                        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                        if (firebaseAuth.getCurrentUser() != null){
+                            firebaseAuth.signOut();
 
                             SharedPreferences sharedPreferences = context.getSharedPreferences(
                                     context.getString(R.string.shared_preferences), Context.MODE_PRIVATE);

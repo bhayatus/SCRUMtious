@@ -162,11 +162,11 @@ public class TaskBoardPresenter implements TaskBoardPresenterInt {
                         public void onComplete(@NonNull com.google.android.gms.tasks.Task task) {
                             // Successfully deleted task
                             if (task.isSuccessful()){
-                                taskBoardView.showMessage("Successfully deleted task.", false);
+                                taskBoardView.showMessage("Successfully deleted the task.", false);
                             }
                             // Failed to delete task
                             else{
-                                taskBoardView.showMessage("An error occurred, failed to delete task.", false);
+                                taskBoardView.showMessage("An error occurred, failed to delete the task.", false);
                             }
                         }
                     });

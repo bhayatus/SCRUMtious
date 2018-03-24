@@ -28,8 +28,8 @@ public class AssignToFragment extends DialogFragment {
     private String pid, usid, tid;
     private FirebaseRecyclerAdapter<User, AssignToUserViewHolder> assignToListAdapter;
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     private Query mQuery;
 
     private TextView assignToFragmentNoneTextView;
@@ -92,9 +92,9 @@ public class AssignToFragment extends DialogFragment {
 
         assignToFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(taskBoardView.getContext()));
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mQuery = mRef.child("users").orderByChild(pid).equalTo("member");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        mQuery = databaseReference.child("users").orderByChild(pid).equalTo("member");
 
         // Generates the adapter to grab the list of users we can assign the task to
         assignToListAdapter = new FirebaseRecyclerAdapter<User, AssignToUserViewHolder>(
@@ -140,19 +140,19 @@ public class AssignToFragment extends DialogFragment {
     // Takes in name to assign task to
     private void assignTask(final String name){
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
 
         Map assignTaskMap = new HashMap();
 
         assignTaskMap.put("/projects/" + pid + "/user_stories/" + usid + "/tasks/" + tid + "/assignedTo", name);
 
-        mRef.updateChildren(assignTaskMap).addOnCompleteListener(new OnCompleteListener() {
+        databaseReference.updateChildren(assignTaskMap).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 // Successfully assigned the task
                 if (task.isSuccessful()){
-                    taskBoardView.showMessage("Successfully assigned task.", false);
+                    taskBoardView.showMessage("Successfully assigned the task.", false);
                 }
                 // Failed to assign task
                 else{

@@ -235,7 +235,7 @@ public class CreateTaskActivity extends AppCompatActivity implements
 
         String desc = createTaskDescEditText.getText().toString().trim();
         if(createTaskDescTextInputLayout.isErrorEnabled()){
-            showMessage("Cannot create task without a description.", false);
+            showMessage("Cannot create a task without a description.", false);
         }else{
             createTaskProgressDialog = new ProgressDialog(this);
             createTaskProgressDialog.setTitle("Create task");

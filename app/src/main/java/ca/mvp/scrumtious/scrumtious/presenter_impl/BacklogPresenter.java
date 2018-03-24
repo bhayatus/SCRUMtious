@@ -26,7 +26,7 @@ import ca.mvp.scrumtious.scrumtious.view_impl.BacklogFragment;
 
 public class BacklogPresenter implements BacklogPresenterInt {
 
-    private FirebaseDatabase firebaseDatabse;
+    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference firebaseRootReference;
     private Query databaseQuery;
 
@@ -176,8 +176,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
                 });
 
                 // The following checks if the current user is the project owner
-                firebaseDatabse = FirebaseDatabase.getInstance();
-                firebaseDatabse.getReference().child("projects").child(PROJECT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseDatabase.getReference().child("projects").child(PROJECT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
@@ -234,8 +234,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
         final String completed = Boolean.toString(newStatus);
         final String userStoryId = usid;
 
-        firebaseDatabse = FirebaseDatabase.getInstance();
-        firebaseRootReference = firebaseDatabse.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
         // Gets the current user story
         firebaseRootReference.child("projects").child(PROJECT_ID).child("user_stories").child(usid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -301,14 +301,14 @@ public class BacklogPresenter implements BacklogPresenterInt {
     // Deletes the user story from the database
     @Override
     public void deleteUserStory(String usid) {
-        firebaseDatabse = FirebaseDatabase.getInstance();
-        firebaseRootReference = firebaseDatabse.getReference().child("projects").child(PROJECT_ID).child("user_stories");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference().child("projects").child(PROJECT_ID).child("user_stories");
         firebaseRootReference.child(usid).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // User story was deleted successfully
                 if (task.isSuccessful()){
-                    backlogView.showMessage("Successfully deleted user story.", false);
+                    backlogView.showMessage("Successfully deleted the user story.", false);
                 }
                 else{
                     backlogView.showMessage("An error occurred, failed to delete the user story.", false);
@@ -321,8 +321,8 @@ public class BacklogPresenter implements BacklogPresenterInt {
     // lifespan
     private void checkWithinSprint(final String usid, final boolean newStatus){
 
-        firebaseDatabse = FirebaseDatabase.getInstance();
-        firebaseRootReference = firebaseDatabse.getReference();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseRootReference = firebaseDatabase.getReference();
 
         firebaseRootReference.child("projects").child(PROJECT_ID).child("sprints").child(SPRINT_ID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

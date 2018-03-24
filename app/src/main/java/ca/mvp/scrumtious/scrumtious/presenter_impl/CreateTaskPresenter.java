@@ -62,7 +62,7 @@ public class CreateTaskPresenter extends AppCompatActivity implements CreateTask
                         if (task.isSuccessful()) {
                             createTaskView.onSuccessfulCreateTask();
                         } else {
-                            createTaskView.showMessage("An error occurred, failed to create" +
+                            createTaskView.showMessage("An error occurred, failed to create the" +
                                     " task.", false);
                         }
                     }

@@ -353,10 +353,10 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
     public void onClickCreateSprint(View view){
         if(createSprintTitleTextInputLayout.isErrorEnabled() || createSprintDescTextInputLayout.isErrorEnabled() || !choseStart || !choseEnd){
-            showMessage("Cannot create sprint until fields are filled out properly.", false);
+            showMessage("Cannot create the sprint until fields are filled out properly.", false);
         }
         else if(startDate>=endDate){
-            showMessage("Cannot have start date on, or after end date.", false);
+            showMessage("Cannot have a start date on, or after the end date.", false);
         }
         else{
             String name = createSprintTitleEditText.getText().toString().trim();

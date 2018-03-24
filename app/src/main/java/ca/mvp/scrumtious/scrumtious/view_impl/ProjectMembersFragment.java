@@ -166,13 +166,13 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
 
                         // Cannot send null password
                         if(password == null){
-                            showMessage("Incorrect password, could not delete member.", false);
+                            showMessage("Incorrect password, could not delete the member.", false);
                         }
 
                         else {
                             // Cannot send empty string
                             if(password.length() == 0) {
-                                showMessage("Incorrect password, could not delete member.", false);
+                                showMessage("Incorrect password, could not delete the member.", false);
                             }
                             else {
 

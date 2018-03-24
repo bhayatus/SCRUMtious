@@ -184,7 +184,7 @@ public class SignupActivity extends AppCompatActivity implements SignupViewInt {
         String password = signupPasswordEditText.getText().toString().trim();
         // If any error message is displaying, that means the form can't be submitted properly
         if(signupPasswordTextInputLayout.isErrorEnabled() || signupEmailTextInputLayout.isErrorEnabled() || signupRetypePasswordTextInputLayout.isErrorEnabled()) {
-            showMessage("Cannot submit until the fields are filled out properly.", false);
+            showMessage("Cannot register until the fields are filled out properly.", false);
             return;
         }
 

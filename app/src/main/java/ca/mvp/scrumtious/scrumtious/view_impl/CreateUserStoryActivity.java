@@ -266,7 +266,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
         // If any of the errors are showing, cannot proceed
         if(createUserStoryTitleTextInputLayout.isErrorEnabled() || createUserStoryDescTextInputLayout.isErrorEnabled()
                 || createUserStoryPointsTextInputLayout.isErrorEnabled()) {
-            showMessage("Cannot create user story until fields are filled out properly.", false);
+            showMessage("Cannot create the user story until fields are filled out properly.", false);
         } else {
 
             String title = createUserStoryNameEditText.getText().toString().trim();

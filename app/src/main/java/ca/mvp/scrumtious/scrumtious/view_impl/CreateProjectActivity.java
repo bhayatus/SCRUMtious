@@ -191,7 +191,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
         String description = createProjectDescEditText.getText().toString().trim();
         // If either error message is displaying, that means the form can't be submitted properly
         if(createProjectTitleTextInputLayout.isErrorEnabled() || createProjectDescTextInputLayout.isErrorEnabled() ) {
-            showMessage("Cannot create project until fields are filled out properly.", false);
+            showMessage("Cannot create the project until fields are filled out properly.", false);
         }
 
         else {

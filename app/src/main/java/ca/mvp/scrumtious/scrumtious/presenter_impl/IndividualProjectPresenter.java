@@ -76,7 +76,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
 
                 // Password didn't match, tell user
                 else {
-                    individualProjectView.showMessage("Incorrect password, could not delete project.", false);
+                    individualProjectView.showMessage("Incorrect password, could not delete the project.", false);
                 }
             }
         });
@@ -120,7 +120,7 @@ public class IndividualProjectPresenter implements IndividualProjectPresenterInt
                                 }
                                 // Failed, tell user
                                 else{
-                                    individualProjectView.showMessage("An error occurred, failed to delete project.", false);
+                                    individualProjectView.showMessage("An error occurred, failed to delete the project.", false);
                                 }
                             }
                         });

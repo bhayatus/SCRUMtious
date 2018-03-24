@@ -35,8 +35,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         // User was logged in
         if (!uid.equals("")){
             // Attempt sign in
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            mAuth.signInWithEmailAndPassword(uid, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.signInWithEmailAndPassword(uid, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     // Sign in succeeded, go to project list screen

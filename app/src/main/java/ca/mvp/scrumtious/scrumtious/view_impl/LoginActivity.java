@@ -164,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements LoginViewInt {
 
         // If either field has an error, cannot submit the form
         if (loginPasswordTextInputLayout.isErrorEnabled() || loginEmailTextInputLayout.isErrorEnabled()) {
-            showMessage("Cannot submit until the fields are filled out properly.", false);
+            showMessage("Cannot login until the fields are filled out properly.", false);
             return;
         }
 

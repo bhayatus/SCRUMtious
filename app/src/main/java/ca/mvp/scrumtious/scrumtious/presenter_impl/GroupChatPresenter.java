@@ -62,7 +62,7 @@ public class GroupChatPresenter extends AppCompatActivity implements GroupChatPr
                 if (task.isSuccessful()) {
                     groupChatView.onSuccessfulSent();
                 } else {
-                    groupChatView.showMessage("An error occurred, failed to send message.", false);
+                    groupChatView.showMessage("An error occurred, failed to send the message.", false);
                 }
             }
         });

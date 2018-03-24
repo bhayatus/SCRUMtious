@@ -77,7 +77,7 @@ public class IndividualSprintPresenter implements IndividualSprintPresenterInt {
 
                 // Password didn't match, tell user
                 else {
-                    individualSprintView.showMessage("Incorrect password, could not delete sprint.", false);
+                    individualSprintView.showMessage("Incorrect password, could not delete the sprint.", false);
                 }
             }
         });

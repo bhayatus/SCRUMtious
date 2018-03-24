@@ -15,9 +15,9 @@ import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ListenerInt;
 public class ListenerHelper {
 
     public static ValueEventListener setupProjectDeletedListener(final ListenerInt context, String pid){
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("projects");
-        ValueEventListener projectListener = mRef.child(pid).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("projects");
+        ValueEventListener projectListener = databaseReference.child(pid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // If project no longer exists, exit this screen and go back
@@ -27,8 +27,8 @@ public class ListenerHelper {
 
                 else{
                     // Check if I'm no longer a member through my uid
-                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                    if(!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                    if(!dataSnapshot.hasChild(firebaseAuth.getCurrentUser().getUid())){
                         context.onProjectDeleted();
                     }
                 }
@@ -44,15 +44,15 @@ public class ListenerHelper {
     }
 
     public static void removeProjectDeletedListener(ValueEventListener listener, String pid){
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid);
-        mRef.removeEventListener(listener);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("projects").child(pid);
+        databaseReference.removeEventListener(listener);
     }
 
     public static ValueEventListener setupSprintDeletedListener(final ListenerInt context, String pid, String sid){
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("sprints");
-        ValueEventListener sprintListener = mRef.child(sid).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("projects").child(pid).child("sprints");
+        ValueEventListener sprintListener = databaseReference.child(sid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // If sprint no longer exists, exit this screen and go back
@@ -71,15 +71,15 @@ public class ListenerHelper {
     }
 
     public static void removeSprintDeletedListener(ValueEventListener listener, String pid, String sid){
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("sprints").child(sid);
-        mRef.removeEventListener(listener);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("projects").child(pid).child("sprints").child(sid);
+        databaseReference.removeEventListener(listener);
     }
 
     public static ValueEventListener setupUserStoryDeletedListener(final ListenerInt context, String pid, String usid){
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
-                ValueEventListener userStoryListener = mRef.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
+                ValueEventListener userStoryListener = databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // If user story no longer exists, exit the screen and go back
@@ -98,8 +98,8 @@ public class ListenerHelper {
     }
 
     public static void removeUserStoryDeletedListener(ValueEventListener listener, String pid, String usid){
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = mDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
-        mRef.removeEventListener(listener);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("projects").child(pid).child("user_stories").child(usid);
+        databaseReference.removeEventListener(listener);
     }
 }
