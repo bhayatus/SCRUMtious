@@ -1,6 +1,5 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -269,7 +268,7 @@ public class GroupChatActivity extends AppCompatActivity implements GroupChatVie
 
     public static class MessagesViewHolder extends RecyclerView.ViewHolder{
 
-        private static final int MESSAGE_FADE_IN_DURATION_SEC = 250;
+        private static final int MESSAGE_FADE_IN_DURATION_SEC = 100;
         View mView;
 
         TextView groupChatMessageRowContentRightTextView, groupChatMessageRowContentLeftTextView, groupChatMessageRowTimestampRightTextView, groupChatMessageRowTimestampLeftTextView, groupChatMessageRowSentByLeftTextView;
