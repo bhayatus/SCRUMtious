@@ -6,6 +6,6 @@
     android:thickness="8dp"
     android:useLevel="false">
 
-    <solid android:color="#e40a0a" />
+    <solid android:color="@color/task_row_not_started_color" />
 
 </shape>
