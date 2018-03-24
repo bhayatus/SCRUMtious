@@ -20,18 +20,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
 import com.google.firebase.database.ValueEventListener;
+
 import ca.mvp.scrumtious.scrumtious.R;
-import ca.mvp.scrumtious.scrumtious.interfaces.presenter_int.ProductBacklogPresenterInt;
 import ca.mvp.scrumtious.scrumtious.interfaces.view_int.ProductBacklogViewInt;
-import ca.mvp.scrumtious.scrumtious.presenter_impl.ProductBacklogPresenter;
 import ca.mvp.scrumtious.scrumtious.utils.AuthenticationHelper;
 import ca.mvp.scrumtious.scrumtious.utils.ListenerHelper;
 import ca.mvp.scrumtious.scrumtious.utils.SnackbarHelper;
 
 public class ProductBacklogActivity extends AppCompatActivity implements ProductBacklogViewInt {
 
-    private ProductBacklogPresenterInt productBacklogPresenter;
     private String pid;
     private ValueEventListener projectListener;
 
@@ -52,7 +51,6 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
 
         Bundle data = getIntent().getExtras();
         pid = data.getString("projectId");
-        productBacklogPresenter = new ProductBacklogPresenter(this, pid);
 
         productBacklogLogoutImageButton = findViewById(R.id.productBacklogLogoutImageButton);
         productBacklogLogoutImageButton.setOnClickListener(new View.OnClickListener() {
