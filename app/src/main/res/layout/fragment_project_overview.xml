@@ -358,7 +358,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingRight="5dp"
-                            android:src="@drawable/ic_day_black"/>
+                            android:src="@drawable/ic_day"/>
 
                         <TextView
                             android:id="@+id/sprintRowStartToEndProjectOverview"
