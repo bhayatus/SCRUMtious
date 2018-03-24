@@ -160,7 +160,7 @@
                             android:adjustViewBounds="true"
                             android:cropToPadding="true"
                             android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/ic_day"/>
+                            app:srcCompat="@drawable/ic_clock_red"/>
 
                         <TextView
                             android:id="@+id/projectOverviewDaysTitle"
@@ -358,7 +358,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingRight="5dp"
-                            android:src="@drawable/ic_clock"/>
+                            android:src="@drawable/ic_day_black"/>
 
                         <TextView
                             android:id="@+id/sprintRowStartToEndProjectOverview"

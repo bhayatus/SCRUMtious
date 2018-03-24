@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_clock"/>
+                android:src="@drawable/ic_day_black"/>
 
             <TextView
                 android:id="@+id/sprintRowStartToEnd"
