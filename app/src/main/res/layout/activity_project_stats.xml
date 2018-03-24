@@ -371,7 +371,7 @@
                             android:adjustViewBounds="true"
                             android:cropToPadding="true"
                             android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/ic_clock_red"/>
+                            app:srcCompat="@drawable/ic_day"/>
 
                         <TextView
                             android:id="@+id/projectStatsCreationDateTitleTextView"

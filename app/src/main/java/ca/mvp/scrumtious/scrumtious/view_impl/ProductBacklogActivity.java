@@ -73,7 +73,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
                                 "below. " + "\n" +
                                 "User stories can then be deleted, or marked as completed/in progress with their respective " +
                                 "buttons. " + "\n" +
-                                "To assign a user story to a sprint or the product backlog, hold down it " +
+                                "To assign a user story to a sprint or the product backlog, hold down on it " +
                                 "for a few seconds. A dialog will pop up, allowing you to make your selection.")
                         .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
