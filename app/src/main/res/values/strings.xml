@@ -92,4 +92,5 @@
     <string name="project_list_title">Project List</string>
     <string name="add_sprint">Add Sprint</string>
     <string name="looks_like_you_have_no_sprints">Looks like you have no sprints.</string>
+    <string name="create_task_title">Create Task</string>
 </resources>
