@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +112,7 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
     // User wants to mark user story as completed or in progress
     @Override
     public void onClickChangeStatus(final String usid, final boolean newStatus) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
 
         // User wants to change to completed
         if (newStatus){
@@ -158,14 +159,14 @@ public class BacklogFragment extends Fragment implements BacklogViewInt{
     // Owner wants to delete the user story
     @Override
     public void onClickDeleteUserStory(final String usid){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
         builder.setTitle("Delete User Story")
                 .setMessage("Are you sure you want to delete this user story?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                deletingUserStoryDialog = new ProgressDialog(getContext());
+                                deletingUserStoryDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);;
                                 deletingUserStoryDialog.setTitle("Delete User Story");
                                 deletingUserStoryDialog.setCancelable(false);
                                 deletingUserStoryDialog.setMessage("Attempting to delete user story...");

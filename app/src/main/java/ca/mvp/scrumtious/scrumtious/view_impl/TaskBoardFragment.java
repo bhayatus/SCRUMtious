@@ -12,6 +12,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -124,14 +125,14 @@ public class TaskBoardFragment extends Fragment implements TaskBoardViewInt {
 
     @Override
     public void onClickDeleteTask(final String tid){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
         builder.setTitle("Delete Task")
                 .setMessage("Are you sure you want to delete this task?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        deletingTaskDialog = new ProgressDialog(getContext());
+                        deletingTaskDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);;
                         deletingTaskDialog.setTitle("Delete Task");
                         deletingTaskDialog.setCancelable(false);
                         deletingTaskDialog.setMessage("Attempting to delete task...");

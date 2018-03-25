@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +78,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
     @Override
     public void onClickAccept(final String projectId, final String inviteId) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
         builder.setTitle("Accept Invite?")
                 .setMessage("Are you sure you want to accept this invite?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -99,7 +100,7 @@ public class InvitationsFragment extends Fragment implements InvitationsViewInt{
     // When user clicks on the decline button for an invite
     @Override
     public void onClickDecline(final String inviteId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
         builder.setTitle("Decline Invite?")
                 .setMessage("Are you sure you want to decline this invite?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

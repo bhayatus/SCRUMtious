@@ -44,7 +44,7 @@
             android:configChanges="orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.Signup"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view_impl.IndividualProjectActivity"
@@ -62,7 +62,7 @@
             android:name=".view_impl.CreateUserStoryActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.Signup"
             android:windowSoftInputMode="adjustPan" />
 
         <meta-data
@@ -73,7 +73,7 @@
         <activity android:name=".view_impl.CreateSprintActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.Signup"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view_impl.SprintListActivity"
@@ -91,7 +91,7 @@
             android:name=".view_impl.CreateTaskActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.Signup"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".view_impl.IndividualUserStoryActivity"

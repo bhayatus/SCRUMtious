@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -285,7 +286,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
     public void onClickDelete(View view) {
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog));
         builder.setTitle("Delete Project?")
                 .setView(alertView)
                 .setMessage("Are you sure you want to delete this project? Enter your password below to confirm.")
@@ -293,7 +294,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password before deleting
-                        EditText passwordET = (EditText) alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
+                        EditText passwordET = alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
                         String password = passwordET.getText().toString().trim();
 
                         // Cannot send null password
@@ -308,7 +309,7 @@ public class IndividualProjectActivity extends AppCompatActivity implements Indi
                             else {
 
                                 // Creates a dialog that appears to tell the user that deleting a user is still occurring
-                                deleteProjectProgressDialog = new ProgressDialog(IndividualProjectActivity.this);
+                                deleteProjectProgressDialog = new ProgressDialog(IndividualProjectActivity.this, R.style.AppCompatAlertDialogStyle);;
                                 deleteProjectProgressDialog.setTitle("Delete Project");
                                 deleteProjectProgressDialog.setCancelable(false);
                                 deleteProjectProgressDialog.setMessage("Attempting to delete project...");

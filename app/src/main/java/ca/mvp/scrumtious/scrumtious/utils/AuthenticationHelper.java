@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.ContextThemeWrapper;
+
 import com.google.firebase.auth.FirebaseAuth;
 import ca.mvp.scrumtious.scrumtious.R;
 import ca.mvp.scrumtious.scrumtious.view_impl.LoginActivity;
@@ -15,7 +17,7 @@ public class AuthenticationHelper {
 
     public static void logout(final Activity context){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.LoginAlertDialog));
         builder.setTitle("Log Out?")
                 .setMessage("Are you sure you want to log out?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

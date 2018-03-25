@@ -1,6 +1,7 @@
 package ca.mvp.scrumtious.scrumtious.view_impl;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextThemeWrapper;
 import android.widget.TextView;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
@@ -117,9 +118,9 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
     public void onBackPressed(){
 
         if(createSprintTitleEditText.getText().toString().trim().length() > 0 || createSprintEditText.getText().toString().trim().length() > 0) {
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
                     .setTitle("Discard Sprint?")
-                    .setMessage("Are you sure you want to delete the sprint?")
+                    .setMessage("Are you sure you want to discard this new sprint?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -219,6 +220,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             }
 
         });
+
         createSprintEndDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -295,7 +297,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
 
                 if((titleFieldText == null) || (titleFieldText.trim().length() <= 0)){
                     createSprintTitleTextInputLayout.setErrorEnabled(true);
-                    createSprintTitleTextInputLayout.setError("Please enter a title for your sprint.");
+                    createSprintTitleTextInputLayout.setError("Please enter a sprint title.");
                 }else if(titleFieldText.trim().length() > 18){
                     createSprintTitleTextInputLayout.setErrorEnabled(true);
                     createSprintTitleTextInputLayout.setError("Sprint name is too long.");
@@ -363,7 +365,7 @@ public class CreateSprintActivity extends AppCompatActivity implements CreateSpr
             String desc = createSprintEditText.getText().toString().trim();
 
             // Creates a progress dialog to let the user know that the sprint is being created
-            createSprintProgressDialog = new ProgressDialog(this);
+            createSprintProgressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);;
             createSprintProgressDialog.setTitle("Create Sprint");
             createSprintProgressDialog.setCancelable(false);
             createSprintProgressDialog.setMessage("Creating sprint...");

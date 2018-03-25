@@ -195,7 +195,7 @@ public class SendToFragment extends DialogFragment {
             super(itemView);
             this.mView = itemView;
 
-            nameView = (TextView) mView.findViewById(R.id.sendToRowNameTextView);
+            nameView = mView.findViewById(R.id.sendToRowNameTextView);
         }
 
         // Populates each row of the recycler view with the sprint name

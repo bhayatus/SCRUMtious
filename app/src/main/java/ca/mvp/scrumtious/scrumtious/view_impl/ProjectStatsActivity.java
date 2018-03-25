@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -98,7 +99,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         projectStatsHelpImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(ProjectStatsActivity.this)
+                new AlertDialog.Builder(new ContextThemeWrapper(ProjectStatsActivity.this, R.style.LoginAlertDialog))
                         .setTitle("About the Burndown Chart")
                         .setMessage("The burndown chart represents the progress your group has made through" +
                                 " completing user stories." + "\n" +
@@ -123,7 +124,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         projectStatsRefreshImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(ProjectStatsActivity.this)
+                new AlertDialog.Builder(new ContextThemeWrapper(ProjectStatsActivity.this, R.style.LoginAlertDialog))
                         .setTitle("Refresh Project Stats")
                         .setMessage("Refresh all project stats?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

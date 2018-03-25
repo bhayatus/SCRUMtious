@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -67,7 +68,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
     public void onBackPressed(){
 
         if(createProjectTitleEditText.getText().toString().trim().length() > 0 || createProjectDescEditText.getText().toString().trim().length() > 0){
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
                     .setTitle("Discard Project?")
                     .setMessage("Are you sure you to discard this new project?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -197,7 +198,7 @@ public class CreateProjectActivity extends AppCompatActivity implements
         else {
 
             // Creates a dialog that appears to tell the user project creation is occurring
-            createProjectProgressDialog = new ProgressDialog(this);
+            createProjectProgressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);;
             createProjectProgressDialog.setTitle("Create Project");
             createProjectProgressDialog.setCancelable(false);
             createProjectProgressDialog.setMessage("Creating project...");

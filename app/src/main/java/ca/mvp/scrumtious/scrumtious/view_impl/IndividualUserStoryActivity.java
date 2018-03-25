@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -66,7 +67,7 @@ public class IndividualUserStoryActivity extends AppCompatActivity implements In
         individualUserStoryHelpImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(IndividualUserStoryActivity.this)
+                new AlertDialog.Builder(new ContextThemeWrapper(IndividualUserStoryActivity.this, R.style.LoginAlertDialog))
                         .setTitle("Need Help?")
                         .setMessage("Welcome to the task board! You can start by creating a task below. Once you have done that," +
                                 " you will be able to see the task in the \"Not Started\" tab. " + "\n" +

@@ -16,8 +16,6 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_project_title">Title</string>
     <string name="create_project_create">Create</string>
     <string name="create_project_desc">Project Description</string>
@@ -25,31 +23,25 @@
     <string name="create_sprint_create">Create</string>
     <string name="create_sprint_desc">Sprint Description</string>
     <string name="title_activity_create_project">Create Project</string>
-    <string name="filter_owned_projects_only">Owned Projects Only</string>
-    <string name="title_activity_individual_project_screen">IndividualProjectScreenActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
+    <string name="filter_owned_projects_only">Show Owned Projects Only</string>
     <string name="alert_dialogue_delete_project_password_prompt">Your Password</string>
     <string name="user_invite_row_title">Accept/decline invite to project:</string>
     <string name="add_project_btn_text">Add Project</string>
     <string name="add_member_btn_text">Add Member</string>
     <string name="invite_member_btn_text">Invite Member</string>
     <string name="add_user_story_btn_text">Add User Story</string>
-    <string name="title_activity_product_backlog">ProductBacklogActivity</string>
     <string name="btn_product_backlog_text">Product Backlog</string>
     <string name="title_activity_create_user_story">Create User Story</string>
     <string name="create_user_story_desc">Description</string>
     <string name="create_user_story_name">Name</string>
     <string name="create_user_story_create">Create</string>
     <string name="create_user_story_points">Points</string>
-    <string name="title_activity_individual_sprint">IndividualSprintActivity</string>
     <string name="create_task_desc_hint">Task Description</string>
     <string name="one_hundred_fourty_char_string">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pharetra rutrum dui in aliquam. Curabitur efficitur lorem nec eros pulvinar, quis volutpat nisl rutrum. Nullam sit amet est accumsan, condimentum odio in, tristique lectus. Fusce molestie nulla ac vulputate mattis. Sed in mi ac leo vestibulum placerat in at risus. Nullam accumsan, diam at iaculis aliquam, leo orci dapibus tortor, accumsan iaculis ipsum nisi ut quam. Sed quis ipsum metus. Proin augue lorem, hendrerit quis nibh sit amet, mollis consequat odio. Phasellus ultrices vitae diam mollis fermentum. Praesent tempus, arcu id varius ultrices, tellus libero dictum lectus, vitae commodo arcu lacus nec turpis. Aliquam at lectus vel sapien elementum mollis vel non felis. Nunc imperdiet justo sit amet porttitor lacinia. Sed rutrum ultricies tincidunt. Nullam rutrum fermentum diam ac mattis. Aliquam in metus eu magna vestibulum vulputate. Etiam dolor odio.</string>
     <string name="task_assigned_to_prompt">Assigned To:</string>
     <string name="group_chat_message_hint">Your Response...</string>
     <string name="project_overview_sprint_name_not_available">No Sprint to Show</string>
-    <string name="project_overview_sprint_time_not_available">time not available</string>
+    <string name="project_overview_sprint_time_not_available">Time not available</string>
     <string name="welcome_to">Welcome to</string>
     <string name="current_user_story_progress">User Story Completion</string>
     <string name="no_current_sprint_to_show">No current sprint to show</string>
@@ -66,7 +58,7 @@
     <string name="unable_to_retrieve_project_creation_date">Unable to retrieve project creation date</string>
     <string name="unable_to_retrieve_number_of_members_data">Unable to retrieve number of members data</string>
     <string name="not_enough_data_to_show_burndown_chart">Not enough data to show Burndown Chart.</string>
-    <string name="assign_task_to">Assign task to:</string>
+    <string name="assign_task_to">Assign Task To:</string>
     <string name="no_invitations_to_show">No invitations to show.</string>
     <string name="looks_like_you_have_no_projects">Looks like you have no projects.</string>
     <string name="no_user_stories_to_show_here">No user stories to show here.</string>
@@ -75,7 +67,7 @@
     <string name="unable_to_retrieve_current_velocity_data">Unable to retrieve current velocity data</string>
     <string name="unable_to_retrieve_number_of_days_data">Unable to retrieve number of days data</string>
     <string name="this_is_a_description_that_explains_what_the_sprint_is_about_and_now_i_am_running_out_of_things_to_say_so_i_ll_stop">This is a description that explains what the sprint is about, and now I am running out of things to say, so I\'ll stop.</string>
-    <string name="assign_user_story_to">Assign user story to:</string>
+    <string name="assign_user_story_to">Assign User Story To:</string>
     <string name="product_backlog">Product Backlog</string>
     <string name="no_tasks_to_show_here">No tasks to show here.</string>
     <string name="test_date_dec_20_2018_2_15pm">Dec 20, 2018 @ 2:15PM</string>

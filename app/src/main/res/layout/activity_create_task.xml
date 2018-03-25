@@ -4,6 +4,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/login_screen_bg_color"
                 tools:context="ca.mvp.scrumtious.scrumtious.view_impl.CreateSprintActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -53,7 +54,9 @@
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:textColorHint="@color/white"
+            app:errorTextAppearance="@style/SignupErrorText">
 
             <EditText
                 android:id="@+id/createTaskDescEditText"
@@ -62,6 +65,8 @@
                 android:ems="10"
                 android:fontFamily="@font/droid_sans"
                 android:hint="@string/create_task_desc_hint"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/white"
                 android:importantForAutofill="noExcludeDescendants"
                 android:inputType="textMultiLine|textCapSentences"
                 android:lines="5"
@@ -79,8 +84,7 @@
             android:background="@drawable/login_signup_btn"
             android:text="@string/create_sprint_create"
             style="@style/Widget.AppCompat.Button"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/white"
+            android:textColor="@color/login_email_text_field_color"
             android:textSize="18sp"/>
 
     </LinearLayout>

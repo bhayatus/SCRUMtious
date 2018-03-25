@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -90,7 +91,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
     public void onBackPressed() {
         if(createUserStoryNameEditText.getText().toString().trim().length() > 0 || createUserStoryDescEditText.getText().toString().trim().length() > 0 ||
                 createUserStoryPointsEditText.getText().toString().trim().length() > 0){
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.LoginAlertDialog))
                     .setTitle("Discard User Story?")
                     .setMessage("Are you sure you to discard this new user story?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -274,7 +275,7 @@ public class CreateUserStoryActivity extends AppCompatActivity implements Create
             int points = Integer.valueOf(createUserStoryPointsEditText.getText().toString().trim());
 
             // Creates a dialog that appears to tell the user that the user story is being created
-            createUserStoryProgressDialog = new ProgressDialog(this);
+            createUserStoryProgressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);;
             createUserStoryProgressDialog.setTitle("Create User Story");
             createUserStoryProgressDialog.setCancelable(false);
             createUserStoryProgressDialog.setMessage("Creating user story...");

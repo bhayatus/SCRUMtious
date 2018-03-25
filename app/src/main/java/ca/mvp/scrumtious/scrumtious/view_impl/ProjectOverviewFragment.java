@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -236,14 +237,14 @@ public class ProjectOverviewFragment extends Fragment implements ProjectOverview
     private void onClickChangeVelocity(){
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_change_velocity, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
         builder.setTitle("Change Velocity")
                 .setView(alertView)
                 .setMessage("Enter your new velocity.")
                 .setPositiveButton("Change", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText velocityET = (EditText) alertView.findViewById(R.id.alertDialogueChangeVelocityEditText);
+                        EditText velocityET = alertView.findViewById(R.id.alertDialogueChangeVelocityEditText);
 
                         if (velocityET.getText().toString().equals("") || velocityET.getText().toString() == null){
                             showMessage("Please enter a velocity.", false);

@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -65,7 +66,7 @@ public class ProductBacklogActivity extends AppCompatActivity implements Product
         productBacklogHelpImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(ProductBacklogActivity.this)
+                new AlertDialog.Builder(new ContextThemeWrapper(ProductBacklogActivity.this, R.style.LoginAlertDialog))
                         .setTitle("Need Help?")
                         .setMessage("To get started, you can add a new user story to the product backlog with the button " +
                                 "below. " + "\n" +

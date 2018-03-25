@@ -80,7 +80,7 @@ public class ProjectListFragment extends Fragment implements ProjectListViewInt 
     private void setupRecyclerView(){
 
         // Creates a dialog that appears to tell the user that projects are being loaded
-        loadingProjectsDialog = new ProgressDialog(getActivity());
+        loadingProjectsDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);;
         loadingProjectsDialog.setTitle("Load Projects");
         loadingProjectsDialog.setCancelable(false);
         loadingProjectsDialog.setMessage("Now loading your projects...");

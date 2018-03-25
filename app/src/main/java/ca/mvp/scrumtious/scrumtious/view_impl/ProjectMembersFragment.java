@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     public void onClickInviteMember(View view) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_add_member, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
         builder.setTitle("Invite New Member")
                 .setView(alertView)
                 .setMessage("Enter the e-mail address of the user you want to invite.")
@@ -110,7 +111,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password before inviting member
-                        EditText emailET = (EditText) alertView.findViewById(R.id.alertDialogueAddMemberEmailEditText);
+                        EditText emailET = alertView.findViewById(R.id.alertDialogueAddMemberEmailEditText);
                         String emailAddress = emailET.getText().toString().trim();
 
                         // Cannot send null email address
@@ -126,7 +127,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                             else {
 
                                 // Creates a dialog that appears to tell the user that the user is being invited
-                                invitingProgressDialog = new ProgressDialog(getContext());
+                                invitingProgressDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);;
                                 invitingProgressDialog.setTitle("Invite User");
                                 invitingProgressDialog.setCancelable(false);
                                 invitingProgressDialog.setMessage("Inviting user to project...");
@@ -153,7 +154,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
     public void onClickDelete(final String uid){
         LayoutInflater inflater = (this).getLayoutInflater();
         final View alertView = inflater.inflate(R.layout.alert_dialogue_delete_project, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginAlertDialog));
         builder.setTitle("Delete Member?")
                 .setView(alertView)
                 .setMessage("Are you sure you want to delete this member? Enter your password below to confirm.")
@@ -161,7 +162,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Validate password and delete member
-                        EditText passwordET = (EditText) alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
+                        EditText passwordET = alertView.findViewById(R.id.alertDialogueDeletePasswordEditText);
                         String password = passwordET.getText().toString().trim();
 
                         // Cannot send null password
@@ -177,7 +178,7 @@ public class ProjectMembersFragment extends Fragment implements ProjectMembersVi
                             else {
 
                                 // Creates a dialog that appears to tell the user that the member is being deleted
-                                deletingMemberProgressDialog = new ProgressDialog(getContext());
+                                deletingMemberProgressDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);;
                                 deletingMemberProgressDialog.setTitle("Delete Member");
                                 deletingMemberProgressDialog.setCancelable(false);
                                 deletingMemberProgressDialog.setMessage("Attempting to delete member...");

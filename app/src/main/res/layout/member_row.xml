@@ -37,8 +37,8 @@
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:cropToPadding="true"
-            android:paddingRight="6dp"
-            android:paddingLeft="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="3dp"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_owner"
             />
@@ -50,7 +50,8 @@
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:cropToPadding="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="3dp"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_delete"/>
     </android.widget.LinearLayout>
