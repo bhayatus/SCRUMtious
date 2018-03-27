@@ -262,6 +262,7 @@ public class SprintListActivity extends AppCompatActivity implements SprintListV
         }
     }
 
+
     @Override
     public void onSprintDeleted() {
         // Needs to be here even if not implemented

@@ -65,7 +65,7 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
         projectStatsPresenter = new ProjectStatsPresenter(this, pid);
         projectAlreadyDeleted = false;
 
-        projectStatsBurndownChart = (LineChart) findViewById(R.id.projectStatsBurndownChart);
+        projectStatsBurndownChart = findViewById(R.id.projectStatsBurndownChart);
 
         projectStatsCreationDateErrorTextView = findViewById(R.id.projectStatsCreationDateErrorTextView);
         projectStatsNumMembersErrorTextView = findViewById(R.id.projectStatsNumMembersErrorTextView);
@@ -108,7 +108,10 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
                                 "On the x-axis, the numbers represent" +
                                 " the number of days that have passed since the project was created." +
                                 "\n" +
-                                "You can change the scale of either axis by pinching in or pinching out on the chart.")
+                                "You can change the scale of either axis by pinching in or pinching out on the chart." +
+                                "\n" +
+                                "To scroll vertically or horizontally after zooming in, softly move your finger in the opposite" +
+                                " direction on the chart. If you move your finger too fast, the entire screen will scroll instead.")
                         .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -366,8 +369,9 @@ public class ProjectStatsActivity extends AppCompatActivity implements ProjectSt
 
         projectStatsBurndownChart.getLegend().setEnabled(false);
         projectStatsBurndownChart.getDescription().setEnabled(false);
+        projectStatsBurndownChart.setVerticalScrollBarEnabled(true);
         projectStatsBurndownChart.setDragEnabled(true);
-        projectStatsBurndownChart.setScaleEnabled(true);
+//        projectStatsBurndownChart.setScaleEnabled(true);
         projectStatsBurndownChart.setHighlightPerTapEnabled(false);
         projectStatsBurndownChart.setHighlightPerDragEnabled(false);
 
