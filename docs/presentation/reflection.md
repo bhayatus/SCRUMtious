@@ -1,4 +1,3 @@
-* Max' 500 words.
 
 # Reflection
 
@@ -16,4 +15,10 @@ Some techniques that did not work well for our team was meeting every week for o
 If we had to continue working as a team, we think our process would be the same. Our creativity, innovation and different viewpoints for the project helped us create this unique app. Every week we were able to assess ourselves and the progress we made. The technique we followed was very efficient because we all made high quality decisions together which resulted in support and commitment of the group to carry out the decisions made.
 
 ### In other words, describe an ideal process __for your team__, based on your experience working together.
-An ideal process for our team
+An ideal process for our team based on our experience working together would be: 
+* Refactoring code reguarly/weekly
+* Code reviews weekly
+* Debugging code as a team
+* Rotating tasks so everyone can be all-rounded
+* Meeting together to work on the sprints
+* Planning out the project or tasks before implementing them
