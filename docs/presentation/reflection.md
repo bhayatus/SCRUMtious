@@ -10,8 +10,10 @@ Some tools we used that worked well for our team was Github, Discord, Messenger 
 The naming conventions that we followed also helped us tremendously because it helped us refactor the code easily, conducting code reviews was also very smooth as well as debugging.
 
 ### Tell us about tools/techniques/conventions that didn't work well for your team. Explain why.
-Some techniques that did not work well for our team was meeting every week for one hour. We realized that technique was very inefficient because it was very easy to get distracted and there was not much progress. So to resolve that issue we decided to meet up on the weekend for 2 days and finish the entire sprint. That was more efficient because we would be very focused and would work together which made it very easy to debug and 
+Some techniques that did not work well for our team was meeting every week for one hour. We realized that technique was very inefficient because it was very easy to get distracted and there was not much progress. So to resolve that issue we decided to meet up on the weekend for 2 days and finish the entire sprint. That was more efficient because we would be very focused and would work together which made it very easy to debug and merge. 
 
 ### If you had to continue working as a team, and design your process, what would your process look like?     
+If we had to continue working as a team, we think our process would be the same. Our creativity, innovation and different viewpoints for the project helped us create this unique app. Every week we were able to assess ourselves and the progress we made. The technique we followed was very efficient because we all made high quality decisions together which resulted in support and commitment of the group to carry out the decisions made.
 
 ### In other words, describe an ideal process __for your team__, based on your experience working together.
+An ideal process for our team
