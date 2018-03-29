@@ -5,9 +5,12 @@
 ### Tell us about tools/techniques/conventions that worked well for your team. Explain why.
 Overall our team created a positive environment towards this project. We were all willing to learn new things and brought this whole new energy every time we had to work on the project.
 For our team to be successful in this project we all had to understand the goal and be committed to achieve it.
-Some tools we used that worked well for our team was Github, Discord, Messenger which all helped our communication between sprints flow more clearly. We all asked questions for clarity and communicated our progress with everyone which helped us have a clear undertstanding of the steps we need to take 
+Some tools we used that worked well for our team was Github, Discord, Messenger which all helped our communication between sprints flow more clearly. We all asked questions for clarity and communicated our progress with everyone which helped us have a clear undertstanding of the steps we need to take for the project to be completed smoothly. 
+
+The naming conventions that we followed also helped us tremendously because it helped us refactor the code easily, conducting code reviews was also very smooth as well as debugging.
 
 ### Tell us about tools/techniques/conventions that didn't work well for your team. Explain why.
+Some techniques that did not work well for our team was meeting every week for one hour. We realized that technique was very inefficient because it was very easy to get distracted and there was not much progress. So to resolve that issue we decided to meet up on the weekend for 2 days and finish the entire sprint. That was more efficient because we would be very focused and would work together which made it very easy to debug and 
 
 ### If you had to continue working as a team, and design your process, what would your process look like?     
 
