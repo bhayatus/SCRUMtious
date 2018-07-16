@@ -5,11 +5,15 @@ An Android app that helps manage the logistics of remote teams working on projec
 http://shabazbadshah.com/SCRUMtious-Website/
 
 ### Members
-	1. Shabaz Badshah (badshah1)
-	2. Nensi Deliana (delianan)
-	3. Muhammad Waleed (waleedmu)
-	4. Swetha Maramganty (maramgan)
-	5. Usaim Bhayat (bhayatus)
+Shabaz Badshah - https://github.com/ShabazBadshah
+
+Nensi Deliana - https://github.com/delianan
+
+Muhammad Waleed - https://github.com/waleedmu
+
+Swetha Maramganty - https://github.com/maramgan
+
+Usaim Bhayat - https://github.com/bhayatus
 
 ### Installation Instructions
 #### Option 1:
