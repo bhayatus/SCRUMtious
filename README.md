@@ -1,4 +1,4 @@
-### SCRUMtious
+# SCRUMtious
 An Android app that helps manage the logistics of remote teams working on projects in agile Scrum environments. The app keeps track of their user stories, tasks, sprint backlog, product backlog, amongst many other things.
 
 ### Site Link
